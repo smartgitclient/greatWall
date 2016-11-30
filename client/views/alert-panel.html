@@ -1,0 +1,3 @@
+<div class="mask"></div>
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+<div style="text-align: right; width: 550px; margin: 10px auto"><button class="btn btn-cancel"  data-ng-click="closeAll()">清除</button></div>

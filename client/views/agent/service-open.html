@@ -1,0 +1,160 @@
+<div  class="agent-total" data-ng-class="bottom">
+    <p class="tab-header">
+        <a href  ng-click="showOpen(0)" ng-class="{active:show_first}">戶口匯總</a>
+        <!--<a href  ng-click="showOpen(1)"  ng-class="{active:show_two}">消費/存卡/未出佣/轉碼數</a>-->
+        <a href  ng-click="showOpen(1)" ng-class="{active:show_two}">場面數記錄</a>
+    </p>
+    <div  class="tab-content" >
+        <div ng-show="show_first">
+            <perfect-scrollbar id="content"  class="animate-fade-up col-md-6" style="left:0;top:48px;padding:0;height:93%;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover table-click">
+                        <thead>
+                        <!--<tr>-->
+                            <!--<td colspan="10" align="left">-->
+                                <!--<span class="pull-left">年月：</span>-->
+                                <!--<p class="input-group ui-datepicker pull-left" style="width: 150px">-->
+                                    <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" />-->
+                        <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                        <!--</span>-->
+                                <!--</p>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <td>廳名</td>
+                            <td>貸款總額(萬)</td>
+                            <td>存單總額(萬)</td>
+                            <td>存卡總額(萬)</td>
+                            <td>轉碼總額(萬)</td>
+                            <td>消費總額</td>
+                            <td>佣金</td>
+                            <td>當月津貼</td>
+                            <td>上月餘津貼</td>
+                            <td>剩餘津貼</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="agent_total in agentTotals" data-selected-rows>
+                            <td>{{agent_total.hall_name}}</td>
+                            <td data-ng-click="loanTotal('loan',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.loan|parseTenThousand2}}</td>
+
+                            <td data-ng-click="ticketTotal('ticket',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.deposit_ticket|parseTenThousand2}}</td>
+                            <td data-ng-click="cardTotal('card',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type,agent_total.deposit_card,agent_total.consumption)">{{agent_total.deposit_card|parseTenThousand2}}</td>
+                            <td data-ng-click="rollingTotal('rolling',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type,agent_total.rolling)">{{agent_total.rolling|parseTenThousand2}}</td>
+                            <td data-ng-click="consumptionTotal('consumption',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type,agent_total.consumption)">{{agent_total.consumption|parseDollar:true}}</td>
+                            <!--<td>{{agent_total.commission|parseDollar:true}}</td>-->
+                            <td data-ng-click="commissionTotal('commission',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.commission|parseDollar:true}}</td>
+                            <td>{{agent_total.thismonth_allowance|parseDollar:true}}</td>
+                            <td>{{agent_total.lastmonth_allowance|parseDollar:true}}</td>
+                            <td>
+                                <span data-ng-show="agent_total.settlement_allowance>= 0">{{agent_total.settlement_allowance|parseDollar:true}}</span>
+                                <span data-ng-show="agent_total.settlement_allowance < 0"  class="minus-number">{{agent_total.settlement_allowance|parseDollar:true}}</span>
+                             </td>
+                        </tr>
+                        <tr data-ng-hide="agentTotals.length > 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </perfect-scrollbar>
+        </div>
+       <!--<div ng-show="show_two">-->
+           <!--<perfect-scrollbar id="content"  class="animate-fade-up col-md-6" style="left:0;top:48px;padding:0;height:93%;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">-->
+               <!--<div class="panel-content">-->
+                    <!--<table class="table table-bordered table-striped table-hover table-click">-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--<td colspan="10" align="left">-->
+                    <!--<span class="pull-left">年月：</span>-->
+                    <!--<p class="input-group ui-datepicker pull-left" style="width: 150px">-->
+                        <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" />-->
+                        <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                        <!--</span>-->
+                     <!--</p>-->
+
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>廳名</td>-->
+                <!--<td>剩餘積分</td>-->
+                <!--<td>貸款總額(萬)</td>-->
+                <!--<td>存單總額(萬)</td>-->
+                <!--<td>消費總額</td>-->
+                <!--<td>存卡總額(萬)</td>-->
+                <!--<td>未出佣金</td>-->
+                <!--<td>轉碼總額(萬)</td>-->
+
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr data-ng-repeat="agent_total in agentTotals">-->
+                <!--<td>{{agent_total.hall_name}}</td>-->
+                <!--<td>{{agent_total.settlement_allowance|parseDollar}}</td>-->
+                <!--<td data-ng-click="consumptionTotal('consumption',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type,agent_total.consumption)">{{agent_total.consumption|parseDollar:true}}</td>-->
+                <!--<!--<td data-ng-click="loanTotal('loan',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.loan|parseTenThousand2}}</td>-->-->
+                <!--<!--<td data-ng-click="ticketTotal('ticket',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.deposit_ticket|parseTenThousand2}}</td>-->-->
+                <!--<td data-ng-click="cardTotal('card',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.deposit_card|parseTenThousand2}}</td>-->
+                <!--<td data-ng-click="commissionTotal('commission',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type)">{{agent_total.commission|parseDollar:true}}</td>-->
+                <!--<td data-ng-click="rollingTotal('rolling',agent_total.hall_id,agent_total.agent_info_id,agent_total.hall_type,agent_total.rolling)">{{agent_total.rolling|parseTenThousand2}}</td>-->
+            <!--</tr>-->
+            <!--<tr data-ng-hide="agentTotals.length > 0">-->
+                <!--<td colspan="10">暫無符合條件的記錄</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+               <!--</div>-->
+            <!--</perfect-scrollbar>-->
+       <!--</div>-->
+        <div ng-show="show_two">
+            <perfect-scrollbar id="content"  class="animate-fade-up col-md-6" style="left:0;top:48px;padding:0;height:93%;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr >
+                    <td>場次</td>
+                    <td>狀態</td>
+                    <td>廳館</td>
+                    <td>戶口編號</td>
+                    <td>中文姓名</td>
+                    <td>客人姓名</td>
+                    <td>入場本金(萬)</td>
+                    <td>離場本金(萬)</td>
+                    <td>上下數(萬)</td>
+                    <td>轉碼數(萬)</td>
+                    <td>開場時間</td>
+                    <td>離場時間</td>
+                    <td>經手人</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="scene_record in sceneRecords" data-selected-rows> <!-- data-ng-click="sceneRecord(scene_record.id)"-->
+                        <td>{{scene_record.scene_no}}</td>
+                        <td>{{SceneRecordShiftStatus[scene_record.status]}}</td>
+                        <td>{{scene_record.hall_name}}</td>
+                        <td>{{scene_record.agent_code}}</td>
+                        <td>{{scene_record.agent_name}}</td>
+                        <td>{{scene_record.guest_name}}</td>
+                        <td>{{inScene(scene_record.inCapitals)}}</td>
+                        <td>{{outScene(scene_record.outCapitals)}}</td>
+                        <td style="color:#00ff00;font-weight: bold;">
+                            <span data-ng-show="scene_record.loss_win_amount && scene_record.loss_win_amount >= 0" class="positive-number">+{{scene_record.loss_win_amount|parseTenThousand2}}</span>
+                            <span data-ng-show="scene_record.loss_win_amount && scene_record.loss_win_amount < 0 " class="minus-number">{{scene_record.loss_win_amount|parseTenThousand2}}</span>
+                        </td>
+                        <td>{{scene_record.rolling_total | parseTenThousand2}}</td>
+                        <td>{{scene_record.start_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{scene_record.end_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{scene_record.user_name}}</td>
+                    </tr>
+                    <tr data-ng-hide="sceneRecords.length > 0">
+                        <td colspan="13">暫無符合條件的記錄</td>
+                    </tr>
+                </tbody>
+            </table>
+                </div>
+            </perfect-scrollbar>
+        </div>
+    </div>
+</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

@@ -1,0 +1,334 @@
+<div class="page page-grid" data-ng-controller="commissionPreReleaseRecordCtrls">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>出佣查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">戶口編號：</td>
+                                        <td width="150"><input type="text" data-input-uppercase data-ng-model="condition.agentInfo.agent_code" class="form-control"></td>
+                                        <td width="150" class="text-right">中文姓名：</td>
+                                        <td width="150"><input type="text" data-ng-model="condition.agentMaster.agent_contact_name" class="form-control"></td>
+                                        <td width="150" class="text-right">年月：</td>
+                                        <td width="150">
+                                             <span data-ng-show="year_month != ''"> {{year_month | parseDate:'yyyy'}}/{{year_month | parseDate:'MM'}}</span>
+                                           <span data-ng-show="year_month == ''">
+                                                <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month[0]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                </p>
+                                            </span>
+                                        </td>
+                                        <td data-ng-show="isChuYong" width="150" class="text-right">出佣狀態：</td>
+                                        <td data-ng-show="isChuYong" width="150">
+                                            <select data-ng-model="condition.status" class="form-control">
+                                                <option value="">全部</option>
+                                                <option ng-repeat="(key,title) in commission_record_status.items" value="{{key}}">{{title}}</option>
+                                            </select>
+                                        </td>
+                                        <!--ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'"-->
+                                        <td width="150" class="text-right">廳館：</td>
+                                        <td width="150">
+                                            <select  data-ng-model="condition.hall_id" data-ng-change="chkIsTing();" class="form-control" data-ng-options="h.id as h.hall_name for h in newHall">
+                                                <!--<option value="">請選擇廳館</option>-->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>出佣記錄</strong>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="CommissionDetailRecordPrint" report-btn>&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-information pull-right" report-params="excel_condition" channel-type="CommissionPreReleaseRecord" report-btn >導出EXCEL</button>
+                        </div>
+                        <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                            <div class="panel-content consumption_record"  style="min-height: 100px; min-width: 3700px;">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                <tr>
+                                    <!--<td width="80" data-ng-show="hall_types">操作</td>-->
+                                    <td>操作</td>
+                                    <td>戶口編號</td>
+                                    <td>中文姓名</td>
+                                    <td>月結月份</td>
+                                    <!--<td>出佣狀態</td>-->
+                                    <!--<td data-ng-show="hall_types">應出佣金</td>-->
+                                    <!--<td data-ng-show="hall_types">逾期手續費</td>-->
+                                    <!--<td data-ng-show="hall_types">扣超額消費</td>-->
+                                    <!--<td data-ng-show="hall_types">雜項現金消費</td>-->
+                                    <!--<td data-ng-show="hall_types">實出佣金</td>-->
+                                    <!--<td data-ng-show="hall_types">尾數</td>-->
+                                    <td>現金轉碼</td>
+                                    <td>貸款轉碼</td>
+                                    <td>IOU轉碼</td>
+                                    <td>股本轉碼</td>
+                                    <td>轉碼總數</td>
+                                    <td>現金佣</td>
+                                    <td>貸款佣</td>
+                                    <td>IOU佣</td>
+                                    <td>股本佣</td>
+                                    <td>應出佣</td>
+                                    <td>現金津貼</td>
+                                    <td>貸款津貼</td>
+                                    <td>IOU津貼</td>
+                                    <td>股本津貼</td>
+                                    <td>津貼總數</td>
+                                    <td>房消費</td>
+                                    <td>食單</td>
+                                    <td>機票</td>
+                                    <td>直升機</td>
+                                    <td>船飛</td>
+                                    <td>門票</td>
+                                    <td>雜項</td>
+                                    <td>車輛</td>
+                                    <td>消費總数</td>
+                                    <td>下線轉碼</td>
+
+                                    <td>下線佣金收益</td>
+                                    <td>下線津貼收益</td>
+                                    <td>上月餘津貼</td>
+                                    <td>過期津貼回收</td>
+                                    <td>津貼餘額</td>
+                                    <td>現金回收</td>
+                                    <td>累計下月</td>
+                                    <td>超額消費</td>
+                                    <!--<td>逾期利息</td>-->
+                                    <td>實出碼佣</td>
+                                    <td>除尾數</td>
+                                    <td>尾数</td>
+                                    <td data-ng-show="!hall_types">回收户口</td>
+                                    <td data-ng-show="!hall_types">津貼保留</td>
+                                    <td data-ng-show="!hall_types">現金回收(%)</td>
+                                    <!--<td data-ng-show="hall_types">逾期利息</td>-->
+                                    <!--<td data-ng-show="hall_types">實出碼佣</td>-->
+                                    <!--<td data-ng-show="hall_types">除尾數</td>-->
+                                    <!--<td data-ng-show="hall_types">尾数</td>-->
+                                    <!--<td>本月津貼總額</td>-->
+                                    <!--<td>上月剩餘津貼</td>-->
+                                    <!--<td data-ng-show="hall_types">過期現金回收</td>-->
+                                    <!--<td>過期津貼回收</td>-->
+                                    <!--<!--<td>負消費</td>-->
+                                    <!--<td>津貼餘額</td>-->
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="commissionRecord in commissionPreReleaseRecords" data-selected-rows>
+                                    <td><button class="btn btn-info btn-table btn-information"
+                                                data-ng-disabled="isDesabled"
+                                                data-ng-show="hall_types"
+                                                data-ng-click="print_r(commissionRecord.id)">列印</button>
+                                        <button class="btn btn-info btn-table btn-information"
+                                                data-ng-disabled="isDesabled"
+                                                data-ng-hide="hall_types"
+                                                data-ng-click="print_r(commissionRecord.commission_record_id)">列印</button>
+                                    </td>
+                                    <td>{{commissionRecord.agent_code}}</td>
+                                    <td>{{commissionRecord.agent_name}}</td>
+                                    <td>{{commissionRecord.year_month|parseDate:'yyyy-MM'}}</td><!-- -->
+                                    <!-- <td>
+                                         <span data-ng-show="hall_types">{{commission_record_status.items[commissionRecord.status_wages]}}</span>
+                                         <span data-ng-show="!hall_types">{{commission_record_status.items[commissionRecord.commissionRecord.status_wages]}}</span>
+                                     </td>出佣狀態 -->
+                                    <!--<td data-ng-show="hall_types">{{commissionRecord.should_commission|parseDollar:true}}</td><!--應出佣金 -->
+                                    <!--<td data-ng-show="hall_types">{{commissionRecord.expired_fee|parseDollar:true}}</td><!--逾期手續費-->
+                                    <!--<td data-ng-show="hall_types">{{commissionRecord.negative_consumption|parseDollar:true}}</td><!--扣超額消費 over_comsumption-->
+                                    <!--<td data-ng-show="hall_types">{{commissionRecord.miscellaneous_cash|parseDollar:true}}</td><!--雜項現金消費-->
+                                    <!--<td data-ng-show="hall_types">{{actual_commission(commissionRecord)|actualCommission}}</td><!--{{commissionRecord.actual_commission | parseDollar:true}}实出佣金-->
+                                    <!--<td data-ng-show="hall_types">{{actual_commission(commissionRecord)|omitCommission}}</td> <!--{{commissionRecord.omit_commission|parseDollar:true}}尾數-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.cash_rolling >= 0">{{commissionRecord.cash_rolling|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.cash_rolling < 0" class="minus-number">{{commissionRecord.cash_rolling|parseTenThousand}}</span>
+                                    </td><!--現金轉碼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.loan_rolling >= 0">{{commissionRecord.loan_rolling|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.loan_rolling < 0" class="minus-number">{{commissionRecord.loan_rolling|parseTenThousand}}</span>
+                                    </td><!--貸款轉碼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.iou_rolling >= 0">{{commissionRecord.iou_rolling|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.iou_rolling < 0" class="minus-number">{{commissionRecord.iou_rolling|parseTenThousand}}</span>
+                                    </td><!-- IOU轉碼-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.stock_rolling >= 0">{{commissionRecord.stock_rolling|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.stock_rolling < 0" class="minus-number">{{commissionRecord.stock_rolling|parseTenThousand}}</span>
+                                    </td><!--股本轉碼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.rolling_total >= 0">{{commissionRecord.rolling_total|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.rolling_total < 0" class="minus-number">{{commissionRecord.rolling_total|parseTenThousand}}</span>
+                                    </td><!-- 轉碼總数-->
+                                    <td style="cursor: pointer" data-ng-click="commissionShowDeatail(commissionRecord.id,0)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.cash_rolling_commission >= 0">{{commissionRecord.cash_rolling_commission|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.cash_rolling_commission < 0" class="minus-number">{{commissionRecord.cash_rolling_commission|parseDollar:true}}</span>
+                                    </td><!--现金佣金 -->
+                                    <td style="cursor: pointer" data-ng-click="commissionShowDeatail(commissionRecord.id,1)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.loan_rolling_commission >= 0">{{commissionRecord.loan_rolling_commission|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.loan_rolling_commission < 0" class="minus-number">{{commissionRecord.loan_rolling_commission|parseDollar:true}}</span>
+                                    </td><!--贷款佣金 -->
+                                    <td style="cursor: pointer" data-ng-click="commissionShowDeatail(commissionRecord.id,2)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.iou_rolling_commission >= 0">{{commissionRecord.iou_rolling_commission|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.iou_rolling_commission < 0" class="minus-number">{{commissionRecord.iou_rolling_commission|parseDollar:true}}</span>
+                                    </td><!-- IOU佣金-->
+                                    <td style="cursor: pointer" data-ng-click="commissionShowDeatail(commissionRecord.id,3)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.stock_rolling_commission >= 0">{{commissionRecord.stock_rolling_commission|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.stock_rolling_commission < 0" class="minus-number">{{commissionRecord.stock_rolling_commission|parseDollar:true}}</span>
+                                    </td><!--股本佣金 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.should_commission >= 0">{{commissionRecord.should_commission|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.should_commission < 0" class="minus-number">{{commissionRecord.should_commission|parseDollar:true}}</span>
+                                    </td><!--應出佣 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.cash_allowance >= 0">{{commissionRecord.cash_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.cash_allowance < 0" class="minus-number">{{commissionRecord.cash_allowance|parseDollar:true}}</span>
+                                    </td><!--  津貼--->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.loan_allowance >= 0">{{commissionRecord.loan_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.loan_allowance < 0" class="minus-number">{{commissionRecord.loan_allowance|parseDollar:true}}</span>
+                                    </td><!-- 津貼-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.iou_allowance >= 0">{{commissionRecord.iou_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.iou_allowance < 0" class="minus-number">{{commissionRecord.iou_allowance|parseDollar:true}}</span>
+                                    </td><!--津貼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.stock_allowance >= 0">{{commissionRecord.stock_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.stock_allowance < 0" class="minus-number">{{commissionRecord.stock_allowance|parseDollar:true}}</span>
+                                    </td><!--津貼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.thismonth_allowance >= 0">{{commissionRecord.thismonth_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.thismonth_allowance < 0" class="minus-number">{{commissionRecord.thismonth_allowance|parseDollar:true}}</span>
+                                     </td><!-- 本月津貼 == 津貼總數-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.hotel >= 0">{{commissionRecord.hotel|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.hotel < 0" class="minus-number">{{commissionRecord.hotel|parseDollar:true}}</span>
+                                    </td><!--房消費 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.foodcoupon >= 0">{{commissionRecord.foodcoupon|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.foodcoupon < 0" class="minus-number">{{commissionRecord.foodcoupon|parseDollar:true}}</span>
+                                    </td><!-- 食單-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.flight >= 0">{{commissionRecord.flight|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.flight < 0" class="minus-number">{{commissionRecord.flight|parseDollar:true}}</span>
+                                    </td><!--機票 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.helicopter >= 0">{{commissionRecord.helicopter|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.helicopter < 0" class="minus-number">{{commissionRecord.helicopter|parseDollar:true}}</span>
+                                    </td><!--直升機 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.boat >= 0">{{commissionRecord.boat|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.boat < 0" class="minus-number">{{commissionRecord.boat|parseDollar:true}}</span>
+                                    </td><!--船飛 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.ticket >= 0">{{commissionRecord.ticket|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.ticket < 0" class="minus-number">{{commissionRecord.ticket|parseDollar:true}}</span>
+                                    </td><!--門票-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.miscellaneous >= 0">{{commissionRecord.miscellaneous|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.miscellaneous < 0" class="minus-number">{{commissionRecord.miscellaneous|parseDollar:true}}</span>
+                                    </td><!--雜項 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.car >= 0">{{commissionRecord.car|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.car < 0" class="minus-number">{{commissionRecord.car|parseDollar:true}}</span>
+                                    </td><!-- 車輛-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.thismonth_consumption >= 0">{{commissionRecord.thismonth_consumption|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.thismonth_consumption < 0" class="minus-number">{{commissionRecord.thismonth_consumption|parseDollar:true}}</span>
+                                    </td><!--消費總額 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.underling_rolling >= 0">{{commissionRecord.underling_rolling|parseTenThousand}}</span>
+                                        <span data-ng-show="commissionRecord.underling_rolling < 0" class="minus-number">{{commissionRecord.underling_rolling|parseTenThousand}}</span>
+                                    </td><!-- 下線轉碼-->
+                                    <td style="cursor: pointer" data-ng-click="underling_commissionDeatail('1',commissionRecord.underling_commission,commissionRecord.agent_info_id,commissionRecord.year_month,commissionRecord.hall_id)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.underling_commission >= 0">{{commissionRecord.underling_commission|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.underling_commission < 0" class="minus-number">{{commissionRecord.underling_commission|parseDollar:true}}</span>
+                                    </td><!--下線佣金收益 -->
+                                    <td style="cursor: pointer" data-ng-click="underling_commissionDeatail('2',commissionRecord.underling_allowance,commissionRecord.agent_info_id,commissionRecord.year_month,commissionRecord.hall_id)">
+                                        <span class="a-hover" data-ng-show="commissionRecord.underling_allowance >= 0">{{commissionRecord.underling_allowance|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.underling_allowance < 0" class="minus-number">{{commissionRecord.underling_allowance|parseDollar:true}}</span>
+                                    </td><!--下線津貼 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.hotel >= 0">{{commissionRecord.lastmonth_allowance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.hotel < 0" class="minus-number">{{commissionRecord.lastmonth_allowance|parseDollar:true}}</span>
+                                    </td><!--上月剩餘津貼 == 上月餘津貼 -->
+                                    <td style="cursor: pointer" data-ng-click="allowance_retrieve(commissionRecord);">
+                                        <span class="a-hover" data-ng-show="commissionRecord.allowance_retrieve >= 0">{{commissionRecord.allowance_retrieve|parseDollar:true}}</span>
+                                        <span class="a-hover" data-ng-show="commissionRecord.allowance_retrieve < 0" class="minus-number">{{commissionRecord.allowance_retrieve|parseDollar:true}}</span>
+                                    </td><!-- 津貼過期回收 == 過期津貼回收-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.allowance_balance >= 0">{{commissionRecord.allowance_balance|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.allowance_balance < 0" class="minus-number">{{commissionRecord.allowance_balance|parseDollar:true}}</span>
+                                    </td><!-- 津貼餘額-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.cash_retrieve >= 0">{{commissionRecord.cash_retrieve|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.cash_retrieve < 0" class="minus-number">{{commissionRecord.cash_retrieve|parseDollar:true}}</span>
+                                    </td><!--過期現金回收-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.allowance_useable >= 0">{{commissionRecord.allowance_useable|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.allowance_useable < 0" class="minus-number">{{commissionRecord.allowance_useable|parseDollar:true}}</span>
+                                    </td><!--累計本月-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.over_comsumption >= 0">{{commissionRecord.over_comsumption|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.over_comsumption < 0" class="minus-number">{{commissionRecord.over_comsumption|parseDollar:true}}</span>
+                                    </td><!--負消費 == 超額消費 -->
+                                    <!--<td>
+                                        <span data-ng-show="commissionRecord.expired_fee >= 0">{{commissionRecord.expired_fee|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.expired_fee < 0" class="minus-number">{{commissionRecord.expired_fee|parseDollar:true}}</span>
+                                    </td>--><!--逾期手續費 == 逾期利息-->
+                                    <!--<td data-ng-show="hall_types">{{commissionRecord.should_commission|parseDollar:true}}</td><!--實出碼佣 == 應出佣金 -->
+                                    <!--<td data-ng-show="hall_types">{{actual_commission(commissionRecord)|actualCommission}}</td><!--除尾數 （實出佣金） {{commissionRecord.actual_commission|parseDollar:true}} -->
+                                    <!--<td data-ng-show="hall_types">{{actual_commission(commissionRecord)|omitCommission}}</td> <!--尾數{{commissionRecord.omit_commission|parseDollar:true}}-->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.actual_commission >= 0">{{commissionRecord.actual_commission|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.actual_commission < 0" class="minus-number">{{commissionRecord.actual_commission|parseDollar:true}}</span>
+                                    </td><!--實出碼佣 == 應出佣金 -->
+                                    <td>
+                                        <span data-ng-show="commissionRecord.round_commission >= 0">{{commissionRecord.round_commission|parseDollar:true}}</span>
+                                        <span data-ng-show="commissionRecord.round_commission < 0" class="minus-number">{{commissionRecord.round_commission|parseDollar:true}}</span>
+                                    </td><!--除尾數 （實出佣金） {{commissionRecord.actual_commission|parseDollar:true}} -->
+                                    <td>{{commissionRecord.omit_commission|parseDollar:true}}</td> <!--尾數{{commissionRecord.omit_commission|parseDollar:true}}-->
+                                    <td data-ng-show="!hall_types">{{commissionRecord.recycle_agent_code}}</td><!--回收户口 -->
+                                    <td data-ng-show="!hall_types">{{commissionRecord.validity_month|number}}</td><!-- 津貼保留-->
+                                    <td data-ng-show="!hall_types">{{commissionRecord.cash_recycle_rate|number}}</td><!--現金回收 -->
+                                    <!-- <td>{{thismonth_allowance_total(commissionRecord)|parseDollar:true}}</td>本月津貼總額-->
+                                    <!--<td>{{commissionRecord.underling_commission|parseDollar:true}}</td><!--下線佣金收益 -->
+                                    <!--<td>{{commissionRecord.underling_allowance|parseDollar:true}}</td><!--下線津貼 -->
+                                    <!--  <td>{{commissionRecord.thismonth_allowance|parseDollar:true}}</td>本月津貼總額-->
+                                    <!--<td>{{commissionRecord.negative_consumption|parseDollar:true}}</td><!--負消費 -->
+                                    <!--<td class="no-padding"><button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail(commissionRecord.id)">詳細</button></td>-->
+                                </tr>
+                                <tr data-ng-show="commissionPreReleaseRecords.length == 0">
+                                    <td colspan="44">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                items-per-page = "pagination.items_per_page"
+                                                max-size = "pagination.max_size"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

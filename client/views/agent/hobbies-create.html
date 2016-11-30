@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h3>{{title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_hobby" class="ng-valid" server-validation="{{sub_post_put}}{{create_hobby_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" width="50">內容：</td>
+                        <td>
+                            <textarea data-ng-required="enableClientValidation" class="form-control textarea-table01" rows="4" data-ng-model="hobbies.content" name="content"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50">愛好紙類型：</td>
+                        <td>
+                            <input data-ng-required="enableClientValidation" type="text" data-ng-model="hobbies.type" name = "type" class="form-control input-01 ng-pristine"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">操作密碼：</td>
+                        <td align="left" width="150">
+                            <input type="password" name="pin_code" data-ng-model="hobbies.pin_code" class="form-control" data-enter-key="add()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-confirm" data-ng-click="add()">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </form>
+</div>

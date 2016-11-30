@@ -1,0 +1,102 @@
+<div class="page page-grid" data-ng-controller="depositCardRecordCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>轉碼卡列表</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right"><span class="span-formlist">所屬線：</span></td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right"><span class="span-formlist">所屬戶口：</span></td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                                        <td width="229" class="text-right"><span class="span-formlist">卡類型：</span></td>
+                                        <td width="209"><!-- Split button -->
+                                            <ui-select ng-model="condition.hall">
+                                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="hall in halls">
+                                                    <div ng-bind-html="hall"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td width="100" class="text-right"><span class="span-formlist">卡狀態：</span></td>
+                                        <td width="209">
+                                            <ui-select ng-model="condition.duty_number">
+                                                <ui-select-match placeholder="請選擇更數">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="duty_number in duty_numbers">
+                                                    <div ng-bind-html="duty_number"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉碼卡列表</strong>
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-click">
+                                <thead>
+                                <tr>
+                                    <td>卡名稱</td>
+                                    <td>卡類型</td>
+                                    <td>所屬線</td>
+                                    <td>所屬戶口</td>
+                                    <td>狀態</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="cardsRecord in cardsRecords" data-ng-click="detail()">
+                                    <td>{{cardsRecord.hall}}</td>
+                                    <td>{{cardsRecord.agent_code}}</td>
+                                    <td>{{cardsRecord.agent_name}}</td>
+                                    <td>{{cardsRecord.created}}</td>
+                                    <td>{{cardsRecord.type}}</td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information margin-right-15 btn-table margin-right-5" ng-click="search()">綁定</button>
+                                        <button class="btn btn-info btn-information margin-right-15 btn-table" ng-click="search()">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="all_cardsRecords.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_cardsRecords.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="cardsRecords.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

@@ -1,0 +1,74 @@
+
+// Radio
+.ui-radio {
+    position: relative;
+    margin: 0 20px 10px 20px;
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"] + span {
+        font-weight: normal;
+    }
+
+    input[type="radio"] + span:before {
+        content: "";
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+        margin-left: -20px;
+        background: white;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+    }
+
+    input[type="radio"]:disabled + span:before {
+        opacity: .65;
+        border: 1px solid #ccc;
+        cursor: no-drop;
+    }
+
+    input[type="radio"]:checked + span:after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: 7px;
+        left: -15px;
+        background-color: $brand-primary;
+        border-radius: 50%;
+        display: block;
+    }
+
+    input[type="radio"]:disabled:checked + span:after {
+        opacity: .65;
+        cursor: no-drop;
+        background-color: #ccc;
+    }
+}
+
+// Checkbox
+.ui-checkbox {
+  margin-bottom:0px;
+  font-weight: normal;
+  button{
+    padding: 4px 3px 4px 4px;
+    font-size: 8px;
+    line-height: 1.1;
+    color: #33363F;
+    background-color: #CCCCCC;
+    border-color: $table-border-color;
+    margin:0px 5px;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      color: #33363F;
+      background-color: #CCCCCC;
+      border-color: $table-border-color;
+    }
+  }
+}

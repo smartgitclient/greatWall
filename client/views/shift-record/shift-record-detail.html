@@ -1,0 +1,303 @@
+<div class="page page-services ng-scope" data-ng-controller="shiftRecordDetailCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>圍數詳細</strong></div>
+        <div class="panel-content">
+            <table class="table-shift">
+                <tr height="50">
+                    <td colspan="6" style="color: #ff0000;font-size: 18px;">{{shift_record.hall_name}}</td>
+                </tr>
+                <tr>
+                    <td>日期：</td>
+                    <td width="160">{{shift_record.shift_date|parseDate}}</td>
+                    <td>更數：</td>
+                    <td>{{shift_record.shift}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>數據明細</strong></div>
+        <div class="panel-content">
+            <table class="table-shift" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                <tr>
+                    <td>上更餘特碼：</td>
+                    <td width="160">{{shift_record.lastshift_depositspecialcode|parseTenThousand}}</td>
+                    <td>上月餘特碼：</td>
+                    <td width="160">{{shift_record.lastmonth_depositspecialcode|parseTenThousand}}</td>
+                    <td>檯面銀頭：</td>
+                    <td width="160">{{shift_record.incase_amount|parseTenThousand}}</td>
+                    <td>外借銀頭：</td>
+                    <td>{{shift_record.borrow_amount|parseTenThousand2}}<span data-ng-show="shift_record.borrow_amount">&nbsp;&nbsp;萬</span></td>
+                </tr>
+            </table>
+            <table class="table-shift" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                <tr>
+                    <td>上更餘特碼A：</td>
+                    <td width="160">{{shift_record.lastshift_depositspecialcode_a|parseTenThousand}}</td>
+                    <td>上月餘特碼A：</td>
+                    <td width="160">{{shift_record.lastmonth_depositspecialcode_a|parseTenThousand}}</td>
+                </tr>
+                <tr>
+                    <td>上更餘特碼B：</td>
+                    <td width="160">{{shift_record.lastshift_depositspecialcode_b |parseTenThousand}}</td>
+                    <td>上月餘特碼B：</td>
+                    <td width="160">{{shift_record.lastmonth_depositspecialcode_b |parseTenThousand}}</td>
+                    <td>檯面銀頭：</td>
+                    <td width="160">{{shift_record.incase_amount|parseTenThousand}}</td><td>外借銀頭：</td>
+                    <td>{{shift_record.borrow_amount|parseTenThousand2}}<span data-ng-show="shift_record.borrow_amount">&nbsp;&nbsp;萬</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-form-list  col-md-12 panel-shift">
+        <div class="panel-heading"><strong>本更明細</strong></div>
+        <div class="panel-content" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+            <div class="col-md-3">
+                <div class="table-title02"><strong>本更明細</strong></div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本更買碼數：</td>
+                        <td>{{shift_record.shift_buycode|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本更轉碼數：</td>
+                        <td>{{shift_record.shift_rolling|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>本月明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本月買碼數：</td>
+                        <td>{{shift_record.thismonth_buycode|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本月轉碼數：</td>
+                        <td>{{shift_record.thismonth_rolling|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>匯總明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>存單總數：</td>
+                        <td>{{shift_record.depositticket_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>存卡總數：</td>
+                        <td>{{shift_record.depositcard_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>貸款總數：</td>
+                        <td>{{shift_record.loan_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>飛數總數：</td>
+                        <td>{{shift_record.transfer_total|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="panel-content" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+            <div class="col-md-3">
+                <div class="table-title02"><strong>本更明細</strong></div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本更買碼數A：</td>
+                        <td>{{shift_record.shift_buycode_a|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本更轉碼數A：</td>
+                        <td>{{shift_record.shift_rolling_a|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本更買碼數B：</td>
+                        <td>{{shift_record.shift_buycode_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本更轉碼數B：</td>
+                        <td>{{shift_record.shift_rolling_b|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>本月明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本月買碼數A：</td>
+                        <td>{{shift_record.thismonth_buycode_a|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本月轉碼數A：</td>
+                        <td>{{shift_record.thismonth_rolling_a|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本月買碼數B：</td>
+                        <td>{{shift_record.thismonth_buycode_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>本月轉碼數B：</td>
+                        <td>{{shift_record.thismonth_rolling_b|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>匯總明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>存單總數：</td>
+                        <td>{{shift_record.depositticket_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>存卡總數：</td>
+                        <td>{{shift_record.depositcard_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>貸款總數：</td>
+                        <td>{{shift_record.loan_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td>飛數總數：</td>
+                        <td>{{shift_record.transfer_total|parseTenThousand}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="panel panel-form-list col-md-12">
+        <div class="panel-heading"><strong>即時圍數</strong></div>
+        <div class="panel-content">
+            <form name="form_shift_record" class="ng-valid ng-dirty form-validation" server-validation="POST{{shift_record_url}}">
+
+                <table ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼A：</td>
+                        <td width="209">{{shift_record.shift_depositspecialcode_a|parseTenThousand}}</td>
+                        <td width="120" class="text-right">本更餘特碼B：</td>
+                        <td width="209">{{shift_record.shift_depositspecialcode_b|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃餘現金：</td>
+                        <td width="209">{{shift_record.depositbox_depositcash|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃總數：</td>
+                        <td width="209">{{shift_record.depositbox_total|parseTenThousand}}</td>
+                    </tr>
+
+
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼A：</td>
+                        <td width="209">{{shift_record.shift_depositcashcode_a|parseTenThousand}}</td>
+                        <td width="120" class="text-right">本更餘現碼B：</td>
+                        <td width="209">{{shift_record.shift_depositcashcode_b|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃餘現碼A：</td>
+                        <td width="209">{{shift_record.depositbox_cashcode_a|parseTenThousand}}</td>
+                        <td width="120" class="text-right">&nbsp;<!--操作密碼：--></td>
+                        <td width="209"><!--<input class="form-control input-01 width-83" type="password" ng-model="shift_record.pin_code" name="pin_code" data-enter-key="saveJieGen()">--></td>
+                    </tr>
+
+
+                    <tr height="50">
+                        <td width="120" class="text-right">轉碼對比A：</td>
+                        <td width="209">{{rolling_compare_a();}}&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">轉碼對比B：</td>
+                        <td width="209">{{rolling_compare_b();}}&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼B：</td>
+                        <td width="209">{{shift_record.depositbox_cashcode_b|parseTenThousand}}</td>
+                    </tr>
+
+                    <tr height="50">
+                        <td width="120" class="text-right"></td>
+                        <td width="209"></td>
+                        <td width="120" class="text-right"></td>
+                        <td width="209"></td>
+                        <td width="120" class="text-right">銀頭對比：</td>
+                        <td width="209">0<span data-ng-show="amount_compare()">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table><br/><br/>
+
+                <!--<table ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼A：</td>
+                        <td width="209">{{shift_record.shift_depositspecialcode_a|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃餘現金：</td>
+                        <td width="209">{{shift_record.depositbox_depositcash|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃總數：</td>
+                        <td width="209">{{shift_record.depositbox_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼B：</td>
+                        <td width="209">{{shift_record.shift_depositspecialcode_b|parseTenThousand}}</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼A：</td>
+                        <td width="209">{{shift_record.depositbox_cashcode_a|parseTenThousand}}</td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼A：</td>
+                        <td width="209">{{shift_record.shift_depositcashcode_a|parseTenThousand}}</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼B：</td>
+                        <td width="209">{{shift_record.depositbox_cashcode_b|parseTenThousand}}</td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼B：</td>
+                        <td width="209">{{shift_record.shift_depositcashcode_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">轉碼對比：</td>
+                        <td width="209">0<span data-ng-show="rolling_compare()">&nbsp;&nbsp;萬</span></td>
+                        <td width="120" class="text-right">銀頭對比：</td>
+                        <td width="209">0<span data-ng-show="amount_compare()">&nbsp;&nbsp;萬</span></td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;</td>
+                    </tr>
+                </table><br/><br/>-->
+
+                <table ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼：</td>
+                        <td width="209">{{shift_record.shift_depositspecialcode|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃餘現金：</td>
+                        <td width="209">{{shift_record.depositbox_depositcash|parseTenThousand}}</td>
+                        <td width="160" class="text-right">存碼櫃總數：</td>
+                        <td width="209">{{shift_record.depositbox_total|parseTenThousand}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼：</td>
+                        <td width="209">{{shift_record.shift_depositcashcode|parseTenThousand}}</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼：</td>
+                        <td width="209">{{shift_record.depositbox_cashcode|parseTenThousand}}</td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">轉碼對比：</td>
+                        <td width="209">0<span data-ng-show="rolling_compare()">&nbsp;&nbsp;萬</span></td>
+                        <td width="120" class="text-right">銀頭對比：</td>
+                        <td width="209">0<span data-ng-show="amount_compare()">&nbsp;&nbsp;萬</span></td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;</td>
+                    </tr>
+                </table><br/><br/>
+
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm" data-ng-click="return()">返回</button>
+                    <button class="btn btn-information" report-params="excel_condition" channel-type="ShiftRecordDetail" report-btn>導出EXCEL</button>
+                    <button class="btn btn-information" data-ng-click="print()" data-ng-disabled="disable_print">列印</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

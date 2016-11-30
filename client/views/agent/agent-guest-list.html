@@ -1,0 +1,109 @@
+<div class="page page-grid" data-ng-controller="agentGuestListCtrl">
+<div class="panel panel-default">
+<div class="panel_l col-md-8">
+<div class="panel panel-form-list">
+    <div class="panel-heading"><strong>客人查詢</strong></div>
+    <div class="panel-content">
+        <form name="form_search">
+            <table>
+                <tr height="50">
+                    <td width="120" class="text-right">戶口編號：</td>
+                    <td width="209"><input type="text" data-input-uppercase data-ng-model="condition.agentInfo.agent_code" class="form-control"></td>
+                    <td width="120" class="text-right">戶口姓名：：</td>
+                    <td width="209"><input type="text" data-ng-model="condition.agent_guest_name" class="form-control"></td>
+                    <td width="120">&nbsp;</td>
+                    <td width="209">&nbsp;</td>
+                </tr>
+            </table><br/><br/>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-info btn-information margin-right-5" ng-click="search()">查詢</button>
+                <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-list-detail">
+<div class="panel-heading">
+    <!--button class="btn btn-info btn-information btn-table pull-right" ng-click="isReadonly = ! isReadonly">導出EXCEL</button-->
+    <button class="btn btn-confirm btn-table pull-right" data-ng-click="addGuest()" check-permissions="agentGuestCreate">新增客人</button>
+</div>
+<div class="panel-content table-dynamic">
+<table class="table  table-bordered table-striped table-hover">
+<thead>
+<tr>
+    <td width="105" data-min-screen-width="85" data-td-sort data-td-sort-up="agentInfo.agent_code NUMASC" data-td-sort-down="agentInfo.agent_code NUMDESC" data-td-sort-select="select" data-td-sort-pagination="pagination">
+        戶口編號
+    </td>
+    <td data-min-screen-width="80">姓名</td>
+    <td data-min-screen-width="40">性別</td>
+    <td data-min-screen-width="40">國籍</td>
+    <td data-min-screen-width="40">語言</td>
+    <td data-min-screen-width="100">聯絡電話</td>
+    <td data-min-screen-width="100">證件類型</td>
+    <td data-min-screen-width="100">證件號碼</td>
+    <td data-min-screen-width="200" check-permissions="agentGuestView,agentGuestUpdate,agentGuestDelete">操作</td>
+</tr>
+</thead>
+<tbody>
+<tr data-ng-repeat="agentGuest in agentGuests" data-selected-rows>
+    <td>{{agentGuest.agent_code}}</td>
+    <td>{{agentGuest.agent_guest_name}}</td>
+    <td>{{agentGuest.gender|gender}}</td>
+    <td>{{agentGuest.nationality_name}}</td>
+    <td>{{agentGuest.language_type}}</td>
+    <td>
+        {{agentGuest.guestTels[0].area_code}}&nbsp;&nbsp;{{agentGuest.guestTels[0].telephone_number}}
+        <span data-ng-show="agentGuest.guestTels.length > 0">
+            <i popover-placement="top" tooltip-html-unsafe="{{agentGuest.guestTels | contactPhone}}" class="fa fa-plus-circle cursor-pointer"></i>
+        </span>
+    </td>
+    <td>{{agentGuest.idCards[0].idcard_type_name}}&nbsp;<span data-ng-show="agentGuest.idCards[0].idcard_name && agentGuest.idCards[1].idcard_name">/</span>&nbsp;{{agentGuest.idCards[1].idcard_type_name}}</td>
+    <td>{{agentGuest.idCards[0].idcard_number}}&nbsp;<span data-ng-show="agentGuest.idCards[0].idcard_number && agentGuest.idCards[1].idcard_number">/</span>&nbsp;{{agentGuest.idCards[1].idcard_number}}</td>
+    <td class="no-padding" check-permissions="agentGuestView,agentGuestUpdate,agentGuestDelete">
+        <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="detailAgentGuest(agentGuest.id)" check-permissions="agentGuestView">詳細</button>
+        <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="update(agentGuest.id)" check-permissions="agentGuestUpdate">修改</button>
+        <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="remove(agentGuest.id)" check-permissions="agentGuestDelete">刪除</button>
+        <button class="btn btn-info btn-confirm btn-table" data-ng-click="show_certificate(agentGuest.id)">顯示證件</button>
+    </td>
+</tr>
+<tr data-ng-show="!agentGuests.length">
+    <td colspan="10">暫無符合條件的記錄</td>
+</tr>
+</tbody>
+</table>
+    <footer class="table-footer">
+        <div class="text-right pagination-container">
+            <pagination class="pagination-sm"
+                        page="pagination.page"
+                        total-items="pagination.total_items"
+                        on-select-page="select(page)"
+                        max-size = "pagination.max_size"
+                        items-per-page = "pagination.items_per_page"
+                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+            <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+        </div>
+    </footer>
+</div>
+</div>
+</div>
+<div class="panel_r col-md-4">
+    <div class="panel panel-list-detail">
+        <div class="panel-heading">
+            <strong>查看證件</strong>
+        </div>
+        <div class="panel-content">
+            <div class="passport">
+                <div data-ng-repeat="c_image in certificate_images" style="width: 516px" data-min-screen-width="390">
+                    <a class="btn btn-confirm btn-table pull-right" style="margin: 5px 0;" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(c_image.image);">列印</a>
+                    <span class="passport_bg" >
+                        <span class="passed" data-ng-show="c_image.image && guest_image.idCards[$index].expired_date && guest_image.idCards[$index].expired_date < now_data"><img src="images/sign.png"></span>
+                        <img data-ng-show="c_image.image"  ng-src="{{c_image.image}}"/>
+                        <span data-ng-show="c_image.image == ''" style="line-height: 280px">證件照片</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

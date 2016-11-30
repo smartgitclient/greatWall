@@ -1,0 +1,604 @@
+<div class="page page-services ng-scope" data-ng-controller="loanRecoveryCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>貸款查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="120" class="text-right">戶口編號：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="120" class="text-right">中文名：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                        <td width="120" class="text-right">廳館：</td>
+                        <td width="140">
+                            <ui-select ng-model="commission.suit_halls"  ng-change="select_copy($index)">
+                                <ui-select-match placeholder="{{halls[$index]}}">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="hall in ['永利鉅星','MGM鉅星','新葡京鉅星','太陽城多金1','太陽城多金2','太陽城多金3']">
+                                    <div ng-bind-html="hall"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="100"><span class="span-formlist">貸款日期</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.created_min" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.created_max"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="120" class="text-right">貸款單號：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.loan_number" class="form-control"></td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <div class="panel-heading">
+            <button class="btn btn-info btn-confirm pull-right" ng-click="sendSMS()">發送SMS</button>
+        </div>
+        <div class="panel-content">
+        <tabset class="ui-tab">
+        <tab heading="已過期貸款">
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款時間</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>中文名</td>
+                        <td>貸款單編號</td>
+                        <td>貸款金額</td>
+                        <td>貸款類型</td>
+                        <td>尚欠金額</td>
+                        <td>期限</td>
+                        <td>過期天數</td>
+                        <td>過期手續費</td>
+                        <td>發送追收（次）</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2014-08-01</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140801001</td>
+                        <td>100</td>
+                        <td>M</td>
+                        <td>100</td>
+                        <td>15</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-01</td>
+                        <td>永利鉅星</td>
+                        <td>FA236</td>
+                        <td>李小明</td>
+                        <td>M20140801002</td>
+                        <td>200</td>
+                        <td>M</td>
+                        <td>200</td>
+                        <td>15</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-04</td>
+                        <td>永利鉅星</td>
+                        <td>FA237</td>
+                        <td>陈小明</td>
+                        <td>M20140801003</td>
+                        <td>800</td>
+                        <td>M</td>
+                        <td>800</td>
+                        <td>15</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-02</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140801004</td>
+                        <td>600</td>
+                        <td>U</td>
+                        <td>600</td>
+                        <td>15</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="all_contacters.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_contacters.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="contacters.length != 0">
+                            </pagination>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </tab>
+        <tab heading="2014-08-20">
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款時間</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>中文名</td>
+                        <td>貸款單編號</td>
+                        <td>貸款金額</td>
+                        <td>貸款類型</td>
+                        <td>尚欠金額</td>
+                        <td>期限</td>
+                        <td>過期天數</td>
+                        <td>過期手續費</td>
+                        <td>發送追收（次）</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2014-08-05</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140806001</td>
+                        <td>100</td>
+                        <td>M</td>
+                        <td>100</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-05</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA236</td>
+                        <td>陈小明</td>
+                        <td>M20140806002</td>
+                        <td>200</td>
+                        <td>M</td>
+                        <td>200</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-05</td>
+                        <td>永利鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806003</td>
+                        <td>500</td>
+                        <td>M</td>
+                        <td>500</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-05</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806004</td>
+                        <td>600</td>
+                        <td>U</td>
+                        <td>600</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="all_contacters.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_contacters.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="contacters.length != 0"></pagination>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </tab>
+        <tab heading="2014-08-21">
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款時間</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>中文名</td>
+                        <td>貸款單編號</td>
+                        <td>貸款金額</td>
+                        <td>貸款類型</td>
+                        <td>尚欠金額</td>
+                        <td>期限</td>
+                        <td>過期天數</td>
+                        <td>過期手續費</td>
+                        <td>發送追收（次）</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2014-08-06</td>
+                        <td>永利鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806001</td>
+                        <td>100</td>
+                        <td>M</td>
+                        <td>100</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-06</td>
+                        <td>永利鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806002</td>
+                        <td>200</td>
+                        <td>M</td>
+                        <td>200</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-06</td>
+                        <td>永利鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806003</td>
+                        <td>500</td>
+                        <td>M</td>
+                        <td>500</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-06</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA257</td>
+                        <td>陈小明</td>
+                        <td>M20140806004</td>
+                        <td>600</td>
+                        <td>U</td>
+                        <td>600</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="all_contacters.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_contacters.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="contacters.length != 0"></pagination>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </tab>
+        <tab heading="2014-08-22">
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款時間</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>中文名</td>
+                        <td>貸款單編號</td>
+                        <td>貸款金額</td>
+                        <td>貸款類型</td>
+                        <td>尚欠金額</td>
+                        <td>期限</td>
+                        <td>過期天數</td>
+                        <td>過期手續費</td>
+                        <td>發送追收（次）</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2014-08-07</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140807001</td>
+                        <td>100</td>
+                        <td>M</td>
+                        <td>100</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-07</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140807002</td>
+                        <td>200</td>
+                        <td>M</td>
+                        <td>200</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-07</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140807003</td>
+                        <td>500</td>
+                        <td>M</td>
+                        <td>500</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-07</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140807004</td>
+                        <td>600</td>
+                        <td>U</td>
+                        <td>600</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="all_contacters.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_contacters.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="contacters.length != 0"></pagination>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </tab>
+        <tab heading="2014-08-23">
+            <div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款時間</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>中文名</td>
+                        <td>貸款單編號</td>
+                        <td>貸款金額</td>
+                        <td>貸款類型</td>
+                        <td>尚欠金額</td>
+                        <td>期限</td>
+                        <td>過期天數</td>
+                        <td>過期手續費</td>
+                        <td>發送追收（次）</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2014-08-08</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140808001</td>
+                        <td>100</td>
+                        <td>M</td>
+                        <td>100</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-08</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140808002</td>
+                        <td>200</td>
+                        <td>M</td>
+                        <td>200</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-08</td>
+                        <td>永利鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140808003</td>
+                        <td>500</td>
+                        <td>M</td>
+                        <td>500</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2014-08-08</td>
+                        <td>新葡京鉅星</td>
+                        <td>FA233</td>
+                        <td>陳達文</td>
+                        <td>M20140808004</td>
+                        <td>600</td>
+                        <td>U</td>
+                        <td>600</td>
+                        <td>15</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="no-padding">
+                            <button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)">詳細</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="all_contacters.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_contacters.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="contacters.length != 0"></pagination>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </tab>
+        </tabset>
+        </div>
+    </div>
+</div>

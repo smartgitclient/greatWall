@@ -1,0 +1,71 @@
+<div class="page page-services pop-dotal">
+  <div class="panel panel-form-list">
+    <div class="panel-heading" >戶口資料</div>
+    <div class="panel-content" >
+      <div class="row text-center">
+        <table class="table table-bordered table-striped table-detail-01">
+          <thead>
+          <tr>
+            <td width="142" align="center">來電號碼</td>
+            <td>{{ phone_number.area_code }}-{{ phone_number.telephone_number }}</td>
+            <td >語言:</td>
+            <td>{{language}}</td>
+          </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="row text-center">
+        <table class="table table-bordered table-hover table-click table-striped table-detail-01">
+          <thead>
+          <tr>
+            <td width="100" colspan=4><input type="text" data-input-uppercase class="form-control"  ng-model="keyword.code" placeholder="請輸入戶口編號" sv-enter-key="searchinput()"></td>
+            <td width="100"> <button class="btn  btn-information" data-ng-click="searchinput()" type="button"  >速查</button></td>
+            <td style="color:red">{{keyword.warning}}</td>
+          </tr>
+          <tr>
+            <td width="100">戶口編號</td>
+            <td width="100">戶口類型</td>
+            <td width="100">語言</td>
+            <td width="100">姓名</td>
+            <td width="100">出生日期</td>
+            <td width="100"></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-click="agent_detail(agent)" ng-repeat="agent in agent_lists">
+            <td>{{agent.agent_code }}</td>
+            <td>{{agent.contact_type}}</td>
+            <td>{{agent.language_type_name}}</td>
+            <td>{{agent.agent_contact_name }}</td>
+            <td>{{agent.birthdate | limitTo:11 }}</td>
+            <td>
+              <button class="btn  btn-information" data-ng-click="searchAgent(agent.agent_code,agent.ref_agent_contact_type_id,agent.contact_type,agent.language_type_name,agent)" type="button">速查</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+<!--        <div class="text-right pagination-container">
+          <pagination class="pagination-sm"
+                      page="page.page"
+                      total-items="page.total_items"
+                      on-select-page="search(page)"
+                      max-size = "page.max_size"
+                      items-per-page = "page.items_per_page"
+                      data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+          &lt;!&ndash;<paginationselect pageCtrl="page" select-page="search"></paginationselect>&ndash;&gt;
+        </div>-->
+      </div>
+    </div>
+<!--    <div class="panel-content" ng-show="false === agent_lists">
+      <div class="row text-center">
+        <p style="height: 130px; line-height:130px;" class="text-center">
+          沒有找到來電戶口
+        </p>
+        <p class="text-center">
+          <button type="button" class="btn btn-cancel" ng-click="cancel()">關閉</button>
+        </p>
+      </div>
+    </div>-->
+
+  </div>
+</div>

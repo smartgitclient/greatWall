@@ -1,0 +1,107 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px">
+        <strong>轉碼流水</strong>
+        <span style="position: relative;float: right;top: 8px;font-size: 18px;">集團本月合計:{{up_total}}</span>
+    </h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>廳館</td>
+                    <td>戶口編號</td>
+                    <td>轉碼卡</td>
+                    <td>轉碼數</td>
+                    <td width="80">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rolling in rollings_detail track by $index" data-selected-rows><!--data-ng-show="deposit_card.usable_amount != 0" -->
+                    <td>{{rolling.hall_name}}</td>
+                    <td>{{rolling.agent_code}}</td>
+                    <td>{{rolling.card_name}}</td>
+                    <td>{{rolling.rollingCard_amount|parseTenThousand2}}</td>
+                    <td><button class="btn btn-information btn-table" data-ng-click="show_Detail(rolling)">詳細</button></td>
+                </tr>
+                <tr data-ng-show="rollingGroups.length == 0">
+                    <td colspan="5">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<footer class="table-footer">-->
+                <!--<div class="text-right pagination-container">-->
+                    <!--<pagination class="pagination-sm"-->
+                                <!--page="pagination.page"-->
+                                <!--total-items="pagination.total_items"-->
+                                <!--on-select-page="pagination(page)"-->
+                                <!--max-size = "pagination.max_size"-->
+                                <!--items-per-page = "pagination.items_per_page"-->
+                                <!--data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>-->
+                    <!--<paginationselect pageCtrl="pagination_rolling_group" select-page="select_rolling_group"></paginationselect>-->
+                <!--</div>-->
+            <!--</footer>-->
+        </div>
+        <div class="col-md-8">
+            <!--<perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >-->
+            <!--<div class="panel-content consumption_record"  style="min-height: 100px; width: 900px;">-->
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td width="120">廳館</td>
+                    <!--<td>轉碼卡</td>-->
+                    <td width="80">轉碼金額</td>
+                    <!--<td width="100">本月合計</td>-->
+                    <!--<td>轉碼類型</td>-->
+                    <td>備註</td>
+                    <td width="100">日期</td>
+                    <td width="80">更數</td>
+                    <td width="140">轉碼時間</td>
+                    <td width="80">經手人</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="deposit_card_record in rollings track by $index" data-selected-rows>
+                    <td>{{hall_name}}</td>
+                    <!--<td>{{rolling.agent_code}}</td>-->
+                    <!--<td>{{rolling.agent_name}}</td>-->
+                    <!--<td>{{rolling.card_name}}</td>-->
+                    <!--<td>{{rolling.rolling_record_no}}</td>-->
+                    <td>{{deposit_card_record.rolling|parseTenThousand2}}</td>
+                    <!--<td>{{rolling.thismonth_rolling|parseTenThousand2}}</td>-->
+                    <!--<td class="text-left">{{rollingType.items[deposit_card_record.type]}}</td>-->
+                    <td class="text-left">{{deposit_card_record.remark}}</td>
+                    <td>{{deposit_card_record.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                    <td>{{deposit_card_record.shift}}</td>
+                    <td>{{deposit_card_record.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{deposit_card_record.user_name}}</td>
+
+                </tr>
+                <tr data-ng-hide="rollings.length>0">
+                    <td colspan="9">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+                <!--</div>-->
+            <!--</perfect-scrollbar>-->
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination_rolling.page"
+                                total-items="pagination_rolling.total_items"
+                                on-select-page="select_rolling(page)"
+                                max-size = "pagination_rolling.max_size"
+                                items-per-page = "pagination_rolling.items_per_page"
+                                data-ng-hide="pagination_rolling.total_items <= pagination_rolling.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination_rolling" select-page="select_rolling"></paginationselect>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;"><br/>
+        <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+        <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+    </div>
+
+</div>

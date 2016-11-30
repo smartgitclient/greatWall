@@ -1,0 +1,265 @@
+<div class="page page-grid" data-ng-controller="agentContactCreateCtrl">
+<div class="panel panel-default">
+<div class="panel_l col-md-8">
+<div class="panel">
+ <form name="form_contact" class="ng-valid ng-dirty form-validation" server-validation="{{sub_method}}{{contact_url}}">
+    <div class="panel-content">
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">聯絡人資料</strong>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                <tr>
+                    <!--data-input-uppercase="contact.agent_contact_name"  data-ng-hide="contact_data.length>0"-->
+                    <td class="text-right"><strong style="color:red">*</strong>姓名：</td>
+                    <td width="175" class="text-left">
+                        <input class="form-control input-01 ng-pristine ng-valid"
+                                           name="agent_contact_name"
+                                           type="text"
+                                           style="width:95px;"
+                                           data-min-screen-width="125"
+                                           data-ng-show="isCtrlShow"
+                                           data-ng-required="enableClientValidation"
+                                           ng-model="contact.agent_contact_name" >
+
+                        <select data-ng-model="contact_filter.contact_id"
+                                data-ng-change="redirectUpdate()"
+                                data-ng-required="enableClientValidation"
+                                class="form-control pull-left"
+                                style="width:95px;"
+                                data-ng-hide="isCtrlShow"
+                                name="contact_id">
+                            <option value = "">請選擇聯絡人</option>
+                            <option data-ng-repeat="_contact_data in contact_data"
+                                    ng-selected="_contact_data.id==contact.id"
+                                    value = "{{_contact_data.id}}">{{_contact_data.agent_contact_name}} - {{_contact_data.birthdate | parseDate:'yyyy-MM-dd'}}</option>
+                        </select>
+                        <button  data-ng-show="isCtrlShow  && isEdit" class="btn btn-information btn-table pull-right" data-ng-click="searchContacts()">查詢</button>
+                        <button  data-ng-hide="isCtrlShow" class="btn btn-information btn-table pull-right" data-ng-click="writeContacts()">輸入</button>
+                    </td>
+                    <td class="text-right">國籍：</td>
+                    <td width="200">
+                        <select data-ng-model="contact.nationality_id"  data-ng-required="enableClientValidation" class="form-control" name="nationality_id" ng-options="h.id as h.nationality_name for h in nationalitys">
+                            <option value = "">請選擇國籍</option>
+                        </select>
+                    </td>
+                    <td class="text-right">語言：</td>
+                    <td width="168">
+                        <select data-ng-model="contact.language_type_id" data-ng-required="enableClientValidation" name="language_type_id" class="form-control" ng-options="h.id as h.language_type_name for h in languagetypes">
+                            <option value = "">請選擇語言</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">出生日期：</td>
+                    <td>
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control" data-ng-required="enableClientValidation" name="birthdate" datepicker-popup ng-model="contact.birthdate"/>
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        </p>
+                    </td>
+                    <td class="text-right">性別：</td>
+                    <td>
+                        <select data-ng-model="contact.gender" data-ng-required="enableClientValidation" name="gender" class="form-control">
+                            <option value="1">男</option>
+                            <option value="0">女</option>
+                        </select>
+                    </td>
+                    <td class="text-right">職業：</td>
+                    <td><input data-ng-required="enableClientValidation" name = "occupation" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="contact.occupation"></td>
+                </tr>
+                <tr>
+                    <td class="text-right">證件類型：</td>
+                    <td>
+                        <select data-ng-model="contactsIdCards.idcard_type_id[0]"
+                                data-ng-required="enableClientValidation"
+                                name="agentContactIdcards_0_idcard_type_id"
+                                class="form-control"
+                                ng-options="h.id as h.idcard_type_name for h in idcardtypes">
+                            <option value = "">請選擇類型</option>
+                        </select>
+                    </td>
+                    <td class="text-right">證件號碼：</td>
+                    <td><input data-ng-model="contactsIdCards.idcard_number[0]"  data-ng-required="enableClientValidation" name="agentContactIdcards_0_idcard_number" class="form-control input-01 ng-pristine ng-valid"type="text"></td>
+                    <td>證件有效期：</td>
+                    <td>
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control" data-ng-required="enableClientValidation" name="agentContactIdcards_0_expire_date" datepicker-popup ng-model="contactsIdCards.expire_date[0]"/>
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        </p>
+                        <!--<input data-ng-model="contactsIdCards.image_path[1]" data-ng-show="false" data-ng-required="enableClientValidation" name="image_path[0]" class="form-control input-01 ng-pristine ng-valid"type="text">-->
+                        <!--<button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">證件類型：</td>
+                    <td>
+                        <select data-ng-model="contactsIdCards.idcard_type_id[1]"  data-ng-required="enableClientValidation" name="agentContactIdcards_1_idcard_type_id" class="form-control" ng-options="h.id as h.idcard_type_name for h in idcardtypes">
+                            <option value = "">請選擇類型</option>
+                        </select>
+                    </td>
+                    <td class="text-right">證件號碼：</td>
+                    <td><input data-ng-model="contactsIdCards.idcard_number[1]"  data-ng-required="enableClientValidation" name="agentContactIdcards_1_idcard_number" class="form-control input-01 ng-pristine ng-valid" type="text"></td>
+                    <!--<td class="text-right">證件操作：</td>-->
+                    <td>證件有效期：</td>
+                    <td>
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control"
+                                   data-ng-required="enableClientValidation"
+                                   name="agentContactIdcards_0_expire_date"
+                                   datepicker-popup ng-model="contactsIdCards.expire_date[1]"/>
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        </p>
+                        <!--<input data-ng-model="contactsIdCards.image_path[1]" data-ng-show="false" data-ng-required="enableClientValidation" name="image_path[0]" class="form-control input-01 ng-pristine ng-valid"type="text">-->
+                        <!--<button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>-->
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">聯絡地址：</td>
+                    <td colspan="3"><input name="address" class="form-control input-0" type="text" ng-model="contact.address" /></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+
+            </table>
+            </div>
+        </div>
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">聯絡資料</strong>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>地區</td>
+                        <td width="183">號碼</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="c in contactsTels track by $index">
+                        <td width="200" class="text-center">
+                            <select data-ng-model="contactsTels[$index].area_code_id"
+                                    data-dynamic-name="agentContactTels_{{$index}}_area_code_id"
+                                    class="form-control"
+                                    ng-options="h.id as h.area_code for h in areacodes">
+                                <option value = "">請選擇地區</option>
+                            </select>
+                        </td>
+                        <td><input ng-model="contactsTels[$index].telephone_number" data-dynamic-name="agentContactTels_{{$index}}_telephone_number" class="form-control input-01 ng-pristine ng-valid input-180"  type="text"></td>
+                        <td width="150">
+                            <button  ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addContactsTels($index)">增加</button>
+                            <button ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeContactsTels($index)">刪除</button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">綁定戶口</strong>
+                <button style="float:right" class="btn btn-info btn-information btn-table panel_r" ng-click="addBindingAgent()">新增綁定</button>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td><strong style="color:red">*</strong>戶口編號</td>
+                        <td><strong style="color:red">*</strong>聯絡人類型</td>
+                        <td width="171">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="bindAgent in bindAgents">
+                        <td>{{bindAgent.agent_code}}</td>
+                        <td>{{bindAgent.contact_type_name}}</td>
+                        <td width="150">
+                            <button class="btn btn-info btn-information btn-table" ng-click="updateBindingAgent($index)">編輯</button>
+                            <button class="btn btn-info btn-information btn-table" ng-click="removeBindingAgent($index)" data-ng-hide="bindAgent.contact_type == '2' && contact.id">刪除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"  data-ng-show="bindAgents.length == 0">暫無綁定戶口</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-list-detail col-md-4" style="padding-left: 0px;">
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>操作密碼：</td>
+                        <td>
+                        <input class="form-control input-01 ng-pristine ng-valid" name="pin_code" type="password" ng-model="contact.pin_code"  data-enter-key="submit()">
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+ </form>
+</div><br/><br/><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="submit()" data-ng-disabled="disabled">保存</button>
+        <!--<button class="btn btn-confirm margin-right-15" data-ng-hide="contact.id=='' || contact.id==null" data-ng-click="edit()" >修改</button>-->
+        <button class="btn btn-cancel" data-ng-click="reset()" >重置</button>
+    </div>
+</div>
+
+<div class="col-md-4">
+<div class="panel_r">
+    <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+        <div class="panel-heading">
+            <strong>證件</strong>
+            <!--<button class="btn btn-info btn-confirm btn-table pull-right" ng-click="isReadonly = ! isReadonly">保存</button>-->
+            <button class="btn btn-info btn-confirm btn-table pull-right" ng-file-select="onFileSelect($files,0)" data-ng-show="card_img[0] == null">上傳</button>
+            <button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="deleteFile(0)" data-ng-hide="card_img[0] == null">删除</button>
+        </div>
+        <div class="panel-content">
+            <div class="passport">
+                        <span class="passport_bg">
+                         <span class="passed" data-ng-show="card_img[0] && contact.agentContactIdcards[0].expire_date && contact.agentContactIdcards[0].expire_date<now_data"><img src="images/sign.png"></span>
+                         <!--<span class="passed" data-ng-show="card_img[0] && contact.agentContactIdcards[0].expire_date"><img src="images/sign.png"></span>-->
+                         <img data-ng-hide="card_img[0] == null" ng-src="{{card_img[0]}}">
+                         <span data-ng-show="card_img[0] == null" style="line-height: 280px">暂无證件照片</span>
+                        </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel_r">
+    <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+        <div class="panel-heading">
+            <strong class="pull-left">證件</strong>
+            <button class="btn btn-info btn-confirm btn-table pull-right" ng-file-select="onFileSelect($files,1)" data-ng-show="card_img[1] == null">上傳</button>
+            <button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="deleteFile(1)" data-ng-hide="card_img[1] == null">删除</button>
+        </div>
+        <div class="panel-content">
+            <div class="passport">
+                <span class="passport_bg">
+                    <span class="passed" data-ng-show="card_img[1] && contact.agentContactIdcards[1].expire_date && contact.agentContactIdcards[1].expire_date < now_data"><img src="images/sign.png"></span>
+                    <img data-ng-hide="card_img[1] == null" ng-src="{{card_img[1]}}">
+                    <span data-ng-show="card_img[1] == null" style="line-height: 280px">暂无證件照片</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>

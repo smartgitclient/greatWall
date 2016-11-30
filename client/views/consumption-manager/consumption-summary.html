@@ -1,0 +1,123 @@
+<div class="page page-services ng-scope" data-ng-controller="consumptionSummaryCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-content">
+            <form name="form_search" >
+                <table>
+                    <tr height="50">
+                        <td width="126" class="text-right">所屬廳館：</td>
+                        <td width="160">
+                            <select data-ng-show="user.isAllHall()" name="hall_id" class="form-control" data-ng-model="condition.hall_id"
+                                    data-ng-options="n.id as n.hall_name for n in halls ">
+                                <option value="">請選擇廳館</option>
+                            </select>
+                            <span  data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</span>
+                        </td>
+                        <td class="text-right">年月：</td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                            </p>
+                        </td>
+                        <td width="126" class="text-right">結算日期：</td>
+                        <td width="400" colspan="3">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shift_date[0]" is-open="" atepicker-options="dateOptions"  close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                        </p>
+                                    </td>
+                                    <td width="20" align="center">~&nbsp;&nbsp;&nbsp;</td>
+                                    <td>
+                                        <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shift_date[1]" is-open="" atepicker-options="dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="126" class="text-right">線頭：</td>
+                        <td>
+                            <input data-input-uppercase type="text" data-ng-model="condition.agent_code" name="header" class="form-control">
+                        </td>
+                    </tr>
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn  btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="select()">查詢</button>
+                    <button class="btn  btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <!--button class="btn btn-inf btn-confirm pull-right">導出EXCEL</button-->
+            <button class="btn  btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="ConsumptionSummary" report-btn>導出EXCEL</button>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>廳館</td>
+                    <td>戶口編號</td>
+                    <td>戶口姓名</td>
+                    <td data-ng-repeat="consumptionType in consumptionTypes">{{consumptionType.consumption_type}}合計</td>
+                    <td>消費總額</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="consumptionSummary in consumptionSummarys" data-selected-rows>
+                        <td>{{consumptionSummary.hall_name}}</td>
+                        <td>{{consumptionSummary.agent_code}}</td>
+                        <td>{{consumptionSummary.agent_contact_name}}</td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'FLIGHT')"><span class="a-hover">{{consumptionSummary.type0|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'HELICOPTER')"><span class="a-hover">{{consumptionSummary.type1|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'CAR')"><span class="a-hover">{{consumptionSummary.type2|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'BOAT')"><span class="a-hover">{{consumptionSummary.type3|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'HOTEL')"><span class="a-hover">{{consumptionSummary.type4|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'TICKET')"><span class="a-hover">{{consumptionSummary.type5|parseDollar:true}}</span></td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'MISCELLANEOUS')"><span class="a-hover">{{consumptionSummary.type6|parseDollar:true}}</td>
+                        <td class="cursor-pointer" data-ng-click="consumptionRecord(consumptionSummary.agent_info_id,'FOODCOUPON')"><span class="a-hover">{{consumptionSummary.type7|parseDollar:true}}</span></td>
+                        <td >{{consumptionSummary.should_pay|parseDollar:true}}</td>
+                    </tr>
+                    <tr ng-show="consumptionSummarys.length">
+                        <td colspan="3">匯總</td>
+                        <td>{{consumptionKindSum.type0|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type1|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type2|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type3|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type4|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type5|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type6|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.type7|parseDollar:true}}</td>
+                        <td>{{consumptionKindSum.allshould_pay|parseDollar:true}}</td>
+                    </tr>
+                    <tr ng-show="!consumptionSummarys.length">
+                        <td colspan="12">暫無符合條件的記錄</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

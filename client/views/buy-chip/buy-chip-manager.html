@@ -1,0 +1,214 @@
+<div class="page page-grid" data-ng-controller="buyChipManagerCtrl" xmlns="http://www.w3.org/1999/html">
+    <div class="panel panel-default">
+        <div class="col-md-4" data-ng-show="user.checkPermissions('buyChipCreate')">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>新增買碼</strong>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_buychips_create" class="ng-valid ng-dirty form-validation" server-validation="POST{{buychips_url}}">
+                            <table>
+                                <tr height="50">
+                                    <td class="text-right" data-min-screen-width="80">廳館：</td>
+                                    <td data-min-screen-width="100">{{user.hall.hall_name}}</td>
+                                    <td data-min-screen-width="80" class="text-right">日   期：</td>
+                                    <td data-min-screen-width="80">
+                                        <div class="form-inline input-group ui-datepicker">
+                                            <div class="form-group">{{shift_mark.shift_date|parseDate:'yyyy-MM-dd'}}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td data-min-screen-width="80" class="text-right">買碼單號：</td>
+                                    <td>
+                                        <input data-ng-required="enableClientValidation" name="buy_chips_no" type="text" data-ng-model="buychip.buy_chips_no" class="form-control">
+                                    </td>
+                                    <td class="text-right">買碼金額：</td><!--data-ng-pattern="/^[0-9]{1,9}$/"-->
+                                    <td data-min-screen-width="100">
+                                        <input  data-ng-required="enableClientValidation" name = "amount" data-ng-model="buychip.amount" type="text" class="form-control input-01 width-83" data-min-screen-width="80">&nbsp;萬
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td  class="text-right" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">籌碼：</td> <!--  || user.hall.id == '27115D48C5F726D6E050A8C098150716'"-->
+                                    <td ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                        <select data-ng-required="enableClientValidation" name="chips_type"
+                                            data-ng-model="buychip.chips_type"
+                                                data-ng-options="t.id as t.name for t in chips_types.data"
+                                                class="form-control">
+                                        </select>
+                                    </td>
+                                    <!--<td ng-show="user.hall.id != '27115D48C5F726D6E050A8C098150716' && user.hall.id != '1AE7283167B57D1DE050A8C098155859'">A籌碼</td>-->
+                                    <!--<td ng-show="user.hall.id == '27115D48C5F726D6E050A8C098150716'">B籌碼</td>-->
+                                    <td class="text-right">更數：</td>
+                                    <td>{{shift_mark.shift}}</td>
+                                </tr>
+                                <tr height="50">
+                                    <td valign="top" class="text-right">備註：</td>
+                                    <td colspan="3"><textarea name="remark" id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="buychip.remark" name=""></textarea></td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td><input name="pin_code" type="password" data-ng-model="buychip.pin_code" class="form-control" data-enter-key="add()"></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table><br/><br/>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="add()"  data-ng-disabled="disabled_submit" >買碼</button>
+                                <button class="btn btn-cancel" ng-click="reset_buychips()">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>買碼記錄</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td class="text-right" width="145" data-min-screen-width="135" >廳館：</td>
+                                        <td width="180" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="140" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="120" data-min-screen-width="135" class="text-right">買碼單號：</td>
+                                        <td width="180" data-min-screen-width="150"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+										 <td width="120" class="text-right">年   月：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.shiftMark.year_month[0]" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr  height="50">
+                                       
+                                        <td class="text-right">開始時間：</td>
+                                        <td width="180">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.shiftMark.shift_date[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+
+                                        <td width="120" class="text-right">結束時間：</td>
+                                        <td width="180">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.shiftMark.shift_date[1]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+										<td width="100" class="text-right" data-min-screen-width="120">更 數：</td>
+                                        <td width="180" data-min-screen-width="180">
+                                            <select data-ng-model="condition.shift" class="form-control" >
+                                                <option value="">請選擇更數</option>
+                                                <option value="早更">早更</option>
+                                                <option value="中更">中更</option>
+                                                <option value="晚更">晚更</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-right">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'" class="text-right">籌碼：</td>
+                                        <td ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                            <select data-ng-model="condition.chips_type"
+                                                    data-ng-options="t.id as t.name for t in chips_types.data"
+                                                    class="form-control" >
+                                                <option value="">請選擇籌碼</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="BuyChipManager" report-btn>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>所在廳</td>
+                                    <td>買碼單號</td>
+                                    <td ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">籌碼</td>
+                                    <td>買碼金額(萬)</td>
+                                    <td data-td-sort data-td-sort-up="buy_time ASC" data-td-sort-down="buy_time DESC" data-td-sort-select="select" data-td-sort-pagination="pagination">買碼時間</td>
+                                    <td>經手人</td>
+                                    <td>日期</td>
+                                    <td>更數</td>
+                                    <td width="200">備註</td>
+                                    <td width="100" check-permissions="buyChipDelete">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="buyChip in buyChips" data-selected-rows>
+                                    <td>{{buyChip.hall_name}}</td>
+                                    <td>{{buyChip.buy_chips_no}}</td>
+                                    <td ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">{{chips_types.items[buyChip.chips_type]}}</td>
+                                    <td>{{buyChip.amount|parseTenThousand2}}</td>
+                                    <td>{{buyChip.buy_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{buyChip.user_name}}</td>
+                                    <td>{{buyChip.shiftMark.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                                    <td>{{buyChip.shift}}</td>
+                                    <td  class="text-left">{{buyChip.remark}}</td>
+                                    <td check-permissions="buyChipDelete">
+                                        <button class="btn btn-information btn-table" data-ng-click="detele(buyChip.id)" data-ng-show="buyChip.allow_delete == '1' && $index == 0 && show_detele">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="buyChips.length == 0">
+                                    <td colspan="13">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="height:35px;padding:15px 0;text-align: right" data-ng-show="buyChips.length > 0">
+                                <strong>買碼總額：{{chipsTotal.buy_chips_total|parseTenThousand}}</strong>
+                            </div>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

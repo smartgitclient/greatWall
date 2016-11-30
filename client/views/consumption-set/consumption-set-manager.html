@@ -1,0 +1,43 @@
+<div class="page page-services ng-scope" data-ng-controller="consumptionSetManagerCtrls">
+
+<div class="panel">
+<div class="panel-content">
+<tabset class="ui-tab">
+    <tab heading="酒店" ui-sref="consumption-set-manager({type : 'hotel'})" active="tabs.hotel">
+        <div data-ng-include=" 'views/consumption-set/consumption-set-hotel.html' "></div>
+    </tab>
+    <tab heading="房型"  ui-sref="consumption-set-manager({type : 'room'})"  active="tabs.room">
+        <div data-ng-include=" 'views/consumption-set/consumption-set-room.html' "></div>
+    </tab>
+    <tab heading="食飛" ui-sref="consumption-set-manager({type : 'food'})"  active="tabs.food">
+        <div ng-if="type == 'food'" data-ng-include=" 'views/consumption-set/consumption-set-food-fly.html' "></div>
+    </tab>
+    <tab heading="直升機" ui-sref="consumption-set-manager({type : 'helicopter'})"  active="tabs.helicopter" >
+        <div ng-if="type == 'helicopter'"  ui-view="helicopter" >
+            <div data-ng-include=" 'views/consumption-set/consumption-set-helicopter-route.html' "></div>
+        </div>
+    </tab>
+    <tab heading="船票"  ui-sref="consumption-set-manager({type : 'ship'})" active="tabs.ship">
+        <div ng-if="type == 'ship'"  ui-view="ship" >
+            <div data-ng-include=" 'views/consumption-set/consumption-set-ship-ticket.html' "></div>
+        </div>
+    </tab>
+    <tab heading="機票" ui-sref="consumption-set-manager({type : 'air'})"  active="tabs.air">
+        <div ng-if="type == 'air'" data-ng-include=" 'views/consumption-set/consumption-set-air.html' "></div>
+    </tab>
+    <tab heading="租車"  ui-sref="consumption-set-manager({type : 'car'})"  active="tabs.car">
+        <div ng-if="type == 'car'" data-ng-include=" 'views/consumption-set/consumption-set-car.html' "></div>
+    </tab>
+    <tab heading="門票"  ui-sref="consumption-set-manager({type : 'ticket'})"  active="tabs.ticket">
+        <div ng-if="type == 'ticket'" data-ng-include=" 'views/consumption-set/consumption-set-admission-ticket.html' "></div>
+    </tab>
+    <!--tab heading="雜項"  ng-click="tabClick('other')"  active="tabs.other">
+        <div data-ng-include=" 'views/consumption-set/consumption-set-other.html' "></div>
+    </tab-->
+    <tab heading="酒店/旅行社設定" ui-sref="consumption-set-manager({type : 'travel'})"  active="tabs.travel">
+        <div ng-if="type == 'travel'" data-ng-include=" 'views/consumption-set/consumption-set-travel.html' "></div>
+    </tab>
+</tabset>
+</div>
+</div>
+</div>

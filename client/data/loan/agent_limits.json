@@ -1,0 +1,18 @@
+[
+    {"id":0,"agent_id":0,"marker_type":"M","limit":500,"credit_days":18,"rate":0.2},
+    {"id":1,"agent_id":0,"marker_type":"U","limit":800,"credit_days":16,"rate":0.2},
+    {"id":2,"agent_id":0,"marker_type":"V","limit":1000,"credit_days":15,"rate":0.2},
+    {"id":3,"agent_id":0,"marker_type":"UU","limit":1500,"credit_days":14,"rate":0.2},
+    {"id":5,"agent_id":1,"marker_type":"M","limit":500,"credit_days":18,"rate":0.2},
+    {"id":6,"agent_id":1,"marker_type":"U","limit":800,"credit_days":16,"rate":0.2},
+    {"id":7,"agent_id":1,"marker_type":"V","limit":1000,"credit_days":15,"rate":0.2},
+    {"id":8,"agent_id":1,"marker_type":"UU","limit":1500,"credit_days":14,"rate":0.2},
+    {"id":10,"agent_id":2,"marker_type":"M","limit":500,"credit_days":18,"rate":0.2},
+    {"id":11,"agent_id":2,"marker_type":"U","limit":800,"credit_days":16,"rate":0.2},
+    {"id":12,"agent_id":2,"marker_type":"V","limit":1000,"credit_days":15,"rate":0.2},
+    {"id":13,"agent_id":2,"marker_type":"UU","limit":1500,"credit_days":14,"rate":0.2},
+    {"id":15,"agent_id":3,"marker_type":"M","limit":500,"credit_days":18,"rate":0.2},
+    {"id":16,"agent_id":3,"marker_type":"U","limit":800,"credit_days":16,"rate":0.2},
+    {"id":17,"agent_id":3,"marker_type":"V","limit":1000,"credit_days":15,"rate":0.2},
+    {"id":18,"agent_id":3,"marker_type":"UU","limit":1500,"credit_days":14,"rate":0.2}
+]

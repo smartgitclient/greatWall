@@ -1,0 +1,115 @@
+<div class="modal-header">
+    <!--<button type="button" class="close" ng-click="cancel()">×</button>-->
+    <h4 class="modal-title" id="myModalLabel">
+        <h3>轉碼詳細</h3>
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class=" col-md-12">
+            <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td>轉碼單號：</td>
+                    <td >{{rolling_record.rolling_no}}</td>
+                    <td>轉碼流水號：</td>
+                    <td >{{rolling_record.rolling_record_no}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>轉碼金額：</td>
+                    <td >{{rolling_record.rolling|parseTenThousand}}</td>
+                    <td>更數：</td>
+                    <td >{{rolling_record.shift}}</td>
+                    <!--<td>資金類型：</td>-->
+                    <!--<td >{{rolling_record.rolling_type}}</td>-->
+                </tr>
+                <tr>
+                    <td>戶口編號：</td>
+                    <td >{{rolling_record.agent_code}}</td>
+                    <td>戶口名稱：</td>
+                    <td >{{rolling_record.agent_name}}</td>
+                </tr>
+                <!--&lt;!&ndash; ngRepeat: supervisor in loan.supervisors &ndash;&gt;<tr data-ng-repeat="supervisor in loan.supervisors" class="ng-scope">-->
+                    <!--<td>上線批核人：</td>-->
+                    <!--<td >李佳佳</td>-->
+                    <!--<td>上線批核人電話：</td>-->
+                    <!--<td >+853 68451227</td>-->
+                <!--</tr>&lt;!&ndash; end ngRepeat: supervisor in loan.supervisors &ndash;&gt;<tr data-ng-repeat="supervisor in loan.supervisors" class="ng-scope">-->
+                    <!--<td>上線批核人：</td>-->
+                    <!--<td >鄭浩</td>-->
+                    <!--<td>上線批核人電話：</td>-->
+                    <!--<td >+853 25789548</td>-->
+                <!--</tr>&lt;!&ndash; end ngRepeat: supervisor in loan.supervisors &ndash;&gt;-->
+
+                <tr>
+                    <td>所屬廳：</td>
+                    <td >{{rolling_record.hall_name}}</td>
+                    <td>轉碼時間:</td>
+                    <td >{{rolling_record.roll_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                </tr>
+                <tr>
+                    <!--<td>授權人：</td>-->
+                    <!--<td >{{rolling_record.contact_name}}</td>-->
+                    <td>經手人:</td>
+                    <td>{{rolling_record.user_name}}</td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>備註：</td>
+                    <td colspan="3" data-ng-show="_type=='edit'">
+                        <textarea name="remark" maxLength="20" data-ng-model="rolling_record.remark" rows="4" class="form-control textarea-table01" id="remark"></textarea>
+                    </td>
+                    <td colspan="3" data-ng-hide="_type=='edit'">{{rolling_record.remark}}</td>
+                </tr>
+                <tr  data-ng-show="_type=='edit'">
+                    <td>操作密碼</td>
+                    <td><input type="password" data-ng-model="rolling_record.pin_code" class="form-control" data-enter-key="submit()"></td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+         <!--<div class="col-md-4">-->
+             <!--<table class="table table-bordered table-striped">-->
+                 <!--<thead>-->
+                 <!--<tr>-->
+                     <!--<td>金額</td>-->
+                     <!--<td >本金類型</td>-->
+                     <!--<td>卡類型</td>-->
+                 <!--</tr>-->
+                 <!--</thead>-->
+                 <!--<tbody>-->
+                 <!--<tr data-ng-repeat="rollCard in rolling_record.rollingCardRecords">-->
+                     <!--<td>{{rollCard.amount}}</td>-->
+                     <!--<td >{{rollCard.capital_name}}</td>-->
+                     <!--<td data-ng-hide="_type=='edit'">{{rollCard.commission_card}}</td>-->
+                     <!--<td data-ng-show="_type=='edit'">-->
+                         <!--&lt;!&ndash;{{rollCard.commission_card}}&ndash;&gt;-->
+                         <!--<select data-ng-model="rollCard.commission_card_id"-->
+                                 <!--name="commission_card_id"-->
+                                 <!--data-ng-required="enableClientValidation"-->
+                                 <!--class="form-control"-->
+                                 <!--ng-options="h.id as h.card_name for h in commissionCards">-->
+                         <!--</select>-->
+                     <!--</td>-->
+                 <!--</tr>-->
+                 <!--<tr>-->
+                     <!--<td colspan="4" data-ng-hide="rolling_record.rollingCardRecords.length>0">-->
+                         <!--暫無記錄-->
+                     <!--</td>-->
+                 <!--</tr>-->
+                 <!--</tbody>-->
+             <!--</table>-->
+         <!--</div>-->
+
+    </div>
+    <div class="" data-ng-show="_type=='edit'">
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-information margin-right-15" ng-click="submit()">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">取消</button>
+        </div>
+     </div>
+</div>

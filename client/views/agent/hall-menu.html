@@ -1,0 +1,19 @@
+<div class="menu" data-ng-show="menu">
+    <div class="menu-bor-B current-title" >
+        當前廳館：<span ng-transclude></span>
+    </div>
+    <div class="submenu menu-bor-B">
+        <ul class="menu-ul01">
+            <li class="bor" data-ng-repeat="h1 in hall1"><a href="javascript:void(0)" data-ng-click="activeFunction(h1)">{{h1.hall_name}}</a><span class="bor">|</span> </li>
+            <li data-ng-repeat="h2 in hall2"><a href="javascript:void(0)" data-ng-click="activeFunction(h2)">{{h2.hall_name}}</a><span class="bor" data-ng-show="$index != (hall2.length-1)">|</span></li>
+            <div class="clear"></div>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <!--<div class="submenu-cont">
+        <ul class="menu-ul02 bor" data-ng-repeat="h in _hall3" >
+            <li data-ng-repeat="h3 in h"><a href="javascript:void(0)" data-ng-click="activeFunction(h3)">{{h3.hall_name}}</a> </li>
+        </ul>
+        <div class="clear"></div>
+    </div>-->
+</div>

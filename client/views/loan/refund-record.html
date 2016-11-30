@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px"><strong>退款記錄</strong></h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-content consumption_record" >
+                        <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>日期</td>
+                            <td>還息戶口</td>
+                            <td>還息戶口姓名</td>
+                            <td>退款金額(萬)</td>
+                            <td>存入戶口</td>
+                            <td>戶口姓名</td>
+                            <td>退款方式</td>
+                            <td>廳館</td>
+                            <td>存卡</td>
+                            <td width="150">備註</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="refund in markerFeeRepayRefunds" data-selected-rows>
+                            <td>{{refund.create_time|parseDate:"yyyy-MM-dd"}}</td>
+                            <td>{{refund.pay_agent_code}}</td>
+                            <td>{{refund.pay_agent_name}}</td>
+                            <td>{{refund.amount|parseTenThousand2}}</td>
+                            <td>{{refund.to_agent_code}}</td>
+                            <td>{{refund.to_agent_name}}</td>
+                            <td>{{repaymentMethod[refund.repayment_type]}}</td>
+                            <td>{{refund.hall_name}}</td>
+                            <td>{{refund.card_name}}</td>
+                            <td width="150">{{refund.remark}}</td>
+                        </tr>
+                        <tr data-ng-show="markerFeeRepayRefunds.length == 0">
+                            <td colspan="16">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                     </div>
+
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-inf btn-cancel" data-ng-click="close()">關閉</button>
+        </div>
+    </form>
+</div>

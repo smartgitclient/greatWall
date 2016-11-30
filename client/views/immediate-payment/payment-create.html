@@ -1,0 +1,182 @@
+<div class="page page-grid" data-ng-controller="paymentCreateCtrl">
+    <div class="panel panel-default col-md-8">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>新增即出</strong>
+            </div>
+            <div class="panel-content">
+                <form name="form_payment_create" class="form-validation" server-validation="POST{{payment_create_url}}">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="150" class="text-right" data-min-screen-width="150">所在廳：</td>
+                            <td width="180" data-min-screen-width="150">{{user.hall.hall_name}}</td>
+                            <td width="150" class="text-right">戶口編號：</td>
+                            <td  width="180"><input data-input-uppercase name="from_agent_id" class="form-control input-01"  type="text" data-ng-model="agent_code"></td>
+                            <td width="150" class="text-right">姓   名：</td>
+                            <td width="150">{{agent_name}}</td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">即出月份</td>
+                            <td>
+                                <p class="input-group ui-datepicker  pull-left">
+                                    <input type="text" class="form-control" name="year_month" datepicker-popup datepicker-mode="month" ng-model="immediate_calc.year_month" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                            <td class="text-right" data-min-screen-width="100">日   期：</td>
+                            <td>{{nowDate}}</td>
+                            <td class="text-right" data-min-screen-width="100">更   數：</td>
+                            <td width="180" data-min-screen-width="100">{{shift_mark.shift}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table><br/>
+                    <!--<table class="table table-bordered table-striped table-detail-01" style="width:42%;">-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<td width="180" class="text-right">操作密碼：</td>-->
+                            <!--<td>-->
+                                <!--<input class="form-control ng-pristine ng-valid" type="password" data-ng-model="immediate_calc.pin_code" name="pin_code" data-enter-key="calculate()">-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</table><br/>-->
+                    <div class="row position-r" style="text-align: center;" data-ng-show="user.hall.id != '27115D48C5F726D6E050A8C098150716'">
+                        <span data-ng-show="agent_loan_id == 1" class="spam-tip red">該戶口有貸款尚未還款<a class="yellow" href="#/immediate-payment/payment-create" data-ng-click="detail(immediate_calc.from_agent_id)">[詳細]</a></span>
+                        <button class="btn btn-confirm margin-right-15" data-ng-click="calculate()" data-ng-disabled="disabled_submit" check-permissions="immediatePaymentCreate">計佣</button>
+                        <button class="btn btn-cancel"  data-ng-click="reset()">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-form-list" data-ng-show="showPayment"><!-- data-ng-show="is_choice_type && payment_type == 1"-->
+            <form name="form_payment_add" class="form-validation" server-validation="POST{{payment_add_url}}">
+                <div class="panel-content">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="160" class="text-right">總轉碼：</td>
+                        <td data-min-screen-width="80">{{immediate_add.rolling|parseTenThousand}}</td>
+                        <td width="160" class="text-right">份數：</td>
+                        <td width="180"><input type="text" class="form-control" name="discount" data-ng-model="immediate_add.discount" /></td>
+                        <td width="160" class="text-right">稅率：</td>
+                        <td width="180"><input type="text" class="form-control"  name="tax_rate" data-ng-model="immediate_add.tax_rate"/></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">積分消費：</td>
+                        <td>{{immediate_add.integral_consumption|parseDollar:true }}</td>
+                        <td class="text-right">佣金消費：</td>
+                        <td>{{immediate_add.commission_consumption| parseDollar:true }}</td>
+                        <td class="text-right">本月消費數：</td>
+                        <td><span data-ng-click="showLoan()" style="cursor: pointer">{{immediate_add.consumption|parseDollar:true }}</span></td>
+                    <tr>
+                        <td class="text-right">上月余津：</td>
+                        <td>{{immediate_add.settlement_consumption| parseDollar : true }}</td>
+                        <td class="text-right">負消費：</td>
+                        <td>{{immediate_add.negative_consumption| parseDollar : true }}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="160" class="text-right">應出佣金：</td>
+                        <td data-min-screen-width="80">{{immediate_add.should_commission| parseTenThousand2}}</td>
+                        <td width="160" class="text-right">實出佣金：</td>
+                        <td width="180">{{immediate_add.actual_commission| parseTenThousand2  }}</td>
+                        <td width="160" class="text-right">尾數：</td>
+                        <td  width="180">{{immediate_add.omit_commission|parseTenThousand2 }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="table table-bordered table-striped table-detail-01" style=" width:70%" >
+                    <tbody>
+                    <tr>
+                        <td width="140" class="text-right">即出到：</td>
+                        <td data-min-screen-width="150"><input data-input-uppercase name ="to_agent_id" class="form-control input-01"  type="text" ng-model="to_agent_code"></td>
+                        <td width="150" class="text-right">姓名：</td>
+                        <td width="160">{{to_agent_name}}</td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td width="140" class="text-right">截更日期：</td>-->
+                        <!--<td data-min-screen-width="150">-->
+                            <!--<p class="input-group ui-datepicker pull-left" style="width:160px;">-->
+                                <!--<input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="immediate_add.shift_date" name="shift_date" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />-->
+                                <!--<span class="input-group-btn">-->
+                                <!--<button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                <!--</span>-->
+                            <!--</p>-->
+                        <!--</td>-->
+                        <!--<td width="150" class="text-right">更数：</td>-->
+                        <!--<td width="160">-->
+                            <!--<select data-ng-model="immediate_add.shift" class="form-control" ng-options="h.name as h.name for h in shiftMarks.data">-->
+                                <!--<option value = "">請選擇廳館</option>-->
+                            <!--</select>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="text-right">轉移轉碼卡：</td>
+                        <td width="230" class="text-left">
+                            <select style="width: 150px;float: left" data-ng-required="enableClientValidation" name="commission_card_id" data-ng-model="immediate_add.commission_card_id" data-ng-change="cardBalance()" class="form-control" data-ng-options="card.id as card.card_name for card in commissionCards" >
+                                <option value="">請選擇轉移轉碼卡</option>
+                            </select>&nbsp;
+                            <button class="btn btn-confirm btn-table" data-ng-click="addRollingCard()">新增</button>
+                        </td>
+                        <td class="text-right">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">存卡：</td>
+                        <td>
+                            <select data-ng-required="enableClientValidation" name="deposit_id" data-ng-model="immediate_add.depositcard_id" data-ng-change="cardBalance()" class="form-control" data-ng-options="card.id as card.card_name for card in cards" >
+                                <option value="">請選擇存卡</option>
+                            </select>
+                        </td>
+                        <td class="text-right">存卡餘額：</td>
+                        <td>{{immediate_add.deposit_amount|parseTenThousand}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01" style="width:69%;">
+                    <tbody>
+                    <tr>
+                        <td width="160" class="text-right">備   註：</td>
+                        <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" name="remark" data-ng-model="immediate_add.remark" rows="4"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01" style="width:35%;">
+                    <tbody>
+                    <tr>
+                        <td width="160" class="text-right">操作密碼：</td>
+                        <td>
+                            <input class="form-control ng-pristine ng-valid" type="password" data-ng-model="immediate_add.pin_code" name="pin_code" data-enter-key="addPayment()">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" data-ng-click="addPayment()" data-ng-disabled="disabled_submit">新增</button>
+                    <button class="btn btn-confirm margin-right-15" data-ng-click="addPayment(true)" data-ng-disabled="disabled_submit">新增并列印</button>
+                    <button class="btn btn-confirm margin-right-15" data-ng-click="display_print()" data-ng-disabled="disabled_submit">列印</button>
+                    <label class="ui-checkbox">
+                        <input name="checkbox1" ng-model="hasOut" type="checkbox"><span style="margin: 0px 10px;">列印外館消費</span>
+                    </label>
+                    <button class="btn btn-cancel" data-ng-click="resetPayment()">重置</button>
+                </div>
+            </div>
+            </form>
+        </div>
+</div>
+</div>

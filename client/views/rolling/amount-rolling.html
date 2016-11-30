@@ -1,0 +1,71 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" ng-click="close()">×</button>-->
+                    <h4 class="modal-title" id="myModalLabel">
+                        <h3>{{title}}</h3>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="$parent.form_deposit" class="ng-valid ng-dirty form-validation" server-validation="POST{{deposit_url}}">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="150" align="right">戶口編號：</td>
+                                        <td align="left"><input type="text"
+                                                                ng-model="$parent.agent_code"
+                                                                data-ng-required="enableClientValidation"
+                                                                name="agent_info_id"
+                                                                data-input-uppercase
+                                                                class="form-control input-02"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="150" align="right">戶主名稱：</td>
+                                        <td align="left">{{agent_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">金額：</td>
+                                        <td align="left"><input type="text"
+                                                                data-ng-required="enableClientValidation"
+                                                                name="amount"
+                                                                ng-model="amount_rolling_record.amount"
+                                                                ng-class="{true: 'ng-invalid-server', false: ''}[initData]"
+                                                                class="form-control input-01"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">資金類型：</td>
+                                        <td align="left">
+                                            <select data-ng-model="amount_rolling_record.type"
+                                                    data-ng-required="enableClientValidation"
+                                                    name="type"
+                                                    class="form-control">
+                                                <option value="">請選擇資金類型</option>
+                                                <option value="1">{{loanTypes[2]}}</option>
+                                                <option value="2">{{loanTypes[7]}}</option>
+                                                <!--ng-options="h.id as h.name for h in scenes"-->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <td align="right">操作密碼：</td>
+                                    <td align="left"><input type="password"
+                                                            name="pin_code"
+                                                            ng-model="amount_rolling_record.pin_code"
+                                                            class="form-control input-01"
+                                                            data-enter-key="add()"></td>
+                                </table>
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-confirm" data-ng-disabled="isDesabled" ng-click="add()">提交</button>
+                        <button class="btn btn-cancel" ng-click="cancel()">重置</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

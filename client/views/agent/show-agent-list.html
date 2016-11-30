@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3>户口速查</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-hover table-click">
+                    <thead>
+                    <tr>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>出生日期</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="agent in agents" data-ng-click="redirectUpdate(agent.id)">
+                            <td>{{agent.agent_code}}</td>
+                            <td>{{agent.agent_contact_name}}</td>
+                            <td>{{agent.birthdate|parseDate:"yyyy-MM-dd"}}</td>
+                        </tr>
+                        <!--<tr data-ng-show="unRepayments.length == 0">-->
+                            <!--<td colspan="9">暫無符合條件的記錄</td>-->
+                        <!--</tr>-->
+                    </tbody>
+                </table>
+                <!--<footer class="table-footer">-->
+                <!--<div class="text-right pagination-container">-->
+                    <!--<pagination class="pagination-sm"-->
+                                <!--page="pagination.page"-->
+                                <!--total-items="pagination.total_items"-->
+                                <!--on-select-page="select(page)"-->
+                                <!--max-size = "pagination.max_size"-->
+                                <!--data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>-->
+                <!--</div>-->
+            <!--</footer>-->
+            </div>
+        </div>
+    </form>
+    <!--<div class="row text-center"><br/>-->
+        <!--<button class="btn btn-information" ng-click="close()">關 閉</button>-->
+    <!--</div>-->
+</div>

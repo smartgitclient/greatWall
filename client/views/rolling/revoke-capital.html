@@ -1,0 +1,158 @@
+<div class="page page-grid" data-ng-controller="rollingManagerCtrl">
+<div class="panel panel-default">
+<div class="col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>轉碼流水詳細</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">戶口編碼：</td>
+                                        <td width="209">FA233</td>
+                                        <td width="100" class="text-right">轉碼流水號：</td>
+                                        <td width="209">R001-1</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="100" class="text-right">轉碼數：</td>
+                                        <td width="209">500</td>
+                                        <td width="100" class="text-right">資金類型：</td>
+                                        <td width="209">貸款</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="100" class="text-right">轉碼類型：</td>
+                                        <td width="209" data-ng-model="rolling_record.rolling_type">開場本金</td>
+                                        <td width="100" class="text-right" data-ng-hide="rolling_type=='開場本金'">轉碼時間：</td>
+                                        <td width="209"  data-ng-hide="rolling_type=='開場本金'">2014-08-28 12:22:30</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="100" class="text-right">撤銷轉碼總數：</td>
+                                        <td width="209">500</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <td>金額</td>
+                                        <td>本金類型</td>
+                                        <td width="120">卡類型</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>200</td>
+                                        <td>M</td>
+                                        <td width="120">M</td>
+                                    </tr>
+                                    <tr data-ng-repeat = "type in rolling_record.types track by $index">
+                                        <td>{{type.amount}}</td>
+                                        <td>{{type.capital_type}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                {{type.card_type}}
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="type.card_type">{{type.card_type}}</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'M'">M</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'V'">V</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'U'">U</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'UU'">UU</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'W'">W</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'18M'">18M</label>-->
+                                                <!--<label class="btn btn-primary" ng-model="type.card_type" btn-radio="'18U'">18U</label>-->
+                                            </div>
+                                        </td>
+                                        <td width="70">
+                                            <a  class="btn btn-info btn-information btn-table" ng-click="addCardType(type,$index)">選擇/新增</a>
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-show="rolling_record.types.length == 0">
+                                        <td colspan="4">暫無符合條件的記錄</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>影響轉碼流水</strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>轉碼流水號</td>
+                            <td>戶口編碼</td>
+                            <td>中文名</td>
+                            <td>資金類型</td>
+                            <td>轉碼類型</td>
+                            <td>轉碼數（萬）</td>
+                            <td>轉碼時間</td>
+                            <td>經手人</td>
+                            <td>備註</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="l in loans track by $index">
+                            <td>{{l.agent_code}}</td>
+                            <td>{{l.agent_name}}</td>
+                            <td>{{l.created |date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                            <td>{{l.loan_amount}}</td>
+                            <td>{{l.balance}}</td>
+                            <td>{{l.fund_type}}</td>
+                            <td>{{l.loan_seqnumber}}</td>
+                            <td>{{l.brokerage}}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr data-ng-show="all_loans.length == 0">
+                            <td colspan="11">暫無符合條件的記錄</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="loan_current_page"
+                                            total-items="all_loans.length"
+                                            on-select-page="select(page)"
+                                            data-ng-show="loans.length != 0"></pagination>
+                            </div>
+                        </div>
+                    </footer>
+                    <table class="table-bordered">
+                        <tbody>
+                        <tr height="50">
+                            <td width="138" class="text-center">操作密碼：</td>
+                            <td width="358" class="text-left no-padding">&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" data-ng-model="rolling_record.pin_code" class="form-control input-180" data-enter-key="submit()"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-info btn-information margin-right-15" ng-click="submit()">退碼</button>
+                <button class="btn btn-inf btn-cancel margin-right-15" data-ng-click="reset()">列印</button>
+                <button class="btn btn-info btn-information" ng-click="submit()">即時轉碼</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>

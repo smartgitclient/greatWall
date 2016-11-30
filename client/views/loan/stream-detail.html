@@ -1,0 +1,81 @@
+<div class="modal-header">
+    <h3>轉碼流水詳細:</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class=" col-md-8">
+            <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td>轉碼單號：</td>
+                    <td >{{rolling_record.rolling_seqnumber}}</td>
+                    <td>轉碼流水號：</td>
+                    <td >{{stream_record.stream_number}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>轉碼金額：</td>
+                    <td >{{stream_record.amount|parseTenThousand}}</td>
+                    <td>資金類型：</td>
+                    <td >{{rolling_record.fund_type}}</td>
+                </tr>
+                <tr>
+                    <td>戶口編號：</td>
+                    <td>{{rolling_record.agent_code}}</td>
+                    <td>戶口姓名</td>
+                    <td >{{rolling_record.agent_name}}</td>
+                </tr>
+
+                <tr>
+                    <td>授權人：</td>
+                    <td >{{stream_record.supervisor}}</td>
+                    <td>經手人：</td>
+                    <td >{{stream_record.brokerage}}</td>
+                </tr>
+                <tr>
+                    <td>所屬廳：</td>
+                    <td>{{rolling_record.hall}}</td>
+                    <td>轉碼時間</td>
+                    <td >{{stream_record.rolling_time}}</td>
+                </tr>
+                <tr height="50">
+                    <td width="100" class="text-right"><span class="span-formlist">更數：</span></td>
+                    <td>{{stream_record.shift}}</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td width="100" class="text-right"><span class="span-formlist">備註：</span></td>
+                    <td width="209" colspan="3">{{stream_record.remark}}</textarea></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+         <div class="col-md-4">
+             <table class="table table-bordered table-striped">
+                 <thead>
+                 <tr>
+                     <td>金額</td>
+                     <td >本金類型</td>
+                     <td>卡類型</td>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <tr data-ng-repeat="t in types">
+                     <td>{{t.amount}}</td>
+                     <td >{{t.amount_type}}</td>
+                     <td>{{t.card_type}}</td>
+                 </tr>
+                 </tbody>
+             </table>
+         </div>
+
+    </div>
+
+    <!--<br><br><br>t-->
+    <!--<div class="row" style="text-align: center;">-->
+        <!--<button class="btn btn-info btn-information margin-right-15" ng-click="submit()">提交</button>-->
+        <!--<button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>-->
+    <!--</div>-->
+</div>

@@ -1,0 +1,347 @@
+<div class="panel panel-default">
+<div class="col-md-4">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+            <table>
+                <tbody>
+                <tr height="50">
+                    <td class="text-right" width="100">消費單號：</td>
+                    <td class="text-left" width="160">&nbsp;</td>
+                    <td class="text-right" width="100">&nbsp;</td>
+                    <td class="text-left" width="160">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">預訂單號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.dan" class="form-control"></td>
+                    <td class="text-right">所屬廳館：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="other.hall">
+                            <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.agent_code" class="form-control"></td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{other.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">消費類型：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="other.consumption_type">
+                            <ui-select-match placeholder="消費類型">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="consumption_type in ['MGM','UO','鉅星旅行社','永利','新葡京','舊葡京','銀河']">
+                                <div ng-bind-html="consumption_type"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td class="text-right">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">数量：</td>
+                    <td class="text-left" colspan="3">
+                        <div class="input-group ui-spinner" data-ui-spinner>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" data-spin="down">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </span>
+                            <input type="text" class="spinner-input form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                            &nbsp;&nbsp;
+                        </div>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">成本單價：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.chenben" class="form-control"></td>
+                    <td class="text-right">實收單價：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.shishou" class="form-control"></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">成本總數：</td>
+                    <td class="text-left">0</td>
+                    <td class="text-right">實收總數：</td>
+                    <td class="text-left">0</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left" colspan="3">0</td>
+                </tr>
+                <tr height="40">
+                    <td class="text-right" width="100">付款方式：</td>
+                    <td class="text-left" width="160">
+                        <ui-select ng-model="other.payment_type">
+                            <ui-select-match placeholder="請選擇付款方式">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="payment_type in ['積分','佣金','存卡','現金']">
+                                <div ng-bind-html="payment_type"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td class="text-right" width="100">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                    <td width="20">&nbsp;</td>
+                </tr>
+                <tr height="40">
+                    <td class="text-right">訂票人：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.booker" class="form-control"></td>
+                    <td class="text-right">電話：</td>
+                    <td class="text-left"><input type="text" data-ng-model="other.phone" class="form-control"></td>
+                    <td width="20">&nbsp;</td>
+                </tr>
+                <tr height="120">
+                    <td valign="top" class="text-right">
+                        備註：<br>
+                        <button class="btn  btn-information btn-table btn-remark">常用</button>
+                    </td>
+                    <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="other.remark" name=""></textarea></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td colspan="3" class="text-left"><input type="text" data-ng-model="commission_calculate.pwd" class="form-control input-140" data-enter-key="update()"></td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn  btn-confirm margin-right-15" data-ng-click="update()">提 交</button>
+                <button class="btn btn-inf cel" data-ng-click="check('消費轉移')">取 消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="150" class="text-right">消費單號：</td>
+                                <td width="160"><input type="text" data-ng-model="condition6.dan" class="form-control"></td>
+
+                                <td width="150" class="text-right">所屬廳館：</td>
+                                <td width="160">
+                                    <ui-select ng-model="condition5.hall">
+                                        <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="hall in halls">
+                                            <div ng-bind-html="hall"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+
+                                <td width="150" class="text-right">戶口編號：</td>
+                                <td width="160"><input type="text" data-ng-model="condition5.agent_code" class="form-control"></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">戶口姓名：</td>
+                                <td><input type="text" data-ng-model="condition5.agent_name" class="form-control"></td>
+                                <td class="text-right">消費類型：</td>
+                                <td>
+                                    <ui-select ng-model="condition5.consumption_type">
+                                        <ui-select-match placeholder="請選擇消費類型">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="consumption_type in ['MGM','UO','鉅星旅行社','永利','新葡京','舊葡京','銀河']">
+                                            <div ng-bind-html="consumption_type"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td class="text-right">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">訂票人：</td>
+                                <td><input type="text" data-ng-model="condition5.booker" class="form-control"></td>
+
+                                <td class="text-right">電話：</td>
+                                <td><input type="text" data-ng-model="condition5.phone" class="form-control"></td>
+
+                                <td class="text-right">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn  btn-information margin-right-15" ng-click="search()">查詢</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="searchReset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>消費單號</td>
+                            <td>預訂單號</td>
+                            <td>所屬廳館</td>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>訂票人</td>
+                            <td>狀態</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>530853</td>
+                            <td>45326895</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>陳明</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530852</td>
+                            <td>45326832</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>李洪</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530851</td>
+                            <td>45326756</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>王曉光</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530850</td>
+                            <td>45326721</td>
+                            <td>永利鉅星</td>
+                            <td>FA112</td>
+                            <td>鐘達</td>
+                            <td>吳益民</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530849</td>
+                            <td>45326633</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>陳毅</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530848</td>
+                            <td>45326612</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>錢朱峰</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530847</td>
+                            <td>45326536</td>
+                            <td>永利鉅星</td>
+                            <td>FA203</td>
+                            <td>陳好</td>
+                            <td>霍佳樂</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530846</td>
+                            <td>45326425</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>吳三聖</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530845</td>
+                            <td>45326322</td>
+                            <td>永利鉅星</td>
+                            <td>FA408</td>
+                            <td>李強</td>
+                            <td>金葉</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>530844</td>
+                            <td>45326028</td>
+                            <td>永利鉅星</td>
+                            <td>H11</td>
+                            <td>李鑫</td>
+                            <td>陳建明</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_buyChips.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="buyChips.length != 0"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

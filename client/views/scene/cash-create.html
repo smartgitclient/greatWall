@@ -1,0 +1,96 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading">新增本金</div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="$parent.form_deposit" class="ng-valid ng-dirty form-validation" server-validation="POST{{deposit_url}}">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="100" class="text-right">戶口編碼：</td>
+                                        <td class="text-left" width="150"><input type="text"
+                                                                ng-model="new_record_create.agent_code"
+                                                                data-ng-required="enableClientValidation"
+                                                                name="agent_info_id"
+                                                                data-input-uppercase
+                                                                class="form-control input-02"></td>
+                                        <td width="100" class="text-right">戶口姓名：</td>
+                                        <td class="text-left" width="150">{{new_record_create.agent_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">本金：</td>
+                                        <td align="left"><input type="text"
+                                                                data-ng-required="enableClientValidation"
+                                                                name="amount"
+                                                                ng-model="record_create.amount"
+                                                                class="form-control input-01"></td>
+                                        <td align="right">資金類型：</td>
+                                        <td align="left">
+                                            <select data-ng-model="record_create.source_type"
+                                                    name="source_type"
+                                                    data-ng-required="enableClientValidation"
+                                                    class="form-control"
+                                                    ng-options="h.id as h.name for h in fundSourceTypes.data">
+                                                <option value="">請選擇資金類型</option>
+                                                <!--<option value="1">{{fundSourceTypes[1]}}</option>-->
+                                                <!--<option value="2">{{fundSourceTypes[2]}}</option>-->
+                                                <!--<option value="3">{{fundSourceTypes[3]}}</option>-->
+                                                <!--<option value="4">{{fundSourceTypes[4]}}</option>-->
+                                                <!--<option value="5">{{fundSourceTypes[5]}}</option>-->
+                                                <!--<option value="7">{{fundSourceTypes[7]}}</option>-->
+                                                <!--<option value="8">{{fundSourceTypes[8]}}</option>-->
+                                                <!--ng-options="h.id as h.name for h in scenes"-->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--ng-options="h.id as h.main_scene_no for h in main_scenes"-->
+                                        <td align="right">場次：</td>
+                                        <td align="left" colspan="2">
+                                            <select data-ng-model="record_create.main_scene_id"
+                                                    name="main_scene_id"
+                                                    data-ng-required="enableClientValidation"
+                                                    class="form-control"
+                                                    data-ng-change="child_scene_select()">
+                                                <option value="">請選擇場次</option>
+                                                <option data-ng-repeat="scene in main_scenes" value="{{scene.id}}">
+                                                    {{scene.main_scene_no}}{{scene.guest_name==null || scene.guest_name==""  ? "" : "-"+scene.guest_name}}</option>
+                                            </select>
+                                        </td>
+                                        <!--<td align="right">-->
+                                            <!--&lt;!&ndash;子場次：&ndash;&gt;-->
+                                        <!--</td>-->
+                                        <td align="left">
+                                            <!--<select data-ng-model="record_create.scene_record_id"-->
+                                                    <!--name="scene_record_id"-->
+                                                    <!--data-ng-required="enableClientValidation"-->
+                                                    <!--class="form-control"-->
+                                                    <!--ng-options="h.id as h.scene_no for h in child_scenes">-->
+                                                <!--<option value="">請選擇子場次</option>-->
+                                            <!--</select>-->
+                                        </td>
+                                        <!--<td align="right">操作類型：</td>-->
+                                        <!--<td align="left">{{rollingTypes[op_type]}}</td>-->
+                                    </tr>
+
+                                </table>
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="115" class="text-right">操作密碼：</td>
+                                        <td align="left" width="180">
+                                            <input type="password" name="pin_code" ng-model="record_create.pin_code" class="form-control input-02" data-enter-key="add()"></td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-confirm margin-right-5" data-ng-disabled="isDesabled" ng-click="add()">提交</button>
+                        <button class="btn btn-inf btn-cancel" ng-click="close()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

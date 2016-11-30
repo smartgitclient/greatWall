@@ -1,0 +1,88 @@
+<div class="page-signin" data-ng-controller="signinCtrl">
+
+    <div class="signin-header">
+        <div class="operation-btns">
+            <ul class="pull-right list-unstyled">
+                <li>
+                    <a href="javascript:;" data-close-window>
+                        <i class="fa fa-times" title="关闭"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" data-minimize-window>
+                        <i class="fa fa-minus" title="最小化"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container text-center">
+            <section class="logo">
+                <a class="login_logo" href="#/"></a>
+            </section>
+        </div>
+    </div>
+
+    <div class="signin-body">
+        <div class="container">
+            <div class="form-container">
+                <section class="row signin-social text-center">
+                    <div class="login_head"><img src='images/login/login_head.png'></div>
+                </section>
+                <form name="form_signin" class="form-horizontal form-validation" server-validation="POST{{signin_url}}">
+                    <fieldset>
+                       <!--<div class="form-group">-->
+                            <!--<div class="input-group input-group-lg">-->
+                                <!--<span class="input-group-addon">-->
+                                    <!--<span class="fa fa-archive"></span>-->
+                                <!--</span>-->
+                                <!--<select class="form-control"-->
+                                        <!--data-ng-required="enableClientValidation"-->
+                                        <!--data-ng-model="user.hall_id"-->
+                                        <!--name="hall_id">-->
+                                    <!--<option value="">請選擇貴賓廳</option>-->
+                                    <!--<option data-ng-repeat="hall in halls" value="{{hall.id}}">{{hall.hall_name}}</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-user"></span>
+                                </span>
+                                <input type="text"
+                                       class="form-control"
+                                       data-ng-required="enableClientValidation"
+                                       data-ng-model="user.username"
+                                       placeholder="用戶名"
+                                       name="username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                </span>
+                                <input type="password"
+                                       class="form-control"
+                                       data-ng-required="enableClientValidation"
+                                       data-ng-model="user.password"
+                                       placeholder="密碼"
+                                       name="password">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0px;padding-bottom: 20px">
+                            <button id="submit_btn" data-ng-hide="is_loading"  type="submit" ng-click="submitForm()"  class="btn btn-confirm btn-lg btn-block">登 錄</button>
+                            <button data-ng-show="is_loading"  class="btn btn-cancel btn-lg btn-block">登錄中...</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <section>
+                    <p class="p_foot text-center text-muted text-small">SmartSoft Technology Limited 2014 ,All Rights Reserved.</p>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+</div>

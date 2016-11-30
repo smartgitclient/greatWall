@@ -1,0 +1,210 @@
+<div class="page page-grid" data-ng-controller="depositCardsManageCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>戶口信息</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">戶口編號：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">戶口姓名：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                                        <td width="229" class="text-right">戶口類型：</td>
+                                        <td width="209"><!-- Split button -->
+                                            <ui-select ng-model="condition.hall">
+                                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="hall in halls">
+                                                    <div ng-bind-html="hall"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                        <td width="100" class="text-right">上線：</td>
+                                        <td width="209">F8</td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading"><strong>貸款限期和過期手續費設定</strong></div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>貸款類型</td>
+                                    <td>批額範圍（萬）</td>
+                                    <td>期限（天）</td>
+                                    <td>過期手續費比率</td>
+                                    <td>特別期限（天）</td>
+                                    <td>特別期限過期比率</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="card in cards">
+                                    <td>M</td>
+                                    <td>0~200</td>
+                                    <td>18</td>
+                                    <td>0.1</td>
+                                    <td>90</td>
+                                    <td>0.2</td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="remove($index)">修改</button>
+                                        <button class="btn btn-info btn-information btn-table" data-ng-click="remove($index)">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="all_cards.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_cards.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="cards.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>共用批額戶口</strong>
+                            <button class="btn btn-info btn-information btn-table pull-right" data-ng-click="remove($index)">新增共用</button>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>戶口類型</td>
+                                    <td>上線</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="card in cards">
+                                    <td>FA201 </td>
+                                    <td>陳達文</td>
+                                    <td>下線</td>
+                                    <td>F8</td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information btn-table" data-ng-click="remove($index)">撤銷共用</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="all_cards.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_cards.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="cards.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>批額設定</strong>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_search"  ng-submit="submit()">
+                            <table>
+                                <tr height="50">
+                                    <td width="140" class="text-right">戶口編碼：</td>
+                                    <td width="204"><input type="text" data-ng-model="agent_code" class="form-control"></td>
+                                    <td width="174" class="text-right">戶口類型：</td>
+                                    <td width="142">下線</td>
+                                </tr>
+                                <tr height="50">
+                                    <td  class="text-right">上線：</td>
+                                    <td>F8</td>
+                                    <td class="text-right">貸款類型：</td>
+                                    <td>
+                                        <ui-select ng-model="cardsRecords.type">
+                                            <ui-select-match placeholder="請選擇類型">{{$select.selected}}</ui-select-match>
+                                            <ui-select-choices repeat="t in types">
+                                                <div ng-bind-html="t"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td width="70" class="text-right">批額範圍：</td>
+                                    <td>
+                                        <p class="pull-left"><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92"></p>
+                                        <p class="pull-left">~</p>
+                                        <p class="pull-left"><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92"></p>
+                                    </td>
+                                    <td width="77" class="text-right">期限：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92">&nbsp;&nbsp;&nbsp;&nbsp;天</td>
+                                </tr>
+
+                                <tr height="50">
+                                    <td class="text-right">過期手續費比率：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92">&nbsp;&nbsp;&nbsp;&nbsp;%</td>
+                                    <td class="text-right">過期追加天數：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92">&nbsp;&nbsp;&nbsp;&nbsp;天</td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">特別期限：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92">&nbsp;&nbsp;&nbsp;&nbsp;天</td>
+                                    <td class="text-right">特別期限手續費比率：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.amount" class="form-control input-92">&nbsp;&nbsp;&nbsp;&nbsp;%</td>
+                                </tr>
+                                <tr height="50">
+                                    <td valign="top" class="text-right">備註：</td>
+                                    <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="cardsRecords.remark" name=""></textarea></td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td><input type="text" data-ng-model="cardsRecords.pwd" class="form-control" data-enter-key="add()" ></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br><br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="add()">提交</button>
+                                <button class="btn btn-cancel">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+
+
+    </div>
+</div>
+</div>

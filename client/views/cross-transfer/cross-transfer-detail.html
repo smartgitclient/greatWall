@@ -1,0 +1,127 @@
+<div class="modal-header">
+    <h3>飛數流水詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_cross_transfer_detail" class="ng-valid ng-dirty form-validation" server-validation="POST{{mortgage_url}}" >
+    <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <!--<td width="100" align="right">日  期：</td>-->
+                        <!--<td align="left">-->
+                            <!--{{cross_transfer.transfer_time|parseDate:'yyyy-MM-dd'}}-->
+                        <!--</td>-->
+                        <td width="120" align="right">類型：</td>
+                        <td align="left" width="180">
+                        {{crossTransferTypes.items[cross_transfer.type]}}
+                        </td>
+                        <td width="120" align="right">&nbsp;</td>
+                        <td align="left">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">飛出廳：</td>
+                        <td align="left">
+                            {{cross_transfer.send_hall_name}}
+                        </td>
+                        <td align="right">飛出戶口：</td>
+                        <td align="left">
+                            {{cross_transfer.send_agent_code}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出客戶：</td>
+                        <td align="left">
+                            {{cross_transfer.send_agent_name}}
+                        </td>
+                        <td align="right">飛出存卡：</td>
+                        <td align="left">
+                            {{cross_transfer.send_card_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出備註：</td>
+                        <td align="left" colspan="3">
+                            <span data-ng-show="cross_transfer.type == 0">{{handle.send_remark}}</span>
+                            <span data-ng-show="cross_transfer.type == 1 || cross_transfer.type == 2"><textarea data-ng-required="enableClientValidation" name="send_remark" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="handle.send_remark"></textarea></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出經手人：</td>
+                        <td align="left">
+                            {{cross_transfer.send_user_name}}
+                        </td>
+                        <td align="right">飛出時間：</td>
+                        <td align="left">
+                            {{cross_transfer.send_time|parseDate:"yyyy-MM-dd HH:mm"}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入廳：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_hall_name}}
+                        </td>
+                        <td align="right">飛入戶口：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_agent_code}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入客戶：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_agent_name}}
+                        </td>
+                        <td align="right">飛入存卡：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_card_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 93px">飛入備註：</td>
+                        <td align="left" colspan="3">
+                            <span data-ng-show="cross_transfer.type == 1">{{handle.receive_remark}}</span>
+                            <span data-ng-show="cross_transfer.type == 0 || cross_transfer.type == 2"><textarea data-ng-required="enableClientValidation" name="receive_remark" id="" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="handle.receive_remark"></textarea></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入經手人：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_user_name}}
+                        </td>
+                        <td align="right">飛入時間：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_time|parseDate:"yyyy-MM-dd HH:mm"}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">確認人：</td>
+                        <td align="left">
+                            <select data-ng-required="enableClientValidation" name="receive_user_id" data-ng-model="handle.receive_contact_id" class="form-control" data-ng-options="n.id as n.receive_user_name for n in names" >
+                                <option value="">請選擇確認人</option>
+                            </select>
+
+                        </td>
+                        <td align="right">飛數金額：</td>
+                        <td align="left">
+                            {{cross_transfer.amount|parseTenThousand}}
+                        </td>
+
+                    </tr>
+                </table>
+
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" style="width: 93px">操作密碼：</td>
+                        <td align="left" colspan="3">
+                            <input class="form-control input-01 ng-pristine ng-valid" type="password" name="pin_code" ng-model="handle.pin_code" data-enter-key="add()">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+    </div>
+    <div class="row" style="text-align: center;" >
+        <button class="btn btn-info btn-confirm" ng-click="add()" data-ng-disabled="disabled_submit">接受</button>
+        <button class="btn btn-inf btn-cancel" ng-click="refuse()" data-ng-disabled="disabled_submit">拒絕</button>
+    </div>
+    </form>
+</div>

@@ -1,0 +1,291 @@
+<div ng-class='{"col-md-12":popupWindow==true,"col-md-4":popupWindow==false}'  check-permissions="consumptionCreate">
+<div class="panel panel-form-list">
+    <div class="panel-content panel-ship">
+        <div class="panel-heading" ng-show="popupWindow">
+          <strong class="pull-left">船票修改</strong>
+        </div>
+
+        <form name="$parent.form_ship" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{ship_url}}">
+
+
+            <table>
+                <tbody>
+                <tr height="40">
+                    <td class="text-right"  width="90" min-screen-width="80">預訂單號：</td>
+                    <td class="text-left" width="150" min-screen-width="150">
+                        <input  type="text" data-ng-model="shipBooking.consumption.book_no" name="consumption_book_no" class="form-control" data-input-uppercase>
+                    </td>
+                    <td class="text-right" width="90" min-screen-width="80">所屬廳館：</td>
+                    <td class="text-left" width="160" min-screen-width="135">
+                        <span data-ng-show="'PUT'==sub_post_put">{{ agent_about.hall_name }}</span>
+                        <span data-ng-show="'POST'==sub_post_put">{{ user.hall.hall_name}}</span>
+                    </td>
+                </tr>
+                <tr height="40">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left">
+                        <span data-ng-show="'PUT'==sub_post_put && !COPY_BOOKING_ship">{{ agent_about.agent_code }}</span>
+                        <input data-ng-show="'POST'==sub_post_put || COPY_BOOKING_ship" type="text" input-uppercase data-ng-model="agent_about.agent_code" name="agent_info_id" class="form-control"></td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{agent_about.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">年月：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" name="consumption_year_month" datepicker-popup datepicker-mode="month" ng-model="shipBooking.consumption.year_month"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_ship"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                    </td>
+                    <td class="text-right">結算日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="shipBooking.consumption.shift_date"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_ship" />
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr height="40">
+
+                    <td class="text-right">更數：</td>
+                    <td class="text-left">
+                        <select name="consumption_shift" class="form-control" data-ng-model="shipBooking.consumption.shift"  ng-disabled="COPY_BOOKING_ship" >
+                            <option value="">請選擇更數</option>
+                            <option value="早更">{{shiftLists.morning}}</option>
+                            <option value="中更">{{shiftLists.afternoon}}</option>
+                            <option value="晚更">{{shiftLists.evening}}</option>
+                        </select>
+                    </td>
+                    <td class="text-right" data-ng-show="show_sms_place">取票地點：</td>
+                    <td class="text-left"  data-ng-show="show_sms_place">
+                        <select name="consumption_sms_type" class="form-control" data-ng-model="sms_type.value">
+                            <option value="">請選擇取票地點</option>
+                            <option value="1">澳門取票</option>
+                            <option value="2">香港取票</option>
+                        </select>
+                    </td>
+                </tr>
+                <!--tr height="40">
+                    <td class="text-right">結算方式：</td>
+                    <td class="text-left">{{shipBooking.agent_type}}</td>
+                    <td class="text-right"></td>
+                    <td class="text-left"></td>
+                </tr-->
+
+                </tbody>
+            </table>
+            <br>
+            <perfect-scrollbar class="animate-fade-up" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+            <div style="max-height: 600px">
+            <div style="position: relative;">
+                <div>
+                    <table class="BGcolor-626571" width="100%">
+                        <tbody ng-repeat="consumptionBoatSub in shipBooking.consumptionBoatSubs">
+                        <tr height="40">
+                            <td class="text-right" width="100" min-screen-width="100">行程：</td>
+                            <td class="text-left" colspan="2">
+
+                                <div class="pull-left" style="width: 300px;" min-screen-width="200">
+                                    <select data-dynamic-name="consumptionBoatSubs_{{$index}}_index" class="form-control" data-ng-model="consumptionBoatSub.index" data-ng-change="changeTrip($index, consumptionBoatSub)" ng-disabled="COPY_BOOKING_ship" >
+                                        <option value="">請選擇行程</option>
+                                        <option  ng-repeat="boatCity in boatCitys" value="{{$index}}" ng-selected="consumptionBoatSub.from_place === boatCity.from_place && consumptionBoatSub.to_place === boatCity.to_place">{{ boatCity.from_place }} - {{ boatCity.to_place }}</option>
+                                        </option>
+                                    </select>
+                                </div>
+                                <!--div class="pull-left span-LH27 padding-LR3">至</div>
+                                <div class="pull-left" style="width: 110px;">
+                                    <select data-dynamic-name="consumptionBoatSubs_{{$index}}_to_place_id" class="form-control" data-ng-model="consumptionBoatSub.to_place_id" ng-options="n.id as n.boat_city for n in boatCitys" ng-disabled="COPY_BOOKING_ship">
+                                        <option value="">目的地</option>
+                                        </option>
+                                    </select>
+                                </div-->
+                            </td>
+                            <td class="text-right" width="160">
+                                <div class="input-group ui-spinner" ng-show="0 == $index" style="float: right">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" data-spin="up" data-ng-click="addTrip()" ng-disabled="COPY_BOOKING_ship">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                </div>
+                                <div class="input-group ui-spinner" ng-show="$index" style="float: right">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" data-spin="up" ng-disabled="COPY_BOOKING_ship" data-ng-click="removeTrip($index)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </span>
+                                </div>
+                            </td>
+                            <td width="20"></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right" width="100" min-screen-width="63">日期：</td>
+                            <td class="text-left" width="160" min-screen-width="110">
+                                <p class="input-group ui-datepicker" >
+                                    <input type="text" class="form-control input-92" name="departure_date" datepicker-popup="{{format}}" ng-model="consumptionBoatSub.departure_date"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_ship" />
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" min-screen-width="10" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                </p>
+
+                            </td>
+                            <td class="text-right" width="100" min-screen-width="64">時間：</td>
+                            <td class="text-left" width="165" min-screen-width="80">
+                                <div class=" pull-left form-inline input-group ui-datepicker">
+                                    <div class="form-group">
+                                        <input size="6" class="form-control input-01"
+                                               data-ng-required="enableClientValidation"
+                                               ng-model="consumptionBoatSub.departure_time"
+                                               name="departure_time"
+                                               ng-disabled="COPY_BOOKING_ship"
+                                               min-screen-width="80" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr height="40">
+                            <td class="text-right" width="100" min-screen-width="100">艙位：</td>
+                            <td class="text-left" width="160" min-screen-width="120">
+                                <select data-dynamic-name="consumptionBoatSubs_{{$index}}_boat_trip_id" class="form-control" data-ng-model="consumptionBoatSub.boat_trip_id" data-ng-change="changeSeat($index, consumptionBoatSub)" ng-options="n.id as n.boat_seat_type for n in trip_seat[$index]" ng-disabled="COPY_BOOKING_ship">
+                                    <option value="">艙位</option>
+                                </select>
+                            </td>
+                            <td class="text-right" width="100" min-screen-width="100">數量：</td>
+                            <td class="text-left" width="160"><div class="input-group ui-spinner" data-ui-spinner data-ng-model="consumptionBoatSub.count" >
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="changeCount(600, $index)" data-spin="down" ng-disabled="COPY_BOOKING_ship">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </span>
+                                <input type="text" data-min="1" data-ng-model="consumptionBoatSub.count" data-dynamic-name="consumptionBoatSubs_{{$index}}_count" data-ng-change="changeCount(600, $index)" class="spinner-input form-control" ng-disabled="COPY_BOOKING_ship">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" ng-click="changeCount(600, $index)" data-spin="up" ng-disabled="COPY_BOOKING_ship">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                                &nbsp;&nbsp;
+                            </div></td>
+                        </tr>
+
+                        <tr height="40">
+                            <td class="text-right" width="100">成本價：</td>
+                            <td class="text-left" width="160">
+                                <input type="text" data-ng-model="consumptionBoatSub.cost_total" data-dynamic-name="consumptionBoatSubs_{{$index}}_cost_total" data-ng-change="changeCount(0,$index)" class="form-control" ng-disabled="COPY_BOOKING_ship">
+                            </td>
+                            <!--<td class="text-left" width="160">{{consumptionBoatSub.cost * consumptionBoatSub.count | parseYuan : false}}</td>-->
+                            <td class="text-right" width="100">賣出價：</td>
+                            <td class="text-left" width="160">
+                                <input type="text" data-ng-model="consumptionBoatSub.sell_total" data-dynamic-name="consumptionBoatSubs_{{$index}}_sell_total"data-ng-change="changeCount(0,$index)" class="form-control" ng-disabled="COPY_BOOKING_ship">
+                            </td>
+                            <!--<td class="text-left" width="160">{{ consumptionBoatSub.sell * consumptionBoatSub.count | parseYuan : false }}</td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <table width="100%" class="BGcolor-626571">
+                <tbody>
+                <tr height="40">
+                    <td class="text-right" width="100">訂票人：</td>
+                    <td class="text-left" width="160"><input type="text" name="consumption_trader" data-ng-model="shipBooking.consumption.trader" class="form-control" ng-disabled="COPY_BOOKING_ship" list="ship_agent_list"></td>
+                    <td class="text-right" width="100">電話：</td>
+                    <td class="text-left" width="165">
+                        <div class="pull-left" style="width: 57px;" min-screen-width="55">
+                            <select class="form-control no-padding" data-ng-model="shipBooking.consumption.area_code_id" name="consumption_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_ship">
+                                <option value="">區號</option>
+                            </select>
+                        </div>
+                        <div class="pull-left" style="width: 102px;" min-screen-width="69">
+                            <input type="text" data-ng-model="shipBooking.consumption.trader_tel" name="consumption_trader_tel" class="form-control" ng-disabled="COPY_BOOKING_ship" list="ship_tel_list">
+                        </div>
+                    </td>
+                    <td width="20"></td>
+                </tr>
+                </tbody>
+            </table>
+            <table width="100%">
+                <tbody>
+                <tr height="40">
+                    <td class="text-right" width="100">成本總數：</td>
+                    <td class="text-left" width="160">{{ ship_total.cost | parseYuan:false }}</td>
+                    <td class="text-right" width="100">實收總數：</td>
+                    <td class="text-left" width="160">{{ ship_total.sell | parseYuan:false }}</td>
+                    <td width="20"></td>
+                </tr>
+                <tr height="40">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left">{{ ship_total.profit | parseYuan:false }}</td>
+                    <td class="text-right">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="BGcolor-626571">
+                <tr height="40">
+                    <td class="text-right" width="100">應付消費：</td>
+                    <td class="text-left" width="160"><input type="text" name="consumption_should_pay" data-ng-model="shipBooking.consumption.should_pay" class="form-control"></td>
+                    <td class="text-right" width="100">付款方式：</td>
+                    <td class="text-left" width="160">
+                        <select name="consumption_pay_type_id" class="form-control" data-ng-model="shipBooking.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types" ng-disabled="COPY_BOOKING_ship">
+                            <option value="">請選擇付款方式</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr height="100">
+                    <td valign="top" class="text-right">
+                        備註：<br>
+                        <button class="btn btn-information btn-table margin-right-5" phrasebooktis="ship" insertmodel="shipBooking_consumption_remark" type="button" >常用</button>
+                    </td>
+                    <td colspan="3" valign="top">
+                        <div class="text-right">
+                            <button class="btn btn-information btn-table text-right"type="button" ng-click="creatremark()">生成備註</button>
+                        </div>
+                        <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="shipBooking.consumption.remark" name="shipBooking_consumption_remark"></textarea></td>
+                    <td width="20"></td>
+                </tr>
+                <!--<tr height="40">
+                    <td class="text-right">操作密碼：</td>
+                    <td class="text-left"><input type="password" data-ng-model="shipBooking.pin_code" name="pin_code" class="form-control input-140" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+                    <td>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                    </td>
+                    <td ><span class="red">{{ agent_about.username }}</span></td>
+                    <td width="20"></td>
+                </tr>-->
+                </tbody>
+            </table>
+            <table ng-show="popupWindow">
+                <tr height="50">
+                    <td class="text-right" width="100">操作密碼：</td>
+                    <td class="text-left" width="160"><input type="password" name="pin_code" data-ng-model="shipBooking.pin_code" class="form-control" data-enter-key="add()" ></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            </div>
+        </perfect-scrollbar>
+            <div class="row" style="text-align: center;margin-top: 20px;">
+                <button class="btn  btn-confirm margin-right-15" ng-show="'PUT' != sub_post_put && (user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED')" data-ng-disabled="isDisabled" data-ng-click="add(true)" type="button">提交并發送短訊</button>
+                <button class="btn  btn-confirm margin-right-15" data-ng-disabled="isDisabled" data-ng-click="add()" type="button">提 交</button>
+                <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" type="button">取 消</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+<datalist id="ship_tel_list">
+    <option ng-repeat="tel_list in ship_tel_list" value="{{ tel_list.telephone_number }}">
+</datalist>
+<datalist id="ship_agent_list">
+    <option ng-repeat="agent_list in ship_agent_list" value="{{ agent_list.agent_guest_name }}">
+</datalist>
+</div>

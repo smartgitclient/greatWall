@@ -1,0 +1,147 @@
+<div class="page page-grid" data-ng-controller="batchBoundMessagePeopleCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-4" data-ng-show="user.checkPermissions('agentBatchBindSMSCreate') || (user.checkPermissions('agentBatchBindSMSUpdate') && ref_tel_agent_group.id)">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>戶組短信通知</strong>
+                        <button class="btn btn-confirm pull-right" data-ng-click="addSet()" check-permissions="agentBatchBindSMSCreate">新增設定</button>
+                    </div>
+                    <div class="panel-content" style="padding:15px 5px;">
+                        <form name="form_batch_bound_message_people" class="ng-valid ng-dirty form-validation" server-validation="{{sub_put_post}}{{batch_bound_message_people_url}}">
+                            <table>
+                                <tr height="50">
+                                    <td width="70" data-min-screen-width="80" class="text-right">戶組名稱：</td>
+                                    <td data-min-screen-width="100"><input data-ng-disabled="disabled_group" data-input-uppercase data-ng-required="enableClientValidation" name="agent_group_id" type="text" data-ng-model="agentGroup" class="form-control"></td>
+                                    <td width="70" data-min-screen-width="80" class="text-right">戶組股東：</td>
+                                    <td data-min-screen-width="125">{{agent_group.owner_name}}</td>
+                                </tr>
+                                <tr height="50">
+                                    <td  class="text-right">股東姓名：</td>
+                                    <td>{{agent.agent_name}}</td>
+                                    <td class="text-right">聯絡人：</td>
+                                    <td>
+                                        <select data-ng-required="enableClientValidation" name="agent_contact_id"  data-ng-change="select_contact()" data-ng-model="reftelagentgrouptype.agent_contact_id" class="form-control" data-ng-options="ac.id as ac.agent_contact_name for ac in agent_group.bindSmsAgentContacts" >
+                                            <option value="">請選擇聯絡人</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">通知電話：</td>
+                                    <td colspan="2" >
+                                        <select data-ng-required="enableClientValidation" name="telephone_number_id" data-ng-model="reftelagentgrouptype.telephone_number_id" class="form-control" data-ng-options="tel.id as (tel.area_code+'&nbsp;'+tel.telephone_number) for tel in agent_contact_tel.bindContactTels" >
+                                            <option value="">請選擇通知電話</option>
+                                        </select>
+                                    </td>
+                                    <!--<td class="text-right">&nbsp;</td>-->
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br>
+                            <div class="panel-heading"  data-ng-show="contact_privileges.length">
+                                <strong>通知事項</strong>
+                                <span><input type="checkbox" name= "group_check_alls" data-ng-model="group_check_alls" data-ng-change="group_check_all()">全部</span>
+                            </div>
+                            <table class="table ">
+                                <tbody>
+                                <tr>
+                                    <td style="border: none;padding: 0 ">
+                                        <table class="table table-bordered table-striped table-detail-01">
+                                            <tr data-ng-repeat="contact_privilege in contact_privileges">
+                                                <td align="left" data-ng-repeat="contact in contact_privilege" style="border-top: none">
+                                                    <input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="contact.selected" data-ng-change="check_sms_notice_type_id(contact)">{{contact.sms_notice_type}}</checkbox>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered table-striped table-detail-01">
+                                <tbody>
+                                <tr>
+                                    <td width="120" class="text-right">操作密碼：</td>
+                                    <td class="text-left">
+                                        <input class="form-control input-01 ng-pristine ng-valid input-140" type="password" ng-model="reftelagentgrouptype.pin_code" name="pin_code" data-enter-key="add()">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                                <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <div id="text-sear02" class="form-group has-success has-feedback col-md-2">
+                                <input id="inputSuccess2" class="form-control ng-pristine ng-valid" type="text" data-ng-model="agent_group_name" placeholder="請輸入戶組名搜索" data-input-uppercase="">
+                                <span class="fa fa-search form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                            <div class="panel-content table-dynamic"  style="min-height: 80px; min-width: 1500px;">
+                        <!--<div class="panel-content table-dynamic">-->
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td width="120" check-permissions="agentBatchBindSMSUpdate,agentBatchBindSMSDelete">操作</td>
+                                    <td width="100" data-td-sort data-td-sort-up="agentGroup.agent_group_name ASC" data-td-sort-down="agentGroup.agent_group_name DESC" data-td-sort-select="select" data-td-sort-pagination="pagination" data-min-screen-width="100">戶組名稱</td>
+                                    <td width="100">戶組股東</td>
+                                    <td width="100">股東姓名</td>
+                                    <td width="100">聯絡人</td>
+                                    <td width="150">通知電話</td>
+                                    <td width="80" data-ng-repeat="contact_privilege in all_contact_privileges">{{contact_privilege.sms_notice_type}}</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="reftelagentgrouptype in reftelagentgrouptypes" data-selected-rows>
+                                    <td check-permissions="agentBatchBindSMSUpdate,agentBatchBindSMSDelete">
+                                        <button class="btn btn-information btn-table" ng-click="update(reftelagentgrouptype.id)" check-permissions="agentBatchBindSMSUpdate">修改</button>
+                                        <button class="btn btn-information btn-table" ng-click="delete(reftelagentgrouptype.id)" check-permissions="agentBatchBindSMSDelete">删除</button>
+                                    </td>
+                                    <td>{{reftelagentgrouptype.agentGroup.agent_group_name}}</td>
+                                    <td>{{reftelagentgrouptype.agentGroup.owner_name}}</td>
+                                    <td>{{reftelagentgrouptype.agentGroup.refAgentGroupTypeOwner.agent_name}}</td>
+                                    <td>{{reftelagentgrouptype.agent_contact_name}}</td>
+                                    <td>{{reftelagentgrouptype.area_code}}&nbsp;{{reftelagentgrouptype.telephone_number}}</td>
+                                    <td data-ng-repeat="contact_privilege in all_contact_privileges">
+                                        <i class="fa fa-check fa-check-green" data-ng-repeat="ref_tel_agent_group_privilege in reftelagentgrouptype.refTelAgentSMSNoticeTypes" data-ng-show="contact_privilege.id == ref_tel_agent_group_privilege.sms_notice_type_id"></i>
+                                    </td>
+
+                                </tr>
+                                <tr data-ng-show="reftelagentgrouptypes.length == 0">
+                                    <td colspan="14">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                    <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

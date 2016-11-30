@@ -1,0 +1,85 @@
+<div class="page page-grid" data-ng-controller="crossTransferManagerCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>待處理請求</strong>
+                            <button class="btn btn-information btn-table pull-right" data-ng-click="crossTransferRequest()" check-permissions="crossTransferRequestCreate">請求飛數</button>
+                            <button class="btn btn-information btn-table pull-right" data-ng-click="crossTransferDispose()" check-permissions="crossTransferRequestCreate">飛數</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr >
+                                    <td>處理狀態</td>
+                                    <td>類型</td>
+                                    <td>飛出廳</td>
+                                    <td>飛出客戶</td>
+                                    <td>飛出存卡</td>
+                                    <td>飛入廳</td>
+                                    <td>飛入客戶</td>
+                                    <td>飛入存卡</td>
+                                    <td>金額(萬)</td>
+                                    <td>操作時間</td>
+                                    <td>經手人</td>
+                                    <!--<td>確認人</td>-->
+                                    <td width="150">備註</td>
+                                    <td check-permissions="crossTransferHandle">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="cross_transfer in cross_transfers" data-selected-rows>
+                                    <td>{{crossTransferStatus.items[cross_transfer.status]}}</td>
+                                    <td>{{crossTransferTypes.items[cross_transfer.type]}}</td>
+                                    <td>{{cross_transfer.send_hall_name}}</td>
+                                    <td>{{cross_transfer.send_agent_code}}{{cross_transfer.send_agent_name}}</td>
+                                    <td>{{cross_transfer.send_card_name}}</td>
+                                    <td>{{cross_transfer.receive_hall_name}}</td>
+                                    <td>{{cross_transfer.receive_agent_code}}{{cross_transfer.receive_agent_name}}</td>
+                                    <td>{{cross_transfer.receive_card_name}}</td>
+                                    <td>{{cross_transfer.amount|parseTenThousand2}}
+                                        <!--<span data-ng-show="cross_transfer.receive_hall_name == user.hall.hall_name && cross_transfer.send_hall_name != user.hall.hall_name" style="font-size:14px;font-weight:bold;">{{cross_transfer.amount|parseTenThousand2}}</span>-->
+                                        <!--<span data-ng-show="cross_transfer.receive_hall_name != user.hall.hall_name && cross_transfer.send_hall_name == user.hall.hall_name" style="color:red;font-size:14px;font-weight:bold;">{{cross_transfer.amount|parseTenThousand2}}</span>-->
+
+                                    </td>
+                                    <td>{{cross_transfer.transfer_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{cross_transfer.user_name}}</td>
+                                    <!--<td>{{cross_transfer.receive_user_name}}</td>-->
+                                    <td class="text-left">{{cross_transfer.remark}}</td>
+                                    <td check-permissions="crossTransferHandle">
+                                        <button data-ng-show="cross_transfer.type == 0 && cross_transfer.receive_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="dispose(cross_transfer)" check-permissions="crossTransferHandle">處理</button>
+                                        <button data-ng-show="cross_transfer.type == 0 && cross_transfer.send_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="cross_transfer_cancel(cross_transfer)" check-permissions="crossTransferCancel">取消</button>
+                                        <button data-ng-show="cross_transfer.type == 1 &&  cross_transfer.send_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="dispose(cross_transfer)" check-permissions="crossTransferHandle">處理</button>
+                                        <button data-ng-show="cross_transfer.type == 1 &&cross_transfer.receive_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="cross_transfer_cancel(cross_transfer)" check-permissions="crossTransferCancel">取消</button>
+                                        <button data-ng-show="cross_transfer.type == 2 && cross_transfer.receive_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="dispose(cross_transfer)" check-permissions="crossTransferHandle">處理</button>
+                                        <button data-ng-show="cross_transfer.type == 2 && cross_transfer.send_hall_name == user.hall.hall_name" class="btn btn-info btn-information btn-table" data-ng-click="cross_transfer_cancel(cross_transfer)" check-permissions="crossTransferCancel">取消</button>
+
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="cross_transfers.length == 0">
+                                    <td colspan="14">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,177 @@
+<div class="page page-grid" data-ng-controller="boundMessagePeopleCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>短信通知人</strong>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td width="150" class="text-right">戶口編號：</td>
+                                    <td width="250"><input  data-input-uppercase data-ng-model="record.agent_code" class="form-control input-01 ng-pristine input-140 ng-valid ng-valid-required" type="text"></td>
+                                    <td width="150" class="text-right">姓名：</td>
+                                    <td width="150">{{record.agent_name}}</td>
+                                    <td width="200" class="no-padding"><button class="btn btn-confirm" ng-click="addBind()" check-permissions="agentBindSMSCreate">新增綁定</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td width="120">戶口編號</td>
+                                    <td>聯絡人</td>
+                                    <td>通知事項</td>
+                                    <td>通知電話</td>
+                                    <!--<td>隱藏發送</td>-->
+                                    <td check-permissions="agentBindSMSUpdate,agentBindSMSDelete">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="reftelagent in reftelagentsmsNoticets" data-selected-rows>
+                                    <td>
+                                        <span data-ng-show="reftelagent.is_group ==  '0'">{{reftelagent.agent_code}}</span>
+                                        <span data-ng-show="reftelagent.is_group ==  '1'">{{reftelagent.agentGroup.owner_name}}</span>
+                                    </td>
+                                    <td>{{reftelagent.agent_contact_name}}</td>
+                                    <td class="text-left"><span data-ng-repeat="refTelAgentSMSNoticeType in reftelagent.refTelAgentSMSNoticeTypes">{{refTelAgentSMSNoticeType.sms_notice_type}}<span data-ng-show="$index != (reftelagent.refTelAgentSMSNoticeTypes.length-1)">、</span></span></td>
+                                    <td>{{reftelagent.area_code}}&nbsp;{{reftelagent.telephone_number}}</td>
+                                    <!--<td><i data-ng-hide="reftelagent.send_secret==0" class="fa fa-check" style="color:#dddd1b;"></i></td>-->
+                                    <td class="no-padding" check-permissions="agentBindSMSUpdate,agentBindSMSDelete">
+                                        <button data-ng-show="reftelagent.is_group == '0'" class="btn btn-information btn-table margin-right-5" data-ng-click="edit(reftelagent.id)" check-permissions="agentBindSMSUpdate">修改</button>
+                                        <button data-ng-show="reftelagent.is_group == '0'" class="btn btn-information btn-table margin-right-5" data-ng-click="remove(reftelagent.id)" check-permissions="agentBindSMSDelete">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="reftelagentsmsNoticets.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5" data-ng-show="user.checkPermissions('agentBindSMSCreate') || (user.checkPermissions('agentBindSMSUpdate') && reftelagent.id)">
+            <form name="form_bound_msg" class="ng-valid ng-dirty form-validation" server-validation="{{bound_msg_method}}{{bound_msg_url}}">
+                <div class="panel_r">
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <strong>短信通知</strong>
+                    </div>
+                    <div class="panel-content">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td width="222" class="text-right">戶口編號：</td>
+                                    <td class="text-left">
+                                        <input data-input-uppercase
+                                               class="form-control input-01 ng-pristine ng-valid input-140"
+                                               type="text"
+                                               ng-model="agent_code"
+                                               data-ng-required="enableClientValidation"
+                                               name = "agent_info_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">戶口姓名：</td>
+                                    <td class="text-left">{{agent.agent_name}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                    </div>
+                </div>
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <button  class="btn btn-confirm pull-right" ng-click="addMessageContact()" data-ng-show="showAdd"  data-ng-disabled="disabled_add">增加通知人</button>
+                    </div>
+                    <div class="panel-content">
+                        <table width="100%" data-ng-repeat="contact in contacts">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <table class="table table-bordered" style="margin-bottom:0px">
+                                            <tbody>
+                                            <tr>
+                                                <td>聯絡人：</td>
+                                                <td>
+                                                    <!--<select data-ng-required="enableClientValidation" name="agent_contact_id"  data-ng-change="select_only_contact($index)" data-ng-model="contact.agent_contact_id" class="form-control" >&lt;!&ndash;data-ng-options='ac.id as ac.agent_contact_name+"("+ac.show_agent_code?ac.show_agent_code:ac.agent_code+")" for ac in agent_contact.bindSmsAgentContacts' &ndash;&gt;-->
+                                                        <!--<option value="">請選擇聯絡人</option>-->
+                                                        <!--<option data-ng-repeat="ac in agent_contact.bindSmsAgentContacts" value="{{ac.id}}">{{ac.agent_contact_name}}({{ac.show_agent_code?ac.show_agent_code:agent_contact.agent_code}})</option>-->
+                                                    <!--</select>-->
+                                                    <!--<select data-ng-required="enableClientValidation" name="agent_contact_id"  data-ng-change="select_only_contact($index)" data-ng-model="contact.agent_contact_id" class="form-control" data-ng-options='ac.id as ac.agent_contact_name +"("+(ac.show_agent_code?ac.show_agent_code:ac.agent_code)+")" for ac in agent_contact.bindSmsAgentContacts'>-->
+                                                        <!--<option value="">請選擇聯絡人</option>-->
+                                                    <!--</select>-->
+                                                    <select data-ng-required="enableClientValidation" name="val"  data-ng-change="select_only_contact($index)" data-ng-model="contact.val" class="form-control" data-ng-options='ac.key as ac.val for ac in agent_contact.bindSmsAgentContacts'>
+                                                        <option value="">請選擇聯絡人</option>
+                                                    </select>
+                                                </td>
+                                                <td>通知電話：</td>
+                                                <td>
+                                                    <select data-ng-required="enableClientValidation" name="telephone_number_id" data-ng-model="contact.telephone_number_id" class="form-control" data-ng-options="tel.id as (tel.area_code+'&nbsp;'+tel.telephone_number) for tel in agent_contact_tel[$index].bindContactTels" >
+                                                        <option value="">請選擇通知電話</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td ng-init="num = $index">
+                                        <table class="table table-bordered table-striped table-detail-01">
+                                            <tr data-ng-show="contact_smsnoticeTypes[$index].length">
+                                                <td align="left"colspan="4">
+                                                    <input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="contact.check_all" data-ng-change="check_all_message_sms_notice_type(num)">全部</checkbox>
+                                                </td>
+                                            </tr>
+                                            <tr data-ng-repeat="contact_privilege in contact_smsnoticeTypes[$index]">
+                                                <td align="left" data-ng-repeat="contact in contact_privilege" style="border-top: none">
+                                                    <input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="contact.selected" data-ng-change="check_message_sms_notice_type(contact,num)">{{contact.sms_notice_type}}</checkbox>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table table-bordered table-striped table-detail-01">
+                            <tbody>
+                            <tr>
+                                <td width="120" class="text-right">操作密碼：</td>
+                                <td class="text-left">
+                                    <input class="form-control input-01 ng-pristine ng-valid input-140" type="password" ng-model="contacts[0].pin_code" name="pin_code" data-enter-key="add()">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" ng-click="add()"  data-ng-disabled="disabled_submit">提交</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

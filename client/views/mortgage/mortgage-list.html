@@ -1,0 +1,216 @@
+<div class="page page-services ng-scope" data-ng-controller="mortgageListCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>抵押查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="150" ><span class="span-formlist">抵押廳：</span></td>
+                        <td width="180" data-ng-show="user.isAllHall()">
+                            <select data-ng-model="condition.mortgage.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇抵押廳</option>
+                            </select>
+                        </td>
+                        <td width="140" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td width="30">&nbsp;</td>
+                        <td width="140" class="text-right"><span class="span-formlist">貸款單號：</span></td>
+                        <td width="180"><input type="text"  data-ng-model="condition.marker.marker_seqnumber"  class="form-control"  name="mortgage_no"></td>
+                        <td width="30">&nbsp;</td>
+                        <td width="140" class="text-right"><span class="span-formlist">被抵押户口：</span></td>
+                        <td width="180"><input type="text"  data-ng-model="condition.marker.loanBusiness.agent_code" data-input-uppercase   class="form-control"  name="mortgage_no"></td>
+                        <td width="30">&nbsp;</td>
+                        <td width="140" class="text-right"><span class="span-formlist" >抵押方戶口：</span></td>
+                        <td width="180">
+                            <input type="text"  data-ng-model="condition.mortgage.agent_code" data-input-uppercase class="form-control"  name="mortgage_agent_code">
+                        </td>
+                        <!--<td width="30">&nbsp;</td>-->
+                        <!--<td width="140" class="text-right"><span class="span-formlist">抵押類型：</span></td>-->
+                        <!--<td width="200">&lt;!&ndash; Split button &ndash;&gt;-->
+                            <!--<select class="form-control" name="mortgage_type" data-ng-model="condition.mortgage_type" placeholder="請選擇抵押方式">-->
+                                <!--<option value="">請選擇抵押類型</option>-->
+                                <!--<option ng-repeat="mortgage_type in mortgage_types" value="{{ $index }}">{{ mortgage_type }}-->
+                            <!--</select>-->
+                        <!--</td>-->
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right"><span class="span-formlist" >
+                            貸款單所在廳：
+                        </span></td>
+                        <td>
+                            <select data-ng-model="condition.marker.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇貸款單所在廳</option>
+                            </select>
+                        </td>
+                        <td width="30">&nbsp;</td>
+                        <td class="text-right"><span class="span-formlist">年月：</span></td>
+                        <td>
+                            <table class="table-inner">
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.mortgage.shiftMark.year_month" name="year_month" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="30">&nbsp;</td>
+                        <td class="text-right"><span class="span-formlist">開始日期：</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.mortgage.shiftMark.shift_date[0]"  atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" name="start_time" />
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                            </p>
+                        </td>
+                        <td width="30">&nbsp;</td>
+                        <td class="text-right"><span class="span-formlist">結束日期：</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.mortgage.shiftMark.shift_date[1]"  atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" name="end_time" />
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td width="140" class="text-right"><span class="span-formlist">抵押方式：</span></td>
+                        <td width="180">
+                            <select class="form-control" name="is_all_mortgage" data-ng-model="condition.is_all_mortgage" placeholder="請選擇抵押方式">
+                                <option value="">請選擇抵押方式</option>
+                                <option value="-1">已回</option>
+                                <option ng-repeat="mortgageMethod in mortgageMethods" value="{{ $index }}">{{ mortgageMethod }}</option>
+                            </select>
+                        </td>
+                        <td width="30">&nbsp;</td>
+                        <td width="140" class="text-right"><span class="span-formlist">被抵押户組：</span></td>
+                        <td width="180"><input type="text"  data-ng-model="condition.agentGroup.agent_group_name" data-input-uppercase  class="form-control" name="agent_group_name"></td>
+                        <td width="30">&nbsp;</td>
+                        <td width="140" class="text-right"><span class="span-formlist">抵押時間：</span></td>
+                        <td colspan="3">
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.mortgage.mortgage_time[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.mortgage.mortgage_time[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <strong>抵押記錄</strong>
+            <button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="MortgageList" report-btn>導出EXCEL</button>
+            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="export()">導出EXCEL</button>-->
+        </div>
+        <div class="panel-content">
+            <perfect-scrollbar class="animate-fade-up consumption_record " style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 2500px;">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td check-permissions="mortgageRecordReturnM" width="80">操作</td>
+                    <td>抵押廳</td>
+                    <td width="100">日期</td>
+                    <td>貸款戶口</td>
+                    <td>戶口姓名</td>
+                    <td>貸款單號</td>
+                    <td>貸款金額(萬)</td>
+                    <td>貸款單所在廳</td>
+                    <td>貸款時間</td>
+                    <td>抵押時間</td>
+                    <td>抵押方</td>
+                    <td>戶口姓名</td>
+                    <!--<td>抵押單編號</td>-->
+                    <td>抵押金額(萬)</td>
+                    <td>抵押方式</td>
+                    <td>未回抵押金額</td>
+                    <td>是否釋放簽額</td>
+                    <td>備註</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="mortgage_record in mortgage_records" data-selected-rows>
+                    <td class="no-padding" check-permissions="mortgageRecordReturnM">
+                        <!--<button class="btn btn-info btn-information btn-table" ui-sref="mortgage-detail-m({id: '{{mortgage_record.mortgage_id}}'})">回M</button>-->
+                        <button data-ng-hide="mortgage_record.is_return_m==1 || mortgage_record.mortgage.mortgage_type == '0' || mortgage_record.mortgage.hall_id != user.hall.id || mortgage_record.marker.hall_type=='3'"
+                                class="btn btn-information btn-table margin-right-5"
+                                data-ng-click="mortgageM(mortgage_record.marker_id,mortgage_record)">回M</button>
+                        <!--<button class="btn btn-info btn-information btn-table" data-ng-click="delete(mortgage_record.id)">刪除</button>-->
+                    </td>
+                    <td>{{ mortgage_record.mortgage.hall_name}}</td>
+                    <td>{{ mortgage_record.mortgage.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                    <td>{{ mortgage_record.marker.agent_code}}</td>
+                    <td>{{ mortgage_record.marker.agent_name}}</td>
+                    <td>{{ mortgage_record.marker.marker_seqnumber}}</td>
+                    <td>{{ mortgage_record.marker.marker_amount|parseTenThousand2}}</td>
+                    <td>{{ mortgage_record.marker.hall_name}}</td>
+                    <td>{{ mortgage_record.marker.loan_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{ mortgage_record.mortgage.mortgage_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{ mortgage_record.mortgage.agent_code }}</td>
+                    <td>{{ mortgage_record.mortgage.agent_name }}</td>
+                    <!--<td>{{ mortgage_record.mortgage_no }}</td>-->
+                    <td>{{ mortgage_record.mortgage_amount|parseTenThousand2}}</td>
+                    <td>
+                        {{ mortgageTypeFormat(mortgage_record.is_return_m,mortgage_record.is_all_mortgage)}}
+                        <!--mortgageMethods[mortgage_record.is_all_mortgage]-->
+                    </td>
+                    <td>{{ mortgage_record.settlement_amount }}</td>
+                    <td>{{ 1 == mortgage_record.mortgage.is_release ? '是' : '否' }}</td>
+                    <td>{{ mortgage_record.mortgage.remark }}</td>
+
+                </tr>
+                <tr data-ng-show="mortgage_records.length == 0">
+                    <td colspan="17">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr class="" >
+                    <td colspan="14" align="right">
+                        統計匯總：
+                    </td>
+                    <td align="left"  colspan="3">
+                        {{ total || 0 }} 萬
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+                </div>
+            </perfect-scrollbar>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="search(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="search"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

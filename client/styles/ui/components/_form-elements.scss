@@ -1,0 +1,85 @@
+// dependency: http://angular-ui.github.io/bootstrap/ 
+
+// Datepicker
+.ui-datepicker {
+    table {
+        margin: 0 5px;
+        th,
+        td {
+            padding: 1px;
+            color: #666666;
+        }
+    }
+  button.btn-default {
+    padding: 5px 12px;
+  }
+  button.btn-datepicker {
+    padding: 4px 12px;
+  }
+}
+
+
+// Timepicker
+.ui-timepicker {
+    td {
+        padding: 1px;
+    }
+}
+
+
+// Rating
+.ui-rating {
+    .fa {
+        // overrides Bootstrap .glyphicon icon fonts.
+        display: inline-block;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        // custom
+        margin-right: 5px;
+    }
+
+    // when active
+    .fa.fa-star {
+        color: $skin-light;
+    }
+    &.ui-rating-success {
+        .fa.fa-star {
+            color: $brand-success;
+        }        
+    }
+    &.ui-rating-info {
+        .fa.fa-star {
+            color: $brand-info;
+        }        
+    }
+    &.ui-rating-warning {
+        .fa.fa-star {
+            color: $brand-warning;
+        }        
+    }
+    &.ui-rating-danger {
+        .fa.fa-star {
+            color: $brand-danger;
+        }        
+    }
+}
+
+//textarea
+textarea.textarea-table01 {
+  //background-color: #CCCCCC;
+}
+
+.dl-horizontal {
+  margin-bottom: 0;
+  dd{
+    margin-left: 0;
+  }
+}
+.ui-radio {
+  margin: 0 20px 1px 20px;
+}

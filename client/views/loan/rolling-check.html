@@ -1,0 +1,268 @@
+<div class="page page-grid" data-ng-controller="rollingCheckManagerCtrl">
+<div class="panel panel-default">
+<div class="col-md-7">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>轉碼單詳細</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">戶口編碼：</td>
+                                        <td width="209">{{rolling_record.agent_code}}</td>
+                                        <td width="100" class="text-right">轉碼單號：</td>
+                                        <td width="209">{{rolling_record.rolling_seqnumber}}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="100" class="text-right">轉碼數：</td>
+                                        <td width="209">{{rolling_record.last_amount}}</td>
+                                        <td width="100" class="text-right">資金類型：</td>
+                                        <td width="209">{{rolling_record.fund_type}}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="100" class="text-right">轉碼總數：</td>
+                                        <td colspan="3">{{rolling_record.total_amount}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <td>金額</td>
+                                        <td>本金類型</td>
+                                        <td width="120">卡類型</td>
+                                        <td width="70">轉碼卡</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat = "type in rolling_record_copy.types track by $index">
+                                        <td>{{type.amount}}</td>
+                                        <td>{{type.amount_type}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                {{type.card_type}}
+                                            </div>
+                                        </td>
+                                        <td width="70">
+                                            <a class="btn btn-info btn-information btn-table" ng-click="addCardType(type,$index)" data-ng-hide="operation_type=='detail'">選擇/新增</a>
+                                            <span data-ng-show="operation_type=='detail'">--</span>
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-show="rolling_record.types.length == 0">
+                                        <td colspan="4">暫無符合條件的記錄</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>轉碼流水</strong>
+                    <button class="btn btn-info btn-information pull-right" ng-click="addRollingSteam(rolling_record)" data-ng-hide="operation_type=='detail'">新增轉碼流水</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover table-click">
+                        <thead>
+                        <tr>
+                            <td>轉碼單號</td>
+                            <td>轉碼流水號</td>
+                            <td>戶口編碼</td>
+                            <td>中文名</td>
+                            <td>轉碼類型</td>
+                            <td>轉碼數（萬）</td>
+                            <td>轉碼時間</td>
+                            <td>經手人</td>
+                            <td>備註</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="st_record in streamTranscodes_copy"  ng-click="stream_detail(st_record)">
+                            <td>{{st_record.rolling_seqnumber}}</td>
+                            <td>{{st_record.stream_number}}</td>
+                            <td>{{st_record.agent_code}}</td>
+                            <td>{{st_record.full_name}}</td>
+                            <td>{{st_record.fund_type}}</td>
+                            <td>{{st_record.amount}}</td>
+                            <td>{{st_record.rolling_time}}</td>
+                            <td>{{st_record.brokerage}}</td>
+                            <td>{{st_record.remark}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br><br>
+                    <table class="table table-bordered table-striped table-detail-01" style="width: 50%;" data-ng-hide="operation_type=='detail'">
+                        <tr>
+                            <td>操作密碼：</td>
+                            <td class="text-left">
+                                <div class="col-md-8"> <input class="form-control ng-pristine ng-valid" type="text" ng-model="certificate.certificate_number" data-enter-key="lastSubmit(rolling_record.rolling_id)"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="loan_current_page"
+                                            total-items="all_loans.length"
+                                            on-select-page="select(page)"
+                                            data-ng-show="loans.length != 0"></pagination>
+                            </div>
+                        </div>
+
+                    </footer>
+                    <br><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-information margin-right-15" ng-click="lastSubmit(rolling_record.rolling_id)" data-ng-hide="operation_type=='detail'">提 交</button>
+                        <button class="btn btn-inf btn-cancel" data-ng-hide="operation_type=='detail'" ng-click="cancel()">取消</button>
+                        <button class="btn btn-info btn-information margin-right-15" data-ng-show="operation_type=='detail'" ng-click="goback()">返回</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="panel panel-list-detail col-md-5" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">貸款業務單重算前</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>業務單編號</td>
+                <td>廳館</td>
+                <td>戶口編號</td>
+                <td>貸款人</td>
+                <td>貸款金額（萬）</td>
+                <td>貸款日期</td>
+                <td>經手人</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>S3562432</td>
+                <td>永利鉅星</td>
+                <td>FA233</td>
+                <td>陳達文</td>
+                <td>500</td>
+                <td>2014.08.01</td>
+                <td>蔡晓洁</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>貸款單號</td>
+                <td>貸款金額（萬）</td>
+                <td>貸款類型</td>
+                <td>息率</td>
+                <td>免息天期</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>M20140801001</td>
+                <td>200</td>
+                <td>M</td>
+                <td>0.1</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>M20140801002</td>
+                <td>300</td>
+                <td>U</td>
+                <td>0.1</td>
+                <td>15</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="panel panel-list-detail col-md-5" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">貸款業務單重算後</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>業務單編號</td>
+                <td>廳館</td>
+                <td>戶口編號</td>
+                <td>貸款人</td>
+                <td>貸款金額（萬）</td>
+                <td>貸款日期</td>
+                <td>經手人</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>S3562432</td>
+                <td>永利鉅星</td>
+                <td>FA233</td>
+                <td>陳達文</td>
+                <td>500</td>
+                <td>2014.08.01</td>
+                <td>蔡晓洁</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>貸款單號</td>
+                <td>貸款金額（萬）</td>
+                <td>貸款類型</td>
+                <td>息率</td>
+                <td>免息天期</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>M20140801001</td>
+                <td>200</td>
+                <td>M</td>
+                <td>0.1</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>M20140801002</td>
+                <td>300</td>
+                <td>M</td>
+                <td>0.1</td>
+                <td>18</td>
+            </tr>
+            </tbody>
+        </table>
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-12 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="current_page"
+                                total-items="all_customers.length"
+                                on-select-page="select(page)"
+                                data-ng-show="customers.length != 0"></pagination>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+</div>

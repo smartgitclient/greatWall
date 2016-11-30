@@ -1,0 +1,81 @@
+<div class="modal-header">
+    <h3>選擇賭檯：</h3>
+</div>
+<div class="modal-body">
+    <table>
+        <tbody></tbody>
+        <tr height="50">
+            <td width="127" class="text-right">戶口編號：</td>
+            <td width="140">{{guest.agent_code}}</td>
+            <td width="127" class="text-right">客戶姓名：</td>
+            <td width="140">{{guest.agent_name}}</td>
+            <td width="127" class="text-right" data-ng-show="guest.field_no != null">場次編號：</td>
+            <td width="140"  data-ng-show="guest.field_no != null">{{guest.field_no}}</td>
+            <td width="127" class="text-right"  data-ng-show="guest.desk_no != null">當前檯號：</td>
+            <td width="140"  data-ng-show="guest.desk_no != null">{{guest.desk_no}}</td>
+        </tr>
+        <tr height="50">
+            <td class="text-right">選擇檯號：</td>
+            <td>
+                <ui-select ng-model="gambling.desk_no">
+                    <ui-select-match placeholder="檯號">{{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="department in ['D0001','D0002','D0003'">
+                        <div ng-bind-html="department"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </td>
+            <td class="text-right">操作密碼：</td>
+            <td><input type="text" class="form-control" ng-model="gambling.pwd" data-enter-key="closed()" /></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-info btn-confirm margin-right-15" ng-click="closed()">確認</button>
+        <button class="btn btn-inf btn-cancel" data-ng-click="closed()">取消</button>
+    </div>
+    <br><br>
+    <table class="table table-gambling">
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="cursor: pointer;vertical-align: middle;font-size: 20px;" data-ng-click="selectDesk_no('D0001')"><img  src="images/scene/table1.png"></td>
+            <td></td>
+            <td style="cursor: pointer;vertical-align: middle;font-size: 20px;" data-ng-click="selectDesk_no('D0002')"><img  src="images/scene/table2.png"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="cursor: pointer;vertical-align: middle;font-size: 20px;" data-ng-click="selectDesk_no('D0003')"><img  src="images/scene/table3.png"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="cursor: pointer;vertical-align: middle;font-size: 20px;" data-ng-click="selectDesk_no('D0004')"><img  src="images/scene/table4.png"></td>
+            <td></td>
+            <td style="cursor: pointer;vertical-align: middle;font-size: 20px;" data-ng-click="selectDesk_no('D0005')"><img  src="images/scene/table5.png"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+</div>

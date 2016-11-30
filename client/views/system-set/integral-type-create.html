@@ -1,0 +1,106 @@
+<div class="page page-grid" data-ng-controller="integralTypeCreateCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-5" check-permissions="integralTypeCreate">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>新增積分類型</strong>
+                        <button class="btn btn-confirm pull-right" data-ng-click="add()">新增積分類型</button>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_integral_create" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{form_integral_create_url}}">
+                            <table>
+                                <tr height="50">
+                                    <td width="100" class="text-right">積分類型：</td>
+                                    <td width="200">
+                                        <input type="text" class="form-control" ng-model="record.integral_name" name="integral_name">
+                                    </td>
+                                    <td class="text-right" width="100">有效期：</td>
+                                    <td width="200">
+                                        <select class="form-control" data-ng-model="record.integral_expire" ng-options="k as v for (k, v) in integralTypeExpire" name="integral_expire">
+                                            <option value="">請選擇有效期</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right" width="100">狀態：</td>
+                                    <td>
+                                        <select class="form-control" data-ng-model="record.status" name="status" ng-options="k as v for (k, v) in integralTypeStatus">
+                                            <option value="">請選擇狀態</option>
+                                        </select>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" width="100">操作密碼：</td>
+                                    <td>
+                                        <input name="pin_code" type="password" data-ng-model="record.pin_code" class="form-control" data-enter-key="submit()">
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br><br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="submit()" data-ng-disabled="disabled_submit">提交</button>
+                                <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel_l col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td width="150">積分類型</td>
+                                    <td>有效期</td>
+                                    <td>狀態</td>
+                                    <td width="150" check-permissions="integralTypeUpdate,integralTypeDelete">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr  ng-repeat="integral in integrals" data-selected-rows>
+                                    <td>{{integral.integral_name}}</td>
+                                    <td>{{ integralTypeExpire[integral.integral_expire]}}</td>
+                                    <td>{{ integralTypeStatus[integral.status]}}</td>
+                                    <td check-permissions="integralTypeUpdate,integralTypeDelete">
+                                        <button class="btn btn-information btn-table" check-permissions="integralTypeUpdate" ng-click="update(integral)">修改</button>
+                                        <button class="btn btn-information btn-table" check-permissions="integralTypeDelete" ng-click="delete(integral.id)">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="integrals.length == 0">
+                                    <td colspan="4">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

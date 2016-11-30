@@ -1,0 +1,25 @@
+<div class="panel-form-list">
+    <div class="modal-header">
+        <h3>編輯發送SMS：</h3>
+    </div>
+    <div class="modal-body">
+        <table id="edit-EMS" class="table table-pop01">
+            <tr>
+                <td width="74">戶口編號</td>
+                <td><input class="form-control input-01 width-83" width="90" type="text" data-ng-model="loan.agent_code" readonly></td>
+                <td width="74">業務單號</td>
+                <td width="140"><input class="form-control input-01 width-83" type="text"  data-ng-model="loan.loan_seqnumber" readonly></td>
+                <td width="74">貸款金額</td>
+                <td><input class="form-control input-01 width-83" width="90" type="text" data-ng-model="loan.loan_amount" readonly></td>
+            </tr>
+        </table>
+        <br><br>
+        <div class="row text-center">
+            <textarea id="sms_content" class="form-control textarea-table01 ng-pristine SMS-content" data-ng-model="sms" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-confirm" ng-click="submit(sms)">确定</button>
+        <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+    </div>
+</div>

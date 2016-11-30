@@ -1,0 +1,155 @@
+<div class="page page-grid" data-ng-controller="differenceRecordCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-4" data-ng-show="user.checkPermissions('differenceTicketCreate')">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>新增差額單</strong>
+                        <!--<button class="btn btn-confirm pull-right" data-ng-click="addDifferenceRecord()" check-permissions="differenceTicketCreate">新增差額單</button>-->
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_differenceRecord" class="form-horizontal form-validation" server-validation="POST{{defference_url}}" >
+                            <table>
+                                <tr height="50">
+                                    <td width="70" class="text-right">戶口編號：</td>
+                                    <td><input type="text" data-input-uppercase data-ng-model="agent_code" data-ng-required="enableClientValidation" class="form-control" name = "agent_info_id" data-ng-disabled="disabled_update"></td>
+                                    <td width="77" class="text-right">中文姓名：</td>
+                                    <td>{{agent_name}}</td>
+                                </tr>
+                                <tr height="50">
+                                    <td  class="text-right">年月：</td>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                        <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="commission_calculate.year_month" data-dynamic-name="year_month" />
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                    </td>
+                                    <td class="text-right">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr height="50">
+                                    <td width="70" class="text-right">應收項：</td>
+                                    <td><input type="text" pattern="[0-9]+" data-ng-required="enableClientValidation" data-ng-model="commission_calculate.should_income" class="form-control" name="should_income"></td>
+                                    <td width="77" class="text-right">應付項：</td>
+                                    <td><input type="text" pattern="[0-9]+" data-ng-required="enableClientValidation" data-ng-model="commission_calculate.should_pay" class="form-control" name="should_pay"></td>
+                                </tr>
+                                <tr height="50">
+                                    <td valign="top" class="text-right">
+                                        備註：
+                                        <!--<button class="btn btn-information btn-table btn-remark">常用</button>-->
+                                    </td>
+                                    <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="commission_calculate.remark" name="remark"></textarea></td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td><input type="password" data-ng-model="commission_calculate.pin_code" class="form-control" name="pin_code" data-enter-key="add()" ></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table><br/><br/>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" data-ng-disabled="disabled_submit" ng-click="add()">提交</button>
+                                <!--<button class="btn btn-cancel" data-ng-click="reset()">重置</button>-->
+                                <button class="btn btn-cancel" ng-click="addDifferenceRecord()" >取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>差額單查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right"><span class="span-formlist">戶口編號：</span></td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="condition.agentInfo.agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right"><span class="span-formlist">中文姓名：</span></td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agentMaster.agent_contact_name" class="form-control"></td>
+                                        <td width="229" class="text-right"><span class="span-formlist">年月：</span></td>
+                                        <td width="209"><!-- Split button -->
+                                            <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month[0]" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset_condition()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>差額單記錄</strong>
+                            <button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td data-min-screen-width="100">戶口編號</td>
+                                    <td data-min-screen-width="100">中文姓名</td>
+                                    <td width="80">年   月</td>
+                                    <td data-min-screen-width="80">應收項</td>
+                                    <td data-min-screen-width="80">應付項</td>
+                                    <td width="250">備註</td>
+                                    <td data-min-screen-width="50">狀態</td>
+                                    <td data-min-screen-width="100" check-permissions="differenceTicketView">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="commissionCalculate in commissionCalculates" data-selected-rows>
+                                    <td>{{commissionCalculate.agent_code}}</td>
+                                    <td>{{commissionCalculate.agent_name}}</td>
+                                    <td>{{commissionCalculate.year_month}}</td>
+                                    <td>{{commissionCalculate.should_income|number}}</td>
+                                    <td>{{commissionCalculate.should_pay|number}}</td>
+                                    <td>{{commissionCalculate.remark}}</td>
+                                    <td>{{commissionCalculate.status==1?"未還":"已還"}}</td>
+                                    <td check-permissions="differenceTicketView">
+                                        <button class="btn btn-information btn-table" data-ng-click="detail(commissionCalculate)" check-permissions="differenceTicketView">詳細</button>
+                                        <!--<button class="btn btn-information btn-table margin-right-5" data-ng-click="update(commissionCalculate.id)" check-permissions="differenceTicketUpdate">修改</button>-->
+                                        <!--<button class="btn btn-information btn-table" data-ng-click="delete(commissionCalculate.id)" check-permissions="differenceTicketDelete">刪除</button>-->
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="commissionCalculates.length == 0">
+                                    <td colspan="8">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

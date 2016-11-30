@@ -1,0 +1,200 @@
+<div class="page page-grid" data-ng-controller="screeningListCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>{{search_title}}</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="120" class="text-right">廳館：</td>
+                                        <td width="160" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="160" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="120" class="text-right">戶口編號：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.agent_code" data-input-uppercase class="form-control"></td>
+                                        <td width="120" class="text-right">中文名：</td>
+                                        <td width="160">{{agent_name}}</td>
+                                        <td width="120" class="text-right">線頭：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.agentGroup.agent_group_name" data-input-uppercase class="form-control"></td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">年  月：</td>
+                                        <td>
+                                            <table class="table-inner">
+                                                <tr>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker">
+                                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.shiftMark.year_month" data-dynamic-name="year_month"/>
+                                                            <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <!--<td width="120" align="right"><span class="span-formlist">指定日期：</span></td>-->
+                                        <!--<td width="160">-->
+                                            <!--<p class="input-group ui-datepicker pull-left">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.shiftMark.shift_date"/>-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <td class="text-right">離場日期：</td>
+                                        <td width="350" colspan="3">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.out_time[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.out_time[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-right">場次狀態：</td>
+                                        <td>
+                                            <select data-ng-model="condition.status" class="form-control">
+                                                <option value="">請選擇場次狀態</option>
+                                                <option value="1">{{matchesStatus[1]}}</option>
+                                                <option value="2">{{matchesStatus[2]}}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-confirm margin-right-15" data-ng-click="search()">查詢</button>
+                                    <button class="btn btn-info btn-cancel margin-right-15" data-ng-click="reset()" >重置</button>
+                                    <!--<button class="btn btn-info btn-cancel margin-right-15"  data-ng-click="print()">列印</button>-->
+                                    <!--<button class="btn btn-inf btn-cancel">導出Excel</button>-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <!--<div class="panel-heading">-->
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                            <!--<button class="btn btn-info btn-confirm margin-right-15 pull-right" ng-click="summary()">即時匯總</button>-->
+                            <!--<button class="btn btn-info btn-confirm margin-right-15 pull-right" data-ng-click="sendSMS()">發送SMS</button>-->
+                        <!--</div>-->
+                        <table>
+                            <tr>
+                                <td colspan="16" align="right" style="padding: 20px 0 20px 10px; font-weight: bold;">
+                                    未離場：{{sceneRecordsTotal.in_scene}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    已離場：{{sceneRecordsTotal.out_scene}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    總場數：{{sceneRecordsTotal.scene_total}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    上數：{{sceneRecordsTotal.up_amount}} 萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    下數：{{sceneRecordsTotal.down_amount}} 萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    公司上下數：{{sceneRecordsTotal.loss_win_amount}} 萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="panel-content table-dynamic">
+                                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                    <div class="panel-content consumption_record"  style="min-height: 100px; width: 2000px;">
+                                        <table class="table table-bordered table-striped" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <td>操作</td>
+
+                                            <td width="160" data-td-sort data-td-sort-up="scene_no ASC,agent_code ASC" data-td-sort-down="scene_no DESC,agent_code ASC" data-td-sort-select="search" data-td-sort-pagination="pagination">
+                                                場次</td>
+                                            <!--<td>日期</td>-->
+                                            <td width="70">狀態</td>
+                                            <td width="100" data-td-sort data-td-sort-up="agent_code ASC,scene_no ASC" data-td-sort-down="agent_code DESC,scene_no ASC" data-td-sort-select="search" data-td-sort-pagination="pagination">
+                                                戶口編號</td>
+                                            <td>户口姓名</td>
+                                            <td width="100">客戶姓名</td>
+                                            <td>入場本金(萬)</td>
+                                            <td>截更本金</td>
+                                            <td>離場本金(萬)</td>
+                                            <td width="100">上下數(萬)</td>
+                                            <td width="100">轉碼數(萬)</td>
+                                            <td width="150" data-td-sort data-td-sort-up="in_time ASC" data-td-sort-down="in_time DESC" data-td-sort-select="search" data-td-sort-pagination="pagination">開場時間</td>
+                                            <td width="150" data-td-sort data-td-sort-up="out_time ASC" data-td-sort-down="out_time DESC" data-td-sort-select="search" data-td-sort-pagination="pagination">離場時間</td>
+                                            <td width="350">備註</td>
+                                            <td>经手人</td>
+                                            <td>操作機器</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="sceneRecord in sceneRecords">
+                                            <td>
+                                                <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail(sceneRecord,'detail')">詳細</button>
+                                                <!--<button class="btn btn-info btn-information btn-table"-->
+                                                <!--data-ng-show="sceneRecord.status==2"-->
+                                                <!--data-ng-click="detail(sceneRecord,'edit')">修改</button>-->
+                                                <!--<button class="btn btn-info btn-confirm btn-table" data-ng-click="remove($index)">刪除</button>-->
+                                            </td>
+                                            <td>{{sceneRecord.scene_no}}</td>
+                                            <!--<td>{{sceneRecord.create_time | parseDate : "yyyy-MM-dd"}}</td>-->
+                                            <td>{{matchesStatus[sceneRecord.status]}}</td>
+                                            <td><a href="#/agent/agent-scene-detail/{{sceneRecord.agent_info_id}}">
+                                                {{sceneRecord.agent_code}}</a>
+                                            </td>
+                                            <td>{{sceneRecord.agent_name}}</td>
+                                            <td>{{sceneRecord.guest_name}}</td>
+                                            <td>{{scene_selected(sceneRecord.sceneRecordSubs)}}</td>
+                                            <td>{{shift_amount_sum(sceneRecord.countSecondOutCapitals)}}</td>
+                                            <td>{{outScene(sceneRecord.outCapitals)}}</td>
+                                            <td>
+                                                <span data-ng-show="sceneRecord.loss_win_amount>0" class="positive-number">{{"+"+sceneRecord.loss_win_amount}}</span>
+                                                <span data-ng-hide="sceneRecord.loss_win_amount>0" class="minus-number">{{sceneRecord.loss_win_amount}}</span>
+                                            </td>
+                                            <td data-ng-hide="sceneRecord.rolling_total === ''">{{sceneRecord.rolling_total | parseTenThousand2}}</td>
+                                            <td data-ng-show="sceneRecord.rolling_total === ''"></td>
+                                            <td>{{sceneRecord.in_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{sceneRecord.out_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                            <td align="left">{{sceneRecord.remark}}</td>
+                                            <td>{{sceneRecord.user_name}}</td>
+                                            <td>{{sceneRecord.machine_name}}</td>
+                                        </tr>
+                                        <tr data-ng-show="sceneRecords.length == 0">
+                                            <td colspan="16">暫無符合條件的記錄</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="pagination.total_items"
+                                                    on-select-page="scene_search(page)"
+                                                    max-size = "pagination.max_size"
+                                                    items-per-page = "pagination.items_per_page"
+                                                    data-ng-hide="sceneRecords.length == 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination" select-page="scene_search" ></paginationselect>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

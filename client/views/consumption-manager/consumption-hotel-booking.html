@@ -1,0 +1,390 @@
+<div class="page page-services ng-scope" data-ng-controller="consumptionSetHotelCtrls">
+
+<div class="panel">
+<div class="panel-content">
+<tabset class="ui-tab">
+<tab heading="酒店">
+    <div class="panel panel-default">
+        <div class="col-md-4">
+            <div class="panel panel-list-detail">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td class="text-right">消費單號：</td>
+                            <td class="text-left">100020</td>
+                            <td class="text-right">&nbsp;</td>
+                            <td class="text-left">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">預訂單號：</td>
+                            <td class="text-left">0233445</td>
+                            <td class="text-right">所屬廳館：</td>
+                            <td class="text-left">永利鉅星</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">戶口編號：</td>
+                            <td class="text-left">FA23</td>
+                            <td class="text-right">戶口姓名：</td>
+                            <td class="text-left">李三</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">酒店：</td>
+                            <td class="text-left">MGM</td>
+                            <td class="text-right">房型：</td>
+                            <td class="text-left">GK/GT</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">入住日期：</td>
+                            <td class="text-left">2014-06-05</td>
+                            <td class="text-right">入住天數：</td>
+                            <td class="text-left">2</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">退房日期：</td>
+                            <td class="text-left">2014-06-06</td>
+                            <td class="text-right">房間登記人：</td>
+                            <td class="text-left">李四</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">登記人證件：</td>
+                            <td class="text-left">身份證</td>
+                            <td class="text-right">證件號碼：</td>
+                            <td class="text-left">4415987456321</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">訂房人：</td>
+                            <td class="text-left">李四</td>
+                            <td class="text-right">訂房人電話：</td>
+                            <td class="text-left">1369874563</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">付款方式：</td>
+                            <td class="text-left">扣消費積分</td>
+                            <td class="text-right">狀態：</td>
+                            <td class="text-left">未核對</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <thead>
+                        <tr>
+                            <td>日期</td>
+                            <td>成本價</td>
+                            <td>售價</td>
+                            <td>數量</td>
+                            <td>成本總數</td>
+                            <td>實收金額</td>
+                            <td>收益</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>2014-06-05 平日</td>
+                            <td>302</td>
+                            <td>450</td>
+                            <td>2</td>
+                            <td>604</td>
+                            <td>900</td>
+                            <td>296</td>
+                        </tr>
+                        <tr>
+                            <td>2014-06-05 平日</td>
+                            <td>302</td>
+                            <td>450</td>
+                            <td>2</td>
+                            <td>604</td>
+                            <td>900</td>
+                            <td>296</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>合計：</td>
+                            <td>954</td>
+                            <td>1500</td>
+                            <td>546</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <br>
+                    <table width="100%">
+                        <tr>
+                            <td class="text-right" width="126">備註：</td>
+                            <td>FA23 授權人李四 訂房 已通知</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn  btn-confirm" data-ng-click="update()">修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">消費單號：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+
+                                        <td width="229" class="text-right">所屬廳館：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+
+                                        <td width="229" class="text-right">戶口編號：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="229" class="text-right">戶口姓名：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                                        <td width="100" class="text-right">酒店：</td>
+                                        <td width="209">
+                                            <ui-select ng-model="condition.hall">
+                                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="hall in halls">
+                                                    <div ng-bind-html="hall"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td width="100" class="text-right">房型：</td>
+                                        <td width="209">
+                                            <ui-select ng-model="condition.type">
+                                                <ui-select-match placeholder="請選擇消費類型">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="y in ['酒店','機票','租車','餐劵']">
+                                                    <div ng-bind-html="y"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+
+                                    </tr>
+                                    <tr height="50">
+
+                                        <td class="text-right">房間登記人：</td>
+                                        <td><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                                        <td class="text-right">入住日期：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.created_end_time" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" />
+                                                                            <span class="input-group-btn">
+                                                                            <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                            </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-right">預訂單號：</td>
+                                        <td><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                                        <td class="text-right">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn  btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="searchReset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>消費單號</td>
+                                    <td>預訂單號</td>
+                                    <td>所屬廳館</td>
+                                    <td>戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>酒店</td>
+                                    <td>房型</td>
+                                    <td>入住日期</td>
+                                    <td>房間登記人</td>
+                                    <td>狀態</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>100020</td>
+                                    <td>0233445</td>
+                                    <td>永利鉅星</td>
+                                    <td>FA23</td>
+                                    <td>李三</td>
+                                    <td>MGM</td>
+                                    <td>GK/GT</td>
+                                    <td>2014-06-05</td>
+                                    <td>李四</td>
+                                    <td>未核對</td>
+                                    <td class="no-padding">
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="current_page"
+                                                total-items="all_buyChips.length"
+                                                on-select-page="select(page)"
+                                                data-ng-show="buyChips.length != 0"></pagination>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</tab>
+<tab heading="食飛">
+    <div data-ng-include=" 'views/consumption-manager/consumption-food-fly-booking.html' "></div>
+</tab>
+<tab heading="直升機">
+    <div data-ng-include=" 'views/consumption-manager/consumption-helicopter-booking.html' "></div>
+</tab>
+<tab heading="船票">
+    <div data-ng-include=" 'views/consumption-manager/consumption-ship-ticket-booking.html' "></div>
+</tab>
+<tab heading="機票">
+    <div data-ng-include=" 'views/consumption-manager/consumption-air-booking.html' "></div>
+</tab>
+<tab heading="租車">
+    <div data-ng-include=" 'views/consumption-manager/consumption-car-booking.html' "></div>
+</tab>
+<tab heading="門票">
+    <div data-ng-include=" 'views/consumption-manager/consumption-admission-ticket-booking.html' "></div>
+</tab>
+<tab heading="雜項">
+    <div data-ng-include=" 'views/consumption-manager/consumption-other-booking.html' "></div>
+</tab>
+
+</tabset>
+</div>
+</div>
+</div>

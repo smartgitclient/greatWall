@@ -1,0 +1,189 @@
+<div class="page page-services ng-scope" data-ng-controller="commissionPreReleaseRecordDetailCtrls">
+    <div class="col-md-12">
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <strong>出佣預覽</strong>
+            </div>
+            <form name="form_pre_release_record" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{pre_release_record_url}}">
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="180" class="text-right">戶口編號：</td>
+                        <td width="235" class="text-left">{{commission_pre_release_record.agent_code}}</td>
+                        <td width="180" class="text-right">中文姓名：</td>
+                        <td width="235" class="text-left">{{commission_pre_release_record.agent_name}}</td>
+                        <td width="180" class="text-right">年月：</td>
+                        <td width="235" class="text-left">{{commission_pre_release_record.year_month|parseDate:"yyyy-MM"}}</td>
+                        <td class="text-right">&nbsp;</td>
+                        <td class="text-right">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <strong>應收項明細</strong>
+            </div>
+            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                <div class="panel-content consumption_record"  style="min-height: 100px; min-width: 3500px;">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td width="98">廳館</td>
+                            <td>現金轉碼</td>
+                            <td>現金佣</td>
+                            <td>現金津貼</td>
+                            <td>貸款轉碼</td>
+                            <td>貸款佣</td>
+                            <td>貸款津貼</td>
+                            <td>IOU轉碼</td>
+                            <td>IOU佣</td>
+                            <td>IOU津貼</td>
+                            <td>股本轉碼</td>
+                            <td>股本佣</td>
+                            <td>股本津貼</td>
+                            <td>總轉碼</td>
+                            <td>總佣金</td>
+                            <td>本月津貼</td>
+                            <td>房消費</td>
+                            <td>食單</td>
+                            <td>機票</td>
+                            <td>直升機</td>
+                            <td>船飛</td>
+                            <td>門票</td>
+                            <td>雜項</td>
+                            <td>車輛</td>
+                            <td>消費總額</td>
+                            <td>下線轉碼</td>
+                            <td>下線佣金收益</td>
+                            <td>下線津貼</td>
+                            <td>本月津貼總額</td>
+                            <td>上月剩餘津貼</td>
+                            <td>津貼過期回收</td>
+                            <td>負消費</td>
+                            <td>津貼餘額</td>
+                        </tr>
+                        </thead>
+                        <tr data-ng-repeat="commissionRecord in commission_pre_release_record.commissionRecordSubs">
+                            <td>{{commissionRecord.hall_name}}</td>
+                            <td>{{commissionRecord.cash_rolling|parseTenThousand}}</td><!--現金轉碼 -->
+                            <td style="cursor: pointer" data-ng-click="commissionDeatail(commissionRecord.cashDivides)">{{commissionRecord.cash_rolling_commission|parseDollar:true}}</td><!--佣金 -->
+                            <td>{{commissionRecord.cash_allowance|parseDollar:true}}</td><!--  津貼--->
+                            <td>{{commissionRecord.loan_rolling|parseTenThousand}}</td><!--貸款轉碼 -->
+                            <td style="cursor: pointer" data-ng-click="commissionDeatail(commissionRecord.markerDivides)">{{commissionRecord.loan_rolling_commission|parseDollar:true}}</td><!--佣金 -->
+                            <td>{{commissionRecord.loan_allowance|parseDollar:true}}</td><!-- 津貼-->
+                            <td>{{commissionRecord.iou_rolling|parseTenThousand}}</td><!-- IOU轉碼-->
+                            <td style="cursor: pointer" data-ng-click="commissionDeatail(commissionRecord.iouDivides)">{{commissionRecord.iou_rolling_commission|parseDollar:true}}</td><!-- 佣金-->
+                            <td>{{commissionRecord.iou_allowance|parseDollar:true}}</td><!--津貼 -->
+                            <td>{{commissionRecord.stock_rolling|parseTenThousand}}</td><!--股本轉碼 -->
+                            <td style="cursor: pointer" data-ng-click="commissionDeatail(commissionRecord.stockDivides)">{{commissionRecord.stock_rolling_commission|parseDollar:true}}</td><!--佣金 -->
+                            <td>{{commissionRecord.stock_allowance|parseDollar:true}}</td><!--津貼 -->
+                            <td>{{commissionRecord.rolling_total|parseTenThousand}}</td><!-- 總轉碼-->
+                            <td>{{commissionRecord.personal_commission|parseDollar:true}}</td><!--總佣金roll_commission -->
+                            <td>{{commissionRecord.thismonth_allowance|parseDollar:true}}</td><!-- 本月津貼-->
+                            <td>{{commissionRecord.hotel|parseDollar:true}}</td><!--房消費 -->
+                            <td>{{commissionRecord.foodcoupon|parseDollar:true}}</td><!-- 食單-->
+                            <td>{{commissionRecord.flight|parseDollar:true}}</td><!--機票 -->
+                            <td>{{commissionRecord.helicopter|parseDollar:true}}</td><!--直升機 -->
+                            <td>{{commissionRecord.boat|parseDollar:true}}</td><!--船飛 -->
+                            <td>{{commissionRecord.ticket|parseDollar:true}}</td><!--門票-->
+                            <td>{{commissionRecord.miscellaneous|parseDollar:true}}</td><!--雜項 -->
+                            <td>{{commissionRecord.car|parseDollar:true}}</td><!-- 車輛-->
+                            <td>{{commissionRecord.thismonth_consumption|parseDollar:true}}</td><!--消費總額 -->
+                            <td>{{commissionRecord.underling_rolling|parseTenThousand}}</td><!-- 下線轉碼-->
+                            <td style="cursor: pointer" data-ng-click="underling_commissionDeatail('1',commission_pre_release_record.agent_info_id,commission_pre_release_record.year_month,commission_pre_release_record.hall_id)">{{commissionRecord.underling_commission|parseDollar:true}}</td><!--下線佣金收益 -->
+                            <td style="cursor: pointer" data-ng-click="underling_commissionDeatail('2',commission_pre_release_record.agent_info_id,commission_pre_release_record.year_month,commission_pre_release_record.hall_id)">{{commissionRecord.underling_allowance|parseDollar:true}}</td><!--下線津貼 -->
+                            <td>{{thismonth_allowance_total(commissionRecord)|parseDollar:true}}</td><!-- 本月津貼總額-->
+                            <td>{{commissionRecord.lastmonth_allowance|parseDollar:true}}</td><!--上月剩餘津貼 -->
+                            <td>{{commissionRecord.allowance_retrieve|parseDollar:true}}</td><!-- 津貼過期回收-->
+                            <td>{{commissionRecord.negative_consumption|parseDollar:true}}</td><!--負消費 -->
+                            <td>{{commissionRecord.allowance_balance|parseDollar:true}}</td><!-- 津貼餘額-->
+                        </tr>
+                        <tr data-ng-show="commission_pre_release_record.commissionRecordSubs.length == 0">
+                            <td colspan="42">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </perfect-scrollbar>
+        </div>
+        <div class="row">
+            <div class="panel panel-list-detail col-md-6">
+                <div class="panel-heading">
+                    <strong>應付項明細</strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>應付項</td>
+                            <td>總額</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>逾期手續費</td><!--pattern="[0-9]+"-->
+                            <td><input class="form-control input-92 ng-pristine ng-valid" type="text" data-ng-disabled="disable1" data-ng-model="commission_record.expired_fee" name="expired_fee" ></td>
+                        </tr>
+                        <tr>
+                            <td>扣超額消費</td>
+                            <td><input class="form-control input-92 ng-pristine ng-valid" type="text" data-ng-disabled="disable1" data-ng-model="commission_record.over_comsumption" name="over_comsumption" ></td>
+                        </tr>
+                        <tr>
+                            <td>雜項現金消費</td>
+                            <td><input class="form-control input-92 ng-pristine ng-valid" type="text" data-ng-disabled="disable1" data-ng-model="commission_record.miscellaneous_cash" name="miscellaneous_cash" ></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <table class="col-md-12">
+                        <tr height="50">
+                            <td width="85" class="text-right">應出佣金：</td>
+                            <td>{{commission_pre_release_record.should_commission | parseDollar:true}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">備註：</td>
+                            <td><textarea id="remark" data-ng-disabled="disable1" class="form-control textarea-table01 ng-pristine ng-valid" data-ng-model="commission_record.remark" rows="4" name="remark"></textarea></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">密碼：</td>
+                            <td><input data-ng-required="enableClientValidation" style="width: 200px" type="password" name = "pin_code" data-ng-model="commission_record.pin_code" class="form-control" data-enter-key="add()"/> </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--<div class="panel panel-list-detail col-md-6">-->
+                <!--<div class="panel-heading">-->
+                    <!--<strong>其他收益明細</strong>-->
+                <!--</div>-->
+                <!--<div class="panel-content">-->
+                    <!--<table class="table table-bordered table-striped">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<td>其他收益</td>-->
+                            <!--<td>總額</td>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<td>下線過期手續費</td>-->
+                            <!--<td><input pattern="[0-9]+" required class="form-control input-92 ng-pristine ng-valid" type="text" data-ng-disabled="disable1" data-ng-model="commission_pre_release_record.underling_fee" name="underling_fee"></td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>抵押分成</td>-->
+                            <!--<td><input pattern="[0-9]+" required class="form-control input-92 ng-pristine ng-valid" type="text" data-ng-disabled="disable1" data-ng-model="commission_pre_release_record.mortgage_divided" name="mortgage_divided"></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+    </div>
+
+        <div class="row" style="text-align: center;margin:50px 0 20px">
+            <button class="btn btn-confirm margin-right-15" ng-click="return()" data-ng-show="disable1">返回</button>
+            <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-hide="disable1" data-ng-disabled="disabled_submit" >保存</button>
+            <button class="btn btn-information" ng-click="print()">列印</button>
+        </div>
+    </div>
+</form>
+</div>

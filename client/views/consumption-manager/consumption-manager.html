@@ -1,0 +1,144 @@
+<div class="page page-services ng-scope" data-ng-controller="consumptionManagerCtrls">
+<div class="panel">
+<div class="panel-content">
+    <div class="row clearfix" check-permissions="consumptionCreate">
+        <div class="col-md-7" >
+            <table class=" ">
+                <tr  height="50">
+                    <td width="120" data-min-screen-width="100" class="text-right">年月：</td>
+                    <td width="160">
+                      <table class="table-inner">
+                        <tr>
+                          <td>
+                            <p class="input-group ui-datepicker">
+                              <input type="text" class="form-control year_month" datepicker-popup datepicker-mode="month" data-ng-model="global_params.year_month" date-disabled="disabled(date, mode)" close-text="Close" data-ng-change="change_shift_data()" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                          </td>
+                          <!--<td  class="text-center" width="15">月</td>-->
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="110" class="text-right">結算日期：</td>
+                    <td width="200" class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="global_params.shift_date"  date-disabled="disabled(date, mode)" close-text="Close" data-ng-change="change_shift_data()"data-ng-change="change_shift_data()"  />
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                    </td>
+                    <td  width="110" class="text-right">更數：</td>
+                    <td  width="200" class="text-left ">
+                        <select name="consumption_shift" class="form-control" data-ng-model="global_params.shift"  data-ng-change="change_shift_data()">
+                            <option value="">請選擇更數</option>
+                            <option value="早更">{{shiftLists.morning}}</option>
+                            <option value="中更">{{shiftLists.afternoon}}</option>
+                            <option value="晚更">{{shiftLists.evening}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td class="text-left "><input type="password" name="pin_code" data-ng-model="global_params.pin_code" class="form-control input-140" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+                    <td>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                    </td>
+                    <td ><span class="red">{{ global_params.username }}</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<tabset class="ui-tab" >
+<tab heading="酒店"  ng-click="tabClick('hotel')"  active="tabs.hotel">
+    <div class="panel panel-default" >
+    <!--<div data-ng-include="getUrl()"></div>-->
+        <div ui-view="hotel">
+          <div data-ng-controller="consumptionManagerUpdateCtrls">
+            <div data-ng-include="'views/consumption-manager/consumption-hotel-booking-update.html'"></div>
+          </div>
+        </div>
+        <div data-ng-include="'views/consumption-manager/consumption-hotel-booking-search.html'"></div>
+    </div>
+</tab>
+<tab heading="食飛" ng-click="tabClick('food')"  active="tabs.food">
+    <div class="panel panel-default" ng-if="type == 'food'">
+        <div ui-view="food">
+          <div data-ng-controller="consumptionFoodFlyBookingUpdateCtrls">
+            <div data-ng-include=" 'views/consumption-manager/consumption-food-fly-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include="'views/consumption-manager/consumption-food-fly-booking-search.html'"></div>
+    </div>
+</tab>
+<tab heading="直升機" ng-click="tabClick('helicopter')"  active="tabs.helicopter">
+    <div class="panel panel-default" ng-if="type == 'helicopter'">
+        <div ui-view="helicopter">
+          <div data-ng-controller="consumptionHelicopterBookingUpdateCtrls">
+            <div data-ng-include=" 'views/consumption-manager/consumption-helicopter-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include="'views/consumption-manager/consumption-helicopter-booking-search.html'"></div>
+     </div>
+</tab>
+<tab heading="船票"  ng-click="tabClick('ship')"  active="tabs.ship">
+    <div class="panel panel-default" ng-if="type == 'ship'">
+        <div ui-view="ship_manage">
+          <div data-ng-controller="consumptionShipTicketBookingUpdateCtrls">
+            <div data-ng-include="'views/consumption-manager/consumption-ship-ticket-booking-update.html'"></div>
+          </div>
+        </div>
+        <div data-ng-include="'views/consumption-manager/consumption-ship-ticket-booking-search.html'"></div>
+    </div>
+</tab>
+<tab heading="機票" ng-click="tabClick('air')"  active="tabs.air">
+    <div class="panel panel-default" ng-if="type == 'air'">
+        <div ui-view="air">
+          <div data-ng-controller="consumptionAirBookingUpdateCtrls">
+            <div data-ng-include=" 'views/consumption-manager/consumption-air-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include=" 'views/consumption-manager/consumption-air-booking-search.html' "></div>
+    </div>
+</tab>
+<tab heading="租車" ng-click="tabClick('car')"  active="tabs.car">
+    <div class="panel panel-default" ng-if="type == 'car'">
+        <div ui-view="car">
+          <div data-ng-controller="consumptionCarBookingUpdateCtrls">
+            <div data-ng-include=" 'views/consumption-manager/consumption-car-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include=" 'views/consumption-manager/consumption-car-booking-search.html' "></div>
+    </div>
+</tab>
+<tab heading="門票" ng-click="tabClick('ticket')"  active="tabs.ticket">
+    <div class="panel panel-default"  ng-if="type == 'ticket'">
+        <div ui-view="ticket">
+          <div data-ng-controller="consumptionTicketBookingUpdateCtrls">
+            <div data-ng-include=" 'views/consumption-manager/consumption-admission-ticket-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include=" 'views/consumption-manager/consumption-admission-ticket-booking-search.html' "></div>
+    </div>
+</tab>
+<tab heading="雜項" ng-click="tabClick('other')"  active="tabs.other">
+    <div class="panel panel-default"   ng-if="type == 'other'">
+        <div ui-view="other">
+          <div data-ng-controller="consumptionOtherBookingUpdateCtrls" >
+            <div data-ng-include=" 'views/consumption-manager/consumption-other-booking-update.html' "></div>
+          </div>
+        </div>
+        <div data-ng-include=" 'views/consumption-manager/consumption-other-booking-search.html' "></div>
+    </div>
+</tab>
+
+</tabset>
+</div>
+</div>
+</div>
+

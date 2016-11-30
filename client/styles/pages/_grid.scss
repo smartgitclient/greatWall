@@ -1,0 +1,26 @@
+//
+.panel{
+  .panel_l{
+    float: left;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .panel_r{
+    .cus_info{
+      //float: left;
+      .fa-user{
+        margin-right: 10px;
+      }
+    }
+    .message{
+      //float: left;
+      .fa-user{
+        margin-right: 10px;
+      }
+    }
+  }
+  .panel_b{
+    float: left;
+     width: 100%;
+  }
+}

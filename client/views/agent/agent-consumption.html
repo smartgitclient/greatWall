@@ -1,0 +1,60 @@
+<div class="modal-header">
+
+    <h3 style="font-size: 20px"><strong>消费記錄</strong>
+        <span style="position: relative;float: right;top: 8px;font-size: 18px;">消費總額:{{consumption_total|parseDollar:true}}</span><br>
+    </h3>
+    <button class="btn  btn-confirm btn-tab pull-right" style="float: right;z-index: 1000;margin-bottom: 20px;margin-top: 10px" ng-click="print_consumptionReport()">列印</button>
+</div>
+<div style="margin-top: 20px" class="modal-body">
+        <div class="row">
+            <div class="panel-heading" style="height:30px;padding:0 8px">
+                <!--button class="btn btn-information btn-table pull-right">導出EXCEL</button-->
+            </div>
+            <div class="col-md-12">
+                <tabset class="ui-tab" >
+                    <tab heading="酒店[{{getConsumptionSummary('HOTEL')}}]"  ng-click="tabClick('HOTEL')"  active="tabs.hotel">
+                        <div class="panel panel-default">
+                            <!--<div data-ng-include="getUrl()"></div>-->
+                            <div data-ng-include="'views/agent/agent-consumption-hotel.html'"></div>
+                        </div>
+                    </tab>
+                    <tab heading="食飛[{{getConsumptionSummary('FOODCOUPON')}}]" ng-click="tabClick('FOOD')"  active="tabs.food">
+                        <div class="panel panel-default" ng-if="type == 'FOOD'">
+                            <div data-ng-include="'views/agent/agent-consumption-food-fly.html'"></div>
+                        </div>
+                    </tab>
+                    <tab heading="直升機[{{getConsumptionSummary('HELICOPTER')}}]" ng-click="tabClick('HELICOPTER')"  active="tabs.helicopter">
+                        <div class="panel panel-default" ng-if="type == 'HELICOPTER'">
+                            <div data-ng-include="'views/agent/agent-consumption-helicopter.html'"></div>
+                        </div>
+                    </tab>
+                    <tab heading="船票[{{getConsumptionSummary('BOAT')}}]"  ng-click="tabClick('SHIP')"  active="tabs.ship">
+                        <div class="panel panel-default" ng-if="type == 'SHIP'">
+                            <div data-ng-include="'views/agent/agent-consumption-ship-ticket.html'"></div>
+                        </div>
+                    </tab>
+                    <tab heading="機票[{{getConsumptionSummary('FLIGHT')}}]" ng-click="tabClick('AIR')"  active="tabs.air">
+                        <div class="panel panel-default" ng-if="type == 'AIR'">
+                            <div data-ng-include=" 'views/agent/agent-consumption-air.html' "></div>
+                        </div>
+                    </tab>
+                    <tab heading="租車[{{getConsumptionSummary('CAR')}}]" ng-click="tabClick('CAR')"  active="tabs.car">
+                        <div class="panel panel-default" ng-if="type == 'CAR'">
+                            <div data-ng-include=" 'views/agent/agent-consumption-car.html' "></div>
+                        </div>
+                    </tab>
+                    <tab heading="門票[{{getConsumptionSummary('TICKET')}}]" ng-click="tabClick('TICKET')"  active="tabs.ticket">
+                        <div class="panel panel-default"  ng-if="type == 'TICKET'">
+                            <div data-ng-include=" 'views/agent/agent-consumption-admission-ticket.html' "></div>
+                        </div>
+                    </tab>
+                    <tab heading="雜項[{{getConsumptionSummary('MISCELLANEOUS')}}]" ng-click="tabClick('OTHER')"  active="tabs.other">
+                        <div class="panel panel-default"   ng-if="type == 'OTHER'">
+                            <div data-ng-include=" 'views/agent/agent-consumption-other.html' "></div>
+                        </div>
+                    </tab>
+
+                </tabset>
+            </div>
+        </div>
+</div>

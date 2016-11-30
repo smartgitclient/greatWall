@@ -1,0 +1,69 @@
+<div class="panel-form-list">
+<div class="modal-header">
+    <h3>手續費還款:</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-pop01" style="text-align: left;">
+        <tr>
+            <td>業務單號：{{ overdue_charge.loan_seqnumber}}</td>
+            <td>貸款單號：{{ overdue_charge.marker_seqnumber}}</td>
+        </tr>
+        <tr>
+            <td>貸款金額：{{ overdue_charge.marker_amount}}萬</td>
+            <td>剩餘免息天期：0</td>
+        </tr>
+        <tr>
+            <td>息率：{{ overdue_charge.rate}}</td>
+            <td>過期天數：{{ overdue_charge.overdue_days}}</td>
+        </tr>
+        <tr>
+            <td>尚欠手續費：{{ overdue_charge.receivable_amount}}萬</td>
+            <td>減免手續費：{{ overdue_charge.relief_amount}}萬</td>
+        </tr>
+    </table>
+    <div class="modal-border"></div>
+    <table class="table table-pop01">
+        <tr>
+            <td>還款方式</td>
+            <td width="163">
+                <ui-select ng-model="payment.payment_method">
+                    <ui-select-match placeholder="">{{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="type in ['存卡','現金']">
+                        <div ng-bind-html="type"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </td>
+            <td>還款類型</td>
+            <td width="163">全部還款</td>
+        </tr>
+        <tr>
+            <td>還款項目</td>
+            <td width="163">過期手續費</td>
+            <td>還款金額</td>
+            <td width="163">{{ overdue_charge.receivable_amount}}萬</td>
+        </tr>
+        <tr>
+            <td>備註</td>
+            <td colspan="3"><textarea name="" id="" class="form-control textarea-table01" rows="4"></textarea></td>
+        </tr>
+    </table>
+    <div class="modal-border"></div>
+    <table class="table table-pop01">
+        <tr>
+            <td class="text-left">操作員身份確認：</td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">請輸入操作密碼：</div>
+                <div class="col-md-5">
+                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" data-enter-key="submit()">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-confirm" ng-click="submit()">确定</button>
+    <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+</div>
+</div>

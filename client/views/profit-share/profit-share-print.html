@@ -1,0 +1,472 @@
+<style>
+    .tips-span {height:20px;line-height:20px;background:#999900;position:absolute;top:-17px;left:50px;right:50px;color:#fff;font-size:12px;border-radius:2px;z-index:10;display:none;}
+    .tips-span:after {content:"";width: 0;height: 0;overflow:hidden;border:5px solid transparent;border-top-color:#999900;position: absolute;top:100%;left:50%;margin-left:-5px;}
+    .red {border-color: red;}
+</style>
+<div class="page page-grid" data-ng-controller="profitSharePrinterCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-9">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>列印表一</strong></div>
+                <div class="panel-content">
+                    <form name="form_commission" class="form-validation">
+                        <table>
+                            <tr height="50">
+                                <td width="90" class="text-right">單編號：</td>
+                                <td><input data-ng-model="profit_information.mainSceneProfit.print_no"  type="text" class="form-control" ng-class="setStyle(profit_information.mainSceneProfit.print_no,red)"></td>
+                                <td width="90" class="text-right">場次編號：</td>
+                                <td><input data-ng-model="profit_information.mainSceneProfit.marker_seqnumber"  type="text" class="form-control"></td>
+                                <td width="90" class="text-right">開工日期：</td>
+                                <td width="150">
+                                    <p class="input-group ui-datepicker">
+                                        <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="profit_information.mainSceneProfit.start_date"  date-disabled="disabled(date, mode)" close-text="Close"  />
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </td>
+                                <td width="90" class="text-right">開工時間：</td>
+                                <td>
+                                    <p class="input-group ui-datepicker">
+                                        <input size="6" class="form-control input-01"
+                                               data-ng-required="enableClientValidation"
+                                               ng-model="profit_information.mainSceneProfit.start_time"
+                                               name="departure_time"
+                                               style="width:110px;"
+                                               min-screen-width="70"
+                                               data-time-format="HH:mm"
+                                               bs-timepicker type="text">
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" ng-click="get_now_time(1)"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                    </p>
+
+                                </td>
+                                <!-- <td></td> -->
+                                <td><span class="btn btn-information  margin-right-15" data-ng-disabled="isDesabled" ng-click="get_now_time(1)">現時時間</span></td>
+                            </tr>
+                            <tr height="50">
+                                <td width="90" class="text-right">戶口編號：</td>
+                                <td>
+                                    <input ng-disabled="true"  type="text" data-ng-model="profit_information.mainSceneProfit.imm_agent_code"   class="form-control" >
+                                </td>
+                                <td width="90" class="text-right">戶口姓名：</td>
+                                <td><input ng-disabled="true"  type="text" data-ng-model="profit_information.mainSceneProfit.agent_name"
+                                            class="form-control"></td>
+                                <td width="90" class="text-right">類型：</td>
+                                <td>
+                                    <select data-ng-model="profit_information.mainSceneProfit.type"  data-ng-change="chioce_type(profit_information.mainSceneProfit.type)"  class="form-control">
+                                        <option value="">請選擇</option>
+                                        <option value="1">現金</option>
+                                        <option value="2">貸款</option>
+                                    </select>
+                                </td>
+                                <td width="90" class="text-right">保證金：</td>
+                                <td><input  type="text" data-ng-model="profit_information.mainSceneProfit.guarantee_amount"
+                                            class="form-control"></td>
+                            </tr>
+                            <tr height="50">
+                                <td width="90" class="text-right">擔保人：</td>
+                                <td><input  type="text" data-ng-model="profit_information.mainSceneProfit.guarantor"
+                                            class="form-control"></td>
+                                <td width="90" class="text-right">開工條件：</td>、
+                                <td>
+                                    <select data-ng-model="profit_information.mainSceneProfit.construction_type1" style="width: 100px;"  class="form-control">
+                                        <option value="">請選擇</option>
+                                        <option value="1">三倍封頂</option>
+                                        <option value="2">不封頂</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select data-ng-model="profit_information.mainSceneProfit.construction_type2" style="margin-left: -50px;"  class="form-control">
+                                        <option value="">請選擇</option>
+                                        <option value="1">股本內</option>
+                                        <option value="2">股本外</option>
+                                    </select>
+                                </td>
+                                <td width="90" class="text-right">幣種：</td>
+                                <td><input type="text" class="form-control" ng-model="profit_information.mainSceneProfit.currency"/></td>
+                            </tr>
+
+
+                        </table>
+                        <table style="margin-top:10px;margin-left:20px" class="table">
+                            <tr>
+                                <td width="50%">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="80" colspan="4"></td>
+                                            <td width="80" colspan="4">即找</td>
+                                            <td width="80" colspan="4">月結</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="tips-box" tips-span>
+                                            <td colspan="4" style="padding-left:0;padding-right:0;">戶口編號</td>
+                                            <td width="50" colspan="2" style="position: relative">
+                                                <span class="tips-span">代理戶口</span>
+                                                <!--<i popover-placement="top" tooltip-html-unsafe="+886&amp;nbsp;15819125463<br/>" class="fa fa-plus-circle cursor-pointer ng-scope"></i>-->
+                                                <input data-ng-focus="" data-input-uppercase data-ng-model="profit_information.mainSceneProfit.imm_agent_code" class="form-control focuss" type="text"/>
+                                            </td>
+                                            <td width="50" colspan="2" style="position: relative">
+                                                <span class="tips-span">股東戶口</span>
+                                                <input data-input-uppercase data-ng-model="profit_information.mainSceneProfit.imm_top_agent_code" class="form-control focuss"  type="text"/>
+                                            </td>
+                                            <td width="50" colspan="2" style="position: relative">
+                                                <span class="tips-span">股東戶口</span>
+                                                <input data-input-uppercase data-ng-model="profit_information.mainSceneProfit.mon_top_agent_code" class="form-control focuss"  type="text"/>
+                                            </td>
+                                            <td width="50" colspan="2" style="position: relative">
+                                                <span class="tips-span">公司戶口</span>
+                                                <input data-input-uppercase data-ng-model="profit_information.mainSceneProfit.mon_com_agent_code" class="form-control focuss"  type="text"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">占成%</td>
+                                            <td colspan="2"><input  class="form-control"  ng-model="profit_information.mainSceneProfit.imm_agent_percent" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.imm_top_agent_percent" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.mon_top_agent_percent" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.mon_com_agent_percent" type="text"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="padding-left:0;padding-right:0;">碼佣比例</td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.imm_commission_ratio" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.imm_top_commission_ratio" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.mon_top_commission_ratio" type="text"/></td>
+                                            <td colspan="2"><input  class="form-control" data-ng-change="calculate()" ng-model="profit_information.mainSceneProfit.mon_com_commission_ratio" type="text"/></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="padding:10px 10px; vertical-align: initial;" width="35%">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="50" data-min-screen-width="50">入場本金</td>
+                                            <td width="60">
+                                                <select
+                                                        data-ng-model="intype"
+                                                        data-dynamic-name="inCapitals_{{$index}}_funds_type_id"
+                                                        data-ng-required="enableClientValidation"
+                                                        class="form-control"
+                                                        data-ng-change="type_change(intype,'in')"
+                                                        ng-options="h.o_word for h in inSceneWords">
+                                                    <option value="">請選擇本金類型</option>
+                                                </select>
+                                            </td>
+                                            <td width="60">
+                                                <input class="form-control" ng-model="type_number" type="text"/>
+                                            </td>
+                                            <td width="80">
+                                                <select
+                                                        style="width: 80%"
+                                                        data-ng-model="outtype"
+                                                        data-dynamic-name="inCapitals_{{$index}}_funds_type_id"
+                                                        data-ng-required="enableClientValidation"
+                                                        class="form-control"
+                                                        data-ng-change="type_change(outtype,'out')"
+                                                        ng-options="h.o_word for h in outSceneWords">
+                                                    <option value="">請選擇本金類型</option>
+                                                </select>
+                                                <i style="float: right;margin-left: -10px; margin-top: -23px;" ng-click="add_type()" class="glyphicon glyphicon-plus"></i>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="show in show_type">
+                                            <td>入場本金</td>
+                                            <td>{{show.intype}}</td>
+                                            <td>{{show.type_number | deleteZero}}萬</td>
+                                            <td>
+                                                {{show.outtype}}
+                                                <i style="float: right;margin-left: -10px;" ng-click="cut_type(show,$index)" class="glyphicon glyphicon-minus"></i>
+                                            </td>
+                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<td>本金</td>-->
+                                            <!--<td></td>-->
+                                            <!--<td>0</td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row" style="margin:20px 50px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            備註：  <input style="width:500px" data-ng-model="profit_information.mainSceneProfit.partone_remark" type="text"></div>
+                        <div class="row" style="margin:20px 50px">操作密碼：  <input data-ng-model="partone_pin_code" type="password"></div>
+						<div class="row" style="margin-left:90px">
+                                    <button  class="btn btn-cancel" data-ng-disabled="disabled_btn" ng-click="send_part1()">保存</button>
+                                    <button  class="btn btn-cancel" data-ng-disabled="isSend" ng-click="SMSsend(sendSmsId,1)">發送短信</button>
+               			 </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>列印表二</strong></div>
+                <div class="panel-content">
+                    <form name="form_commission">
+                        <table>
+                            <tr height="50">
+                                <td width="100" class="text-right">完場日期：</td>
+                                <td>
+                                    <p class="input-group ui-datepicker">
+                                        <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="profit_information.mainSceneProfit.end_date"  date-disabled="disabled(date, mode)" close-text="Close" data-ng-change="change_shift_data()"  />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </td>
+                                <td width="100" class="text-right">完場時間：</td>
+                                <td>
+                                    <p class="input-group ui-datepicker">
+                                        <input size="6" class="form-control input-01"
+                                               data-ng-required="enableClientValidation"
+                                               ng-model="profit_information.mainSceneProfit.end_time"
+                                               name="departure_time"
+                                               style="width:110px;"
+                                               min-screen-width="70"
+                                               data-time-format="HH:mm"
+                                               bs-timepicker type="text">
+                                        <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-datepicker" data-ng-click="get_now_time(2)"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                    </p>
+
+                                </td>
+                                <td></td>
+                                <td><span class="btn btn-information  margin-right-15"  ng-click="get_now_time(2)">現時時間</span></td>
+                            </tr>
+                            <tr height="50">
+                                <td width="100" class="text-right">離台數：</td>
+                                <td><input  type="text" data-ng-model="profit_information.mainSceneProfit.out_amount"
+                                            class="form-control"></td>
+                                <td width="100" class="text-right" >轉碼數：</td>
+                                <td><input  type="text" data-ng-model="profit_information.mainSceneProfit.rolling_amount"
+                                         data-ng-change="calculate()"   class="form-control"></td>
+                                <td width="100" class="text-right">上下數：</td>
+                                <td><input  type="text" data-ng-model="profit_information.mainSceneProfit.loss_win_amount"
+                                            data-ng-change="calculate()"    class="form-control"></td>
+                            </tr>
+                        </table>
+                        <table style="margin-top:10px;margin-left:20px">
+                            <tr>
+                                <td width="50%">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="120" data-min-screen-width="80"></td>
+                                            <td data-min-screen-width="80" colspan="2">即找</td>
+                                            <td data-min-screen-width="80" colspan="2">月結</td>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>戶口編號</td>
+                                            <td width="50" colspan="1">{{profit_information.mainSceneProfit.imm_agent_code}}</td>
+                                            <td width="50" colspan="1">{{profit_information.mainSceneProfit.imm_top_agent_code}}</td>
+                                            <td width="50" colspan="1">{{profit_information.mainSceneProfit.mon_top_agent_code}}</td>
+                                            <td width="50" colspan="1">{{profit_information.mainSceneProfit.mon_com_agent_code}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>占成%</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_agent_percent | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_top_agent_percent | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_top_agent_percent | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_com_agent_percent | deleteZero}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>占成佣金</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_agent_omit_commission_cal}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_top_omit_commission_cal}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_top_omit_commission_cal}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_com_omit_commission_cal}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>碼佣</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_agent_commission | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_top_commission | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_top_commission | deleteZero}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_com_commission | deleteZero}}</td>
+
+                                        </tr>
+                                         <tr>
+                                            <td>代理應付</td>
+                                             <td colspan="1">{{profit_information.mainSceneProfit.imm_agent_should_pay | deleteZero}}</td>
+                                             <td colspan="1">{{profit_information.mainSceneProfit.imm_top_should_pay | deleteZero}}</td>
+                                             <td colspan="1">{{profit_information.mainSceneProfit.mon_top_should_pay | deleteZero}}</td>
+                                             <td colspan="1">{{profit_information.mainSceneProfit.mon_com_should_pay | deleteZero}}</td>
+                                        </tr>
+                                        <!--<tr>
+                                            <td>去尾數</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_agent_omit_commission}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.imm_top_omit_commission}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_top_omit_commission}}</td>
+                                            <td colspan="1">{{profit_information.mainSceneProfit.mon_com_omit_commission}}</td>
+
+                                        </tr>-->
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="padding:0 10px; vertical-align: initial;" width="35%">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="50" data-min-screen-width="50">離場本金</td>
+                                            <td width="60">
+                                                <select
+                                                    data-ng-model="intype_out"
+                                                    data-dynamic-name="inCapitals_{{$index}}_funds_type_id"
+                                                    data-ng-required="enableClientValidation"
+                                                    class="form-control"
+                                                    data-ng-change="type_change(intype,'in')"
+                                                    ng-options="h.o_word for h in inSceneWords">
+                                                    <option value="">請選擇本金類型</option>
+                                                </select>
+                                            </td>
+                                            <td width="60">
+                                                <input class="form-control" ng-model="type_number_out" type="text"/>
+                                            </td>
+                                            <td width="80">
+                                                <select
+                                                    style="width: 80%"
+                                                    data-ng-model="outtype_out"
+                                                    data-dynamic-name="inCapitals_{{$index}}_funds_type_id"
+                                                    data-ng-required="enableClientValidation"
+                                                    class="form-control"
+                                                    data-ng-change="type_change(outtype,'out')"
+                                                    ng-options="h.o_word for h in outSceneWords">
+                                                    <option value="">請選擇本金類型</option>
+                                                </select>
+                                                <i style="float: right;margin-left: -10px; margin-top: -23px;" ng-click="add_type_out()" class="glyphicon glyphicon-plus"></i>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="show in show_type_out">
+                                            <td>離場本金</td>
+                                            <td>{{show.intype_out}}</td>
+                                            <td>{{show.type_number_out | deleteZero}}萬</td>
+                                            <td>
+                                                {{show.outtype_out}}
+                                                <i style="float: right;margin-left: -10px;" ng-click="cut_type_out(show,$index)" class="glyphicon glyphicon-minus"></i>
+                                            </td>
+                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<td>離場本金</td>-->
+                                            <!--<td></td>-->
+                                            <!--<td>0</td>-->
+                                            <!--<td></td>-->
+                                        <!--</tr>-->
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="padding:0 10px;vertical-align: initial;" width="20%">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="50" data-min-screen-width="50">茶資</td>
+                                            <td data-min-screen-width="50">
+                                                <input  style="width: 80%" type="text" class="form-control" data-ng-model="tip">
+                                                <i style="float: right;margin-left: -10px; margin-top: -23px;" ng-click="add_tip()" class="glyphicon glyphicon-plus"></i>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="tip in profit_information.tip">
+                                           <td width="50" data-min-screen-width="50">茶資</td>
+                                           <td data-min-screen-width="50">{{tip.amount | deleteZero}}萬
+                                               <i style="float: right;margin-left: -10px;" ng-click="cut_tip(tip,$index)" class="glyphicon glyphicon-minus"></i>
+                                           </td>
+
+                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<td width="50" data-min-screen-width="50">茶資</td>-->
+                                            <!--<td data-min-screen-width="50"></td>-->
+                                        <!--</tr>-->
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="margin: 7px 19px 24px;">
+                            <input type="checkbox" data-ng-model="is_commission_status" data-ng-change="selected_commission(is_commission_status)" name="cheked"> 支付下線佣金
+                        </div>
+                        <div class="row" style="margin:20px 50px">
+                        <span>
+                            公司應付： <input data-ng-model="profit_information.mainSceneProfit.company_should_pay" type="text" style="padding:0 5px;width:100px;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <!--現金消費：<input data-ng-model="real_money"  type="text" style="padding:0 5px;width:100px;width:100px;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                            非現金消費：<input data-ng-model="funny_money"  type="text" style="padding:0 5px;width:100px;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            公司實付：<input data-ng-model="profit_information.mainSceneProfit.company_actual_pay"  type="text" style="padding:0 5px;width:100px;">
+                        </span><br><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>備註： <input data-ng-model="profit_information.mainSceneProfit.parttwo_remark" style="width:500px" type="text"> </span>
+                        </div>
+                        <div class="row" style="margin:20px 50px">操作密碼：  <input data-ng-model="parttwo_pin_code" type="password"></div>
+						<div class="row" style="margin-left:90px">
+                            <button class="btn btn-cancel" ng-click="send_part2()">保存</button>
+                            <button  class="btn btn-cancel" data-ng-disabled="isSend1" ng-click="SMSsend(sendSmsId,0)">發送短信</button>
+                            <button class="btn btn-confirm margin-right-15" ng-click="consumption()">找消費</button>
+                            <button class="btn btn-information margin-right-15" ng-click="out_scene()">離場</button>
+                            截月：<input type="checkbox" data-ng-model="is_shift_mark_status"  name="cheked">
+               			 </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <div class="col-md-3">
+        <!--<div class="panel panel-form-list" style="height: 100%">-->
+            <div class="panel-heading">
+            <!-- <button class="btn btn-information">開場</button> -->
+            </div>
+             <div class="panel-content">
+                 <form name="form_commission" class="form-validation">
+                     <table class="table table-bordered table-striped">
+                         <thead>
+                         <tr height="50">
+                             <td width="100">戶口編號</td>
+                             <td width="100">場次編號</td>
+                             <td width="100">操作</td>
+                         </tr>
+                         </thead>
+                         <tbody>
+                                <tr data-ng-repeat="mainscene in mainScenes">
+                                    <td>{{mainscene.agent_code}}</td>
+                                    <td>{{mainscene.main_scene_no}}</td>
+                                    <td>
+                                        <!--<button check-permissions="sceneSharingOpenSelect"  class="btn btn-information btn-confirm btn-table" ng-click="select_information(mainscene)">選擇</button>
+                                        <button check-permissions="sceneSharingOpenDelete"   class="btn btn-information btn-confirm btn-table" ng-click="delete(mainscene)">刪除</button>-->
+                                        <button class="btn btn-information btn-confirm btn-table" ng-click="select_information(mainscene)">選擇</button>
+                                        <button class="btn btn-information btn-confirm btn-table" ng-click="delete(mainscene)">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="mainScenes.length == 0">
+                                    <td colspan="3">暫無符合條件的記錄</td>
+                                </tr>
+                         </tbody>
+                     </table>
+                     <footer class="table-footer">
+                         <div class="text-right pagination-container">
+                             <pagination class="pagination-sm"
+                                         page="pagination_scene.page"
+                                         total-items="pagination_scene.total_items"
+                                         on-select-page="select_scene(page)"
+                                         max-size = "pagination_scene.max_size"
+                                         items-per-page = "pagination_scene.items_per_page"
+                                         data-ng-show="pagination_scene.total_items > pagination_scene.items_per_page"></pagination>
+                             <paginationselect pageCtrl="pagination_scene" select-page="select_scene"></paginationselect>
+                         </div>
+                     </footer>
+                 </form>
+
+             </div>
+            </div>
+        <!--</div>-->
+    </div>
+</div>

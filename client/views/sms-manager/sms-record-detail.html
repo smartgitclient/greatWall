@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <h3>短信詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td width="120">戶口編碼：</td>
+                    <td>{{smsRecord.agent_code}}</td>
+                    <td width="120">戶口姓名：</td>
+                    <td width="150">{{smsRecord.agent_name}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="120">短信號碼：</td>
+                    <td>{{smsRecord.sms_tel}}</td>
+                    <td width="120">提交時間</td>
+                    <td>{{smsRecord.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                </tr>
+                <tr>
+                    <td width="120">發送部門：</td>
+                    <td>{{smsRecord.department_name}}</td>
+                    <td width="120">狀態</td>
+                    <td>{{sendSmsStatus.items[smsRecord.status]}}</td>
+                </tr>
+                <tr>
+                    <td width="120">內容：</td>
+                    <td colspan="3" class="text-left" ng-bind-html="smsRecord.content+'<'+smsRecord.sequence_id+'>'|nl2br"></td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+    </form>
+<div class="row text-center"><br/>
+    <button class="btn btn-information" ng-click="cancel()">關 閉</button>
+</div>
+</div>

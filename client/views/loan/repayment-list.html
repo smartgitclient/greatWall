@@ -1,0 +1,135 @@
+<div class="page page-services ng-scope" data-ng-controller="repaymentListCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>還款查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="100"><span class="span-formlist">戶口編號</span></td>
+                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="94">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">貸款人</span></td>
+                        <td width="209"><input type="text" data-ng-model="condition.borrower" class="form-control"></td>
+                        <td width="94">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">還款類型</span></td>
+                        <td width="209"><!-- Split button -->
+                            <ui-select ng-model="condition.hall">
+                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="hall in halls">
+                                    <div ng-bind-html="hall"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100"><span class="span-formlist">貸款單號</span></td>
+                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="94">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">業務單號</span></td>
+                        <td width="209"><input type="text" data-ng-model="condition.borrower" class="form-control"></td>
+                        <td width="94">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">廳館</span></td>
+                        <td width="209"><!-- Split button -->
+                            <ui-select ng-model="condition.hall">
+                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="hall in halls">
+                                    <div ng-bind-html="hall"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100"><span class="span-formlist">還款金額</span></td>
+                        <td width="209">
+                            <input type="text" data-ng-model="condition.loan_amount_min" class="form-control input-92">
+                            &nbsp;&nbsp;~&nbsp;&nbsp;
+                            <input type="text" data-ng-model="condition.loan_amount_max" class="form-control input-92">
+                        </td>
+                        <td width="94">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">還款日期</span></td>
+                        <td width="209">
+                            <p class="input-group">
+                            <input type="text" class="form-control input-92" datepicker-popup="yyyy-MM-dd" ng-model="condition.created_min" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <!--<input type="text"  b-datepicker data-ng-model="condition.created_min" class="form-control input-92">-->
+                            &nbsp;&nbsp;~&nbsp;&nbsp;
+                            <input type="text" b-datepicker data-ng-model="condition.created_max" class="form-control input-92">
+                        </td>
+                        <td width="94">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">過期天數</span></td>
+                        <td width="209">
+                            <input type="text" data-ng-model="condition.created_min" class="form-control input-92">
+                            &nbsp;&nbsp;~&nbsp;&nbsp;
+                            <input type="text" data-ng-model="condition.created_max" class="form-control input-92">
+                        </td>
+                        <td width="60">&nbsp;</td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+    </div>
+    <table class="table table-bordered table-striped table-hover table-click">
+        <thead>
+        <tr>
+            <td>業務單編號</td>
+            <td>貸款單編號</td>
+            <td>戶口編號</td>
+            <td>貸款人</td>
+            <td>貸款金額（萬）</td>
+            <td>還款金額（萬）</td>
+            <td>未還金額（萬）</td>
+            <td>廳館</td>
+            <td>免息天期</td>
+            <td>息率</td>
+            <td>還款日期</td>
+            <td>經手人</td>
+            <td>還款狀態</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="payment in payments" ng-click="detail(payment.payment_id)">
+            <td>{{payment.business_number}}</td>
+            <td>{{payment.marker_seqnumber}}</td>
+            <td>{{payment.agent_code}}</td>
+            <td>{{payment.borrower}}</td>
+            <td>{{payment.payment_amount}}</td>
+            <td>{{payment.balance_due}}</td>
+            <td>{{payment.balance_due}}</td>
+            <td>{{payment.hall}}</td>
+            <td>{{payment.credit_days}}</td>
+            <td>{{payment.rate}}</td>
+            <td>{{payment.payment_date}}</td>
+            <td>{{payment.brokerage}}</td>
+            <td>{{payment.status}}</td>
+        </tr>
+        <tr data-ng-show="all_loans.length == 0">
+            <td colspan="8">暫無符合條件的記錄</td>
+        </tr>
+        </tbody>
+    </table>
+    <footer class="table-footer">
+        <div class="row">
+            <div class="col-md-12 text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="current_page"
+                            total-items="all_loans.length"
+                            on-select-page="select(page)"
+                            data-ng-show="payment.length != 0"></pagination>
+            </div>
+        </div>
+    </footer>
+</div>

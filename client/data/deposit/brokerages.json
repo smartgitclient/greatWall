@@ -1,0 +1,4 @@
+[
+    {"id":0,"brokerage":"李麗","agent_code":"FA230","type":"存M","minLoanMoney":0,"maxLoanMoney":400},
+    {"id":1,"brokerage":"陳美華","agent_code":"FA223","type":"存U","minLoanMoney":400,"maxLoanMoney":800}
+]

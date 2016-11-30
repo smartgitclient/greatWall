@@ -1,0 +1,104 @@
+<div class="page page-services ng-scope" data-ng-controller="agentMessageOrderCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>出佣詳細</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table class="block-center">
+                <tr height="50">
+                    <td width="120" class="text-right">戶口編號：</td>
+                    <td width="180">Y202</td>
+                    <td width="30">&nbsp;</td>
+                    <td width="100" class="text-right">中文姓名：</td>
+                    <td width="180">王世祥</td>
+                    <td width="30">&nbsp;</td>
+                    <td width="100" class="text-right">年   月：</td>
+                    <td width="180">2014/07</td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <div class="panel-heading"><strong>廳館明細</strong></div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>廳館</td>
+                    <td>即出到</td>
+                    <td>總轉碼</td>
+                    <td>應出佣金</td>
+                    <td>負消費</td>
+                    <td>份數</td>
+                    <td>稅率</td>
+                    <td>實出佣金</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="order in orders">
+                    <td>{{prioritys[order.priority]}}</td>
+                    <td>{{order.hall_name}}</td>
+                    <td>{{orderTypes.items[order.is_group]}}</td>
+                    <td>
+                            <span data-ng-repeat="m in order.modules">
+                                {{m.module_name}}<i data-ng-show="$index != (order.modules.length-1) && 2 != $index">、</i><i data-ng-show="2 == $index"><br/></i>
+                            </span>
+                    </td>
+                    <td>{{order.order_type_name}}</td>
+                    <td>{{order.create_time}}</td>
+                    <td>{{order.start_time|parseDate:"yyyy-MM-dd HH:mm"}}<span data-ng-show="order.start_time != null && order.end_time != null">~</span>{{order.end_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <!--<td>{{order.department}}</td>-->
+                    <td>{{order.order_content}}</td>
+                </tr>
+                <tr data-ng-show="orders.length == 0">
+                    <td colspan="13">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+            </div>
+        </footer>
+
+    </div>
+    <div class="panel panel-form-list">
+        <div class="panel-heading"></div>
+        <div class="panel-content col-md-4">
+            <form name="form_search">
+                <table width="100%">
+                <tr height="40">
+                    <td width="85" class="text-right">應出佣金：</td>
+                    <td>$46,730.3</td>
+                </tr>
+                    <tr height="40">
+                        <td class="text-right">實出佣金：</td>
+                        <td>$39,601.5</td>
+                    </tr>
+                    <tr height="40">
+                        <td class="text-right">備註：</td>
+                        <td><textarea rows="4" data-ng-model="deposit_card.remark" name="remark" class="form-control textarea-table01 ng-pristine ng-valid" id="remark"></textarea></td>
+                    </tr>
+                    <tr height="40">
+                        <td class="text-right">應出佣金：</td>
+                        <td>$46,730.3</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">出佣</button>
+        <button class="btn btn-information" data-ng-click="reset()" >列印</button>
+    </div>
+    <br/><br/>
+</div>

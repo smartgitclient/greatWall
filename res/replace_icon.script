@@ -1,0 +1,6 @@
+[FILENAMES]
+Exe=build/test/Megastar Treasury Management System/win/Megastar Treasury Management System.exe
+SaveAs=build/test/Megastar Treasury Management System/win/client.exe
+Log=build/test/Megastar Treasury Management System/win/reshacker.log
+[COMMANDS]
+-modify res\icon\Meg_Star_icon_256_16.ico, ICONGROUP, IDR_MAINFRAME,

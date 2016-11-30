@@ -1,0 +1,36 @@
+#breadcrumb {
+  display: none;
+  position: absolute;
+  top: ($header_height * 2);
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  overflow-y:hidden;
+  height: $breadcrumb-height;
+  background-color: $breadcrumb-bg;
+  border-bottom: 1px dotted #50525E;
+  // @include transition(left .3s ease-in-out);
+  @media (min-width:$screen-sm) {
+    top: $header_height;
+    width: auto;
+    left: 183px;
+  }
+  // !important, avoid flikering for all pages.
+  // @include transition(left .25s ease-in-out);
+  @include transition(none);
+}
+
+#go-back{
+  font-size: 20px;
+  margin-top: 3px;
+  margin-right:20px;
+  > a {
+    color: $text-color;
+    text-decoration: none;
+    cursor: pointer;
+    &.goback {
+      padding-top: 3px;
+    }
+  }
+}

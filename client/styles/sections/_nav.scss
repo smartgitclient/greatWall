@@ -1,0 +1,272 @@
+$nav_border:            darken($dark, 10%);
+$sub_nav_bg:            $nav_bg;
+$link_color:            $text-color;
+
+#nav-container {
+    z-index: 11; // should be highter than top header
+    position: absolute;
+    top: $header_height;
+    bottom: 0;
+    left: -183px;
+    width: 183px;
+    padding: 0;
+    background: $nav_bg;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: -blackberry-touch;
+    // @include transition(all .3s ease-in-out);
+    @media (min-width:$screen-sm) {
+        left: 0;
+    }
+
+    ul {
+        padding-left: 0;
+        list-style: none;
+    }
+}
+
+#nav-wrapper {
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: -blackberry-touch;
+    width: 100%;
+    height: 100%;
+    .fa-bars{
+      font-size: 18px;
+      margin: 11px 15px 11px 15px !important;
+    }
+    .tools{
+      height: 40px;
+      line-height: 40px;
+      >a.tools-a {
+        color: $text-color;
+        padding: 0px;
+      }
+      >span.toggle-min {
+        cursor: pointer;
+      }
+    }
+}
+
+#nav {
+    margin: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: -blackberry-touch;
+
+    >li>a>i,
+    >li>a>.nav-icon {
+        display: inline-block;
+        margin-right: 10px;
+        width: 24px;
+        height: 24px;
+        line-height: 1;
+        text-align: center;
+        font-size: 16px;
+        @include transition(all .2s ease-in-out);
+    }
+
+    a {
+        color: $link_color;
+        @include transition(all .2s ease-in-out);
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    >li {
+        position: relative;
+        margin: 0;
+        text-align: left;
+        @include transition( all .2s ease-in-out);
+        &.open,
+
+        &:hover {
+            > a {
+                background-color: $link_hover_bg;
+                color: $bright;
+            }
+            > .fa { color: $bright; }
+        }
+        &.active {
+            > a {
+                background-color: $link_active_bg;
+                color: $bright;
+            }
+            > .fa { color: $bright; }
+        }
+
+        &:first-child > a {
+            border-top: 0;
+        }
+        >a {
+            position: relative;
+            display: block;
+            // height: 50px;
+            padding: 13px 15px;
+            // border-bottom: 1px solid $nav_border;
+            @include transition( all .2s ease-in-out);
+
+            > .badge {
+                position: absolute;
+                top: 16px;
+                right: 5px;
+            }
+          >i {
+            float: left;
+            &.fa-agent {
+              background:  url('../images/menu/agent.png') no-repeat;
+            }
+            &.fa-buy-chip {
+              background:  url('../images/menu/buy-chip.png') no-repeat;
+            }
+            &.fa-shift-record {
+              background:  url('../images/menu/shift-record.png') no-repeat;
+            }
+            &.fa-deposit {
+              background:  url('../images/menu/deposit.png') no-repeat;
+            }
+            &.fa-rolling {
+              background:  url('../images/menu/rolling.png') no-repeat;
+            }
+            &.fa-loan {
+              background:  url('../images/menu/loan.png') no-repeat;
+            }
+            &.fa-cross-transfer {
+              background:  url('../images/menu/cross-transfer.png') no-repeat;
+            }
+            &.fa-mortgage {
+              background:  url('../images/menu/mortgage.png') no-repeat;
+            }
+            //
+            &.fa-consumption-record {
+              background:  url('../images/menu/consumption-record.png') no-repeat;
+            }
+            //码佣管理
+            &.fa-commission {
+              background:  url('../images/menu/commission.png') no-repeat;
+            }
+            //计佣
+            &.fa-commission-calculate {
+              background:  url('../images/menu/commission-calculate.png') no-repeat;
+            }
+
+            //场面管理
+            &.fa-scene {
+              background:  url('../images/menu/scene.png') no-repeat;
+            }
+
+            //消费管理
+            &.fa-consumption-record {
+              background:  url('../images/menu/consumption-record.png') no-repeat;
+            }
+
+            //消费设定
+            &.fa-consumption-set {
+              background:  url('../images/menu/consumption-set.png') no-repeat;
+            }
+            //即出码粮
+            &.fa-pay-commission {
+              background:  url('../images/menu/pay-commission.png') no-repeat;
+            }
+            //报表管理
+            &.fa-report {
+              background:  url('../images/menu/report.png') no-repeat;
+            }
+            //服务管理
+            &.fa-service {
+              background:  url('../images/menu/service.png') no-repeat;
+            }
+            //SMS管理
+            &.fa-sms {
+              background:  url('../images/menu/sms.png') no-repeat;
+            }
+            //SMS管理
+            &.fa-sms-manager {
+
+              background:  url('../images/menu/sms-manager.png') no-repeat;
+            }
+            //SMS管理
+            &.fa-consumption-manager {
+              background:  url('../images/menu/consumption-manager.png') no-repeat;
+            }
+
+
+
+            &.fa-transfer-manager {
+              background:  url('../images/menu/transfer-manager.png') no-repeat;
+            }
+
+          }
+          span {
+            height: 24px;
+            line-height: 24px;
+          }
+        }
+        >ul {
+          li {
+            background-color: $submenu-link-bg;
+          }
+        }
+
+        > .icon-has-ul {
+            position: absolute;
+            top: 18px;
+            right: 15px;
+        }
+    }
+
+    // sub menu
+    ul {
+        background-color: $sub_nav_bg;
+        display: none;
+
+        a {
+            font-size: 13px;
+        }
+
+        li {
+            position: relative;
+            padding: 0;
+            &:hover,
+            &.active {
+                a {
+                    color: $brand-primary;
+                }
+            }
+            &:last-child > a {
+                border-bottom: 0;
+            }
+
+            > a {
+                position: relative;
+                display: block;
+                padding: 13px 0 13px 25px;
+                // border-bottom: 1px solid darken($sub_nav_bg, 5%);
+                @include transition( all .2s ease-in-out);
+                &:first-child {
+                    border-top: none;
+                }
+
+                i.fa-caret-right {
+                    margin-right: 25px;
+                }
+
+                > .badge {
+                    position: absolute;
+                    right: 5px;
+                    top: 12px;
+                }
+            }
+        }
+    }
+}
+
+.nav-min {
+  #nav {
+    li {
+      a {
+        height: 50px;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h3>場面數記錄詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_create_remark" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_remark_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr >
+                        <td>所屬廳館</td>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>場次編號</td>
+                        <td>轉碼金額</td>
+                        <td>本月合計</td>
+                        <td>轉碼時間</td>
+                        <td>備註</td>
+                        <td>經手人</td>
+                        <td>更數</td>
+                        <td>操作機器</td>
+                    </tr>
+                    <tr data-ng-repeat="sceneRolling in sceneRollings">
+                        <td>{{sceneRolling.hall_name}}</td>
+                        <td>{{sceneRolling.agent_code}}</td>
+                        <td>{{sceneRolling.agent_name}}</td>
+                        <td>{{sceneRolling.rolling_record_no}}</td>
+                        <td>{{sceneRolling.rolling}}</td>
+                        <td>{{sceneRolling.thismonth_rolling}}<span data-ng-show="">萬</span></td>
+                        <td>{{sceneRolling.create_time}}</td>
+                        <td>{{sceneRolling.remark}}</td>
+                        <td>{{sceneRolling.user_name}}</td>
+                        <td>{{sceneRolling.shift}}</td>
+                        <td>{{sceneRolling.machine_name}}</td>
+                    </tr>
+                    <tr data-ng-show="sceneRollings.length==0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+        </div>
+    </form>
+</div>

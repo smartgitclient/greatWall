@@ -1,0 +1,42 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>愛好紙內容：</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <thead>
+                                    <tr>
+                                        <td>內容</td>
+                                        <td>愛好紙類型</td>
+                                        <td>經手人</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="hobbie in hobbies">
+                                        <td>{{hobbie.content}}</td>
+                                        <td>{{hobbie.type}}</td>
+                                        <td>{{hobbie.brokerage}}</td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-inf btn-cancel" data-ng-click="removeDetail()">關閉</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

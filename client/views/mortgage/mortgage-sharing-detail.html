@@ -1,0 +1,87 @@
+<div class="page page-services ng-scope" data-ng-controller="mortgageSharingDetailCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>抵押詳細</strong></div>
+        <div class="panel-content">
+                <table>
+                    <tr height="50">
+                        <td width="140" class="text-right">抵押單編號：</td>
+                        <td width="100">{{ mortgage_record.mortgage_no }}</td>
+                        <td width="50">&nbsp;</td>
+                        <td width="120" class="text-right">所在廳：</td>
+                        <td width="100">{{ mortgage_record.hall_name }}</td>
+                        <td width="50">&nbsp;</td>
+                        <td width="126" class="text-right">抵押方：</td>
+                        <td width="150">{{ mortgage_record.agent_code }}  {{ mortgage_record.agent_name }}</td>
+                        <td width="50">&nbsp;</td>
+                        <td width="126" class="text-right">抵押類型：</td>
+                        <td width="100">{{ mortgage_types[mortgage_record.mortgage_type] }}</td>
+                    </tr>
+                    <tr height="86">
+                        <td class="text-right">釋放簽額：</td>
+                        <td>{{ 1 == mortgage_record.is_release ? '是' : '否' }}</td>
+                        <td>&nbsp;</td>
+                        <td class="text-right">抵押金額：</td>
+                        <td>{{ mortgage_record.mortgage_amount }} 萬</td>
+                        <td>&nbsp;</td>
+                        <td class="text-right">抵押時間：</td>
+                        <td>{{ mortgage_record.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>&nbsp;</td>
+                        <td width="126" class="text-right">收益總額：</td>
+                        <td width="100">{{ mortgage_record.mortgage_porfit || 0 }} 萬</td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">備註：</td>
+                        <td colspan="11">
+                            <p class="p-textarea">
+                                {{ mortgage_record.remark }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <strong>貸款單信息</strong>
+            <button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr>
+                    <td>貸款單編號</td>
+                    <td>手續費單號</td>
+                    <td>抵押金額</td>
+                    <td>抵押方式</td>
+                    <td>過期手續費</td>
+                    <td>手續費分成</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="mortgageProfit in mortgageProfits" data-selected-rows>
+                    <td>{{ mortgageProfit.marker_seqnumber }}</td>
+                    <td>{{ mortgageProfit.marker_fee_seqnumber }}</td>
+                    <td>{{ mortgageProfit.mortgage_amount | number }} 萬</td>
+                    <td>{{ 1 == mortgageProfit.is_all_mortgage ? '全部抵押' : '部分抵押'}}</td>
+                    <td>{{ mortgageProfit.marker_fee | number }}萬</td>
+                    <td>{{ mortgageProfit.mortgage_profit || 0 | number }} 萬</td>
+                </tr>
+                <tr data-ng-show="mortgageProfits.length == 0">
+                    <td colspan="6">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+            </div>
+        </footer-->
+    </div>
+</div>

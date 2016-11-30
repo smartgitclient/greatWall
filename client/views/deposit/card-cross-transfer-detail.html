@@ -1,0 +1,146 @@
+<div class="modal-header">
+    <h3>飛數流水詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="120" align="right">類型：</td>
+                        <td align="left">
+                            {{crossTransferTypes.items[cross_transfer.type]}}
+                        </td>
+                        <td align="right">&nbsp;</td>
+                        <td align="left">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">飛出廳：</td>
+                        <td align="left">
+                            {{cross_transfer.send_hall_name}}
+                        </td>
+                        <td align="right">飛出戶口：</td>
+                        <td align="left">
+                            {{cross_transfer.send_agent_code}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出客戶：</td>
+                        <td align="left">
+                            {{cross_transfer.send_agent_name}}
+                        </td>
+                        <td align="right">飛出存卡：</td>
+                        <td align="left">
+                            {{cross_transfer.send_card_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出經手人：</td>
+                        <td align="left">
+                            {{cross_transfer.send_user_name}}
+                        </td>
+                        <td align="right">飛出時間：</td>
+                        <td align="left">
+                            {{cross_transfer.send_time|parseDate:"yyyy-MM-dd HH:mm"}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛出備註：</td>
+                        <td align="left" colspan="3">
+                           {{cross_transfer.send_remark}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入廳：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_hall_name}}
+                        </td>
+                        <td align="right">飛入戶口：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_agent_code}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入客戶：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_agent_name}}
+                        </td>
+                        <td align="right">飛入存卡：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_card_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 93px">飛入備註：</td>
+                        <td align="left" colspan="3">
+                            {{cross_transfer.receive_remark}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">飛入經手人：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_user_name}}
+                        </td>
+                        <td align="right">飛入時間：</td>
+                        <td align="left">
+                            {{cross_transfer.receive_time|parseDate:"yyyy-MM-dd HH:mm"}}
+                        </td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td width="120" align="right">飛出廳：</td>-->
+                        <!--<td align="left">-->
+                        <!--{{cross_transfer.send_hall_name}}-->
+                        <!--</td>-->
+                        <!--<td align="right">飛入廳：</td>-->
+                        <!--<td align="left">{{cross_transfer.receive_hall_name}}</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td width="120" align="right">飛出客戶：</td>-->
+                        <!--<td align="left">-->
+                        <!--{{cross_transfer.send_agent_code}}-->
+                        <!--</td>-->
+                        <!--<td align="right">飛入客戶：</td>-->
+                        <!--<td align="left">{{cross_transfer.receive_agent_code}}</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td width="120" align="right">飛出客戶名：</td>-->
+                        <!--<td align="left">-->
+                        <!--{{cross_transfer.send_agent_name}}-->
+                        <!--</td>-->
+                        <!--<td width="120" align="right">飛入客戶名：</td>-->
+                        <!--<td align="left">{{cross_transfer.receive_agent_name}}</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td width="120" align="right">飛出存卡：</td>-->
+                        <!--<td align="left">{{cross_transfer.send_card_name}}</td>-->
+                        <!--<td align="right">飛入存卡：</td>-->
+                        <!--<td align="left">{{cross_transfer.receive_card_name}}</td>-->
+                    <!--</tr>-->
+
+                    <tr>
+                        <td align="right">確認人：</td>
+                        <td align="left">{{cross_transfer.receive_contact_name}}</td>
+                        <td align="right">飛數金額：</td>
+                        <td align="left">
+                        {{cross_transfer.amount|parseTenThousand}}
+                        </td>
+
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td align="right">經手人：</td>-->
+                        <!--<td align="left">-->
+                        <!--{{cross_transfer.user_name}}-->
+                        <!--</td>-->
+                        <!--<td width="120" align="right">時間：</td>-->
+                        <!--<td align="left">{{cross_transfer.transfer_time}}</td>-->
+                    <!--</tr>-->
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center"><br/>
+    <button class="btn btn-information" ng-click="close()">關閉</button>
+    </div>
+</div>
+
+

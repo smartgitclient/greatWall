@@ -1,0 +1,220 @@
+<div class="page page-services" data-ng-controller="commissionEarningsDetailCtrls">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>用戶碼佣明細</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="120"><span class="span-formlist">戶口編號：</span></td>
+                        <td width="209">FA233</td>
+                        <td width="94">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">戶口姓名：</span></td>
+                        <td width="209">李達文</td>
+                        <td width="94">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">月份：</span></td>
+                        <td width="209">2014-07</td>
+                        <td width="120"></td>
+                        <td width="209"></td>
+                    </tr>
+                    <tr height="50">
+                        <td ><span class="span-formlist">本金類型：</span></td>
+                        <td>
+                            <ui-select ng-model="condition.type2">
+                                <ui-select-match placeholder="請選擇本金類型">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="type in ['C','M','U']">
+                                    <div ng-bind-html="type"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td><span class="span-formlist">所在廳：</span></td>
+                        <td>
+                            <ui-select ng-model="condition.hall">
+                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="hall in ['永利鉅星','MGM鉅星','新葡京鉅星','太陽城多金1','太陽城多金2','太陽城多金3']">
+                                    <div ng-bind-html="hall"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td><span class="span-formlist">指定日期：</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.created_min" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="100"><span class="span-formlist">收益類型：</span></td>
+                        <td width="209">
+                            <ui-select ng-model="condition.type">
+                                <ui-select-match placeholder="請選擇收益類型">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="type in ['應得碼佣','碼佣提成']">
+                                    <div ng-bind-html="type"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15">查詢</button>
+                    <button class="btn btn-inf btn-cancel">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+    </div>
+
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <strong>明細列表</strong>
+
+            <button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <!--button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button-->
+            <span class=" pull-right">現金碼佣合計：85700&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消費積分合計：4285&nbsp;&nbsp;</span>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>本金類型</td>
+                    <td>所在廳</td>
+                    <td>年月</td>
+                    <td>日期</td>
+                    <td>收益類型</td>
+                    <td>下線</td>
+                    <td>咭類型</td>
+                    <td>本金流量</td>
+                    <td>碼佣收益</td>
+                    <td>津貼</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>C</td>
+                    <td>永利鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>應得碼佣</td>
+                    <td>--</td>
+                    <td>C</td>
+                    <td>150</td>
+                    <td>15000</td>
+                    <td>750</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>MGM鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>應得碼佣</td>
+                    <td>--</td>
+                    <td>C</td>
+                    <td>60</td>
+                    <td>6000</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>新葡京鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>應得碼佣</td>
+                    <td>--</td>
+                    <td>C</td>
+                    <td>85</td>
+                    <td>8500</td>
+                    <td>425</td>
+                </tr>
+                <tr>
+                    <td>M</td>
+                    <td>永利鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>M</td>
+                    <td>100</td>
+                    <td>100000</td>
+                    <td>500</td>
+                </tr>
+                <tr>
+                    <td>M</td>
+                    <td>MGM鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>M</td>
+                    <td>76</td>
+                    <td>7600</td>
+                    <td>380</td>
+                </tr>
+                <tr>
+                    <td>M</td>
+                    <td>新葡京鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>M</td>
+                    <td>88</td>
+                    <td>8800</td>
+                    <td>440</td>
+                </tr>
+                <tr>
+                    <td>U</td>
+                    <td>永利鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>U</td>
+                    <td>90</td>
+                    <td>9000</td>
+                    <td>450</td>
+                </tr>
+                <tr>
+                    <td>U</td>
+                    <td>MGM鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>U</td>
+                    <td>63</td>
+                    <td>6300</td>
+                    <td>315</td>
+                </tr>
+                <tr>
+                    <td>U</td>
+                    <td>新葡京鉅星</td>
+                    <td>2014-07</td>
+                    <td>2014-07-31</td>
+                    <td>碼佣提成</td>
+                    <td>--</td>
+                    <td>U</td>
+                    <td>145</td>
+                    <td>14500</td>
+                    <td>725</td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="current_page"
+                                    total-items="all_cards.length"
+                                    on-select-page="select(page)"
+                                    data-ng-show="cards.length != 0"></pagination>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

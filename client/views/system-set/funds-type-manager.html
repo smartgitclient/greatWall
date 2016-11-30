@@ -1,0 +1,45 @@
+<div class="page page-services ng-scope" data-ng-controller="shiftRecordCreateCtrl">
+    <div class="panel panel-form-list col-md-10">
+        <div class="panel-heading">貸款類型</div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td width="166">排序</td>
+                    <td width="255">類型名稱</td>
+                    <td>備註</td>
+                    <td width="129">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="agent.agent_name"></td>
+                    <td>
+                        <input class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="agent.agent_name">
+                    </td>
+                    <td><input class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="agent.agent_name"></td>
+                    <td>
+                        <button class="btn btn-info btn-confirm btn-table" ng-click="removeCertificate($index)">添加</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <button class="btn btn-info btn-confirm btn-table margin-right-5" ng-click="upload($index)">修改</button>
+                        <button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

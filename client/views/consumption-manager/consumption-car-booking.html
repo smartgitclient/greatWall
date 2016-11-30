@@ -1,0 +1,450 @@
+<div class="panel panel-default">
+<div class="col-md-4">
+<div class="panel panel-form-list">
+<div class="panel-content">
+<table>
+    <tbody>
+    <tr height="50">
+        <td class="text-right" width="100">消費單號：</td>
+        <td class="text-left" width="160">&nbsp;</td>
+        <td class="text-right" width="100">&nbsp;</td>
+        <td class="text-left" width="160">&nbsp;</td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">預訂單號：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.dan" class="form-control"></td>
+        <td class="text-right">所屬廳館：</td>
+        <td class="text-left">
+            <ui-select ng-model="car.hall">
+                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="hall in halls">
+                    <div ng-bind-html="hall"></div>
+                </ui-select-choices>
+            </ui-select>
+        </td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">戶口編號：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.agent_code" class="form-control"></td>
+        <td class="text-right">戶口姓名：</td>
+        <td class="text-left">{{car.agent_name}}</td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">消費類型：</td>
+        <td class="text-left">
+            <ui-select ng-model="car.consumption_type">
+                <ui-select-match placeholder="請選擇消費類型">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="consumption_type in ['MGM','UO','鉅星旅行社','永利','新葡京','舊葡京','銀河']">
+                    <div ng-bind-html="consumption_type"></div>
+                </ui-select-choices>
+            </ui-select>
+        </td>
+        <td class="text-right">車輛類型：</td>
+        <td class="text-left">
+            <ui-select ng-model="car.card_type">
+                <ui-select-match placeholder="請選擇車輛類型">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="card_type in ['車輛名稱','钜旅-兩地牌','钜旅-其他車','UO-兩地牌','UO-其他車','永利車']">
+                    <div ng-bind-html="card_type"></div>
+                </ui-select-choices>
+            </ui-select>
+        </td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">租車日期：</td>
+        <td class="text-left">
+<p class="input-group ui-datepicker">
+<input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="car.out_date"  date-disabled="disabled(date, mode)" close-text="Close" />
+<span class="input-group-btn">
+<button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+</span>
+</p>
+
+        </td>
+        <td class="text-right">租車時間：</td>
+        <td class="text-left">  <ui-select class="select-92" ng-model="car.time">
+            <ui-select-match placeholder="租車時間">{{$select.selected}}</ui-select-match>
+            <ui-select-choices repeat="time in ['13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00']">
+                <div ng-bind-html="time"></div>
+            </ui-select-choices>
+        </ui-select></td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">行程：</td>
+        <td class="text-left" colspan="3"><input type="text" data-ng-model="car.xincheng" class="form-control"></td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">預訂數量：</td>
+        <td class="text-left" colspan="3">
+            <div class="input-group ui-spinner" data-ui-spinner>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" data-spin="down">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </span>
+                <input type="text" class="spinner-input form-control">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" data-spin="up">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </span>
+                &nbsp;&nbsp;
+            </div>
+        </td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">成本單價：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.chenben" class="form-control"></td>
+        <td class="text-right">實收單價：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.shihsou" class="form-control"></td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">成本總數：</td>
+        <td class="text-left">0</td>
+        <td class="text-right">實收總數：</td>
+        <td class="text-left">0</td>
+    </tr>
+    <tr height="50">
+        <td class="text-right">收益：</td>
+        <td class="text-left" colspan="3">0</td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<table class="BGcolor-626571" width="100%">
+    <tbody>
+    <tr height="40">
+        <td class="text-right" width="100">付款方式：</td>
+        <td class="text-left" width="160">
+            <ui-select ng-model="car.payment_type">
+                <ui-select-match placeholder="請選擇付款方式">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="payment_type in ['積分','佣金','存卡','現金']">
+                    <div ng-bind-html="payment_type"></div>
+                </ui-select-choices>
+            </ui-select>
+        </td>
+        <td class="text-right" width="100">去程目的地：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.mudi" class="form-control"></td>
+        <td width="20">&nbsp;</td>
+    </tr>
+    <tr height="40">
+        <td class="text-right">訂票人：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.booker" class="form-control"></td>
+        <td class="text-right">電話：</td>
+        <td class="text-left"><input type="text" data-ng-model="car.phone" class="form-control"></td>
+        <td width="20">&nbsp;</td>
+    </tr>
+    <tr height="120">
+        <td valign="top" class="text-right">
+            備註：<br>
+            <button class="btn  btn-information btn-table btn-remark">常用</button>
+        </td>
+        <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="car.remark" name=""></textarea></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<table>
+    <tr height="50">
+        <td class="text-right">操作密碼：</td>
+        <td colspan="3" class="text-left"><input type="text" data-ng-model="commission_calculate.pwd" class="form-control input-140" data-enter-key="update()"></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<div class="row" style="text-align: center;">
+    <button class="btn  btn-confirm margin-right-15" data-ng-click="update()">提 交</button>
+    <button class="btn  btn-cancel" data-ng-click="check('消費轉移')">取 消</button>
+</div>
+</div>
+</div>
+</div>
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="150" class="text-right">消費單號：</td>
+                                <td width="160"><input type="text" data-ng-model="condition4.dan" class="form-control"></td>
+
+                                <td width="150" class="text-right">所屬廳館：</td>
+                                <td width="160"> <ui-select ng-model="condition4.hall">
+                                    <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                    <ui-select-choices repeat="hall in halls">
+                                        <div ng-bind-html="hall"></div>
+                                    </ui-select-choices>
+                                </ui-select></td>
+
+                                <td width="150" class="text-right">戶口編號：</td>
+                                <td width="160"><input type="text" data-ng-model="condition4.agent_code" class="form-control"></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">戶口姓名：</td>
+                                <td><input type="text" data-ng-model="condition4.agent_name" class="form-control"></td>
+                                <td class="text-right">租車日期：</td>
+                                <td>
+                                    <p class="input-group ui-datepicker">
+                                    <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition4.in_date" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    </p>
+                                    <!--<ui-select ng-model="condition.xingc">-->
+                                        <!--<ui-select-match placeholder="請選擇行程">{{$select.selected}}</ui-select-match>-->
+                                        <!--<ui-select-choices repeat="xingc in ['鉅星旅行社']">-->
+                                            <!--<div ng-bind-html="xingc"></div>-->
+                                        <!--</ui-select-choices>-->
+                                    <!--</ui-select>-->
+                                </td>
+                                <td class="text-right">租車時間：</td>
+                                <td width="200">
+                                    <ui-select class="select-92" style="display: inline-block" ng-model="condition4.time">
+                                        <ui-select-match placeholder="租車時間">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="time in ['13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00']">
+                                            <div ng-bind-html="time"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                    <ui-select class="select-92" style="display: inline-block"  ng-model="condition4.time2">
+                                        <ui-select-match placeholder="租車時間">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="time in ['13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00']">
+                                            <div ng-bind-html="time"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">車輛類型：</td>
+                                <td>
+                                    <ui-select ng-model="condition4.card_type">
+                                        <ui-select-match placeholder="請選擇車輛類型">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="card_type in ['車輛名稱','钜旅-兩地牌','钜旅-其他車','UO-兩地牌','UO-其他車','永利車']">
+                                            <div ng-bind-html="card_type"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                   </td>
+                                <td class="text-right">訂票人：</td>
+                                <td><input type="text" data-ng-model="condition4.booker" class="form-control"></td>
+                                <td class="text-right"></td>
+                                <td>
+                                    <!--<ui-select ng-model="condition1.certificate_type">-->
+                                        <!--<ui-select-match placeholder="請選擇証件號碼">{{$select.selected}}</ui-select-match>-->
+                                        <!--<ui-select-choices repeat="certificate_type in ['身份證','護照']">-->
+                                            <!--<div ng-bind-html="certificate_type"></div>-->
+                                        <!--</ui-select-choices>-->
+                                    <!--</ui-select>-->
+                                </td>
+
+
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn  btn-information margin-right-15" ng-click="search()">查詢</button>
+                            <button class="btn  btn-cancel" data-ng-click="searchReset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>消費單號</td>
+                            <td>預訂單號</td>
+                            <td>所屬廳館</td>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>車輛類型</td>
+                            <td>租車日期</td>
+                            <td>租車時間</td>
+                            <td>訂票人</td>
+                            <td>狀態</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>320413</td>
+                            <td>33205231</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>钜旅-兩地牌</td>
+                            <td>2014-08-25</td>
+                            <td>16:30</td>
+                            <td>陳明</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320412</td>
+                            <td>33205020</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>钜旅-兩地牌</td>
+                            <td>2014-08-25</td>
+                            <td>16:30</td>
+                            <td>李洪</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320411</td>
+                            <td>33205003</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>钜旅-其他車</td>
+                            <td>2014-08-24</td>
+                            <td>17:00</td>
+                            <td>王曉光</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320410</td>
+                            <td>33204988</td>
+                            <td>永利鉅星</td>
+                            <td>FA112</td>
+                            <td>鐘達</td>
+                            <td>钜旅-其他車</td>
+                            <td>2014-08-24</td>
+                            <td>15:45</td>
+                            <td>吳益民</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320409</td>
+                            <td>33204952</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>UO-兩地牌</td>
+                            <td>2014-08-24</td>
+                            <td>12:20</td>
+                            <td>陳毅</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320408</td>
+                            <td>33204886</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>UO-兩地牌</td>
+                            <td>2014-08-23</td>
+                            <td>17:15</td>
+                            <td>錢朱峰</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320407</td>
+                            <td>33204745</td>
+                            <td>永利鉅星</td>
+                            <td>FA203</td>
+                            <td>陳好</td>
+                            <td>永利車</td>
+                            <td>2014-08-23</td>
+                            <td>16:20</td>
+                            <td>霍佳樂</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320406</td>
+                            <td>33204723</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>永利車</td>
+                            <td>2014-08-23</td>
+                            <td>13:30</td>
+                            <td>吳三聖</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320405</td>
+                            <td>33204655</td>
+                            <td>永利鉅星</td>
+                            <td>FA408</td>
+                            <td>李強</td>
+                            <td>钜旅-其他車</td>
+                            <td>2014-08-23</td>
+                            <td>9:00</td>
+                            <td>金葉</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>320404</td>
+                            <td>33204440</td>
+                            <td>永利鉅星</td>
+                            <td>H11</td>
+                            <td>李鑫</td>
+                            <td>UO-兩地牌</td>
+                            <td>2014-08-22</td>
+                            <td>20:00</td>
+                            <td>陳建明</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_buyChips.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="buyChips.length != 0"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

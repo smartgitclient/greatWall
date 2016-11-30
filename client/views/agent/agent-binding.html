@@ -1,0 +1,220 @@
+<div class="page page-services ng-scope">
+    <form name="$parent.form_binding_agent" class="form-validation" server-validation="form_binding_agent">
+    <div>
+        <div class="col-md-12">
+            <div class="panel panel-list-detail col-md-7">
+                <div class="panel-heading"><strong>綁定戶口</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td align="right">聯絡人姓名：</td>
+                                        <td align="left">
+                                            {{refAgentContactTypes.agent_contact_name}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">戶口編號：</td>
+                                        <td align="left">
+                                            <input class="form-control input-01 ng-pristine ng-valid"
+                                                   data-input-uppercase="refAgentContactTypes.agent_code"
+                                                   data-ng-required="enableClientValidation"
+                                                   name = "refAgentContactTypes_0_agent_info_id"
+                                                   type="text"
+                                                   ng-model="refAgentContactTypes.agent_code"
+                                                   ng-class="{true: 'ng-invalid-server', false: ''}[refAgentContactTypes_0_agent_info_id]">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">戶口姓名：</td>
+                                        <td align="left">{{refAgentContactTypes.agent_info_name}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td align="right">聯絡人類型：</td>
+                                        <td align="left">
+                                            <!--data-ng-change="change_contact_type()"-->
+                                            <select data-ng-required="enableClientValidation"
+                                                    data-ng-model="refAgentContactTypes.contact_type"
+                                                    required name="contact_type"
+                                                    class="form-control"
+                                                    ng-options="h.contact_type as h.contact_type_name for h in contacttypes"
+                                                    ng-class="{true: 'ng-invalid-server', false: ''}[refAgentContactTypes_0_contact_type]">
+                                                <option value = "">請選擇聯絡人類型</option>
+                                            </select>
+
+                                            <!--<ui-select ng-model="binding_agent.contacts_type" ng-change="showBinging()">-->
+                                            <!--<ui-select-match placeholder="請選擇授權事項">{{$select.selected}}</ui-select-match>-->
+                                            <!--<ui-select-choices repeat="contacts_type in ['助手','客人','授權人'];">-->
+                                            <!--<div ng-bind-html="contacts_type"></div>-->
+                                            <!--</ui-select-choices>-->
+                                            <!--</ui-select>-->
+                                        </td>
+                                    </tr>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-list-detail col-md-5" data-ng-show="show_binding">
+                <div class="panel-heading">
+                    <strong>戶口授權</strong>
+                    <input type="checkbox" data-ng-model="auth_cheked_all" name="auth_cheked_all" data-ng-change="authorization_check_all(auth_cheked_all)">全部</checkbox>
+                </div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr data-ng-repeat="authorization in agentAuthorization">
+                                        <td align="center" data-ng-repeat="auth in authorization">
+                                            <input type="checkbox" data-ng-model="auth.selected" data-dynamic-name="privilege_name_item{{$index}}" data-ng-change="is_checkbox_item(auth)">{{auth.privilege_name}}</checkbox>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" >
+            <div class="panel panel-list-detail col-md-7">
+                <div class="panel-heading"><strong>聯絡方式</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td align="center">通知類型</td>
+                                        <td align="center">電話號碼</td>
+                                        <td align="center">操作</td>
+                                    </tr>
+                                    <tr data-ng-repeat="ct in bindContactsTels">
+                                        <td align="center">
+                                            <select data-ng-required="enableClientValidation  && ct.isRequired"
+                                                    name="notice_type"
+                                                    data-ng-model="ct.notice_type"
+                                                    class="form-control"
+                                                    ng-options="h.id as h.sms_notice_type for h in smsnoticetypes">
+                                                <option value = "">請選擇通知類型</option>
+                                            </select>
+                                        </td>
+                                        <td align="center">
+                                            <select data-ng-required="enableClientValidation && boundAgentType=='add' && ct.isRequired"
+                                                    data-ng-show="boundAgentType=='add'"
+                                                    data-ng-model="ct.telephone_number_index"
+                                                    class="form-control"
+                                                    name="telephone_number_index"
+                                                    data-ng-change="updateBindNotice(ct)">
+                                                <option value = "">請選擇電話號碼</option>
+                                                <!--data-ng-show="c.status == 0"-->
+                                                <option data-ng-repeat="c in contactsTels" value="{{$index}}" data-ng-hide="c.telephone_number==''" ng-selected="c.telephone_number==ct.telephone_number">{{c.telephone_number}}</option>
+                                            </select>
+                                            <!--ng-options="h.id as h.telephone_number for h in contactsTels"  data-ng-change="updateBindNotice2(h.id )"-->
+                                            <select data-ng-required="enableClientValidation && boundAgentType=='edit' && ct.isRequired" data-ng-show="boundAgentType=='edit'"
+                                                    data-ng-model="ct.telephone_number_index"
+                                                    class="form-control"
+                                                    name="telephone_number_index"
+                                                    data-ng-change="updateBindNotice(ct)">
+                                                <option value = "">請選擇電話號碼</option>
+                                                <!--data-ng-hide="c.id=='' || c.id==null || c.id==undefined"-->
+                                                <option data-ng-repeat="c in contactsTels" value="{{$index}}" data-ng-hide="c.telephone_number ==''" ng-selected="(c.id != '' && c.id==ct.telephone_number_id) || c.telephone_number == ct.telephone_number" >{{c.telephone_number}}</option>
+                                            </select>
+                                        </td>
+                                        <td align="center">
+                                            <button  ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addBindNoctice($index)">增加</button>
+                                            <button ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeBindNoctice($index)">刪除</button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-show="bindContactsTels.length == 0">
+                                        <td colspan="3">暫無符合條件的記錄</td>
+                                    </tr>
+
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-list-detail" data-ng-repeat="contact in bindContactsTels" data-ng-show="contact.notice_type && contact.notice_type != 2 && show_binding && nocite_type_show && contact.telephone_number">
+                    <div class="panel-heading">
+                        <strong>綁定短信通知</strong>
+                        <input type="checkbox" data-ng-model="contact.check_all" data-ng-change="check_all_message_sms_notice_type($index)">全部</checkbox>
+                        <span class="pull-right">電話：{{contact.telephone_number}}</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form name="form_search">
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td ng-init="num = $index">
+                                                <table class="table table-bordered table-striped table-detail-01">
+                                                    <tr data-ng-repeat="contact_privilege in contact_smsnoticeTypes[num]">
+                                                        <td align="left" data-ng-repeat="contact in contact_privilege" style="border-top: none">
+                                                            <input data-ng-required="enableClientValidation" type="checkbox" name="selected{{num}}{{$index}}" data-ng-model="contact.selected" data-ng-change="check_message_sms_notice_type(contact,num)">{{contact.sms_notice_type}}</checkbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!---->
+        <!--<div class="col-md-12"  data-ng-show="show_binding">-->
+            <!--<div class="panel panel-list-detail">-->
+                <!--<div class="panel-heading">-->
+                    <!--<strong>戶口授權</strong>-->
+                    <!--<input type="checkbox" data-ng-model="auth_cheked_all" name="auth_cheked_all" data-ng-change="authorization_check_all(auth_cheked_all)">全部</checkbox>-->
+                <!--</div>-->
+                <!--<div class="panel-content">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<form name="form_search">-->
+                                <!--<table class="table table-bordered table-striped table-detail-01">-->
+                                    <!--<tr data-ng-repeat="authorization in agentAuthorization">-->
+                                        <!--<td align="center" data-ng-repeat="auth in authorization">-->
+                                            <!--<input type="checkbox" data-ng-model="auth.selected" data-dynamic-name="privilege_name_item{{$index}}" data-ng-change="is_checkbox_item()">{{auth.privilege_name}}</checkbox>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>備註</strong>
+                </div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea name="remark" maxLength="100" data-ng-model="refAgentContactTypes.remark" rows="4" class="form-control textarea-table01" id="remark"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-confirm" ng-click="add()">提交</button>
+        </div>
+    </div>
+    </form>
+</div>

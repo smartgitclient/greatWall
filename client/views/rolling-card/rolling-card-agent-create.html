@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h3>新增轉碼卡</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_create_card" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_card_url}}">
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td>戶口編號：</td>
+            <td >
+                <input data-input-uppercase data-ng-required="enableClientValidation" name= "agent_info_id" class="form-control input-01" type="text" data-ng-model="card.agent_code" />
+            </td>
+        </tr>
+        <tr>
+            <td>戶名名稱：</td>
+            <td class="text-left">
+                {{agent[0].agent_name}}
+            </td>
+        </tr>
+        <tr>
+            <td>轉碼卡類型：</td>
+            <td >
+                <input name= "card_name"  data-input-uppercase data-ng-required="enableClientValidation" class="form-control input-01" type="text" data-ng-model="card.card_name" />
+            </td>
+        </tr>
+        <tr>
+            <td >操作密碼：</td>
+            <td>
+                <input type="password" name="pin_code" data-ng-model="card.pin_code" class="form-control" data-enter-key="add()">
+            </td>
+        </tr>
+    </table><br/><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+        <button class="btn btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+    </form>
+</div>
+</div>

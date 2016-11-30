@@ -1,0 +1,160 @@
+[
+    {"id":"0","group":"FV8","agent_type":"下線","agent_code":"FA233","agent_name":"李達文","nationality":"中國","language":"中文","birthday":"1965-05-07","sex":"男","introducer":"張玉","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"護照","certificate_number":"G45126532","images":"images/index/passport01.jpg"},
+            {"certificate_type":"身份證","certificate_number":"6532452（0）","images":"images/index/passport01.jpg"}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"王毅", "notification_type":"短信","area_code":"+853", "phone_number":"6688666","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6688666","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"王毅","notices":"貸款、存卡","phone_number":"+853 6688666","created":"2014-07-21","status":"1","agent_selected":{
+                "contact_name":"FA233 陳三"
+            }},
+            {"id":"1","agent_name":"陳四","notices":"貸款","phone_number":"+853 6685218","created":"2014-07-21","status":"1","agent_selected":{
+                "contact_name":"FA233 陳四"
+            }}
+        ],
+        "remarks":[
+            {"content":"陳達文所有存碼都存在永利鉅星","department":"賬房", "created":"2014-08-20"},
+            {"content":"陳達文本月簽額已用完","department":"賬房", "created":"2014-08-20"},
+            {"content":"陳達文的消費積分已用完","department":"賬房", "created":"2014-08-16"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡抽Albero雪茄","brokerage":"Rain"},
+            {"content":"客戶喜歡喝拉菲紅酒","brokerage":"Rain"}
+        ],"settlement_type":"普通"
+
+    } ,
+    {"id":"1","group":"A2潘多省","agent_type":"下線","agent_code":"PA328M","agent_name":"呂清資","nationality":"中國","language":"中文","birthday":"1965-05-13","sex":"男","introducer":"B哥","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF588851251251","images":""}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"陳三", "notification_type":"短信","area_code":"+853", "phone_number":"6654213","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6654214","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"陳三","notices":"存卡","phone_number":"+853 6654213","created":"2014-07-21","status":"0"},
+            {"id":"1","agent_name":"陳四","notices":"存卡","phone_number":"+853 6654214","created":"2014-07-21","status":"0"}
+        ],
+        "remarks":[
+            {"content":"欠M時一律不出M","department":"賬房", "created":"2012-07-31"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡飲跑步","brokerage":"Rain"}
+        ],"settlement_type":"普通"
+    } ,
+    {"id":"2","group":"A3潘多省","agent_type":"下線","agent_code":"VW5232M","agent_name":"易志江","nationality":"中國","language":"中文","birthday":"1965-05-14","sex":"男","introducer":"B哥","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF5121222251251","images":""}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"陳三", "notification_type":"短信","area_code":"+853", "phone_number":"6654213","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6654214","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"陳三","notices":"存卡","phone_number":"+853 6654213","created":"2014-07-21","status":"0"},
+            {"id":"1","agent_name":"陳四","notices":"存卡","phone_number":"+853 6654214","created":"2014-07-21","status":"0"}
+        ],
+        "remarks":[
+            {"content":"欠M時一律不出M","department":"賬房", "created":"2012-07-31"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡飲跑步","brokerage":"Rain"}
+        ]
+    },
+    {"id":"3","group":"A4潘多省","agent_type":"下線","agent_code":"Y780","agent_name":"徐靜","nationality":"中國","language":"中文","birthday":"1965-05-15","sex":"男","introducer":"B哥","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF5121566541251","images":""}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"陳三", "notification_type":"短信","area_code":"+853", "phone_number":"6654213","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6654214","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"陳三","notices":"存卡","phone_number":"+853 6654213","created":"2014-07-21","status":"0"},
+            {"id":"1","agent_name":"陳四","notices":"存卡","phone_number":"+853 6654214","created":"2014-07-21","status":"0"}
+        ],
+        "remarks":[
+            {"content":"欠M時一律不出M","department":"賬房", "created":"2012-07-31"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡飲跑步","brokerage":"Rain"}
+        ]
+    },
+    {"id":"4","group":"A5潘多省","agent_type":"下線","agent_code":"M626M","agent_name":"李茂林","nationality":"中國","language":"中文","birthday":"1965-05-16","sex":"男","introducer":"B哥","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF512221251251","images":""}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"陳三", "notification_type":"短信","area_code":"+853", "phone_number":"6654213","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6654214","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"陳三","notices":"存卡","phone_number":"+853 6654213","created":"2014-07-21","status":"0"},
+            {"id":"1","agent_name":"陳四","notices":"存卡","phone_number":"+853 6654214","created":"2014-07-21","status":"0"}
+        ],
+        "remarks":[
+            {"content":"準備入場，轉碼金額200萬","department":"賬房", "created":"2014-08-20"},
+            {"content":"準備入場，轉碼金額100萬","department":"賬房", "created":"2014-08-20"},
+            {"content":"已離場，本場上下數50萬","department":"賬房", "created":"2014-08-16"},
+            {"content":"準備入場，轉碼金額200萬","department":"賬房", "created":"2014-08-16"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡抽Albero雪茄","brokerage":"Rain"},
+            {"content":"客戶喜歡喝拉菲紅酒","brokerage":"Rain"}
+        ]
+    },
+    {"id":"5","group":"A6潘多省","agent_type":"下線","agent_code":"M819","agent_name":"陳茂林","nationality":"中國","language":"中文","birthday":"1965-05-17","sex":"男","introducer":"B哥","phone":"+853 65421081","certificate_type":"身份證","certificate_number":"DF061616040202","certificate_operation":"顯示","password":"1234","created":"2014-07-29","hall":"永利鉅星",
+        "images":[
+            {"img":"images/index/passport01.jpg"},
+            {"img":"images/index/passport01.jpg"}
+        ],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF512151251251","images":""}
+        ],
+        "contact_info":[
+            {"contacts_type":"戶主", "agent_name":"陳三", "notification_type":"短信","area_code":"+853", "phone_number":"6654213","remark":""},
+            {"contacts_type":"戶主", "agent_name":"陳四", "notification_type":"電話","area_code":"+853", "phone_number":"6654214","remark":""}
+        ],
+        "message_call":[
+            {"id":"0","agent_name":"陳三","notices":"存卡","phone_number":"+853 6654213","created":"2014-07-21","status":"0"},
+            {"id":"1","agent_name":"陳四","notices":"存卡","phone_number":"+853 6654214","created":"2014-07-21","status":"0"}
+        ],
+        "remarks":[
+            {"content":"欠M時一律不出M","department":"賬房", "created":"2012-07-31"}
+        ],
+        "hobbies":[
+            {"content":"客戶喜歡飲生普洱","brokerage":"Rain"},
+            {"content":"客戶喜歡飲跑步","brokerage":"Rain"}
+        ]
+    }
+
+]

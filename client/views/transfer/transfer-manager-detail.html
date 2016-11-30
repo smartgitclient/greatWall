@@ -1,0 +1,76 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+<div class="row">
+<div class="col-md-12">
+<div class="panel panel-form-list">
+    <div class="panel-heading"><strong>轉碼記錄詳細</strong></div>
+    <div class="panel-content">
+
+                <form name="form_search">
+                <div class="row">
+                    <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">日  期：</td>
+                        <td align="left">
+                            {{transfer_detail.transfer_time}}
+                        </td>
+                        <td width="100" align="right">創建時間：</td>
+                        <td align="left">{{transfer_detail.create_time}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">所在廳：</td>
+                        <td align="left">
+                            永利鉅星
+                        </td>
+                        <td align="right">轉出客戶：</td>
+                        <td align="left">
+                            {{transfer_detail.send_agent_code}}{{transfer_detail.send_agent_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">目標廳：</td>
+                        <td align="left">
+                            {{transfer_detail.hall_name}}
+                        </td>
+                        <td align="right">轉入客戶：</td>
+                        <td align="left">
+                            {{transfer_detail.receive_agent_code}}{{transfer_detail.receive_agent_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">金額：</td>
+                        <td align="left">
+                            {{transfer_detail.amount}}
+                        </td>
+                        <td align="right">&nbsp;</td>
+                        <td align="left"></td>
+                    </tr>
+                    </table>
+                        <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" style="width: 93px">備註：</td>
+                        <td align="left" colspan="3">
+                                {{transfer_detail.remark}}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+      </form>
+
+        <div class="row" style="text-align: center;" >
+            <button class="btn btn-cancel" ng-click="closed()">關閉</button>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+
+
+</div>
+
+</div>
+
+</div>
+</div>

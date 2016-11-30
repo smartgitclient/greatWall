@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <h3>修改息率天期</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td class="text-right">貸款單號：</td>
+            <td width="350">{{overdue_charge.loan_seqnumber}}</td>
+        </tr>
+        <tr>
+            <td class="text-right">貸款金額(萬)：</td>
+            <td>{{overdue_charge.loan_amount}}萬</td>
+        </tr>
+        <tr>
+            <td class="text-right">貸款日期：</td>
+            <td>{{overdue_charge.created}}</td>
+        </tr>
+        <tr>
+            <td class="text-right">貸款類型：</td>
+            <td>M</td>
+        </tr>
+        <tr>
+            <td class="text-right">息率：</td>
+            <td class="text-left"><input type="text" data-ng-model="model1" value="0.1" class="form-control width-83 input-01">&nbsp;%</td>
+        </tr>
+        <tr>
+            <td class="text-right">天數：</td>
+            <td class="text-left"><input type="text" data-ng-model="model2" value="15"  class="form-control width-83 input-01">&nbsp;天</td>
+        </tr>
+        <tr>
+            <td class="text-right">操作密碼：</td>
+            <td class="text-left"><input type="text" data-ng-model="model3" class="form-control" data-enter-key="submit()"></td>
+        </tr>
+    </table>
+    <!--<p class="color-warning">授權結果信息在這裡顯示</p>-->
+    <br><br><br>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-info btn-information margin-right-15" ng-click="submit()">確認</button>
+        <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+</div>
+</div>

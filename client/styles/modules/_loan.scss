@@ -1,0 +1,55 @@
+.SMS-content {
+  background-color: #cccccc;
+  width: 493px;
+  height: 238px;
+  padding: 5px 10px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+//operating record
+.panel-loan-record{
+  &.panel-form-list {
+    .panel-content {
+      padding: 15px 20px 9px 20px;
+    }
+  }
+}
+#text-sear02,.text-sear02{
+  width: 220px;
+  margin-top: 11px;
+  .form-control {
+    width: 180px;
+    height: 25px;
+    border-color: #cccccc;
+  }
+  .form-control-feedback{
+    top: 0;
+    width: 40px;
+    height: 25px;
+    background-color: $btn-information-bg;
+    padding-top: 2px;
+    color: #fff;
+  }
+}
+
+//delete
+.loan-detele {
+  padding-left: 20px;
+  font-size: 16px;
+  .color-fff {
+    color: #FFFFFF;
+  }
+  .color-red {
+    color: #ff0000;
+  }
+}
+
+//
+.create-fa {
+  position: relative;
+  right: -62px;
+  top: -21px;
+  color: #999900 !important;
+  font-size: 15px;
+}

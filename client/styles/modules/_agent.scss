@@ -1,0 +1,206 @@
+//paul
+.slider-open
+{
+  transition:all 0.5s ease;
+  -moz-transition:all 0.5s ease;
+  -webkit-transition:all 0.5s ease;
+  -o-transition:all 0.5s ease;
+  bottom:0px;
+}
+.slider-hide{
+  transition:all 0.5s ease;
+  -moz-transition:all 0.5s ease;
+  -webkit-transition:all 0.5s ease;
+  -o-transition:all 0.5s ease;
+  bottom:-790px;
+}
+
+.passport {
+  height: 291px;
+  .passport_bg {
+      position: relative;
+      width: 516px;
+      height: 278px;
+      margin-bottom: 10px;
+      display: inline-block;
+      float: left;
+      text-align: center;
+      border:#AAAAAA solid 1px;
+      border-top: 3px solid $panel-agent-border;
+      background-color: $passport-bg;
+      img{
+        padding-top: 8px;
+        width: 445px;
+        height: 265px;
+      }
+      .img_alt{
+        line-height: 280;
+      }
+    .passed {
+      position: absolute;
+      top: 80px;
+      left: 185px;
+      img{
+        width: auto;
+        height: auto;
+      }
+    }
+  }
+
+}
+.account_detail{
+  #img_content{
+    width: 512px;
+    .passport_bg {
+      width: 512px;
+    }
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  .account_detail {
+    #img_content {
+      width: 372px;
+      height: 260px;
+      .passport_bg {
+        width: 372px;
+        .img_alt{
+          line-height: 260;
+        }
+      }
+    }
+  }
+}
+
+ul.shortcut_key {
+  padding: 0;
+  margin: 0;
+  height: 75px;
+  li {
+    width: 95px;
+    height: 55px;
+    float: left;
+    list-style: none;
+    background-color:$shortcut-key-bg;
+    margin: 10px 10px 10px 0;
+    &.mar-right-0 {
+      margin-right: 0;
+      width: 78px;
+    }
+    a {
+      width: 100%;
+      height: 100%;
+      display: block;
+      line-height: 55px;
+      font-size: 16px;
+      color: $shortcut-key-color;
+      text-align: center;
+      font-weight: bold;
+      &:hover, &:focus {
+        text-decoration: none;
+        background: $shortcut-ke-bg;
+
+      }
+    }
+  }
+  @media screen and (max-width: 1450px){
+    li {
+      width:80px;
+      height: 45px;
+      &.mar-right-0 {
+        margin-right: 0;
+      }
+      a {
+        line-height: 45px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.agent-total{
+  position:fixed;
+  z-index: 9;
+  width:90%;
+  height:838px;
+  .tab-header{
+    border-bottom: 8px solid $tab-header-active-bg;
+    margin: 0px;
+    height: 48px;
+    margin: 0;
+    a{
+      padding: 12px 22px 11px 22px;
+      display: inline-block;
+      position: relative;
+      top:-2px;
+      color:$tab-header-color;
+      background-color: $tab-header-bg;
+      &.active{
+        color:$tab-header-active-color;
+        background-color: $tab-header-active-bg;
+      }
+    }
+  }
+  .tab-content{
+    height:820px;
+    background:$tab-content-bg ;
+    padding:0 0 10px;
+  }
+  @media screen and (max-width: 1450px) {
+    width:86%;
+  }
+}
+
+
+#img_content {
+  width: 516px;
+  height:330px;
+
+}
+
+@media screen and (max-width: 1450px){
+  #img_content {
+    width: 379px;
+    height:330px;
+    .passport_bg {
+      width: 379px;
+      height: 228px;
+      img{
+        width: 365px;
+        height: 217px;
+      }
+      .passed {
+        left: 118px;
+        top: 67px;
+        img {
+          width: auto;
+          height: auto;
+        }
+      }
+    }
+  }
+  .passport {
+    .passport_bg {
+      width: 392px;
+      height: 237px;
+      img {
+        height: 225px;
+        padding-top: 8px;
+        width: 378px;
+      }
+    }
+  }
+}
+
+.table-none > thead > tr > th, .table-none > thead > tr > td,.table-none > tbody > tr > td {
+  padding: 2px 5px;
+}
+.table-none-add > thead > tr > th, .table-none-add > thead > tr > td,.table-none-add > tbody > tr > td {
+  height:23px;
+  font-size:12px;
+  padding:0px 2px
+}
+.table-none-add-son > thead > tr > th, .table-none-add-son > thead > tr > td,.table-none-add-son > tbody > tr > td {
+  padding: 0px 2px;
+  height:23px
+}

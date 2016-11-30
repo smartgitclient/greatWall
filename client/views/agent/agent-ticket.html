@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px"><strong>存單記錄</strong></h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>存單編號</td>
+                        <td>存單類型</td>
+                        <td>存單金額(萬)</td>
+                        <td>存單凍結(萬)</td>
+                        <td>可用餘額(萬)</td>
+                        <td>交易人</td>
+                        <td>經手人</td>
+                        <td>存單時間</td>
+                        <td width="150">備註</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="ticket in tickets" data-selected-rows>
+                        <td>{{ticket.hall_name}}</td>
+                        <td>{{ticket.agent_code}}</td>
+                        <td>{{ticket.agent_name}}</td>
+                        <td>{{ticket.depositTicket_seqnumber}}</td>
+                        <td>{{depositTicketTypes.items[ticket.depositTicket_type]}}</td>
+                        <td>{{ticket.depositTicket_amount|parseTenThousand2}}</td><!--depositTicket_settlement-->
+                        <td>{{ticket.frozen_deposit_amount|parseTenThousand2}}</td>
+                        <td>{{ticket.usable_amount |parseTenThousand2}}</td>
+                        <td>{{ticket.agent_contact_name}}</td>
+                        <td>{{ticket.user_name}}</td>
+                        <td>{{ticket.create_time |parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td class="text-left">{{ticket.remark}}</td>
+                    </tr>
+                    <tr data-ng-show="tickets.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+        </div>
+    </form>
+</div>

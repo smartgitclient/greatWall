@@ -1,0 +1,44 @@
+<div class="page page-services ng-scope pop-dotal" >
+    <div class="panel panel-form-list" >
+        <form name="form_detail_order">
+            <div class="panel-heading">請選擇號碼</div>
+            <div class="panel-content" style="
+            padding-top: 0; position: relative;">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="
+                position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record table-dynamic"  style="max-height: 300px; padding: 0" >
+                        <table class="table table-bordered table-striped table-detail-01">
+                            <tbody>
+                            <tr data-ng-repeat="tel in tels.refTelAgentNoticeTypes" data-selected-rows ng-show='tel.notice_type!="1"'>
+
+
+                              <td width="200">
+                        <span style="float:left;margin-left:30px" ng-click="makeCall(tel,2,tels)">
+                           <img src="images/agent/boda.png" alt="" style="width:25px;cursor: pointer"
+                                ng-show="tel.agentContactTel.area_code+'-'+tel.agentContactTel.telephone_number==call_phone_number"/>
+                           <img src="images/agent/boda-h.png" alt=""  style="width:25px;cursor: pointer" ng-hide="tel.agentContactTel.area_code+'-'+tel.agentContactTel.telephone_number==call_phone_number"/>
+                        </span>
+
+                          <span style="float:left;margin:5px 0px 0px 10px" >
+                            {{tel.agentContactTel.area_code}}&nbsp;{{tel.agentContactTel.telephone_number}}
+
+                          </span>
+
+
+                              </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+
+            <div class="panel-footer text-center">
+                <!--<button class="btn btn-confirm margin-right-15" data-ng-click="save()" data-ng-disabled="isDisabled"  type="button">保存</button>-->
+                <button class="btn btn-cancel" data-ng-click="cancel()" type="button">關閉</button>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+    <div class="row">
+        <div class="col-md-12 pop-dotal">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>轉碼詳細</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="100" align="right">轉碼單號：</td>
+                                        <td>B000234</td>
+                                        <td width="100" align="right">轉碼流水號：</td>
+                                        <td>R201212-1</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">轉碼金額：</td>
+                                        <td>500萬</td>
+                                        <td align="right">資金類型：</td>
+                                        <td>貸款</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">戶口編碼：</td>
+                                        <td>FA80</td>
+                                        <td align="right">戶口姓名：</td>
+                                        <td>李三</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">授權人：</td>
+                                        <td>張風</td>
+                                        <td align="right">經手人：</td>
+                                        <td>陳惠怡</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">所屬廳：</td>
+                                        <td>永利鉅星</td>
+                                        <td align="right">轉碼時間：</td>
+                                        <td>2013/12/13 17:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">更數：</td>
+                                        <td>更數：</td>
+                                        <td align="right">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">備註：</td>
+                                        <td colspan="3">
+                                            <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" name="" data-ng-model="ticket.remark" rows="4"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">操作密碼：</td>
+                                        <td colspan="3">
+                                            <input class="form-control ng-pristine ng-valid input-140 pull-left" type="text" data-ng-model="ticket.pwd">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>金額</td>
+                                    <td>本金類型</td>
+                                    <td>卡類型</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>200</td>
+                                    <td>M</td>
+                                    <td>
+                                        <select required name = "department_id" data-ng-model="remark.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                                            <option value="">M</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>500</td>
+                                    <td>U</td>
+                                    <td>
+                                        <select required name = "department_id" data-ng-model="remark.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                                            <option value="">U</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>/</td>
+                                    <td>/</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>/</td>
+                                    <td>/</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h3>新增轉碼卡</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_create_card" class="form-validation" server-validation="POST{{create_card_url}}">
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td>轉碼卡名稱：</td>
+            <td >
+                <input name= "card_name" required class="form-control input-01" type="text" data-ng-model="$parent.card_name" />
+            </td>
+        </tr>
+    </table>
+    <!--<p class="color-warning">授權結果信息在這裡顯示</p>-->
+    <br><br><br>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()">提交</button>
+        <button class="btn btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+    </form>
+</div>
+</div>

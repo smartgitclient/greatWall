@@ -1,0 +1,88 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px"><strong>未還貸款列表</strong></h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; min-width: 1800px;">
+                        <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>廳館</td>
+                            <!--<td>業務單號</td>-->
+                            <td>貸款單號</td>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>貸款人</td>
+                            <td>貸款金額(萬)</td>
+                            <td>貸款餘額(萬)</td>
+                            <td>貸款日期</td>
+                            <td>貸款到期日</td>
+                            <td>結算日期</td>
+                            <td>戶口類型</td>
+                            <td>線頭類型</td>
+                            <td>主線頭類型</td>
+                            <td>利息類型</td>
+                            <td>息率</td>
+                            <td>天期</td>
+                            <td>貸款天數</td>
+                            <td>過期天數</td>
+                            <td width="150">備註</td>
+                            <td>經手人</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="loan in unRepayments" data-selected-rows>
+                            <td>{{loan.show_format}}</td>
+                            <td>{{loan.hall_name}}</td>
+                            <!--<td>{{loan.loan_seqnumber}}</td>-->
+                            <td>{{loan.marker_seqnumber}}</td>
+                            <td>{{loan.agent_code}}</td>
+                            <td>{{loan.agent_name}}</td>
+                            <td>{{loan.borrower}}</td>
+                            <td>{{loan.marker_amount|parseTenThousand2}}</td>
+                            <td>{{loan.settlement_amount|parseTenThousand2}}</td>
+                            <td>{{loan.loan_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                            <td>{{loan.expired_date|yesterDay}}</td>
+                            <td>{{loan.end_date}}</td>
+                            <td>{{loan.funds_type_remark}}</td>
+                            <td>{{loan.group_funds_type_remark }}</td>
+                            <td>{{loan.main_group_funds_type_remark }}</td>
+                            <td>{{loan.interest_type}}</td>
+                            <td>{{loan.expired_rate | parseTenThousand2 }}</td>
+                            <td>{{loan.term}}</td>
+                            <td>{{loan.loan_days}}</td>
+                            <td>{{loan.expired_days}}</td>
+                            <td width="150">{{loan.remark}}</td>
+                            <td>{{loan.user_name}}</td>
+                        </tr>
+                        <tr data-ng-show="unRepayments.length == 0">
+                            <td colspan="17">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                     </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_loan.page"
+                                    total-items="pagination_loan.total_items"
+                                    on-select-page="select_loan(page)"
+                                    max-size = "pagination_loan.max_size"
+                                    items-per-page = "pagination_loan.items_per_page"
+                                    data-ng-hide="pagination_loan.total_items <= pagination_loan.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_loan" select-page="select_loan"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+        </div>
+    </form>
+</div>

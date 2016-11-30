@@ -1,0 +1,197 @@
+<div class="page page-grid" data-ng-controller="rerunLoanCtrl">
+    <div class="col-md-12">
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <strong>重算業務單</strong>
+                <button class="btn btn-info btn-information pull-right" ng-click="goback()">返回</button>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>業務單編號</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>貸款人</td>
+                        <td>貸款金額（萬）</td>
+                        <td>貸款日期</td>
+                        <td>經手人</td>
+                        <td>變更動作</td>
+                        <td>是否重算</td>
+                        <td>操作記錄</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{loanRecalculate_record.loan_seqnumber}}</td>
+                        <td>{{loanRecalculate_record.hall}}</td>
+                        <td>{{loanRecalculate_record.agent_code}}</td>
+                        <td>{{loanRecalculate_record.agent_name}}</td>
+                        <td>{{loanRecalculate_record.loan_amount|parseTenThousand2}}</td>
+                        <td>{{loanRecalculate_record.created}}</td>
+                        <td>{{loanRecalculate_record.brokerage}}</td>
+                        <td>{{loanRecalculate_record.change_status}}</td>
+                        <td>{{loanRecalculate_record.is_rerun}}</td>
+                        <td class="no-padding"><button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="loan_detail(loanRecalculate_record.loan_id)">詳細</button></td>
+                    </tr>
+                    <tr data-ng-show="loanRecalculate_record.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款單號</td>
+                        <td>貸款金額（萬）</td>
+                        <td>貸款類型</td>
+                        <td>息率</td>
+                        <td>免息天期</td>
+                        <td>是否重算</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="m in markers">
+                        <td>{{m.marker_seqnumber}}</td>
+                        <td>{{m.marker_amount|parseTenThousand2}}</td>
+                        <td>{{m.marker_type}}</td>
+                        <td>{{m.rate|parseTenThousand2}}</td>
+                        <td>{{m.credit_days}}</td>
+                        <td>{{m.is_rerun}}</td>
+                    </tr>
+                    <tr data-ng-show="markers.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="markers.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="markers.length != 0"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="panel panel-list-detail">
+            <div class="panel-content">
+                <tabset class="ui-tab">
+                    <tab heading="影響貸款單">
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td><checkbox data-ng-model="config_data.all_check" data-ng-change="checkAll()"></checkbox></td>
+                                    <td>業務單編號</td>
+                                    <td>廳館</td>
+                                    <td>戶口編號</td>
+                                    <td>貸款人</td>
+                                    <td>貸款金額（萬）</td>
+                                    <td>貸款日期</td>
+                                    <td>經手人</td>
+                                    <td>是否重算</td>
+                                    <td>狀態</td>
+                                    <td>操作記錄</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="la in loanAffecteds">
+                                    <td><checkbox data-ng-model="la.selected" ng-change="setChecked(la)"></checkbox></td>
+                                    <td>{{la.loan_seqnumber}}</td>
+                                    <td>{{la.hall}}</td>
+                                    <td>{{la.agent_code}}</td>
+                                    <td>{{la.agent_name}}</td>
+                                    <td>{{la.loan_amount|parseTenThousand}}</td>
+                                    <td>{{la.created}}</td>
+                                    <td>{{la.brokerage}}</td>
+                                    <td>{{la.is_rerun}}</td>
+                                    <td>{{la.status}}</td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="loan_detail(la.loan_id)">詳細</button>
+                                        <button class="btn btn-info btn-confirm btn-table" ng-click="loan_update(la.loan_id)">修改</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="loanAffecteds.length == 0">
+                                    <td colspan="10">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="allChecked()">全部核對</button>
+                            <!--<footer class="table-footer">-->
+                            <!--<div class="row">-->
+                            <!--<div class="col-md-12 text-right pagination-container">-->
+                            <!--<pagination class="pagination-sm"-->
+                            <!--page="current_page"-->
+                            <!--total-items="loanAffecteds.length"-->
+                            <!--on-select-page="select(page)"-->
+                            <!--data-ng-show="loanAffecteds.length != 0">-->
+                            <!--</pagination>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</footer>-->
+
+                        </div>
+                    </tab>
+                    <tab heading="影響轉碼單">
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>轉碼單號</td>
+                                    <td>廳館</td>
+                                    <td>戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>轉碼總數</td>
+                                    <td>轉碼日期</td>
+                                    <td>經手人</td>
+                                    <td>狀態</td>
+                                    <td>操作記錄</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="ra in rollingAffects">
+                                    <td>{{ra.rolling_seqnumber}}</td>
+                                    <td>{{ra.hall}}</td>
+                                    <td>{{ra.agent_code}}</td>
+                                    <td>{{ra.agent_name}}</td>
+                                    <td>{{ra.total_rolling_amount}}</td>
+                                    <td>{{ra.created}}</td>
+                                    <td>{{ra.brokerage}}</td>
+                                    <td>{{ra.status}}</td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="rolling_detail(ra.rolling_id)">詳細</button>
+                                        <button class="btn btn-info btn-confirm btn-table" ng-click="rolling_update(ra.rolling_id)">修改</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="all_rollingAffects.length == 0">
+                                    <td colspan="10">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_rollingAffects.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="all_rollingAffects.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>

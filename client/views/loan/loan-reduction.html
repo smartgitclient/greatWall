@@ -1,0 +1,71 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12 pop-dotal">
+            <div class="panel panel-form-list">
+                <div class="panel-title">
+                    <div class="panel-heading"><strong>減免手續費</strong></div>
+                </div>
+                <div class="panel-content">
+                    <form name="$parent.form_loan_reduction" class="ng-valid ng-dirty form-validation" server-validation="POST{{loan_reduction_url}}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="187" align="right">貸款單號：</td>
+                                        <td align="left">{{mitigate_record.marker_seqnumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100" align="right">尚欠手續費：</td>
+                                        <td align="left">{{mitigate_record.settlement_amount | parseTenThousandToYuan}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">減免手續費：</td>
+                                        <td align="left">
+                                            <input class="form-control input-01 ng-pristine ng-valid"
+                                                   data-ng-required="enableClientValidation"
+                                                   name="amount"
+                                                   type="text"
+                                                   data-ng-model="mitigate_record.amount">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">剩餘應收手續費：</td>
+                                        <td align="left">{{mitigate_record.surplus_amount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="width: 93px">備註：</td>
+                                        <td align="left" colspan="3">
+                                            <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid"
+                                                      name="remark"
+                                                      data-ng-model="mitigate_record.remark"
+                                                      rows="4"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="width: 93px">操作密碼：</td>
+                                        <td align="left" colspan="3">
+                                            <input class="form-control input-01 ng-pristine ng-valid"
+                                                   name="pin_code"
+                                                   type="password"
+                                                   data-enter-key="reduction_ok()"
+                                                   ng-model="mitigate_record.pin_code">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-confirm margin-right-15" ng-click="reduction_ok()" data-ng-disabled="isDisabled">提交</button>
+                                    <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,154 @@
+<div class="page page-grid" data-ng-controller="agentContactDetailCtrl">
+<div class="panel panel-default">
+<div class="panel_l col-md-8">
+<div class="panel">
+    <div class="panel-content">
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">聯絡人資料</strong>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                <tr>
+                    <td>姓名：</td>
+                    <td width="168">{{contact.agent_contact_name}}</td>
+                    <td>國籍：</td>
+                    <td width="168">
+                        {{contact.nationality_name}}
+                    </td>
+                    <td>語言：</td>
+                    <td width="168">
+                        {{contact.language_type}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>出生日期：</td>
+                    <td>
+                        {{contact.birthdate|parseDate:"yyyy-MM-dd"}}
+                    </td>
+                    <td>性別：</td>
+                    <td>
+                        {{contact.gender | gender}}
+                    </td>
+                    <td colspan="2">&nbsp;</td>
+
+                </tr>
+                <tr data-ng-repeat="certificate in contact.agentContactIdcards">
+                    <td>證件類型：</td>
+                    <td>
+                        {{certificate.idcard_type_name}}
+                    </td>
+                    <td>證件號碼：</td>
+                    <td>{{certificate.idcard_number}}</td>
+                    <td>證件有效期：</td>
+                    <td>
+                        {{certificate.expire_date|parseDate : "yyyy-MM-dd"}}
+                        <!--<button class="btn btn-info btn-information btn-table margin-right-5" ng-click="upload($index)">上傳</button>-->
+                        <!--<button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>聯絡地址：</td>
+                    <td colspan="5">
+                        {{contact.address}}
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">聯絡資料</strong>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <!--<td>通知類型</td>-->
+                        <td width="183">地區</td>
+                        <td width="245">號碼</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="contact in contact.agentContactTels">
+                        <!--<td width="200">-->
+                            <!--{{contact.notice_type}}-->
+                        <!--</td>-->
+                        <td width="150">
+                            {{contact.area_code}}
+                        </td>
+                        <td>{{contact.telephone_number}}</td>
+                    </tr>
+                    <tr data-ng-show="contact.agentContactTels.length == 0">
+                        <td colspan="3">暫無符合條件的記錄</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-list-detail" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">綁定戶口</strong>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td width="183">戶口編號</td>
+                        <td width="330">聯絡人類型</td>
+                        <!--<td width="245">備註</td>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="ref in contact.refAgentContactTypes">
+                        <td>
+                            {{ref.agent_code}}
+                        </td>
+                        <td>
+                            {{ref.contact_type_name}}
+                        </td>
+                    </tr>
+                    <tr data-ng-show="contact.refAgentContactTypes.length == 0">
+                        <td colspan="2">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div><br/><br/><br/><br/><br/><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-information btn-table margin-right-15" ng-click="update()" check-permissions="agentContactUpdate">修改聯絡人資料</button>
+        <button class="btn btn-confirm btn-table margin-right-15" data-ng-click="goto_contact()" >返回聯絡人列表</button>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div class="panel_r">
+    <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390" data-ng-repeat="image in contact.idcardImages">
+        <div class="panel-heading">
+            <strong>證件</strong>
+            <!--<a class="btn btn-confirm btn-table pull-right" target="_blank" href="print-image.html?url={{image.show_image_path}}">列印</a>-->
+            <a class="btn btn-confirm btn-table pull-right" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(image.show_image_path);">列印</a>
+        </div>
+        <div class="panel-content">
+            <div class="passport">
+                <span class="passport_bg" >
+                    <span class="passed" data-ng-show="image.show_image_path && contact.agentContactIdcards[$index].expire_date && contact.agentContactIdcards[$index].expire_date < now_data"><img src="images/sign.png"></span>
+                  <img data-ng-hide="image.image_path == null" src="{{image.show_image_path}}">
+                    <span  data-ng-show="image.image_path == null"  style="line-height:260px;font-size: 16px" >
+                       暫無證件照片
+                    </span>
+                </span>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>

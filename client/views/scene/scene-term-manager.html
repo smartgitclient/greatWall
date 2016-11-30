@@ -1,0 +1,250 @@
+<div class="page page-grid" data-ng-controller="sceneTermManagerCtrl">
+<div class="panel panel-default">
+
+<div class="panel_l col-md-6">
+    <div class="panel" check-permissions="sceneWordsCreate">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>類型</strong></div>
+                <div class="panel-content">
+                    <form name="form_scene_term1" class="ng-valid ng-dirty form-validation" server-validation="{{sub_method1}}{{scene_term_url}}">
+                        <table>
+                            <!--<tr height="50">-->
+                                <!--<td class="text-right"><span class="span-formlist">類型：</span></td>-->
+                                <!--<td>-->
+                                    <!--<select data-ng-model="record.type"-->
+                                            <!--name="type"-->
+                                            <!--data-ng-required="enableClientValidation"-->
+                                            <!--class="form-control">-->
+                                        <!--<option value = "">請選擇類型</option>-->
+                                        <!--<option value = "{{SceneRecordShiftStatus.outScene}}">離場</option>-->
+                                        <!--<option value = "{{SceneRecordShiftStatus.inScene}}">開場</option>-->
+                                        <!--&lt;!&ndash;<option data-ng-repeat="sceneTermFundType in fundSourceTypes.data" value = "{{sceneTermFundType.id}}">{{sceneTermFundType.name}}</option>&ndash;&gt;-->
+                                    <!--</select>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr height="50">-->
+                                <!--<td class="text-right" width=150 ><span class="span-formlist">操作名稱：</span></td>-->
+                                <!--<td width="200">-->
+                                    <!--<input type="text"-->
+                                           <!--data-ng-required="enableClientValidation"-->
+                                           <!--data-ng-model="record.o_word"-->
+                                           <!--name="o_word"-->
+                                           <!--class="form-control">-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <tr height="50">
+                                <td class="text-right" width=150 ><span class="span-formlist">類型：</span></td>
+                                <td width="200">
+                                    <input type="text"
+                                           data-ng-required="enableClientValidation"
+                                           data-ng-model="record1.o_word"
+                                           name="o_word"
+                                           class="form-control">
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right"><span class="span-formlist">操作密碼：</span></td>
+                                <td><input type="password" data-ng-model="record1.pin_code" name="pin_code" class="form-control" data-enter-key="submit1()"></td>
+                            </tr>
+                        </table><br/><br/>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-information margin-right-15" ng-click="submit1()" data-ng-disabled="disabled_submit1">添加</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset1()">取消</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <!--<div class="panel-heading">-->
+            <!--<strong>場面數常用語列表</strong>-->
+            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingRecord" report-btn>導出EXCEL</button>-->
+            <!--<div class="form-group has-success has-feedback col-md-2 pull-right text-sear02">-->
+                <!--<select data-ng-model="condition.type"  name="type" class="form-control" style="width:185px" data-ng-change="search()">-->
+                    <!--<option value = "">請選擇類型</option>-->
+                    <!--<option value = "{{SceneRecordShiftStatus.outScene}}">離場</option>-->
+                    <!--<option value = "{{SceneRecordShiftStatus.inScene}}">開場</option>-->
+                    <!--&lt;!&ndash;<option data-ng-repeat="sceneTermFundType in fundSourceTypes.data" value = "{{sceneTermFundType.id}}">{{sceneTermFundType.name}}</option>&ndash;&gt;-->
+                <!--</select>-->
+                <!--<span class="fa fa-search form-control-feedback"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel-content">
+            <div class="panel panel-list-detail">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <!--<td>類型</td>-->
+                        <!--<td>操作名稱</td>-->
+                        <td>類型</td>
+                        <td>經手人</td>
+                        <td width="150" check-permissions="sceneWordsDelete">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="outSceneWord in outSceneWords1" data-selected-rows>
+                        <!--<td>{{SceneRecordShiftStatus.items[outSceneWord.type]}}</td>-->
+                        <!--<td>{{outSceneWord.o_word}}</td>-->
+                        <td>{{outSceneWord.o_word}}</td>
+                        <td>{{outSceneWord.user_name}}</td>
+                        <td  width="150" class="no-padding" check-permissions="sceneWordsDelete">
+                            <!--<button class="btn btn-info btn-information margin-right-5 btn-table" data-ng-click="rollingRecordDetail(rollingRecord.id,rollingRecord.agent_info_id,'detail')">詳細</button>-->
+                            <button class="btn btn-information btn-table" data-ng-click="update1(outSceneWord)">修改</button>
+                            <button class="btn btn-confirm margin-right-5 btn-table" data-ng-click="remove1(outSceneWord.id)">刪除</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="outSceneWords1.length == 0">
+                        <td colspan="5">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination1.page"
+                                        total-items="pagination1.total_items"
+                                        on-select-page="select1(page)"
+                                        max-size = "pagination1.max_size"
+                                        items-per-page = "pagination1.items_per_page"
+                                        data-ng-show="outSceneWords1.length > 0 && pagination1.total_items > pagination1.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination1" select-page="select1"></paginationselect>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel_r">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading"><strong>操作</strong></div>
+                    <div class="panel-content">
+                        <form name="form_scene_term2" class="ng-valid ng-dirty form-validation" server-validation="{{sub_method2}}{{scene_term_url}}">
+                            <table>
+                                <!--<tr height="50">-->
+                                    <!--<td class="text-right"><span class="span-formlist">類型：</span></td>-->
+                                    <!--<td>-->
+                                        <!--<select data-ng-model="record.type"-->
+                                                <!--name="type"-->
+                                                <!--data-ng-required="enableClientValidation"-->
+                                                <!--class="form-control">-->
+                                            <!--<option value = "">請選擇類型</option>-->
+                                            <!--<option value = "{{SceneRecordShiftStatus.outScene}}">離場</option>-->
+                                            <!--<option value = "{{SceneRecordShiftStatus.inScene}}">開場</option>-->
+                                        <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr height="50">
+                                    <td class="text-right" width=150 ><span class="span-formlist">操作：</span></td>
+                                    <td width="200">
+                                        <input type="text"
+                                               data-ng-required="enableClientValidation"
+                                               data-ng-model="record2.o_word"
+                                               name="o_word"
+                                               class="form-control">
+                                    </td>
+                                </tr>
+                                <!--<tr height="50">-->
+                                    <!--<td class="text-right" width=150 ><span class="span-formlist">資金類型：</span></td>-->
+                                    <!--<td width="200">-->
+                                        <!--<input type="text"-->
+                                               <!--data-ng-required="enableClientValidation"-->
+                                               <!--data-ng-model="record.funds_type"-->
+                                               <!--name="funds_type"-->
+                                               <!--class="form-control">-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr height="50">
+                                    <td class="text-right"><span class="span-formlist">操作密碼：</span></td>
+                                    <td><input type="password" data-ng-model="record2.pin_code" name="pin_code" class="form-control" data-enter-key="submit2()"></td>
+                                </tr>
+                            </table><br/><br/>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-information margin-right-15" ng-click="submit2()" data-ng-disabled="disabled_submit2">添加</button>
+                                <button class="btn btn-inf btn-cancel" data-ng-click="reset2()">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel panel-list-detail">
+            <!--<div class="panel-heading">-->
+                <!--<strong>場面數常用語列表</strong>-->
+                <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                <!--<button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingRecord" report-btn>導出EXCEL</button>-->
+                <!--<div class="form-group has-success has-feedback col-md-2 pull-right text-sear02">-->
+                    <!--<select data-ng-model="condition.type"  name="type" class="form-control" style="width:185px" data-ng-change="search()">-->
+                        <!--<option value = "">請選擇類型</option>-->
+                        <!--<option value = "{{SceneRecordShiftStatus.outScene}}">離場</option>-->
+                        <!--<option value = "{{SceneRecordShiftStatus.inScene}}">開場</option>-->
+                       <!---->
+                    <!--</select>-->
+                    <!--<span class="fa fa-search form-control-feedback"></span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="panel-content">
+                <div class="panel panel-list-detail">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <!--<td>類型</td>-->
+                            <td>操作</td>
+                            <!--<td>資金類型</td>-->
+                            <td>經手人</td>
+                            <td width="150" check-permissions="sceneWordsDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="outSceneWord in outSceneWords2" data-selected-rows>
+                            <!--<td>{{SceneRecordShiftStatus.items[outSceneWord.type]}}</td>-->
+                            <td>{{outSceneWord.o_word}}</td>
+                            <!--<td>{{outSceneWord.funds_type}}</td>-->
+                            <td>{{outSceneWord.user_name}}</td>
+                            <td  width="150" class="no-padding" check-permissions="sceneWordsDelete">
+                                <!--<button class="btn btn-info btn-information margin-right-5 btn-table" data-ng-click="rollingRecordDetail(rollingRecord.id,rollingRecord.agent_info_id,'detail')">詳細</button>-->
+                                <button class="btn btn-information btn-table" data-ng-click="update2(outSceneWord)">修改</button>
+                                <button class="btn btn-confirm margin-right-5 btn-table" data-ng-click="remove2(outSceneWord.id)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="outSceneWords2.length == 0">
+                            <td colspan="5">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination2.page"
+                                            total-items="pagination2.total_items"
+                                            on-select-page="select2(page)"
+                                            max-size = "pagination2.max_size"
+                                            items-per-page = "pagination2.items_per_page"
+                                            data-ng-show="outSceneWords2.length > 0 && pagination2.total_items > pagination2.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination2" select-page="select2"></paginationselect>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

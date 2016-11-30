@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h3>賭枱</h3>
+</div>
+<div class="modal-body">
+    <!--<form name="$parent.form_desk_create" class="ng-valid ng-dirty form-validation" server-validation="POST{{desk_url}}">-->
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-content">
+                        <div class="panel panel-list-detail">
+                            <!--=================================-->
+                            <!--<div class="panel-heading">-->
+                                <!--<strong>賭枱示意圖 </strong>-->
+                                <!--<button class="btn btn-info btn-cancel pull-right" data-ng-click="moveDesk()" data-ng-show="move">移動賭枱</button>-->
+                                <!--<button class="btn btn-info btn-confirm pull-right" data-ng-click="saveDesk()" >保存賭枱</button>-->
+                                <!--<button class="btn btn-info btn-confirm  margin-right-15  pull-right" data-ng-click="addDesk()" >新增賭枱</button>-->
+                            <!--</div>  -->
+                            <div class="panel-content">
+                                <tabset class="ui-tab">
+                                    <tab  heading="區域1" ng-click="select_desk('1')"></tab>
+                                    <tab  heading="區域2" ng-click="select_desk('2')"></tab>
+                                    <!--<tab data-ng-repeat = "dateText in markerDates" heading="區域{{$index}}" ng-click="search(dateText.date)"></tab>-->
+                                </tabset>
+                                <div class="gambling-table" >
+                                    <ul dnd-list="desks"
+                                        dnd-allowed-types="['itemType']"
+                                        dnd-horizontal-list="true"
+                                        dnd-external-sources="true"
+                                        class="itemlist">
+                                        <li ng-repeat="desk in desks"  data-ng-click="desk_click(desk)"
+                                            data-ng-class="{'gambling-table-able':desk.used_amount>0,'gambling-table-disable':desk.used_amount==0}"
+                                            dnd-draggable="desk"
+                                            dnd-disable-if = "true"
+                                            dnd-type="'itemType'"
+                                            dnd-effect-allowed="copyMove">
+                                            {{desk.desk_no}}
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="cancel()">關閉</button>
+            <!--<button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>-->
+        </div>
+    </form>
+</div>

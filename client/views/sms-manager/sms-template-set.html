@@ -1,0 +1,93 @@
+<div class="page page-grid" data-ng-controller="crossTransferManagerCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-4">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>編輯模板</strong>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_search"  ng-submit="submit()">
+                            <table>
+                                <tr height="50">
+                                    <td width="70" class="text-right">模板類型：</td>
+                                    <td>自定義模板</td>
+                                    <td width="155" class="text-right">顯示模組：</td>
+                                    <td>常用</td>
+                                </tr>
+                                <tr height="50">
+                                    <td valign="top" class="text-right">備註：</td>
+                                    <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="cross_transfer.remark" name=""></textarea></td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td><input type="text" data-ng-model="cross_transfer.pwd" class="form-control" data-enter-key="add()"></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br><br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-info btn-confirm margin-right-15" ng-click="add()" check-permissions="smsTemplateCreate">提交</button>
+                                <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>模板列表</strong>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr >
+                                    <td>模板類型</td>
+                                    <td>顯示模組</td>
+                                    <td>模板內容</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="cross in cross_transfers" data-selected-rows>
+                                    <td>系統模板</td>
+                                    <td>貸款</td>
+                                    <td>新增貸款，貸款......
+                                        <i popover-placement="top" tooltip-html-unsafe="{{agent.contact_info | phone}}" class="fa fa-plus-circle cursor-pointer"></i>
+                                    </td>
+                                    <td class="no-padding">
+                                        <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="dispose($index)">修改</button>
+                                        <button class="btn btn-info btn-information btn-table" data-ng-click="dispose($index)">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="cross_transfers.length == 0">
+                                    <td colspan="12">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_cards.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="cards.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

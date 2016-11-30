@@ -1,0 +1,263 @@
+<div class="page page-grid" data-ng-controller="profitShareListCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>分成記錄</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+
+
+                                        <td width="150" class="text-right">戶口編號：</td>
+                                        <td width="150"><input type="text"
+                                                               data-ng-model="sreach_item.immAgentInfo.agent_code"
+                                                               data-input-uppercase
+                                                               class="form-control">
+                                        </td>
+
+                                        <td width="150" class="text-right">年月：</td>
+                                        <td width="160">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="sreach_item.shiftMark.year_month" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="120" class="text-right">戶組：</td>
+                                     <!--    <td width="140" data-min-screen-width="165">
+                                            <input type="text"
+                                                   data-ng-model="sreach_item.agentGroup.owner_name"
+                                                   data-input-uppercase
+                                                   style="width:95px;float: left"
+                                                   class="form-control">
+                                            <span style="float: right;">
+                                                <input type="checkbox" class="form-control ng-pristine ng-valid" data-ng-model="isGroup" style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+                                        </td> -->
+                                        <td width="170" data-min-screen-width="165">
+                                            <input type="text" data-ng-model="sreach_item.agent_group_name" data-input-uppercase="" style="width:95px;float: left" class="form-control ng-pristine ng-valid">
+                                            <span style="float: right;">
+                                                <input type="checkbox" class="form-control ng-pristine ng-valid" data-ng-model="isGroup" data-ng-change="change_isGroup(isGroup)" style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+                                        </td>
+                                        <td width="150" class="text-right">日期：</td>
+                                        <td width="420" data-min-screen-width="320">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="sreach_item.start_time[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="sreach_item.start_time[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr height="50">
+
+                                        <td width="120" class="text-right">貨款單號：</td>
+                                        <td width="140" data-min-screen-width="165">
+                                            <input type="text"
+                                                   data-ng-model="sreach_item.recentlyLoanDeposit.seqnumber"
+                                                   class="form-control">
+                                        </td>
+                                        <td width="120" class="text-right">單編號：</td>
+                                        <td width="140" data-min-screen-width="165">
+                                            <input type="text"
+                                                   data-ng-model="sreach_item.print_no"
+                                                   class="form-control">
+                                        </td>
+                                        
+                                         <td width="120" class="text-right">狀態：</td>
+                                         <td width="140" data-min-screen-width="165">
+                                            <select data-ng-model="sreach_item.status">
+                                                <option value="" class="">請選擇狀態</option>
+                                                <option value="1" class="">開場</option>
+                                                <option value="2" class="">離場</option>
+                                            </select>
+                                         </td>
+                                     
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="select_scene()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail table-dynamic">
+                        <div class="panel-heading">
+                            <button  check-permissions="sceneSharingRecordExport" class="btn btn-info btn-information margin-right-15 pull-right"  report-params="excel_condition" channel-type="ProfitReport" report-btn>導出EXCEL</button>
+                        </div>
+                        <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                            <div class="panel-content consumption_record"  style="min-height: 100px; width: 4000px;">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <td rowspan="2">單編號</td>
+                                <td rowspan="2">狀態</td>
+                                <td rowspan="2">線頭</td>
+                                <td rowspan="2">場次類型</td>
+                                <td rowspan="2">開工日期</td>
+                                <td rowspan="2">戶口編號</td>
+                                <!--<td rowspan="2">舊戶口編號</td>-->
+                                <td rowspan="2">姓名</td>
+                                <td rowspan="2">貸款單號</td>
+                                <td rowspan="2">本金</td>
+                                <td rowspan="2">本金類型</td>
+                                <td rowspan="2">轉碼數</td>
+                                <td rowspan="2">客上/下數</td>
+                                <td colspan="2">與大場交收數</td>
+                                <td colspan="10">公司佔成差額(月結)</td>
+                                <td colspan="5">股東</td>
+                                <td colspan="4">代理</td>
+                                <td>股東&代理</td>
+                                <td rowspan="2">備註</td>
+                                <td rowspan="2">操作</td>
+                                <!--<td check-permissions="rollingDetailView">操作</td>-->
+                            </tr>
+
+                            <!--<tbody>-->
+                            <tr data-selected-rows>
+                              <td>佔成佣金</td>
+                              <td>碼佣</td>
+                              <td>佔成戶口</td>
+                              <td>佔成%</td>
+                              <td>佔成收益</td>
+                              <td>碼佣份數</td>
+                              <td>碼佣佣金</td>
+                              <td>支付佣金差額（萬）</td>
+                              <td>合計應付佣金（萬）</td>
+                              <td>戶口</td>
+                              <td>碼佣份數</td>
+                              <td>碼佣&差額</td>
+                              <td>佔成%</td>
+                              <td>佔成佣金</td>
+                              <td>碼佣份數</td>
+                              <td>碼佣佣金</td>
+                              <td>找代理佣</td>
+                              <td>佔成%</td>
+                              <td>佔成佣金</td>
+                              <td>碼佣份數</td>
+                              <td>碼佣佣金</td>
+                              <td>即埸總佣金</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="x in mainScenes">
+                                <td>{{x.print_no}}</td>
+                                <td>{{x.scene_status}}</td>
+                                <td>
+                                 <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left" data-ng-disabled="x.status == '1'"  data-ng-model="x.immTopAgentInfoCode" data-ng-change="change_top_agent_code(x.mainScene.owner_name,$index,1)" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,5)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'" class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.is_shift_mark == 1">{{x.immAgentInfoCode}}截月開場</td>
+                                <td data-ng-show="x.is_shift_mark == 0">{{x.immAgentInfoCode}}開場</td>
+                                <td>{{x.start_time | parseDate}}</td>
+                                <td>{{x.immAgentInfoCode}}</td>
+                                <!--<td>{{x.immAgentInfoOldCode}}</td>-->
+                                <td>{{x.immAgentInfoName}}</td>
+                                <td data-ng-show="x.type == 1">-</td>
+                                <td data-ng-show="x.type == 2">{{x.seqnumber}}</td>
+                                <td>{{x.total_amount}}</td>
+                                <td>{{x.type_marker}}</td>
+                                <td>{{x.rolling_amount | deleteZero}}</td>
+                                <td>{{x.loss_win_amount | deleteZero}}</td>
+                                <td>{{x.profit_total}}</td>
+                                <!--<td>{{x.mayong}}</td>-->
+                                <td>
+                                    <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left" data-ng-disabled="x.status == '1'"  data-ng-model="x.mayong" data-ng-change="change_top_agent_code(x.mainScene.owner_name,$index,1)" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,7)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'" class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">
+                                    <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left" data-ng-change="change_top_agent_code(x.monComAgentInfoCode,$index,2)" data-ng-model="x.monComAgentInfoCode" data-ng-disabled="x.status == '1'" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,1)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'"  class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.mon_com_agent_percent}}%</td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.com_get}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent =='0'">{{x.mon_com_commission_ratio}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.mayong_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.pay_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.total_pay_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'"><input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left"  data-ng-model="x.monFactAgentCode" data-ng-disabled="x.status == '1'" data-ng-change="change_top_agent_code(x.monFactAgentCode,$index,3)" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,3)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'"  class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                 <td data-ng-show="x.mon_top_agent_percent == '0'"> <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left"  data-ng-model="x.mom_face_commission_ratio" data-ng-disabled="x.status == '1'" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,6)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'"  class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.mon_top_agent_percent == '0'">{{x.code_commission_balance2}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">
+                                    <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left"  data-ng-model="x.monTopAgentInfoCode" data-ng-change="change_top_agent_code(x.monTopAgentInfoCode,$index,4)" data-ng-disabled="x.status == '1'" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,2)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'"  class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.mon_top_agent_percent | deleteZero}}%</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.com_get}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.mon_top_commission_ratio | deleteZero}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.mayong_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.pay_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.total_pay_commission}}</td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'"> <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left"  data-ng-model="x.monFactAgentCode" data-ng-disabled="x.status == '1'" data-ng-change="change_top_agent_code(x.monFactAgentCode,$index,5)" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,3)" check-permissions="sceneSharingRecordUpdate"  data-ng-hide="x.status == '1'" class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+
+                                <td data-ng-show="x.mon_top_agent_percent != '0'"> <input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left"  data-ng-model="x.mom_face_commission_ratio" data-ng-disabled="x.status == '1'" data-input-uppercase type="text"/>
+                                    <button data-ng-click="updateagent(x,6)" data-ng-hide="x.status == '1'" check-permissions="sceneSharingRecordUpdate"  class="btn btn-confirm btn-confirm pull-right btn-table">修改</button>
+                                </td>
+                                <td data-ng-show="x.mon_top_agent_percent != '0'">{{x.code_commission_balance2}}</td>
+                                <td>{{x.imm_top_agent_percent | deleteZero}}%</td>
+                                <td>{{x.top_agent_commission}}</td>
+                                <td>{{x.imm_top_commission_ratio | deleteZero}}</td>
+                                <td>{{x.imm_top_commission | deleteZero}}</td>
+                                <td>{{x.dailiyong | deleteZero}}</td>
+                                <td>{{x.imm_agent_percent | deleteZero}}%</td>
+                                <td>{{x.imm_agent_list_commission}}</td>
+                                <td>{{x.imm_commission_ratio | deleteZero}}</td>
+                                <td>{{x.imm_agent_commission | deleteZero}}</td>
+                                <td>{{x.total}}</td>
+                                <td><input style="width: 100px;text-align: center;margin-top: 3px;margin-left:3px;float:left" data-ng-disabled="x.status == '1'" data-ng-model="x.record_remark">
+                                    <button class="btn btn-confirm btn-confirm pull-right btn-table" check-permissions="sceneSharingRecordUpdate"  
+                                    data-ng-show="!remark_status && x.status == '2'"  data-ng-click="updateagent(x,4)">新增</button>
+                                    <button class="btn btn-confirm btn-confirm pull-right btn-table" check-permissions="sceneSharingRecordUpdate"  data-ng-show="remark_status && x.status == '2'"  data-ng-click="updateagent(x,4)">修改</button>
+                                </td>
+                                <td><button class="btn btn-cancel btn-table" check-permissions="sceneSharingRecordRollback" data-ng-hide="x.scene_status == '開場'"   ng-click="rollback(x)">回滾</button></td>
+                            </tr>
+                            <tr data-ng-show="mainScenes.length == 0">
+                                <td colspan="47">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        
+                                </div>
+                        </perfect-scrollbar>
+                    </div>
+                    <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination_scene.total_items"
+                                            on-select-page="select_scene(page)"
+                                            max-size = "pagination_scene.max_size"
+                                            items-per-page = "pagination_scene.items_per_page"
+                                            data-ng-hide="pagination_scene.total_items <= pagination_scene.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                            </div>
+                        </footer>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

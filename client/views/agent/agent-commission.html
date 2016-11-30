@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px"><strong>出佣記錄</strong></h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>轉碼卡</td>
+                        <td>佣金</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="commissionRecord in commissionRecords.rollingInfos" data-selected-rows>
+                        <td>{{commissionRecords.agentCode}}</td>
+                        <td>{{commissionRecords.agentName}}</td>
+                        <td>{{commissionRecord.card_name}}</td>
+                        <td>{{commissionRecord.commission_amount|parseDollar:true}}</td>
+                    </tr>
+                    <tr data-ng-show="commissionRecords.length == 0">
+                        <td colspan="4">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+        </div>
+    </form>
+</div>

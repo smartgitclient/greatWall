@@ -1,0 +1,111 @@
+<div class="page page-services ng-scope" data-ng-controller="integralTransferRecordCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>積分轉移查詢記錄</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="150" ><span class="span-formlist">廳館：</span></td>
+                        <td width="200" data-ng-show="user.isAllHall()">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="200" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+						<td width="200" align="right"><span class="span-formlist">積分類型：</span></td>
+                        <td>
+                            <select class="form-control" data-ng-model="condition.integral_type_id" ng-options="it.id as it.integral_name for it in integralTypes">
+                                <option value = "">請選擇類型</option>
+                            </select>
+                        </td>
+                        <td width="200" align="right"><span class="span-formlist">轉入戶口：</span></td>
+                        <td width="200"><input type="text" data-input-uppercase data-ng-model="condition.in_agent_code" class="form-control"></td>
+                        
+                    </tr>
+                    <tr height="50">
+					<td width="200" align="right"><span class="span-formlist">轉出戶口：</span></td>
+                        <td width="200"><input type="text" data-input-uppercase data-ng-model="condition.out_agent_code" class="form-control"></td>
+                        <td width="200" align="right"><span class="span-formlist">日期：</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup data-ng-model="condition.transfer_date[0]" data-dynamic-name="year_month" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </td>
+                        
+                        <td width="200" align="right">&nbsp;</td>
+                        <td width="200">&nbsp;</td>
+                    </tr>
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" ng-click="select()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+    <div class=" col-md-12">
+        <div class="panel panel-list-detail col-md-12">
+            <div class="panel-heading">
+                <!--button class="btn btn-information pull-right" >導出EXCEL</button>
+                <button class="btn btn-confirm margin-right-15 pull-right" >發送SMS</button>-->
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>廳館</td>
+                        <td>轉入戶口</td>
+                        <td>轉出戶口</td>
+                        <td>積分類型</td>
+                        <td>轉出轉碼卡</td>
+                        <td>轉入轉碼卡</td>
+                        <td>轉移積分數</td>
+                        <td>月結月</td>
+                        <td>過期月</td>
+                        <td>有效期(月)</td>
+                        <td>轉移日期</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="integral in integral_records" data-selected-rows>
+                        <td>{{integral.hall_name}}</td>
+                        <td>{{integral.in_agent_code}}</td>
+                        <td>{{integral.out_agent_code}}</td>
+                        <td>{{integral.integral_type}}</td>
+                        <td>{{integral.out_comm_card_name}}</td>
+                        <td>{{integral.in_comm_card_name}}</td>
+                        <td>{{integral.amount|parseDollar:true}}</td>
+                        <td>{{integral.settlement_month|parseDate:"yyyy-MM"}}</td>
+                        <td>{{integral.expired_month|parseDate:"yyyy-MM"}}</td>
+                        <td>{{integral.validity_month}}</td>
+                        <td>{{integral.transfer_date|parseDate:"yyyy-MM-dd"}}</td>
+                    </tr>
+                    <tr data-ng-show="integral_records.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-show="loans.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>

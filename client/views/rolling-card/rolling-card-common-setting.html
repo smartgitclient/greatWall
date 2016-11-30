@@ -1,0 +1,259 @@
+<div class="page page-grid" data-ng-controller="rollingCardCommonSettingCtrls">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default panel-form-list">
+                <div class="panel-heading">新增轉碼卡</div>
+                <div class="panel-content">
+                    <div class="col-sm-8 col-sm-offset-2 text-center">
+                        <form name="form_cards" class="ng-valid ng-dirty form-validation" server-validation="POST{{cards_url}}" >
+                        <table>
+                            <tbody>
+                            <tr height="80">
+                                <td  class="text-right">轉碼卡名稱：</td>
+                                <td ><input type="text" class="form-control" required data-ng-model="card_common.card_name" name="card_name" ></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-confirm margin-right-15" data-ng-click="addCard()" data-ng-disabled="disabled_card_submit" >提交</button>
+                        <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+                        </form>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <strong>轉碼卡列表</strong>
+                    </div>
+                    <div class="panel-content">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr >
+                                <td>卡名稱</td>
+                                <td>碼佣規則</td>
+                                <td width="150">操作</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="card in cards">
+                                <td>{{card.card_name}}</td>
+                                <td>{{card.rule_name}}</td>
+                                <td>
+                                    <!--<button class="btn btn-info btn-confirm btn-table" data-ng-click="">綁定</button>-->
+                                    <button class="btn btn-info btn-confirm btn-table" data-ng-click="delete(card.id)">刪除</button>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="cards.length == 0">
+                                <td colspan="3">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination.total_items"
+                                            on-select-page="select(page)"
+                                            max-size = "pagination.max_size"
+                                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default panel-form-list">
+                <div class="panel-heading">
+                    公共卡設置
+                </div>
+                <div class="panel-content">
+                    <form name="form_common_cards" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{common_cards_url}}" >
+                        <table>
+                            <tbody>
+                            <tr height="50">
+                                <td  class="text-right">碼佣規則：</td>
+                                <td width="120" >
+                                    <select data-ng-model="rule_name" required name="rule_name" class="form-control" ng-change="select_rule_name()" ng-options ="r.id as r.rule_name for r in rule_names" >
+                                        <option value="">請選擇碼佣規則</option>
+                                    </select>
+                                </td>
+                                <td width="120"  class="text-right">本金類型：</td>
+                                <td >{{commissions.capital_type}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <tabset class="ui-tab">
+                            <tab  data-ng-repeat="commission in commissions.commissionRuleCommons" heading="{{halls[$index].hall_name}}">
+                                <div class="panel panel-border">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <table>
+                                            <tbody>
+                                            <tr height="50">
+                                                <td class="text-right">佣金總額：</td>
+                                                <td>{{commission.commission_total}}</td>
+                                                <td width="100" class="text-right">積分總額：</td>
+                                                <td>{{commission.integral_total}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-7 col-md-offset-1">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <td>用戶類型</td>
+                                                <td>分派佣金額</td>
+                                                <td>分派積分額</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-ng-repeat="assign in commission.commissionRuleCommonSubs">
+                                                <td>{{userType[assign.layer]}}</td>
+                                                <td>{{assign.commission_should}}</td>
+                                                <td>{{assign.integral_should}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </tab>
+                        </tabset>
+                        <div class="row text-center">
+                            <div class="col-md-5">
+                                <div class="panel panel-list-detail">
+                                    <div class="panel-heading">
+                                        <strong>轉碼卡</strong>
+                                    </div>
+                                    <div class="panel-content">
+                                        <table class="table table-bordered table-striped">
+                                            <tbody>
+                                            <tr data-ng-repeat="rolling_card in rolling_cards">
+                                                <td width="250">
+                                                    <select ng-model="rolling_card.commission_card_index" required name="id" class="form-control" >
+                                                        <option value="" >請選擇轉碼卡</option>
+                                                        <option data-ng-repeat="c in commission_cards" ng-selected="c.id == rolling_card.id " value="{{$index}}" data-ng-show="c.status == 0">{{c.card_name}}</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <!--<i class="fa fa-plus-circle cursor-pointer"></i>-->
+                                                    <i ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" ng-click="addRollingCard()"></i>
+                                                    <i ng-show="$index != 0" class="fa fa-minus-circle cursor-pointer" ng-click="removeRollingCard($index)"></i>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="panel panel-list-detail">
+                                    <div class="panel-heading">
+                                        <strong>綁定線/戶口</strong>
+                                    </div>
+                                    <div class="panel-content">
+                                        <tabset class="ui-tab">
+                                            <tab heading="綁定線">
+                                                <div class="panel panel-border" style="margin-bottom: 0">
+                                                    <table>
+                                                        <tbody>
+                                                        <tr height="50">
+                                                            <td width="80"  class="text-right">線：</td>
+                                                            <td ><input type="text" class="form-control" data-ng-model="condition_group.agent_group_name" name="agent_group_name"></td>
+                                                            <td width="120"  class="text-right">線頭：</td>
+                                                            <td ><input type="text" class="form-control" data-ng-model="condition_group.owner_name" name="owner_name"></td>
+                                                            <td width="110"   class="text-right"><button class="btn btn-info btn-confirm" data-ng-click="search_group()">查詢</button></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>線</td>
+                                                        <td>線頭</td>
+                                                        <td width="250"><input type="checkbox" data-ng-model="check2.all1" data-ng-click="check_all1()" data-dynamic-name="selected"></checkbox>全選 (選中線:{{bind_group}})</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr  data-ng-repeat="bindingLine in bindingLines">
+                                                        <td>{{bindingLine.agent_group_name}}</td>
+                                                        <td>{{bindingLine.owner}}</td>
+                                                        <td><input type="checkbox" data-ng-model="bindingLine.selected" data-ng-click="check_group_one(bindingLine)" data-dynamic-name="selected" ></checkbox></td>
+                                                    </tr>
+                                                    <tr data-ng-show="bindingLines.length == 0">
+                                                        <td colspan="3">暫無符合條件的記錄</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <footer class="table-footer">
+                                                    <div class="text-right pagination-container">
+                                                        <pagination class="pagination_group-sm"
+                                                                    page="pagination_group.page"
+                                                                    total-items="pagination_group.total_items"
+                                                                    on-select-page="select_group(page)"
+                                                                    max-size = "pagination_group.max_size"
+                                                                    data-ng-hide="pagination_group.total_items <= pagination_group.items_per_page"></pagination>
+                                                    </div>
+                                                </footer>
+                                            </tab>
+                                            <tab heading="綁定戶口">
+                                                <div class="panel panel-border" style="margin-bottom: 0">
+                                                    <table>
+                                                        <tbody>
+                                                        <tr height="50">
+                                                            <td width="80"  class="text-right">戶組：</td>
+                                                            <td ><input type="text" class="form-control" data-ng-model="condition.agentGroup.agent_group_name" name="agent_group"></td>
+                                                            <td width="120"  class="text-right">戶口編號：</td>
+                                                            <td ><input type="text" class="form-control" data-ng-model="condition.agent_code" name="agent_code"></td>
+                                                            <td width="110"   class="text-right"><button class="btn btn-info btn-confirm" data-ng-click="search()">查詢</button></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>戶口編號</td>
+                                                        <td>姓名</td>
+                                                        <td width="250"><input type="checkbox"  data-ng-model="check1.all2" data-ng-click = "check_all2()" data-dynamic-name="selected"></checkbox>全選 (選中戶口:{{bind_agent}})</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr data-ng-repeat="agentsRolling in agentsRollings">
+                                                        <td>{{agentsRolling.agent_code}}</td>
+                                                        <td>{{agentsRolling.agent_name}}</td>
+                                                        <td><input type="checkbox" data-ng-click="check_one(agentsRolling)" name="selected" data-ng-model="agentsRolling.selected" data-dynamic-name="selected" ></checkbox></td>
+                                                    </tr>
+                                                    <tr data-ng-show="agentsRollings.length == 0">
+                                                        <td colspan="3">暫無符合條件的記錄</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <footer class="table-footer">
+                                                    <div class="text-right pagination-container">
+                                                        <pagination class="pagination_common-sm"
+                                                                    page="pagination_common.page"
+                                                                    total-items="pagination_common.total_items"
+                                                                    on-select-page="select_common(page)"
+                                                                    max-size = "pagination_common.max_size"
+                                                                    data-ng-hide="pagination_common.total_items <= pagination_common.items_per_page"></pagination>
+                                                    </div>
+                                                </footer>
+                                            </tab>
+                                        </tabset>
+                                    </div>
+                            </div>
+                            </div>
+                            <button class="btn btn-confirm margin-right-15" data-ng-disabled="disabled_submit"  data-ng-click="add_binging()">提交</button>
+                            <button class="btn btn-cancel" data-ng-click="reset_cards()">重置</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+    </div>
+</div>

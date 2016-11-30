@@ -1,0 +1,521 @@
+<div class="page page-services ng-scope">
+<div class="panel panel-form-list">
+    <div class="panel-heading">
+        <strong>客戶信息</strong>
+        <button class="btn btn-confirm pull-right" style="margin-right:25px;" data-ng-click="estimateSendSMS()" data-ng-disabled="isWaitingFalg" check-permissions="sceneRecordUpdate">發送SMS</button>
+        <button class="btn btn-confirm pull-right" data-ng-hide="isShowFlag" data-ng-click="branchGuest()" data-ng-disabled="isWaitingFalg" check-permissions="sceneRecordUpdate">分客</button>
+    </div>
+    <div class="panel-content" style="padding:10px;">
+        <table>
+            <tr>
+                <td width="100" class="text-right">所在廰：</td>
+                <td width="100">{{agent_record.hall_name}}</td>
+                <td width="100" class="text-right">戶口編號：</td>
+                <td width="100">{{agent_record.agent_code}}</td>
+                <td width="100" class="text-right">中文姓名：</td>
+                <td width="100">{{agent_record.agent_name}}</td>
+                <td width="100" class="text-right" data-ng-show="agent_record.is_scene_open==0">本場轉碼數：</td>
+                <td width="100" data-ng-show="agent_record.is_scene_open==0">{{agent_record.rolling_total|parseTenThousand2}}</td>
+            </tr>
+        </table>
+        <table style="margin-top: 20px;">
+            <tr>
+                <td>
+                    <span class="pull-left" style="margin:0 20px 0 20px;display: inline-block" data-ng-repeat="come_guest_name in come_guest_names"><input type="checkbox" name="rad" class="" data-ng-model = "come_guest_name.selected" />{{come_guest_name.name}}</span>&nbsp;&nbsp;
+                    <!--<span class="pull-left" style="margin-right: 20px;display: inline-block"><input type="checkbox" name="rad" class="" data-ng-model = "sceneRecord.come_guest_name" value ="2" data-ng-click="comeGuestName(2)"/>電投</span>&nbsp;&nbsp;-->
+                    <!--<span class="pull-left" style="margin-right: 20px;display: inline-block"><input type="checkbox" name="rad" class="" data-ng-model = "sceneRecord.come_guest_name" value ="3" data-ng-click="comeGuestName(3)"/>現場</span>&nbsp;&nbsp;-->
+                    <!--<span class="pull-left" style="display: inline-block"><input type="checkbox" name="rad" class="" data-ng-model = "sceneRecord.come_guest_name" value ="4"  data-ng-click="comeGuestName(4)"/>其它</span>&nbsp;-->
+                </td>
+                <td width="100px"><input class="form-control input-01 ng-pristine ng-valid"
+                     data-ng-model="agent_record.come_guest_name"
+                     data-ng-show="come_guest_names[3].selected"
+                     name="come_guest_type"
+                     type="text" style="width: 95px">
+                 </td>
+                <td>&nbsp;&nbsp;幣值：</td>
+                <td>
+                    <input class="form-control pull-left"
+                           data-ng-model="agent_record.common_currency_name"
+                           style="width:125px;"
+                           data-ng-required="enableClientValidation"
+                           name="common_currency_name"
+                           type="text">&nbsp;
+                    <button class="btn btn-information btn-table margin-right-5" phrasecurrency="scene" insertmodel="common_currency_name" type="button" >常用</button>
+                    <!--<button class="btn btn-information btn-table margin-right-5" type="button" data-ng-click="emptyStr(1)">清空</button>-->
+
+                </td>
+                <td data-ng-show="hall_id=='1AE7283167B57D1DE050A8C098155859'">&nbsp;&nbsp;凱旋門佔成：</td>
+                <td data-ng-show="hall_id=='1AE7283167B57D1DE050A8C098155859'">
+                    <input class="form-control pull-left"
+                           data-ng-model="agent_record.manila_percent"
+                           style="width:125px;"
+                           data-ng-required="enableClientValidation"
+                           name="manila_percent"
+                           type="text">&nbsp;
+                    <span>%</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel-content">
+<tabset class="ui-tab">
+    <tab data-ng-show="sceneRecords.length>0"
+         data-ng-repeat="sceneRecordTab in sceneRecords track by $index"
+         heading="{{sceneRecordTab.scene_no}}"
+         active="tabs[{{$index}}]"
+         ng-click="scene_selected(sceneRecordTab.id,$index, common_currency_name)"></tab>
+</tabset>
+<div class="panel-content" data-ng-hide="sceneRecords.length>0" align="center">
+    <div class="row" style="padding: 20px;">
+        該戶口暫無開場次
+    </div>
+</div>
+
+<div class="panel panel-list-detail" style="margin-bottom: 0px" data-ng-hide="isTabShow">
+    <div class="panel-heading" style="height: 35px; line-height: 35px;"><strong>轉碼信息</strong></div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>戶口編碼</td>
+                <td>戶口名稱</td>
+                <td>轉碼數（萬）</td>
+                <td>本場合計(萬)</td>
+                <td>轉碼時間</td>
+                <td>經手人</td>
+                <td width="250">備註</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="rolling in rollings">
+                <td>{{rolling.agent_code}}</td>
+                <td>{{rolling.agent_name}}</td>
+                <td>{{rolling.rolling|parseTenThousand2}}</td>
+                <td>{{rolling.scene_rolling|parseTenThousand2}}</td>
+                <td>{{rolling.roll_time|parseDate : "yyyy-MM-dd HH:mm:ss"}}</td>
+                <td>{{rolling.user_name}}</td>
+                <td>{{rolling.remark}}</td>
+            </tr>
+            <tr data-ng-show="rollings.length == 0">
+                <td colspan="9">暫無符合條件的記錄</td>
+            </tr>
+            </tbody>
+        </table>
+        <footer class="table-footer">
+            <!--items-per-page = "pagination.items_per_page"-->
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            data-ng-show="rollings.length > 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+            </div>
+        </footer>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="panel-content" data-ng-show="sceneRecords.length>0 && isTabShow" >
+<form name="$parent.form_scene_edit" class="ng-valid ng-dirty fohui-tab tabbable ng-isolate-scoperm-validation" server-validation="PUT{{scene_edit_url}}">
+<div class="row">
+<div class="col-md-5">
+    <div class="panel panel-list-detail" style="margin-bottom: 0px">
+        <div class="panel-heading" style="height: 35px; line-height: 35px;">
+            <strong>場次詳細</strong>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td class="text-right" width="120" data-min-screen-width="120">客戶姓名：</td>
+                        <td data-min-screen-width="180"><input class="form-control input-01 ng-pristine ng-valid"
+                                                               data-ng-model="sceneRecord.guest_name"
+                                                               name="guest_name"
+                                                               type="text"></td>
+                    </tr>
+
+                    <!--<tr>-->
+                        <!--<td class="text-right">幣值：</td>-->
+                        <!--<td align="left" class="nowrap">-->
+                            <!--<input class="form-control pull-left"-->
+                                   <!--data-ng-model="sceneRecord.common_currency_name"-->
+                                   <!--style="width:125px;"-->
+                                   <!--data-ng-disabled="true"-->
+                                   <!--data-ng-required="enableClientValidation"-->
+                                   <!--name="common_currency_name"-->
+                                   <!--type="text">&nbsp;-->
+                            <!--<button class="btn btn-information btn-table margin-right-5" phrasecurrency="scene" insertmodel="common_currency_name" type="button" >常用</button>-->
+                            <!--<button class="btn btn-information btn-table margin-right-5" type="button" data-ng-click="emptyStr(1)">清空</button>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="text-right">枱號：</td>
+                        <td width="250">
+                            <input type="text"
+                                   data-ng-model="sceneRecord.desk_no"
+                                   data-ng-required="enableClientValidation"
+                                   name="desk_id"
+                                   data-ng-disabled="true"
+                                   class="form-control ng-pristine ng-valid input-140"
+                                   style="float: left; width: 125px; vertical-align: middle;">
+                            <button class="btn btn-information btn-table margin-right-5" type="button" check-permissions="sceneRecordUpdate" data-ng-click="showDesk()" style="vertical-align: middle;">選枱</button>
+                            <button class="btn btn-information btn-table margin-right-5" type="button" data-ng-click="emptyStr(2)">清空</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">限紅：</td>
+                        <td align="left" class="nowrap">
+                            <input class="form-control pull-left"
+                                   data-ng-model="sceneRecord.gap"
+                                   style="width:175px;"
+                                   data-ng-required="enableClientValidation"
+                                   name="gap"
+                                   type="text">&nbsp;
+                            <button class="btn btn-information btn-table margin-right-5" phrasegap="scene" insertmodel="gap" type="button" >常用</button>
+                            <!--<button class="btn btn-information btn-table margin-right-5" type="button" data-ng-click="emptyStr()">清空</button>-->
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right">開場時間：</td>
+                        <td align="left" class="nowrap">
+                            <div class="form-inline input-group ui-datepicker">
+                                <div class="form-group">
+                                    <input size="9" class="form-control input-01"
+                                           ng-model="sceneRecord.in_time"
+                                           style="width:95px;"
+                                           data-ng-disabled="true"
+                                           data-ng-required="enableClientValidation"
+                                           name="in_time"
+                                           bs-datepicker type="text">
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<i class="fa fa-calendar"></i>-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <input size="6" class="form-control input-01"
+                                           data-ng-required="enableClientValidation"
+                                           name="in_time"
+                                           data-time-format="H:mm"
+                                           ng-model="new_record.in_time"
+                                           style="width:75px; margin-left: 3px;"
+                                           bs-timepicker type="text">
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<i class="fa fa-clock-o"></i>-->
+                                <!--</div>-->
+                                <button class="btn btn-information btn-table" type="button" data-ng-click="getNowDate('in')" style="margin-left: 5px; vertical-align: middle;">現在</button>
+                            </div>
+                        </td>
+                        <!--<td colspan="2"></td>-->
+                    </tr>
+                    <tr>
+                        <td class="text-right">離場時間：</td>
+                        <td align="left" class="nowrap">
+                            <div class="form-inline input-group ui-datepicker">
+                                <div class="form-group">
+                                    <!--{{sceneRecord.out_time}}-->
+                                    <input size="9" class="form-control input-01"
+                                           ng-model="sceneRecord.out_time"
+                                           style="width:95px;"
+                                           data-ng-disabled="true"
+                                           data-ng-required="enableClientValidation"
+                                           name="out_time"
+                                           bs-datepicker type="text">
+                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<i class="fa fa-calendar"></i>-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <input size="6" class="form-control input-01"
+                                           data-ng-required="enableClientValidation"
+                                           name="out_time"
+                                           data-time-format="H:mm"
+                                           ng-model="new_record.out_time"
+                                           style="width:75px; margin-left: 3px;"
+                                           bs-timepicker type="text">
+                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<i class="fa fa-clock-o"></i>-->
+                                <!--</div>-->
+                                <button class="btn btn-information btn-table" type="button" data-ng-click="getNowDate('out')" style="margin-left: 5px; vertical-align: middle;">現在</button>
+                            </div>
+                        </td>
+                        <!--<td colspan="2"></td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+<div class="panel panel-list-detail" style="margin-bottom: 0px">
+    <div class="panel-heading" style="height: 35px; line-height: 35px;">
+        <strong></strong>
+        <span class="pull-right">{{matchesStatus[sceneRecord.status]}}</span>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td width="80" valign="top" class="text-right">
+                        備註：<br>
+                        <button class="btn btn-information btn-table margin-right-5" phrasebooktis="scene" insertmodel="remark" type="button" >常用</button>
+                    </td>
+                    <td>
+                        <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid"
+                                  rows="6"
+                                  name="remark"
+                                  data-ng-model="sceneRecord.remark"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-5" style="margin-bottom: 0px">
+        <div class="panel panel-list-detail" style="margin-bottom: 0px">
+           <div class="panel-heading" style="height: 35px; line-height: 35px;">
+            <strong>本金詳細</strong>
+        </div>
+           <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td width="85">入場本金</td>
+                    <td width="145">類型</td>
+                    <td width="115">場面日期</td>
+                    <td check-permissions="sceneRecordUpdate">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="inCapital_c in inCaptals_content" data-ng-hide="inCapital_c.is_delete==1">
+                    <!--<td data-ng-show="!capital.capital_edit_type" width="120">{{capital.amount}}</td>-->
+                    <td>
+                        <input type="text"
+                               data-ng-model="inCapital_c.amount"
+                               data-dynamic-name="inCapitals_{{$index}}_amount"
+                               ng-keyup="outScene('in')"
+                               data-ng-required="enableClientValidation"
+                               class="form-control">
+                    </td>
+                    <td>
+                        <select data-ng-model="inCapital_c.funds_type_id"
+                                data-dynamic-name="inCapitals_{{$index}}_funds_type_id"
+                                data-ng-required="enableClientValidation"
+                                class="form-control"
+                                data-ng-change="capitals_change(inCapital_c,'ty','in')"
+                                ng-options="h.id as h.o_word for h in inSceneWords">
+                            <option value="">請選擇本金類型</option>
+                        </select>
+                    </td>
+                    <td>
+                        <p class="input-group ui-datepicker" style="margin-top: 5px;">
+                            <input type="text" class="form-control input-92"
+                                   datepicker-popup ng-model="inCapital_c.shift_date"
+                                   data-dynamic-name="inCapitals_{{$index}}_shift_date"/>
+                            <span class="input-group-btn">
+                            <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                            </span>
+                        </p>
+                    </td>
+                    <td check-permissions="sceneRecordUpdate">
+                        <button class="btn btn-info btn-information btn-table"
+                                data-ng-show="$index==0"
+                                type="button"
+                                ng-click="add_capital('in')">添加</button>
+                        <button class="btn btn-info btn-information btn-table"
+                                data-ng-show="$index>0"
+                                type="button"
+                                ng-click="remove_capital(inCapital_c,$index,'in')">刪除</button>
+                    </td>
+                </tr>
+                <tr data-ng-show="sceneRecord.inCaptals_content.length==0">
+                    <td colspan="4">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+       </div>
+    </div>
+    <div class="col-md-7" style="margin-bottom: 0px">
+        <div class="panel panel-list-detail" style="margin-bottom: 0px">
+           <div class="panel-heading" style="height: 35px; line-height: 35px;">
+            <strong>截更記錄</strong>
+            <button class="btn btn-info btn-confirm btn-table pull-right"
+                    type="button"
+                    data-ng-hide="shift_mark_id != now_shift_mark_id"
+                    check-permissions="sceneRecordUpdate"
+                    style="margin:0px;"
+                    data-ng-click="addShift('add')">新增截更</button>
+        </div>
+           <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td width="100">日期</td>
+                    <td width="65">入場數</td>
+                    <td width="65">離場數</td>
+                    <td width="65">上下數</td>
+                    <td>操作人</td>
+                    <td width="110" check-permissions="sceneRecordUpdate">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  data-ng-repeat="shift in sceneRecordShifts">
+                    <td>{{shift.shiftMark.shift_date|parseDate}}</td>
+                    <td>{{shift.in_capital|parseTenThousand2}}</td>
+                    <td>{{shift.out_capital|parseTenThousand2}}</td>
+                    <td>{{shift.loss_win_amount|parseTenThousand2}}</td>
+                    <td>{{shift.user_name}}</td>
+                    <td class="no-padding" check-permissions="sceneRecordUpdate">
+                        <button class="btn btn-info btn-information btn-table" ng-click="addShift('edit',shift)">修改</button>
+                        <button class="btn btn-info btn-information btn-table" data-ng-show="shift.shift_status==1" ng-click="removeShift(shift.id)">刪除</button>
+                    </td>
+                </tr>
+                <tr data-ng-show="sceneRecordShifts.length==0">
+                    <td colspan="6">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+<!--<div class="col-md-5"></div>-->
+
+<div class="col-md-5" check-permissions="sceneRecordUpdate">
+
+    <div class="panel panel-list-detail" style="margin-bottom: 0px">
+        <div class="panel-heading" style="height: 35px; line-height: 35px;"><strong>離場本金處理</strong></div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td width="145">操作</td>
+                    <td width="90">金額(萬)</td>
+                    <td width="135">類型</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="outCapitals_c in outCaptals_content">
+                    <td>
+                        <select data-ng-model="outCapitals_c.out_scene_word_id"
+                                data-ng-required="enableClientValidation"
+                                data-dynamic-name="outCapitals_{{$index}}_out_scene_word_id"
+                                class="form-control"
+                                data-ng-change="capitals_change(outCapitals_c,'op','out')"
+                                ng-options="h.id as h.o_word for h in outSceneWords">
+                            <option value = "">請選擇操作類型</option>
+                        </select>
+                    </td>
+                    <td><input type="text"
+                               data-ng-required="enableClientValidation"
+                               data-dynamic-name="outCapitals_{{$index}}_amount"
+                               data-ng-model="outCapitals_c.amount"
+                               class="form-control"
+                               ng-keyup="outScene('out')">
+                    </td>
+                    <td>
+                        <select data-ng-model="outCapitals_c.funds_type_id"
+                                data-ng-required="enableClientValidation"
+                                data-dynamic-name="outCapitals_{{$index}}_funds_type_id"
+                                class="form-control"
+                                data-ng-change="capitals_change(outCapitals_c,'ty','out')"
+                                ng-options="h.id as h.o_word for h in inSceneWords">
+                            <option value = "">請選擇操作類型</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button data-ng-show="$index==0" class="btn btn-info btn-information btn-table" ng-click="add_capital('out')">添加</button>
+                        <button data-ng-show="$index>0" class="btn btn-info btn-information btn-table" ng-click="remove_capital('',$index,'out')">刪除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="panel panel-list-detail" style="margin-bottom: 0px">
+        <div class="panel-heading" style="height: 35px; line-height: 35px;"><strong>本場場面數</strong></div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <td width="150">入場本金(萬)</td>
+                    <td>{{sceneRecord.in_capital_join}}</td>
+                </tr>
+                <tr>
+                    <td width="150">前數本金(萬)</td>
+                    <td><span>{{up_in_capital_scene?up_in_capital_scene:'0'}}</span></td>
+                </tr>
+                <tr>
+                    <td width="150">圍數上下數(萬)</td>
+                    <td> <span>{{up_loss_win_amount|parseTenThousand2}}</span></td>
+                </tr>
+                <tr>
+                    <td>本場上下數(萬)</td>
+                    <td>{{sceneRecord.loss_win_amount|parseTenThousand2}}</td>
+                </tr>
+                <tr>
+                    <td>離場本金(萬)</td>
+                    <td>{{sceneRecord.out_capital_join}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-striped" check-permissions="sceneRecordUpdate">
+                <tr>
+                    <td width="150" class="text-right">場次狀態：</td><!--data-ng-hide="isShowFlag"   data-ng-show="sceneRecord.shift_status == '1'"-->
+                    <td>
+                        <!--data-ng-change="status_change()"-->
+                        <select data-ng-model="sceneRecord.status"
+                                class="form-control"
+                                name="scene_status"
+                                data-ng-disabled="!sceneHidRecordShifts"
+                                data-ng-show="shift_mark_id == now_shift_mark_id"
+                                >
+                            <option value="1">{{matchesStatus[1]}}</option>
+                            <option value="2">{{matchesStatus[2]}}</option>
+                        </select>
+                        <span data-ng-show="shift_mark_id != now_shift_mark_id" >{{matchesStatus[sceneRecord.status]}}</span><!--data-ng-show="isShowFlag"-->
+                    </td>
+                </tr>
+                <!--<tr check-permissions="sceneRecordUpdate">-->
+                    <!--<td width="150" class="text-right">操作密碼：</td>-->
+                    <!--<td>-->
+                        <!--<input class="form-control input-01 ng-pristine ng-valid"-->
+                               <!--name="pin_code"-->
+                               <!--type="password"-->
+                               <!--ng-model="sceneRecord.pin_code"-->
+                               <!--data-enter-key="submit()">-->
+                    <!--</td>-->
+                <!--</tr>-->
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="row" style="text-align: center;" check-permissions="sceneRecordUpdate">
+        <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDesabled" data-ng-click="submit()" type="button">保存</button>
+        <button class="btn btn-info btn-cancel margin-right-15" data-ng-click="close()" type="button">關閉</button>
+        <button class="btn btn-inf btn-confirm" data-ng-click="reset()" type="button">重載</button>
+    </div>
+</div>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+</div>

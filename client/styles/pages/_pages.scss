@@ -1,0 +1,84 @@
+.non-display {
+    display: none;
+}
+
+.page {
+    padding: 8px;
+}
+
+.page-form-ele {
+    h3 {
+        margin: 0;
+    }
+}
+
+.page-signin {
+  background-color: $login-bg;
+  .signin-header {
+    background-color: transparent !important;
+    .login_logo {
+      background-image: url('../images/login/logo.png');
+      width: 112px;
+      height: 168px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .signin-body {
+    .form-container {
+      width: 577px;
+      max-width: 577px;
+      .form-horizontal {
+        background-color: $login-form-bg;
+        padding-top: 0;
+        .form-group {
+          margin: 20px 0;
+          .input-group-lg {
+            width: 406px;
+            margin: 0 auto;
+          }
+          .input-group-addon {
+            color: #ffffff;
+            background-color: #a86015;
+            border: none;
+            .glyphicon-lock {
+
+            }
+          }
+          .form-control {
+            width: 362px !important;
+            height: 46px;
+            background-color: $login-input-bg;
+            border: none;
+          }
+        }
+      }
+      .form-group {
+        .btn-confirm,.btn-cancel {
+          width: 175px;
+          height: 47px;
+          font-size: 24px;
+          margin-right: 83px;
+          margin: 0 auto;
+        }
+        .login_check {
+          margin-left: 83px;
+          font-size: 18px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  .p_foot {
+    height: 46px;
+    line-height: 46px;
+    background-color: #000;
+    text-align: center;
+    color: $login-footer-color;
+  }
+}
+.page-signup {
+  .signin-header {
+    background-color: transparent !important;
+  }
+}

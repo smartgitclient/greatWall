@@ -1,0 +1,55 @@
+<div class="page page-services ng-scope pop-dotal">
+    <div class="row ">
+        <div class="col-md-12" ng-show="permissions">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>解鎖戶口</strong></div>
+                <div class="panel-content">
+                    <form  name="$parent.form_set_password" class="form-validation" server-validation="PUT{{url}}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered  ">
+                                    <tbody>
+                                    <tr>
+                                      <td colspan="2" class="red">
+                                        {{warn}}
+                                      </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">賬號：</td>
+                                        <td>
+                                            <input data-ng-required="enableClientValidation" name="password" class="form-control input-01" type="text" ng-model="data.password" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">密碼：</td>
+                                        <td>
+                                            <input data-ng-required="enableClientValidation" name="pin_code"  class="form-control input-01" type="password" ng-model="data.pin_code" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2"></td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-confirm margin-right-15" data-ng-disabled="disabled_submit" data-ng-click="unlock()">提交</button>
+                            <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" ng-hide="permissions">
+          <div class="panel-heading red" style="text-align: center">
+            <strong>您無此權限</strong>
+          </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="modal-header">
+    <h3>積分設定</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_setting_integral" class="ng-valid form-validation" server-validation="PUT{{setting_integral_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">所在廳：</td>
+                        <td align="left" width="150">{{integral.hall_name}}</td>
+                        <td width="100" align="right">積分類型：</td>
+                        <td align="left" width="150">{{integral.integral_type}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">轉碼卡：</td>
+                        <td align="left" width="150">{{integral.commission_card}}</td>
+                        <td width="100" align="right">積分額：</td>
+                        <td align="left" width="150">{{integral.integral_amount|parseDollar}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">月結月：</td>
+                        <td align="left" width="150">{{integral.settlement_month|parseDate:"yyyy-MM"}}</td>
+                        <td width="100" align="right">過期月：</td>
+                        <td align="left" width="150">{{integral.expired_month|parseDate:"yyyy-MM"}}</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">有效期(月)：</td>
+                        <td align="left" width="150">
+                            <select name="validity_month" data-ng-change="change_month()" data-ng-model="integral.validity_month" data-ng-required="enableClientValidation" data-ng-options="integral_expire for integral_expire in months" class="form-control pull-left" >
+                                <option value="">請選擇有效期(月)</option>
+                            </select>
+                        </td>
+                        <td width="120" align="right">積分回收比例：</td>
+                        <td align="left" width="150">{{recycleRate()}}
+                            <!--<input  type="text" name="rule_name" ng-model="" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92">-->
+                        </td>
+
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="center" width="200">現金回收戶口</td>
+                        <td align="center" width="200">現金回收比例</td>
+                        <td align="center">津貼回收户口</td>
+                    </tr>
+                    <tr data-ng-repeat="agentIntegralRecycle in integral.agentIntegralRecycles" data-ng-show="agentIntegralRecycle.is_comp_agent == '0'">
+                        <td align="center">
+                            <input data-input-uppercase data-dynamic-name="agentIntegralRecycles_{{$index}}_recycle_agent_id" class="form-control input-01 input-92" type="text" data-ng-model="agentIntegralRecycle.recycle_agent_code"  />
+                        </td>
+                        <td align="center">
+                            <input  type="text" data-dynamic-name="agentIntegralRecycles_{{$index}}_recycle_rate" ng-model="agentIntegralRecycle.recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92">
+                       </td>
+                        <td>
+                            <input data-input-uppercase data-dynamic-name="agentIntegralRecycles_{{$index}}_integral_recycle_agent_id" class="form-control input-01 input-92" type="text" data-ng-model="agentIntegralRecycle.integral_recycle_agent_code"  />
+                            <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addIntegral()"></i>
+                            <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeIntegral($index)"></i>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="center" width="200">特別收益戶口</td>
+                        <td align="center" width="200">現金回收比例</td>
+                        <td align="center">津貼回收户口</td>
+                    </tr>
+                    <tr data-ng-repeat="agentIntegralRecycle in integral.agentIntegralRecycles" data-ng-show="agentIntegralRecycle.is_comp_agent == '1'">
+                        <td align="center">
+                            <input data-input-uppercase data-dynamic-name="agentIntegralRecycles_{{$index}}_recycle_agent_id" class="form-control input-01 input-92" type="text" data-ng-model="agentIntegralRecycle.recycle_agent_code"  />
+                        </td>
+                        <td align="center">
+                            <input  type="text" data-dynamic-name="agentIntegralRecycles_{{$index}}_recycle_rate" ng-model="agentIntegralRecycle.recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92">
+                        </td>
+                       <td>
+                           <input data-input-uppercase data-dynamic-name="agentIntegralRecycles_{{$index}}_integral_recycle_agent_id" class="form-control input-01 input-92" type="text" data-ng-model="agentIntegralRecycle.integral_recycle_agent_code"  />
+                            <i data-ng-show="$index == 1" class="fa fa-plus-circle cursor-pointer" data-ng-click="addIntegralSpecial()"></i>
+                            <i data-ng-show="$index > 1" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeIntegralSpecial($index)"></i>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" width="100">操作密碼：</td>
+                        <td>
+                            <input type="password" name="pin_code" data-ng-model="integral.pin_code" class="form-control" data-enter-key="add()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </form>
+</div>

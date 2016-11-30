@@ -1,0 +1,107 @@
+<div class="page page-services ng-scope" data-ng-controller="settlementTypeCtrls">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>結算方式管理</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="120"><span class="span-formlist">戶口編號</span></td>
+                        <td width="210"><input type="text" data-input-uppercase data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="40">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">戶口姓名</span></td>
+                        <td width="210"><input type="text" data-ng-model="condition.agentMaster.agent_contact_name" class="form-control"></td>
+                        <td width="40">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">戶口類型</span></td>
+                        <td width="210"><!-- Split button -->
+                            <!--ui-select ng-model="condition.agent_type">
+                                <ui-select-match placeholder="請選擇戶口類型">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="agent_type in ['股東','內股','普通']">
+                                    <div ng-bind-html="agent_type"></div>
+                                </ui-select-choices>
+                            </ui-select-->
+                            <select name="type" class="form-control" data-ng-model="condition.type"
+                                    data-ng-options="k as v for (k,v) in agentTypes ">
+                                <option value="">請選擇戶口類型</option>
+                            </select>
+                        </td>
+                        <td width="40">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">結算方式</span></td>
+                        <td width="210"><!-- Split button -->
+                            <!--ui-select ng-model="condition.settlement_type">
+                                <ui-select-match placeholder="請選擇結算方式">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="settlement_type in ['月結','普通','股東']">
+                                    <div ng-bind-html="settlement_type"></div>
+                                </ui-select-choices>
+                            </ui-select-->
+                            <select name="settlement_type" class="form-control" data-ng-model="condition.settlement_type"
+                                    data-ng-options="k as v for (k,v) in settlementTypes">
+                                <option value="">請選擇結算方式</option>
+                            </select>
+                        </td>
+                        <td width="100">&nbsp;</td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+    </div>
+    <div class=" col-md-12">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td>戶口編號</td>
+                <td>戶口姓名</td>
+                <td>戶口類型</td>
+                <td width="300">結算方式</td>
+                <td width="250" check-permissions="settlementTypeUpdate">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="agent in agent_lists" data-selected-rows>
+                <td>{{ agent.agent_code }}</td>
+                <td>{{ agent.agent_name }}</td>
+                <td>{{ agentTypes[agent.type] }}</td>
+                <td>
+                    <span data-ng-show="!agent.updated">{{ settlementTypes[agent.settlement_type] }}</span>
+                    <select data-ng-show="agent.updated"
+                            name="settlement_type" class="form-control" data-ng-model="agent.settlement_type"
+                            data-ng-options="k as v for (k,v) in settlementTypes">
+                        <!--option value="">請選擇結算方式</option-->
+                    </select>
+                </td>
+
+                <td data-ng-show="!agent.updated"  check-permissions="settlementTypeUpdate">
+                    <button class="btn btn-info btn-information btn-table"  data-ng-click="edit(agent)">修改</button>
+                </td>
+                <td data-ng-show="agent.updated"  check-permissions="settlementTypeUpdate">
+                    <button class="btn btn-info btn-information btn-table" data-ng-click="save(agent)" data-ng-disabled="agent.disabled">保存</button>
+                    <button class="btn btn-info btn-information btn-table" data-ng-click="cancel(agent)">取消</button>
+                </td>
+            </tr>
+            <tr ng-show="!agent_lists.length" >
+                <td colspan="5">暫無符合條件的記錄</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="page.page"
+                            total-items="page.total_items"
+                            on-select-page="search(page)"
+                            max-size = "page.max_size"
+                            items-per-page = "page.items_per_page"
+                            data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                <paginationselect pageCtrl="page" select-page="search"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

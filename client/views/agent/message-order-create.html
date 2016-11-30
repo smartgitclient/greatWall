@@ -1,0 +1,163 @@
+<div class="page page-services ng-scope" data-ng-controller="messageOrderCreateCtrl">
+<form name="form_create_order" class="form-validation" server-validation="{{sub_post_put}}{{create_order_url}}">
+<div class="col-md-8">
+<div class="panel panel-form-list">
+<div class="panel-heading"><strong>{{title}}</strong></div>
+<div class="panel-content">
+    <div class="row text-center">
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr>
+                    <td align="right">廳館：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name = "hall_id" data-ng-model="order.hall_id" class="form-control input-140" data-ng-options="h.id as h.hall_name for h in halls" >
+                            <option value="">請選擇廳館</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">顯示模組：</td>
+                    <td align="left">
+                        <span>
+                            &nbsp;&nbsp;&nbsp;<input type="checkbox" name="order_check_alls" data-ng-model="order_check_alls" data-ng-change="order_check_all()">全部</checkbox>
+                        </span>
+                        <table class="table">
+                            <tr data-ng-repeat="order_mondule in order_mondules">
+                                <td align="left" data-ng-repeat="module in order_mondule" style="border-top: none">
+                                    <input data-ng-required="enableClientValidation" name = "module_id" type="checkbox" data-ng-model="module.selected" data-ng-change="check_order_one(module)">{{module.module_name}}</checkbox>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">有效日期：</td>
+                    <td align="left">
+                        <div class="pull-left">
+                            <div class="form-inline input-group ui-datepicker">
+                                <div class="form-group">
+                                    <input size="9" class="form-control input-01"
+                                           ng-model="order.start_time"
+                                           data-ng-required="enableClientValidation"
+                                           name="start_time"
+                                           bs-datepicker type="text">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input size="8"  class="form-control input-01"
+                                           data-ng-required="enableClientValidation"
+                                           name="start_time"
+                                           ng-model="order.start_time"
+                                           bs-timepicker type="text">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="pull-left">&nbsp;&nbsp;~&nbsp;&nbsp;</p>
+                        <p class=" pull-left">
+                        <div class="form-inline input-group ui-datepicker">
+                            <div class="form-group">
+                                <input size="9" class="form-control input-01"
+                                       ng-model="order.end_time"
+                                       data-ng-required="enableClientValidation"
+                                       name="end_time"
+                                       bs-datepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <div class="form-group">
+                                <input size="8"  class="form-control input-01"
+                                       data-ng-required="enableClientValidation"
+                                       name="end_time"
+                                       ng-model="order.end_time"
+                                       bs-timepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" align="right">標題：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name = "order_type_id" data-ng-model="order.order_type_id" class="form-control" data-ng-options="at.id as at.order_name for at in agentOrderTypes" >
+                            <option value="">請選擇標題</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">優先級：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name="priority" data-ng-model="order.priority" class="form-control" data-ng-options="p.priority as p.priority_name for p in [{priority:'1',priority_name:'高'},{priority:'2',priority_name:'中'},{priority:'3',priority_name:'低'}]" >
+                            <option value="">請選擇優先級</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="width: 93px">內容：</td>
+                    <td align="left">
+                        <textarea data-ng-required="enableClientValidation" name="order_content"  id="" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="order.order_content"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="width: 93px">操作密碼：</td>
+                    <td align="left">
+                        <input type="password" name="pin_code" class="form-control input-140" ng-model="order.pin_code" data-enter-key="add()"/>
+                    </td>
+                </tr>
+            </table>
+    </div>
+    <div class="row" style="text-align: center;"><br/>
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+        <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+    </div>
+
+
+</div>
+<div class="panel-footer">
+</div>
+</div>
+
+
+</div>
+
+<div class="panel panel-list-detail col-md-4">
+    <div class="panel-heading">
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+                <td width="100" align="right">對象類型：</td>
+                <td align="left">
+                    <input ng-disabled="updateDate" type="radio" name="order_type" value="{{orderTypes.group}}" ng-model="order.is_group" data-ng-change="agent_group_type()" >戶組&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input ng-disabled="updateDate" type="radio" name="order_type" value="{{orderTypes.agent}}" ng-model="order.is_group" data-ng-change="agent_group_type()" >戶口
+                </td>
+                <td></td>
+            </tr>
+            <tr data-ng-repeat="agent_group in order.agent_group">
+                <td width="150" align="right"><span data-ng-show="!agent_group_show">戶組：</span><span data-ng-show="agent_group_show">戶口編號：</span></td>
+                <td width="320" align="left" >
+                    <input data-input-uppercase  data-ng-required="enableClientValidation" data-ng-show="agent_group_show" data-dynamic-name = "refOrderAgents_{{($index)}}_agent_info_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" data-ng-model="agent_group.agent_group_code">
+                    <input data-input-uppercase  data-ng-required="enableClientValidation" data-ng-show="!agent_group_show" data-dynamic-name = "refOrderGroups_{{($index)}}_agent_group_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" data-ng-model="agent_group.agent_group_code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{agent_group.agent_group_name}}
+                </td>
+                <td>
+                    <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer"   data-ng-click="addAgentGroup()"></i>
+                    <i data-ng-show="agent_group_show && $index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeAgentGroup(agent_group.agent_info_id,$index)"></i>
+                    <i data-ng-show="!agent_group_show && $index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeAgentGroup(agent_group.agent_group_id,$index)"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>
+</div>

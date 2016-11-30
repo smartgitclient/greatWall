@@ -1,0 +1,799 @@
+<div class="page page-grid" data-ng-controller="depositCardsManageCtrl">
+<div class="panel panel-default">
+<div class="col-md-4" data-ng-show="user.checkPermissions('depositCardWaterCreate') || (user.checkPermissions('depositCardRecordRemarkUpdate') && deposit_card.id)">
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>存卡管理</strong>
+                <!--<button class="btn btn-confirm pull-right" data-ng-click="addCardRecord()" check-permissions="depositCardWaterCreate">新增</button>-->
+            </div>
+            <div class="panel-content">
+                <form name="form_deposit_create" class="form-validation" server-validation="{{sub_post_put}}{{deposit_url}}">
+                    <table>
+                        <tr height="50">
+                            <td width="80" data-min-screen-width="70" class="text-right">戶口編號：</td>
+                            <td data-min-screen-width="130"><input data-input-uppercase data-ng-required="enableClientValidation" name="agent_code" type="text" data-ng-model="deposit_card.agent_code" data-ng-disabled="disabled_update" class="form-control"></td>
+                            <td width="100" data-min-screen-width="90" class="text-right">戶口姓名：</td>
+                            <td data-min-screen-width="110">{{deposit_card.agent_name}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td  class="text-right">交易人：</td>
+                            <td>
+                                <select data-ng-required="enableClientValidation"
+                                        name="agent_contact_id"
+                                        data-ng-model="deposit_card.agent_contact_id"
+                                        data-ng-disabled="disabled_update"
+                                        class="form-control"
+                                        data-ng-change="handle_change()"
+                                        data-ng-options="lb.id as lb.agent_contact_name for lb in loanBusiness" >
+                                    <option value="">請選擇交易人</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">存卡：</td>
+                            <td>
+                                <select data-ng-required="enableClientValidation" name="deposit_card_id" data-ng-model="deposit_card.deposit_card_id" data-ng-disabled="disabled_update" data-ng-change="select_card()" class="form-control" data-ng-options="card.id as card.card_name for card in cards" >
+                                    <option value="">請選擇存卡</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">存卡餘額：</td>
+                            <td>{{deposit_card.deposit_amount |parseTenThousand}}</td>
+                            <td class="text-right">已凍結(飛數)：</td>
+                            <td>{{deposit_card.frozen_amount |parseTenThousand}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">可用餘額：</td>
+                            <td>{{deposit_card.usable_amount |parseTenThousand}}</td>
+                            <td class="text-right">已凍結：</td><!--新添加的已冻结栏位-->
+                            <td>{{deposit_card.frozen_deposit_amount|parseTenThousand}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">類型：</td>
+                            <td>
+                                <select data-ng-required="enableClientValidation" name="transaction_type"  data-ng-model="deposit_card.transaction_type" data-ng-disabled="disabled_update" data-ng-change="select_type()" class="form-control" >
+                                    <option value="">請選擇類型</option>
+                                    <option value="{{depositCardTypes.deposit}}">{{depositCardTypes.items['DEPOSIT']}}</option>
+                                    <option value="{{depositCardTypes.draw}}">{{depositCardTypes.items['DRAW']}}</option>
+                                    <option value="{{depositCardTypes.drawCash}}">{{depositCardTypes.items['DRAWCASH']}}</option>
+                                    <option value="{{depositCardTypes.transfer}}">{{depositCardTypes.items['TRANSFER']}}</option>
+                                    <option value="{{depositCardTypes.frozen}}">{{depositCardTypes.items['FROZEN']}}</option>
+                                    <option value="{{depositCardTypes.thaw}}">{{depositCardTypes.items['THAW']}}</option>
+                                </select>
+                            </td>
+                            <td class="text-right">金額：</td>
+                            <td>
+                                <input data-ng-required="enableClientValidation" name="transaction_amount" type="text" data-ng-model="deposit_card.transaction_amount" data-ng-disabled="disabled_update"  class="form-control input-01 width-83" data-min-screen-width="85">&nbsp;&nbsp;萬
+                            </td>
+                        </tr>
+                        <tr height="50" data-ng-show="show_type">
+                            <td class="text-right">轉入户口：</td>
+                            <td><input data-input-uppercase data-ng-required="enableClientValidation" name="receive_agent_code" type="text" data-ng-model="deposit_card.receive_agent_code" class="form-control"></td>
+                            <td class="text-right">户口姓名：</td>
+                            <td>{{agent_receive.agent_name}}</td>
+                        </tr>
+                        <tr height="50" data-ng-show="show_type">
+                            <td class="text-right">轉入存卡：</td>
+                            <td>
+                                <select data-ng-required="enableClientValidation" name="receive_card_id" data-ng-model="deposit_card.receive_card_id" data-ng-change="select_card()" class="form-control" data-ng-options="rcard.id as rcard.card_name for rcard in receive_cards" >
+                                    <option value="">請選擇存卡</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td valign="top" class="text-right">備註：</td>
+                            <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="deposit_card.remark" name="remark"></textarea></td>
+                        </tr>
+                        <!--<tr height="50">-->
+                            <!--<td class="text-right">操作密碼：</td>-->
+                            <!--<td><input type="password" name = "pin_code" data-ng-model="deposit_card.pin_code" class="form-control" data-enter-key="add(true)"></td>-->
+                            <!--<td>&nbsp;</td>-->
+                            <!--<td>&nbsp;</td>-->
+                        <!--</tr>-->
+                    </table><br/><br/>
+                    <div class="row" style="text-align: center;">
+                        <!--<button class="btn btn-confirm margin-right-15" ng-click="add(true)" data-ng-disabled="disabled_submit" ng-hide="deposit_card.id || deposit_card.transaction_type == depositCardTypes.transfer">提交并列印</button>-->
+                        <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                        <button class="btn btn-confirm margin-right-15" ng-click="add(true)" data-ng-disabled="disabled_submit">提交并列印</button>
+                        <!--<button class="btn btn-cancel" ng-click="reset_deposit_card()" >重置</button>-->
+                        <button class="btn btn-cancel" ng-click="addCardRecord()" >取消</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--<div class="panel panel-form-list">-->
+            <!--<div class="panel-heading">-->
+                <!--<strong>列印設置</strong>-->
+            <!--</div>-->
+            <!--<div class="panel-content">-->
+                <!--<div class="row" style="">-->
+                    <!--<button class="btn btn-confirm" data-ng-click="print_header()" data-ng-disabled="disable_print">列印表頭</button>-->
+                    <!--<button class="btn btn-confirm" data-ng-click="print_bill()" data-ng-disabled="disable_print">打印單據</button>-->
+                <!--</div>-->
+                <!--<form name="form_update_localtion" class="form-validation" server-validation="PUT{{localtion_url}}">-->
+                    <!--<div class="row" style="margin:20px 10px;">-->
+                        <!--當前打印第-->
+                        <!--<input data-ng-required="enableClientValidation" name="print_page" type="text" data-ng-model="localtion.print_page" class="form-control input-01 width-83" style="width:50px">-->
+                        <!--&nbsp;頁第-->
+                        <!--<input data-ng-required="enableClientValidation" name="print_row" type="text" data-ng-model="localtion.print_row" class="form-control input-01 width-83" style="width:50px">-->
+                        <!--&nbsp;行-->
+                        <!--<button class="btn btn-confirm" data-ng-click="update_location()" data-ng-disabled="disabled_location">更新位置</button>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+            <strong>查詢列印數量</strong>
+            </div>
+            <div class="panel-content">
+                <form name="form_print_record" class="form-validation">
+                    <div class="row" style="margin:20px 10px;">
+                        <span style="float:left;padding:4px 0 0">日期：</span>
+                        <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="print_record_contion.create_time" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                        </p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-confirm" data-ng-click="print_record()" data-ng-disabled="disabled_location">查詢</button>
+                    </div>
+                </form>
+                <div class="row" style="margin:30px 10px;">
+                   <span style="display:inline-block; width:200px">當日打印次數：{{print_num.print_num ? print_num.print_num:0}}</span>
+                   <span>當日補印次數：{{print_num.fill_num ? print_num.fill_num:0}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel_l col-md-8">
+    <tabset class="ui-tab panel panel-form-list">
+        <tab heading="存卡流水">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div>
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">戶口編號：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">戶口姓名：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                                        <td width="229" class="text-right">存卡名稱：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="condition.card_name" class="form-control" /></td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right" width="229">廳館：</td>
+                                        <td data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td class="text-right">更数：</td>
+                                        <td>
+                                            <select data-ng-model="condition.shift" class="form-control">
+                                                <option value="">請選擇更數</option>
+                                                <option value="{{shiftMarks.morning}}">{{shiftMarks.morning}}</option>
+                                                <option value="{{shiftMarks.afternoon}}">{{shiftMarks.afternoon}}</option>
+                                                <option value="{{shiftMarks.evening}}">{{shiftMarks.evening}}</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-right">類 型：</td>
+                                        <td>
+                                            <select data-ng-model="condition.transaction_type" class="form-control" >
+                                                <option value="">請選擇類型</option>
+                                                <option value="1">存款</option>
+                                                <option value="2">開工</option>
+                                                <option value="3">取款</option>
+                                                <option value="4">轉入</option>
+                                                <option value="5">轉出</option>
+                                                <option value="6">飛入</option>
+                                                <option value="7">飛出</option>
+                                                <option value="8">即出碼佣</option>
+                                                <option value="9">回M</option>
+                                                <option value="10">積分回收</option>
+                                                <!--<option value="11">回M</option>-->
+                                                <option value="12">還款</option>
+                                                <!--<option value="13">還款</option>-->
+                                                <option value="14">還息</option>
+                                                <!--<option value="15">還息</option>-->
+                                                <option value="16">出佣</option>
+                                                <option value="17">凍結</option>
+                                                <option value="18">解凍</option>
+                                            </select>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">年月：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.shiftMark.year_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+
+                                        </td>
+                                        <td class="text-right">指定日期：</td>
+                                        <td colspan="3">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shiftMark.shift_date[0]" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                        </p>
+                                                    </td>
+                                                    <td width="50" align="center">~&nbsp;&nbsp;&nbsp;</td>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shiftMark.shift_date[1]" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-information pull-right" report-params="excel_condition" channel-type="DepositCardWater" report-btn>導出EXCEL</button>
+                            <!--<button class="btn btn-confirm pull-right" data-ng-click="print_bill_id()" data-ng-disabled="disable_print">補印選中項單據</button>-->
+                            <!--<button class="btn btn-confirm pull-right" data-ng-click="print_card('補印選中存卡')" data-ng-disabled="disable_print">補印選中存卡</button>-->
+                            <button class="btn btn-confirm pull-right" data-ng-show="user.hall.id != '0493728BB89506C6E0539715A8C0267D'" data-ng-click="print_card('補印選中存卡')" data-ng-disabled="disable_print">補印存/取憑證收據</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 1500px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <!--<td width="80" check-permissions="depositCardRecordRemarkUpdate">操作</td>-->
+                                        <td>所屬廳館</td>
+                                        <td width="100" data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="select" data-td-sort-pagination="pagination">戶口編號</td>
+                                        <td width="120">中文名</td>
+                                        <td width="150" data-td-sort data-td-sort-up="transaction_time ASC" data-td-sort-down="transaction_time DESC" data-td-sort-select="select" data-td-sort-pagination="pagination">時間</td>
+                                        <td width="60" data-td-sort data-td-sort-up="card_name ASC" data-td-sort-down="card_name DESC" data-td-sort-select="select" data-td-sort-pagination="pagination">存卡</td>
+                                        <td width="80">類型</td>
+                                        <td width="100">金額(萬)</td>
+                                        <td width="100">結餘(萬)</td>
+                                        <td>交易人</td>
+                                        <td width="250">備註</td>
+                                        <td>經手人</td>
+                                        <td>日期</td>
+                                        <td width="65">更數</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="cardsRecord in cardsRecords" data-selected-rows ng-click="selectDepositCard(cardsRecord)">
+                                        <!--<td check-permissions="depositCardRecordRemarkUpdate">-->
+                                            <!--<button class="btn btn-information btn-table" ng-click="update(cardsRecord.id)" check-permissions="depositCardRecordRemarkUpdate">修改</button>-->
+                                        <!--</td>-->
+                                        <td>{{cardsRecord.hall_name}}</td>
+                                        <td>{{cardsRecord.agent_code}}</td>
+                                        <td>{{cardsRecord.agent_name}}</td>
+                                        <td>{{cardsRecord.transaction_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                        <td>{{cardsRecord.card_name}}</td>
+                                        <td>{{depositCardRecordTypes[cardsRecord.transaction_type]}}</td>
+                                        <td>
+                                            <span data-ng-show="cardsRecord.transaction_amount >= 0" >{{cardsRecord.transaction_amount|parseTenThousand2}}</span>
+                                            <span data-ng-show="cardsRecord.transaction_amount < 0" class="minus-number">{{cardsRecord.transaction_amount|parseTenThousand2|plusMinus}}</span>
+                                            <!--{{cardsRecord.transaction_amount|parseTenThousand2}}-->
+                                        </td>
+                                        <td>
+                                            <span data-ng-show="cardsRecord.deposit_amount >= 0" >{{cardsRecord.deposit_amount|parseTenThousand2}}</span>
+                                            <span data-ng-show="cardsRecord.deposit_amount < 0" class="minus-number">{{cardsRecord.deposit_amount|parseTenThousand2|plusMinus}}</span>
+                                        </td>
+                                        <td>{{cardsRecord.agent_contact_name}}</td>
+                                        <td class="text-left">
+                                            <span class="col-md-9">{{cardsRecord.remark}}</span>
+                                            <span class="col-md-3" check-permissions="depositCardRecordRemarkUpdate">
+                                                <button class="btn btn-information btn-table margin-right-5" ng-click="editRemark(cardsRecord)">修改</button>
+                                            </span>
+                                        </td>
+                                        <td>{{cardsRecord.user_name}}</td>
+                                        <td>{{cardsRecord.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                                        <td>{{cardsRecord.shift}}</td>
+                                    </tr>
+                                    <tr data-ng-show="cardsRecords.length == 0">
+                                        <td colspan="14">暫無符合條件的記錄</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                    <div style="height:75px;padding:20px 0" data-ng-show="cardsRecords.length > 0">
+                                        存款總額：<span data-ng-show="statisticSums.deposit_total">{{statisticSums.deposit_total | parseTenThousand}}</span><span data-ng-hide="statisticSums.deposit_total">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        取款金額：<span data-ng-show="statisticSums.draw_total">{{statisticSums.draw_total|parseTenThousand}}</span><span data-ng-hide="statisticSums.draw_total">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        結餘：<span>{{(statisticSums.deposit_total-statisticSums.draw_total)|parseTenThousand}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        飛入總額：<span data-ng-show="statisticSums.cross_in_total">{{statisticSums.cross_in_total | parseTenThousand}}</span><span data-ng-hide="statisticSums.cross_in_total">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        飛出總額：<span data-ng-show="statisticSums.cross_out_total">{{statisticSums.cross_out_total | parseTenThousand}}</span><span data-ng-hide="statisticSums.cross_out_total">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                                <div style="clear: both"></div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="轉賬流水">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div>
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">轉出戶口：</td>
+                                        <td width="209"><input  data-input-uppercase type="text" data-ng-model="transfer_condition.send_agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">轉入戶口：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="transfer_condition.receive_agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">轉出存卡：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="transfer_condition.send_card_name" class="form-control" /></td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">開始時間：</td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="transfer_condition.transfer_time[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="229" class="text-right">結束時間：</td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="transfer_condition.transfer_time[1]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="229" class="text-right">轉入存卡：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="transfer_condition.receive_card_name" class="form-control" /></td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right" width="229">廳館：</td>
+                                        <td width="209" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="transfer_condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="209" data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</td>
+                                        <td width="229" class="text-right">指定日期：</td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="transfer_condition.shiftMark.shift_date[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="229" class="text-right">更数：</td>
+                                        <td width="209">
+                                            <select data-ng-model="transfer_condition.shift" class="form-control">
+                                                <option value="">請選擇更數</option>
+                                                <option value="{{shiftMarks.morning}}">{{shiftMarks.morning}}</option>
+                                                <option value="{{shiftMarks.afternoon}}">{{shiftMarks.afternoon}}</option>
+                                                <option value="{{shiftMarks.evening}}">{{shiftMarks.evening}}</option>
+                                            </select>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">年月：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="transfer_condition.shiftMark.year_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+
+                                        </td>
+                                        <td class="text-right"></td>
+                                        <td colspan="3">
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search_transfer()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset_transfer()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" report-params="transfer_condition_excel" channel-type="TransferWater" report-btn>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 1300px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <td width="80">所屬廳館</td>
+                                        <td data-td-sort data-td-sort-up="send_agent_code NUMASC" data-td-sort-down="send_agent_code NUMDESC" data-td-sort-select="select_transfer" data-td-sort-pagination="pagination_transfer" data-min-screen-width="85">轉出客戶</td>
+                                        <td>轉出存卡</td>
+                                        <td data-td-sort data-td-sort-up="receive_agent_code NUMASC" data-td-sort-down="receive_agent_code NUMDESC" data-td-sort-select="select_transfer" data-td-sort-pagination="pagination_transfer" data-min-screen-width="85">轉入客戶</td>
+                                        <td>轉入存卡</td>
+                                        <td>金額(萬)</td>
+                                        <td width="150">時間</td>
+                                        <td>經手人</td>
+                                        <td width="65">更數</td>
+                                        <td width="250">備註</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="transferCardsRecord in transferCardsRecords" data-selected-rows>
+                                            <td>{{transferCardsRecord.hall_name}}</td>
+                                            <td>{{transferCardsRecord.send_agent_code}}&nbsp;&nbsp;{{transferCardsRecord.send_agent_name}}</td>
+                                            <td>{{transferCardsRecord.send_card_name}}</td>
+                                            <td>{{transferCardsRecord.receive_agent_code}}&nbsp;&nbsp;{{transferCardsRecord.receive_agent_name}}</td>
+                                            <td>{{transferCardsRecord.receive_card_name}}</td>
+                                            <td>{{transferCardsRecord.amount|parseTenThousand2}}</td>
+                                            <td>{{transferCardsRecord.transfer_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{transferCardsRecord.user_name}}</td>
+                                            <td>{{transferCardsRecord.shift}}</td>
+                                            <td class="text-left">{{transferCardsRecord.remark}}</td>
+                                        </tr>
+                                        <tr data-ng-show="transferCardsRecords.length == 0">
+                                            <td colspan="10">暫無符合條件的記錄</td>
+                                        </tr>
+                                    </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination_transfer.page"
+                                                total-items="pagination_transfer.total_items"
+                                                on-select-page="select_transfer(page)"
+                                                max-size = "pagination_transfer.max_size"
+                                                items-per-page = "pagination_transfer.items_per_page"
+                                                data-ng-hide="pagination_transfer.total_items <= pagination_transfer.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination_transfer" select-page="select_transfer"></paginationselect>
+                                </div>
+                                <div style="clear: both"></div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="飛數流水">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div>
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">飛出戶口：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.send_agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">飛入戶口：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.receive_agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">飛出存卡：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.send_card_name" class="form-control" /></td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="229" class="text-right">飛入存卡：</td>
+                                        <td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.receive_card_name" class="form-control" /></td>
+                                        <td class="text-right" width="229">飛出廳館：</td>
+                                        <td width="209">
+                                            <select data-ng-model="cross_transfer_condition.send_hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-right" width="229">飛入廳館：</td>
+                                        <td width="209" >
+                                            <select data-ng-model="cross_transfer_condition.receive_hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <!--<td width="209" data-ng-hide="user.isAllHall()">-->
+                                        <!--{{user.hall.hall_name}}-->
+                                        <!--</td>-->
+                                        <!--<td width="229" class="text-right">指定日期：</td>-->
+                                        <!--<td width="209">-->
+                                        <!--<p class="input-group ui-datepicker">-->
+                                        <!--<input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.shiftMark.shift_date[0]" />-->
+                                        <!--<span class="input-group-btn">-->
+                                        <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                        <!--</span>-->
+                                        <!--</p>-->
+                                        <!--</td>-->
+                                        <!--<td width="229" class="text-right">更数：</td>-->
+                                        <!--<td width="209">-->
+                                        <!--<select data-ng-model="cross_transfer_condition.shift" class="form-control">-->
+                                        <!--<option value="">請選擇更數</option>-->
+                                        <!--<option value="{{shiftMarks.morning}}">{{shiftMarks.morning}}</option>-->
+                                        <!--<option value="{{shiftMarks.afternoon}}">{{shiftMarks.afternoon}}</option>-->
+                                        <!--<option value="{{shiftMarks.evening}}">{{shiftMarks.evening}}</option>-->
+                                        <!--</select>-->
+                                        <!--</td>-->
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">飛出時間：</td>
+                                        <td width="209" colspan="2">
+                                            <!--<p class="input-group ui-datepicker">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.transfer_time[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                            <p class="input-group ui-datepicker col-md-5  pull-left" data-min-screen-width="125">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.send_time[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left" data-min-screen-width="125">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.send_time[1]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+                                        </td>
+                                        <td width="200" class="text-right">飛入時間：</td>
+                                        <td width="209" colspan="2">
+                                            <!--<p class="input-group ui-datepicker">-->
+                                            <!--<input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.transfer_time[0]" />-->
+                                            <!--<span class="input-group-btn">-->
+                                            <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                            <!--</span>-->
+                                            <!--</p>-->
+                                            <p class="input-group ui-datepicker col-md-5  pull-left" data-min-screen-width="125">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.receive_time[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left" data-min-screen-width="125">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.receive_time[1]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+                                        </td>
+                                        <!--<td width="229" class="text-right">結束時間：</td>-->
+                                        <!--<td width="209">-->
+                                            <!--<p class="input-group ui-datepicker">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.transfer_time[1]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <!--<td width="229" class="text-right">飛入存卡：</td>-->
+                                        <!--<td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.receive_card_name" class="form-control" /></td>-->
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                    <!--<tr height="50">-->
+                                        <!--<td width="229" class="text-right">飛入存卡：</td>-->
+                                        <!--<td width="209"><input data-input-uppercase type="text" data-ng-model="cross_transfer_condition.receive_card_name" class="form-control" /></td>-->
+                                        <!--<td class="text-right" width="229">廳館：</td>-->
+                                        <!--<td width="209">-->
+                                            <!--<select data-ng-model="cross_transfer_condition.send_hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                                                <!--<option value = "">請選擇廳館</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                        <!--<td class="text-right" width="229">廳館：</td>-->
+                                        <!--<td width="209" >-->
+                                            <!--<select data-ng-model="cross_transfer_condition.send_hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                                                <!--<option value = "">請選擇廳館</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                        <!--<td width="209" data-ng-hide="user.isAllHall()">-->
+                                            <!--{{user.hall.hall_name}}-->
+                                        <!--</td>-->
+                                        <!--<td width="229" class="text-right">指定日期：</td>-->
+                                        <!--<td width="209">-->
+                                            <!--<p class="input-group ui-datepicker">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup ng-model="cross_transfer_condition.shiftMark.shift_date[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <!--<td width="229" class="text-right">更数：</td>-->
+                                        <!--<td width="209">-->
+                                            <!--<select data-ng-model="cross_transfer_condition.shift" class="form-control">-->
+                                                <!--<option value="">請選擇更數</option>-->
+                                                <!--<option value="{{shiftMarks.morning}}">{{shiftMarks.morning}}</option>-->
+                                                <!--<option value="{{shiftMarks.afternoon}}">{{shiftMarks.afternoon}}</option>-->
+                                                <!--<option value="{{shiftMarks.evening}}">{{shiftMarks.evening}}</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                        <!--<td width="60">&nbsp;</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr height="50">-->
+                                        <!--<td class="text-right">年月：</td>-->
+                                        <!--<td>-->
+                                            <!--<p class="input-group ui-datepicker">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="cross_transfer_condition.shiftMark.year_month[0]" />-->
+                                    <!--<span class="input-group-btn">-->
+                                    <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                    <!--</span>-->
+                                            <!--</p>-->
+
+                                        <!--</td>-->
+                                        <!--<td class="text-right"></td>-->
+                                        <!--<td colspan="3">-->
+                                        <!--</td>-->
+                                        <!--<td>&nbsp;</td>-->
+                                        <!--<td>&nbsp;</td>-->
+                                        <!--<td width="60">&nbsp;</td>-->
+                                    <!--</tr>-->
+                                </table><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search_cross_transfer()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset_cross_transfer()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" report-params="cross_transfer_condition_excel" channel-type="CrossTransferWater" report-btn all-show = 'true'>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 2100px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td width="85">操作</td>
+                                            <td width="100">處理狀態</td>
+                                            <td width="100">類型</td>
+                                            <td width="100">飛出廳</td>
+                                            <td width="85" data-td-sort data-td-sort-up="send_agent_code NUMASC" data-td-sort-down="send_agent_code NUMDESC" data-td-sort-select="select_cross_transfer" data-td-sort-pagination="pagination_cross_transfer" data-min-screen-width="85">飛出客戶</td>
+                                            <td width="85">飛出存卡</td>
+                                            <td width="100">飛入廳</td>
+                                            <td width="85" data-td-sort data-td-sort-up="receive_agent_code NUMASC" data-td-sort-down="receive_agent_code NUMDESC" data-td-sort-select="select_cross_transfer" data-td-sort-pagination="pagination_cross_transfer" data-min-screen-width="85">飛入客戶</td>
+                                            <td width="85">飛入存卡</td>
+                                            <td width="85">金額(萬)</td>
+                                            <!--<td width="150">時間</td>-->
+                                            <!--<td width="85">經手人</td>-->
+                                            <!--<td width="65">更數</td>-->
+                                            <td width="85">確認人</td>
+                                            <td width="85">飛出經手人</td>
+                                            <td width="150">飛出時間</td>
+                                            <td width="85">飛入經手人</td>
+                                            <td width="150">飛入時間</td>
+                                            <td width="250">飛出備註</td>
+                                            <td width="250">飛入備註</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="cross_transfer in cross_transfers" data-selected-rows>
+                                            <td><button class="btn btn-information btn-table margin-right-5" data-ng-click="detail(cross_transfer.id)">詳細</button></td>
+                                            <td>{{crossTransferStatus.items[cross_transfer.status]}}</td>
+                                            <td>{{crossTransferTypes.items[cross_transfer.type]}}</td>
+                                            <td>{{cross_transfer.send_hall_name}}</td>
+                                            <td>{{cross_transfer.send_agent_code}}{{cross_transfer.send_agent_name}}</td>
+                                            <td>{{cross_transfer.send_card_name}}</td>
+                                            <td>{{cross_transfer.receive_hall_name}}</td>
+                                            <td>{{cross_transfer.receive_agent_code}}{{cross_transfer.receive_agent_name}}</td>
+                                            <td>{{cross_transfer.receive_card_name}}</td>
+                                            <td>{{cross_transfer.amount|parseTenThousand2}}
+                                                <!--<span data-ng-show="cross_transfer.receive_hall_name == user.hall.hall_name && cross_transfer.send_hall_name != user.hall.hall_name">{{cross_transfer.amount}}</span>-->
+                                                <!--<span data-ng-show="cross_transfer.receive_hall_name != user.hall.hall_name && cross_transfer.send_hall_name == user.hall.hall_name" class="minus-number">{{cross_transfer.amount}}</span>-->
+                                            </td>
+                                            <!--<td>{{cross_transfer.transfer_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>-->
+                                            <!--<td>{{cross_transfer.user_name}}</td>-->
+                                            <!--<td>{{cross_transfer.shift}}</td>-->
+                                            <td>{{cross_transfer.receive_contact_name}}</td>
+                                            <td>{{cross_transfer.send_user_name}}</td>
+                                            <td>{{cross_transfer.send_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{cross_transfer.receive_user_name}}</td>
+                                            <td>{{cross_transfer.receive_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+
+                                            <td class="text-left">
+                                                <span class="col-md-9">{{cross_transfer.send_remark}}</span>
+                                                <span class="col-md-3" check-permissions="depositCardRecordCrossRecordRemarkUpdate" data-ng-show="cross_transfer.receive_hall_name != user.hall.hall_name && cross_transfer.send_hall_name == user.hall.hall_name">
+                                                    <button class="btn btn-information btn-table margin-right-5" ng-click="crossTransferRemark(cross_transfer,'1')">修改</button>
+                                                </span>
+
+                                             </td>
+                                            <td class="text-left">
+                                                <span class="col-md-9">{{cross_transfer.receive_remark}}</span>
+                                                <span class="col-md-3" check-permissions="depositCardRecordCrossRecordRemarkUpdate" data-ng-show="cross_transfer.receive_hall_name == user.hall.hall_name && cross_transfer.send_hall_name != user.hall.hall_name">
+                                                    <button class="btn btn-information btn-table margin-right-5" ng-click="crossTransferRemark(cross_transfer,'2')">修改</button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr data-ng-show="cross_transfers.length == 0">
+                                            <td colspan="16">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination_cross_transfer.page"
+                                                total-items="pagination_cross_transfer.total_items"
+                                                on-select-page="select_cross_transfer(page)"
+                                                max-size = "pagination_cross_transfer.max_size"
+                                                items-per-page = "pagination_cross_transfer.items_per_page"
+                                                data-ng-hide="pagination_cross_transfer.total_items <= pagination_cross_transfer.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination_cross_transfer" select-page="select_cross_transfer"></paginationselect>
+                                </div>
+                                <div style="clear: both"></div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,69 @@
+<div class="page ">
+    <form name="$parent.form_hotel_check_mode_sub" class="ng-valid ng-dirty form-validation"  server-validation="{{sub_post_put}}{{consumptionhotelSubs_url}}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading"><strong>按入住日期方式計算</strong></div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td align="center">入住日期</td>
+                                <td width="120" align="center">成本價</td>
+                                <td width="120" align="center">售價</td>
+                                <td width="120" align="center">收益</th>
+                                <td width="150" align="center">年月</td>
+                                <td width="230" align="center">結算日期</td>
+                                <td width="230" align="center">更數</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="sub in consumptionHotelSubs | orderBy:'day'">
+                            <td>
+                                <span data-ng-show="!view_type">{{sub.day}} {{ day_types[sub.day_type] }}</span>
+                                <span data-ng-show="'detail' == view_type">{{sub.checkin_datetime | limitTo : 10}} {{ day_types[sub.day_type] }}</span>
+                            </td>
+                            <td><span>{{ sub.cost | parseYuan  }}</span></td>
+                            <td><span>{{ sub.sell | parseYuan }}</span></td>
+                            <td><span>{{ sub.sell - sub.cost | parseYuan }}</span></td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.year_month | limitTo : 7 }}</span>
+                                <p class="input-group ui-datepicker" data-ng-show="!view_type">
+                                    <input type="text" class="form-control input-92" datepicker-popup datepicker-mode="month" ng-model="sub.year_month" date-disabled="disabled(date, mode)" close-text="Close" dynamic-name="consumptionHotelSubs_{{$index}}_year_month" ng-disabled="COPY_BOOKING_hotel" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                          <td>
+                            <span data-ng-show="'detail' == view_type">{{ sub.shift_date | limitTo : 10 }}</span>
+                            <p class="input-group ui-datepicker" data-ng-show="!view_type">
+                              <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="sub.shift_date_sub" date-disabled="disabled(date, mode)" close-text="Close" dynamic-name="consumptionHotelSubs_{{$index}}_shift_date_sub" ng-disabled="COPY_BOOKING_hotel" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                          </td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.shift }}</span>
+                                <select data-ng-show="!view_type" name="shift" dynamic-name="consumptionHotelSubs_{{$index}}_shift_sub" class="form-control" data-ng-model="sub.shift_sub" >
+                                    <option value="">請選擇更數</option>
+                                    <option value="早更">{{shiftLists.morning}}</option>
+                                    <option value="中更">{{shiftLists.afternoon}}</option>
+                                    <option value="晚更">{{shiftLists.evening}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button data-ng-show="!view_type" class="btn btn-confirm" data-ng-disabled="isDisabled" ng-click="add()">提交</button>
+            <button data-ng-show="!view_type" class="btn btn-cancel" ng-click="cancel()">取消</button>
+            <button data-ng-show="'detail' == view_type" class="btn  btn-confirm" ng-click="cancel_detail()">返回</button>
+        </div>
+    </div>
+    </form>
+</div>

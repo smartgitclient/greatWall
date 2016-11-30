@@ -1,0 +1,6 @@
+[
+    {"t_id":0,"hall":"永利鉅星","number":"W33322893","agent_code":"FA233","agent_name":"陳達文","type":"存M","amount":"10","balance":"2","brokerage":"陳達文","duty_number":"早更","deposits_time":"2014-08-08 16:28","money_time":"","draw_time":"","remark":"","hand_name":"陳美華","status":"未取"},
+    {"t_id":1,"hall":"永利鉅星","number":"W33322333","agent_code":"FA66","agent_name":"黃生","type":"存現","amount":"10","balance":"4","brokerage":"李四","duty_number":"早更","deposits_time":"2014-08-08 16:28","money_time":"","remark":"","hand_name":"陳美華","status":"未取"},
+    {"t_id":2,"hall":"永利鉅星","number":"W33322855","agent_code":"FA66","agent_name":"黃生","type":"存M","amount":"10","balance":"2","brokerage":"李四","duty_number":"早更","deposits_time":"2014-08-08 16:28","money_time":"","remark":"","hand_name":"陳美華","status":"未取"},
+    {"t_id":3,"hall":"永利鉅星","number":"W33372898","agent_code":"FA66","agent_name":"黃生","type":"存現","amount":"10","balance":"5","brokerage":"李四","duty_number":"早更","deposits_time":"2014-08-08 16:28","money_time":"2014-08-12 16:28","remark":"","hand_name":"陳美華","status":"已取"}
+]

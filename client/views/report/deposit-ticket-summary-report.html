@@ -1,0 +1,112 @@
+<div class="page page-services ng-scope" data-ng-controller="depositTicketSummaryReportCtrl">
+    <div class="panel panel-form-list col-md-12">
+        <!--<div class="panel-heading"><strong>貸款查詢</strong></div>-->
+        <div class="panel-footer"></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="140" >
+                            <!--<button data-ng-show="user.isAllHall()" class="btn btn-info btn-information" ng-click="select_all()">{{select_btn}}</button>-->
+                            <span class="span-formlist">廳館：</span>
+                        </td>
+                        <td data-ng-show="user.isAllHall()" class="select-td">
+                            <select data-ng-model="select_halls" class="form-control" multiple bs-select ng-options="h.id as h.hall_name for h in halls" data-live-search="true" placeholder="請選擇廳館">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="140" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td width="200" class="text-right">
+                            <span style="margin-left: 10px;float:left"><input type="checkbox" data-ng-model="select_status" data-ng-click = "select_all()" name="selected">&nbsp;全選</span>
+                            <span class="span-formlist">戶口編號：</span></td>
+                        <td width="180"><input type="text"
+                                               data-ng-model="condition.agent_code"
+                                               data-input-uppercase
+                                               class="form-control">
+                        </td>
+                        <td width="200" class="text-right">
+
+                            <span class="span-formlist">戶口姓名：</span>
+                        </td>
+                        <td width="180">{{agent_name}}</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right"><span class="span-formlist">戶組：</span></td>
+                        <td width="180" class="select-td">
+                            <input data-input-uppercase type="text" name="agent_group_id" data-ng-model="condition.agent_group_name" class="form-control">
+                            <!--<select id="id_select" data-ng-model="condition.agent_group_name" bs-select class="selectpicker show-tick form-control" multiple data-live-search="true" ng-options="n.id as n.agent_name for n in agent_group_name_list" >
+                                <option ng-repeat="name in agent_group_name_list">{{ name.agent_name }}</option>
+                            </select>
+
+                            <select class="bs-select" ng-model="condition.agent_group_name" multiple title="Choose one of the following..." ng-options="n.id as n.agent_name for n in agent_group_name_list" data-style="btn-primary"></select>-->
+                        </td>
+                        <td align="right"><span class="span-formlist">新增日期：</span></td>
+                        <td colspan="2">
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.crate_time[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.crate_time[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="200" align="right"><span class="span-formlist">指定日期：</span></td>
+                        <td width="180">
+                            <p class="input-group ui-datepicker pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.shift_date"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="200" align="right"><span class="span-formlist">年月：</span></td>
+                        <td width="180">
+                            <table class="table-inner">
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" data-dynamic-name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                    <!--<td  class="text-center" width="15">月</td>-->
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="text-right" width="200" ><span class="span-formlist">更數：</span></td>
+                        <td width="180">
+                            <select data-ng-model="condition.shift" class="form-control">
+                                <option value = "">請選擇更數</option>
+                                <option value="{{shiftMarts.morning}}">{{shiftMarts.morning}}</option>
+                                <option value="{{shiftMarts.afternoon}}">{{shiftMarts.afternoon}}</option>
+                                <option value="{{shiftMarts.evening}}">{{shiftMarts.evening}}</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                </table>
+                <br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm margin-right-15" report-btn channel-type="{{report_code}}" report-params="condition">匯出EXCEL</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+            <div class="panel-footer">
+            </div>
+    </div>
+</div>

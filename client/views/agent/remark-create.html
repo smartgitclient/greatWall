@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h3>新增備註</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_create_remark" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_remark_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td width="100" align="right">部門：</td>
+                            <td align="left" width="150">
+                                <select data-ng-required="enableClientValidation" name = "department_id" data-ng-model="remark.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                                    <option value="">請選擇部門</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td align="right" style="width: 93">內容：</td>
+                            <td align="left" colspan="2">
+                                <textarea data-ng-required="enableClientValidation" name="content" id="" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="remark.content"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">操作密碼：</td>
+                            <td align="left" width="150">
+                                <input type="password" name="pin_code" data-ng-model="remark.pin_code" class="form-control" data-enter-key="add()">
+                            </td>
+                        </tr>
+                    </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="add()">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </form>
+</div>

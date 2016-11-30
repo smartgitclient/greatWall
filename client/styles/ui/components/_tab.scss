@@ -1,0 +1,157 @@
+// Dependency: Angular UI Bootstrap
+
+.ui-tab-container {
+    border: 1px solid $panel-default-border;
+    border-radius: $border-radius-base;
+
+    .ui-tab .nav-tabs {
+        margin-bottom: 0;
+    }
+
+    .nav-tabs {
+        background-color: $panel-default-heading-bg;
+        border-bottom: 1px solid $panel-default-border;
+        &.nav-justified {
+            border-bottom: 0;
+            > li {
+                > a {
+                    border-bottom-color: transparent;
+                }
+            }
+        }
+
+        > li {
+            &.active {
+                > a {
+                    background-color: #2E313F;
+                    border: 1px solid transparent;
+                    &:hover {
+                        border: 1px solid transparent;
+                    }
+                }
+            }
+            > a {
+                padding: 10px 15px;
+
+                &:hover {
+                    background-color: darken($panel-default-heading-bg, 2%);
+                    border: 1px solid darken($panel-default-heading-bg, 2%);
+                }
+            }
+        }
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+
+    // Color 
+    &.ui-tab-success {
+        border: 1px solid $panel-success-border;
+        .nav-tabs {
+            background-color: $panel-success-heading-bg;
+            border-bottom: 1px solid $panel-success-border;        
+        }
+    }
+    &.ui-tab-info {
+        border: 1px solid $panel-info-border;
+        .nav-tabs {
+            background-color: $panel-info-heading-bg;
+            border-bottom: 1px solid $panel-info-border;        
+        }
+    }
+    &.ui-tab-warning {
+        border: 1px solid $panel-warning-border;
+        .nav-tabs {
+            background-color: $panel-warning-heading-bg;
+            border-bottom: 1px solid $panel-warning-border;        
+        }
+    }
+    &.ui-tab-danger {
+        border: 1px solid $panel-danger-border;
+        .nav-tabs {
+            background-color: $panel-danger-heading-bg;
+            border-bottom: 1px solid $panel-danger-border;        
+        }
+    }
+}
+
+//mix tab 控件
+.nav-tabs-mix {
+  .nav-tabs {
+    border-bottom: 3px solid $panel-agent-border;
+    > li {
+      > a {
+        padding: 5px 20px;
+        //background-color: #A86015;
+        //border: none;
+      }
+    }
+  }
+  .tab-content {
+    .passport_bg {
+      border-top:none;
+    }
+  }
+}
+
+//default tab 控件
+.nav-tabs {
+  border-bottom: 3px solid #A86015;
+  >li {
+    margin-bottom: -2px;
+    >a {
+      padding:  11px 25px;
+      margin-right: 10px;
+      //background-color: #A86015;
+      border: none;
+      &:hover,
+      &:focus {
+        background-color: #A86014;
+      }
+    }
+  }
+}
+// Tabs
+// -------------------------
+// Give the tabs something to sit on
+.nav-tabs {
+  border-bottom: 3px solid $nav-tabs-border-color;
+  > li {
+    float: left;
+    margin-bottom: 0;
+
+    // Actual tabs (as links)
+    > a {
+      padding:  11px 25px;
+      margin-right: 2px;
+      line-height: $line-height-base;
+      border: none;
+      border-radius: $border-radius-base $border-radius-base 0 0;
+      color: $nav-tabs-color;
+      background-color: $nav-tabs-bg;
+      &:hover {
+        color: $nav-tabs-color-active;
+        background-color: $nav-tabs-active-link-hover-bg;
+      }
+    }
+
+    // Active state, and its :hover to override normal :hover
+    &.active > a {
+      background-color: $nav-tabs-active-link-hover-border-color;
+      &,
+      &:hover,
+      &:focus {
+        color:$nav-tabs-color-active;
+        background-color: $nav-tabs-active-link-hover-bg;
+        border-bottom-color: transparent;
+        cursor: default;
+      }
+    }
+  }
+  // pulling this in mainly for less shorthand
+  &.nav-justified {
+    @extend .nav-justified;
+    @extend .nav-tabs-justified;
+  }
+}

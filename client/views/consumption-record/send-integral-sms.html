@@ -1,0 +1,21 @@
+<div class="modal-body">
+    <h3>溫馨提示:</h3>
+    <p>
+    &nbsp;&nbsp;&nbsp;&nbsp;短信內容會按照如下模板發送，同一個號碼多條記錄將會合併為一條短信發送。確認無誤按“確認發送”。如內容有誤，請到短信管理修改相應短信模板
+    </p>
+    <br/>
+    <div style="background-color: #CCC; color:#000; padding: 10px;">
+        長城集團溫馨提示:<br/>
+        閣下戶口{0}{1}截至2014年6月份累計津貼明細如下:<br/>
+        {3}累計津貼${4}將於{5}到期，<br/>
+        {3}累計津貼${4}將於{5}到期，<br/>
+        短訊如有錯漏,以系統資料為準.<br/>
+        如需查詢可致電長城服務部:28755775/28786117
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-confirm" ng-click="send()">確認發送</button>
+    <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+    <button class="btn btn-cancel" ng-click="edit()">短信模板</button>
+</div>

@@ -1,0 +1,91 @@
+<div class="modal-body">
+    <!--<form name="$parent.form_create_remark" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_remark_url}}">-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-header">
+                    <h3>貸款限期和過期手續費設定</h3>
+                </div>
+                <div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>貸款類型</td>
+                        <td>批額範圍（萬）</td>
+                        <td>天期（天）</td>
+                        <td>息率（%）</td>
+                        <!--<td>罰息天數（天）</td>-->
+                        <td>特別期限（天）</td>
+                        <td>特別息率（%）</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="agent_quota in agent_quotas" data-selected-rows>
+                        <td>{{funds_expend[agent_quota.funds_type_id]}}</td>
+                        <td>{{agent_quota.lower_amount}} ~ {{ agent_quota.upper_amount == 0?"∞":agent_quota.upper_amount }}</td>
+                        <td>{{agent_quota.term}}</td>
+                        <td>{{agent_quota.expired_rate}}</td>
+                        <!--<td>{{agent_quota.add_term}}</td>-->
+                        <td>{{agent_quota.special_term}}</td>
+                        <td>{{agent_quota.special_rate}}</td>
+                    </tr>
+                    <tr data-ng-show="agent_quotas.length == 0">
+                        <td colspan="10">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                    </div>
+                </footer>
+                </div>
+                <div class="clear"></div>
+                <div class="modal-header">
+                    <h3>共用批額用戶</h3>
+                </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>戶口類型</td>
+                        <td>上線</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="common_agent in common_agents" data-selected-rows>
+                        <td>{{common_agent.agent_code}}</td>
+                        <td>{{common_agent.agent_name}}</td>
+                        <td>{{ agent_type_list[common_agent.type] }}</td>
+                        <td>{{common_agent.parentSupervisor.agent_code}}</td>
+                    </tr>
+                    <tr data-ng-show="common_agents.length == 0">
+                        <td colspan="4">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--<footer class="table-footer">-->
+                    <!--<div class="text-right pagination-container">-->
+                        <!--<pagination class="pagination-sm"-->
+                                    <!--page="common_pagination.page"-->
+                                    <!--total-items="common_pagination.total_items"-->
+                                    <!--on-select-page="common_select(page)"-->
+                                    <!--max-size = "common_pagination.max_size"-->
+                                    <!--data-ng-hide="common_pagination.total_items <= common_pagination.items_per_page"></pagination>-->
+                        <!--<paginationselect pageCtrl="common_pagination" select-page="common_select" ></paginationselect>-->
+                    <!--</div>-->
+                <!--</footer>-->
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="closed()">關閉</button>
+        </div>
+    <!--</form>-->
+</div>

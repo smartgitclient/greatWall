@@ -1,0 +1,4 @@
+[
+    {"id":0,"type":"存款","minLoanMoney":0,"maxLoanMoney":400},
+    {"id":1,"type":"取款","minLoanMoney":400,"maxLoanMoney":800}
+]

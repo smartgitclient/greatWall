@@ -1,0 +1,95 @@
+<div class="page page-services ng-scope" data-ng-controller="usefulPhraseTemplateCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-5">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>編輯模板</strong>
+                        <button class="btn btn-confirm pull-right" check-permissions="smsTemplateCreate" data-ng-click="add()">新增模板</button>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_sms_template" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{form_smstemplate_url}}">
+                            <table>
+                                <tr height="50">
+                                    <td class="text-right" data-min-screen-width="80" width="100">部門：</td>
+                                    <td data-min-screen-width="80">
+                                        <select data-ng-required="enableClientValidation" name="department_id" data-ng-model="smstemplate.department_id" class="form-control" ng-options="d.id as d.department for d in departMents">
+                                            <option value = "">請選擇部門</option>
+                                        </select>
+                                    </td>
+                                    <td data-min-screen-width="80" width="100" class="text-right">模板名：</td>
+                                    <td>
+                                        <input data-ng-required="enableClientValidation" name="template_name" type="text" data-ng-model="smstemplate.template_name" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td valign="top" class="text-right">模板內容：</td>
+                                    <td colspan="3"><textarea name="content" id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="smstemplate.content" name=""></textarea></td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td><input name="pin_code" type="password" data-ng-model="smstemplate.pin_code" class="form-control" data-enter-key="submit()"></td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table><br/><br/>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="submit()"  data-ng-disabled="disabled_submit"  check-permissions="smsTemplateCreate">提交</button>
+                                <button class="btn btn-cancel" ng-click="reset()">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+        </div>
+        <div class="panel panel-list-detail col-md-7">
+            <div class="panel-heading">
+                <!--<button class="btn btn-info btn-information pull-right" check-permissions="overdueChargeRepay" type="button" ng-click="goRepyamentFee()">還手續費</button>-->
+                <!--<button class="btn btn-info btn-information margin-right-15 pull-right" type="button" report-params="excel_condition" channel-type="LoanReport1" report-btn >導出EXCEL</button>-->
+                <strong>模板列表</strong>
+            </div>
+            <div class="panel-content table-dynamic">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td width="120">部門</td>
+                        <td>模板名</td>
+                        <td width="250">模板內容</td>
+                        <td width="200">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="smstemplate in smstemplates" data-selected-rows>
+                        <td>{{smstemplate.department_name}}</td>
+                        <td>{{smstemplate.template_name}}</td>
+                        <td>{{smstemplate.content|content}}</td>
+                        <td>
+                            <button class="btn btn-information btn-table" check-permissions="smsTemplateUpdate"  ng-click="update(smstemplate)">修改</button>
+                            <button class="btn btn-information btn-table" ng-click="detailSmstemplate(smstemplate)">詳細</button>
+                            <button class="btn btn-information btn-table" check-permissions="smsTemplateDelete"  ng-click="delete(smstemplate.id)">刪除</button>
+
+
+                        </td>
+                    </tr>
+                    <tr data-ng-show="smstemplates.length == 0">
+                        <td colspan="6">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+
+    </div>
+</div>

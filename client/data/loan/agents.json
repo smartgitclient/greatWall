@@ -1,0 +1,6 @@
+[
+{"id":0,"agent_id":0,"agent_code":"FA233","agent_name":"陳達文","hall":"永利鉅星","shift":"早更","status":"在場","depositcard_balance":"562415.569","agent_type":"下線","m_amount":"500","p_amount":"200","phone_numbers":["+853 33333343","+853 44444444","+853 12357467","+853 12345645"]},
+{"id":1,"agent_id":1,"agent_code":"FA234","agent_name":"李達文","hall":"永利鉅星","shift":"早更","status":"已開場","depositcard_balance":"462415.569","agent_type":"股東","m_amount":"500","p_amount":"300","phone_numbers":["+853 33333343","+853 44444444","+853 12357467","+853 12345645"]},
+{"id":2,"agent_id":2,"agent_code":"FA235","agent_name":"陳光明","hall":"永利鉅星","shift":"早更","status":"已開場","depositcard_balance":"362415.569","agent_type":"下线","m_amount":"700","p_amount":"400","phone_numbers":["+853 33333343","+853 44444444","+853 12357467","+853 12345645"]},
+{"id":3,"agent_id":3,"agent_code":"FA236","agent_name":"陳光潔","hall":"永利鉅星","shift":"早更","status":"已開場","depositcard_balance":"262415.569","agent_type":"下线","m_amount":"1400","p_amount":"100","phone_numbers":["+853 33333343","+853 44444444","+853 12357467","+853 12345645"]}
+]

@@ -1,0 +1,56 @@
+<div class="page page-grid" data-ng-controller="cutMonthSettingCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>截月時間設定</strong></div>
+                        <div class="panel-content">
+                            <form name="form_cut_month_setting" class="ng-valid ng-dirty form-validation" server-validation="PUT{{cut_month_setting_url}}">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="120" class="text-center">廳館名稱</td>
+                                        <td width="120">截月時間</td>
+                                        <td width="120" class="text-center">廳館名稱</td>
+                                        <td width="120">截月時間</td>
+                                    </tr>
+                                    <tr data-ng-repeat="hall in halls">
+                                        <td ng-repeat-start="h in hall" class="text-right">{{h.hall_name}}：</td>
+                                        <td ng-repeat-end>
+                                            <input name="settlement_date"
+                                                   data-ng-required="enableClientValidation"
+                                                   type="text"
+                                                   data-ng-model="h.settlement_date" class="form-control">
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-hide="halls.length>0">
+                                        <td colspan="4">沒有相關廳館</td>
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr height="50">
+                                        <td width="120" class="text-right">操作密碼：</td>
+                                        <td width="120">
+                                            <input name="pin_code" type="password" data-ng-model="record.pin_code" class="form-control" data-enter-key="submit()" >
+                                        </td>
+                                        <td width="120">&nbsp;</td>
+                                        <td width="120">&nbsp;</td>
+                                    </tr>
+                                 </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="submit()">確認</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <h3>差額單詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_differenceRecordUpdate" class="form-horizontal form-validation" server-validation="PUT{{defference_update_url}}" >
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr height="50">
+                        <td width="100" align="right">戶口編號：</td>
+                        <td align="left">
+                            {{commission_calculates.agent_code}}
+                        </td>
+                        <td width="120" align="right">中文姓名：</td>
+                        <td align="left">{{commission_calculates.agent_name}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100" align="right">年月：</td>
+                        <td align="left">
+                            {{commission_calculates.year_month}}
+                        </td>
+                        <td width="100" align="right">狀態：</td>
+                        <td align="left">{{commission_calculates.status==1?"未還":"已還"}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100" align="right">應收項：</td>
+                        <td align="left">
+                            {{commission_calculates.should_income|number}}
+                        </td>
+                        <td align="right">應付項：</td>
+                        <td align="left">
+                            {{commission_calculates.should_pay|number}}
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td align="right">備註：</td>
+                        <td align="left" colspan="3">
+                            <textarea  data-ng-show="commission_calculates.status == '1'" data-ng-required="enableClientValidation" name="content" id="" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="commission_calculates.remark"></textarea>
+                            <span data-ng-show="commission_calculates.status == '0'">{{commission_calculates.remark}}</span>
+                        </td>
+                    </tr>
+                    <tr height="50" data-ng-show="commission_calculates.status == '1'">
+                        <td  class="text-right">操作密碼：</td>
+                        <td class="text-left" colspan="3"><input name="pin_code" class="form-control input-01 input-140" type="password" ng-model="commission_calculates.pin_code" data-enter-key="payment()" /></td>
+                    </tr>
+                    </table>
+            </div>
+        </div>
+    </form>
+    <div class="row" style="text-align: center;" >
+        <button class="btn btn-confirm" ng-click="payment()" data-ng-show="commission_calculates.status == '1'" data-ng-disabled="disabled_submit">支付</button>
+        <button class="btn btn-inf btn-cancel" ng-click="cancel()">列印</button>
+    </div>
+</div>

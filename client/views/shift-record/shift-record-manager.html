@@ -1,0 +1,110 @@
+<div class="page page-grid" data-ng-controller="shiftRecordManagerCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <strong>圍數查詢</strong>
+                            <button class="btn btn-confirm pull-right" ng-click="addWeiShu()" check-permissions="shiftMarkCreate">新增截更</button>
+                        </div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right"><span class="span-formlist">所在廰：</span></td>
+                                        <td width="209" data-min-screen-width="120" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="209" data-min-screen-width="80" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="200" class="text-right"><span class="span-formlist">開始時間：</span></td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.shiftMark.shift_date[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="200" class="text-right"><span class="span-formlist">結束時間：</span></td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.shiftMark.shift_date[1]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>圍數查詢</strong>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="ShiftMarkRecord" report-btn>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>所在廳</td>
+                                    <td>日期</td>
+                                    <td>更數</td>
+                                    <td>本更轉碼數(萬)</td>
+                                    <td>截更時間</td>
+                                    <td>經手人</td>
+                                    <td width="150" check-permissions="shiftMarkView">操作</td>
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="shift_record in shift_records" data-selected-rows>
+                                    <td>{{shift_record.hall_name}}</td>
+                                    <td>{{shift_record.shift_date|getDate}}</td>
+                                    <td>{{shift_record.shift}}</td>
+                                    <td>{{shift_record.shift_rolling|parseTenThousand2}}</td>
+                                    <td>{{shift_record.shift_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{shift_record.user_name}}</td>
+                                    <td class="no-padding" check-permissions="shiftMarkView">
+                                        <!--<button data-ng-show="shift_record.allow_settlement == 0 && $first" class="btn btn-confirm btn-table margin-right-5" data-ng-click="monthly()">月結</button>-->
+                                        <!--<button data-ng-show="shift_record.allow_delete == 1" class="btn btn-confirm btn-table margin-right-5" data-ng-click="jieGen()">截更</button>-->
+                                        <button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail(shift_record.id)" check-permissions="shiftMarkView">詳細</button>
+                                        <!--<button data-ng-show="shift_record.allow_delete == 1" class="btn btn-information btn-table margin-right-5" data-ng-click="delete(shift_record.id)" check-permissions="shiftMarkDelete">刪除</button></td>-->
+                                </tr>
+                                <tr data-ng-show="shift_records.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

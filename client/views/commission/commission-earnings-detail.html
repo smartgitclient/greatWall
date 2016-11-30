@@ -1,0 +1,115 @@
+<div class="page page-services" data-ng-controller="commissionEarningsDetailCtrls">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>用戶碼佣明細</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="200" ><span class="span-formlist">廳館：</span></td>
+                        <td width="209" data-ng-show="user.isAllHall()">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="209" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td width="200" class="text-right"><span class="span-formlist">戶口編號：</span></td>
+                        <td width="209">{{agents[0].agent_code}}</td>
+                        <td width="200" class="text-right"><span class="span-formlist">戶口姓名：</span></td>
+                        <td width="209">{{agents[0].agent_name}}</td>
+                        <td width="200" class="text-right"><span class="span-formlist">月份：</span></td>
+                        <td width="209">{{agents[0].year_month|parseDate:"yyyy-MM"}}</td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right"><span class="span-formlist">本金類型：</span></td>
+                        <td>
+                            <select data-ng-model="condition.capital_type_id" data-ng-change="select_type()" class="form-control" ng-options="c.id as c.capital_name for c in capitaltypes" >
+                                <option value="">請選擇本金類型</option>
+                            </select>
+                        </td>
+                        <td class="text-right"><span class="span-formlist">指定日期：</span></td>
+                        <td>
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.create_time[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="100" class="text-right"><span class="span-formlist">收益類型：</span></td>
+                        <td width="209">
+                            <select data-ng-model="condition.type" class="form-control" ng-options="t.type as t.name for t in types">
+                                <option value = "">請選擇收益類型</option>
+                            </select>
+                        </td>
+                        <td><span class="span-formlist">&nbsp;</span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" data-ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <strong>明細列表</strong>
+
+            <button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <!--button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button-->
+            <span class=" pull-right">碼佣收益合計：{{rollingCommissionTotal.commission_amount|parseDollar:true}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;津貼合計：{{rollingCommissionTotal.allowance_amount|parseDollar:true}}&nbsp;&nbsp;</span>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>本金類型</td>
+                    <td>所在廳</td>
+                    <td>年月</td>
+                    <td>日期</td>
+                    <td>收益類型</td>
+                    <td>下線</td>
+                    <td>咭類型</td>
+                    <td>本金流量(萬)</td>
+                    <td>碼佣收益</td>
+                    <td>津貼</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rollingCardCommission in rollingCardCommissions" data-selected-rows>
+                    <td>{{rollingCardCommission.capital_type}}</td>
+                    <td>{{rollingCardCommission.hall}}</td>
+                    <td>{{rollingCardCommission.year_month|parseDate:"yyyy-MM"}}</td>
+                    <td>{{rollingCardCommission.create_time|parseDate:"yyyy-MM-dd"}}</td>
+                    <td>{{types[rollingCardCommission.type-1].name}}</td>
+                    <td>{{rollingCardCommission.child}}</td>
+                    <td>{{rollingCardCommission.commission_card}}</td>
+                    <td>{{rollingCardCommission.rolling_amount|parseTenThousand2}}</td>
+                    <td>{{rollingCardCommission.commission_amount|parseDollar:true}}</td>
+                    <td>{{rollingCardCommission.allowance_amount|parseDollar:true}}</td>
+                </tr>
+                <tr data-ng-show="rollingCardCommissions.length == 0">
+                    <td colspan="10">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                items-per-page = "pagination.items_per_page"
+                                max-size = "pagination.max_size"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

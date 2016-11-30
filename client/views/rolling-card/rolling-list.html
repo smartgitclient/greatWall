@@ -1,0 +1,166 @@
+<div class="page page-grid" data-ng-controller="rollingListCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>轉碼列表</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="200" class="text-right">廳館：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                                        <td width="229" class="text-right">戶口編號：</td>
+                                        <td width="209"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                                        <td width="229" class="text-right">轉碼類型：</td>
+                                        <td width="209"><!-- Split button -->
+                                            <ui-select ng-model="condition.hall">
+                                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="hall in halls">
+                                                    <div ng-bind-html="hall"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">時間範圍：</td>
+                                        <td colspan="2">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.effective_start_time"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                        </p>
+                                                        <p class="pull-left  col-md-1">~</p>
+                                                        <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                            <input type="text" class="form-control" datepicker-popup ng-model="condition.effective_end_time"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉碼列表</strong>
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>廳館cc</td>
+                                    <td>戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>轉碼數</td>
+                                    <td>轉碼類型</td>
+                                    <td>轉碼卡</td>
+                                    <td>轉碼時間</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>永利鉅星</td>
+                                    <td>FA233</td>
+                                    <td>陳達文</td>
+                                    <td>100</td>
+                                    <td>入場本金</td>
+                                    <td>80-18M、20-18U</td>
+                                    <td>2014-05-16 15:55:46</td>
+                                    <td class="no-padding">
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="all_cardsRecords.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="all_cardsRecords.length"
+                                                    on-select-page="select(page)"
+                                                    data-ng-show="cardsRecords.length != 0"></pagination>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>金額</td>
+                    <td>本金類型</td>
+                    <td width="120">卡類型</td>
+                    <td width="70">轉碼卡</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>200</td>
+                    <td>
+                        200
+                    </td>
+                    <td width="70">
+                        <a class="btn btn-info btn-information btn-table" ng-click="addCardType(type,$index)">選擇/新增</a>
+                        <span data-ng-show="operation_type=='detail'">--</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>200</td>
+                    <td>200</td>
+                    <td>
+                        200
+                    </td>
+                    <td width="70">
+                        <a class="btn btn-info btn-information btn-table" ng-click="addCardType(type,$index)">選擇/新增</a>
+                        <span data-ng-show="operation_type=='detail'">--</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>&nbsp;</td>
+                    <td width="70">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>&nbsp;</td>
+                    <td width="70">&nbsp;</td>
+                </tr>
+                <tr data-ng-show="rolling_record.types.length == 0">
+                    <td colspan="4">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

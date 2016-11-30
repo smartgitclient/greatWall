@@ -1,0 +1,351 @@
+<div ng-class='{"col-md-12":popupWindow==true,"col-md-4":popupWindow==false}' check-permissions="consumptionCreate">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+        <div class="panel-heading" ng-show="popupWindow">
+          <strong class="pull-left">機票修改</strong>
+        </div>
+        <form name="$parent.form_air" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{air_url}}">
+            <table>
+                <tbody>
+                <tr height="50">
+                    <td class="text-right" width="90" min-screen-width="80"></td>
+                    <td class="text-left" width="150" min-screen-width="145"></td>
+                    <td class="text-right" width="90" min-screen-width="80">航程類型：</td>
+                    <td class="text-left" width="160" min-screen-width="135">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-disabled="COPY_BOOKING_air"  ng-model="agent_about.isReturn" name="isReturn" data-ng-click="ChangeAirType()" />往 返
+                            </label>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr height="50">
+                    <td class="text-right">預訂單號：</td>
+                    <td class="text-left">
+                        <input type="text" data-ng-model="airBooking.consumption.book_no" name="consumption_book_no" class="form-control" data-input-uppercase>
+                        </td>
+                    <td class="text-right">所屬廳館：</td>
+                    <td class="text-left">
+                        <span data-ng-show="'PUT'==sub_post_put">{{ agent_about.hall_name }}</span>
+                        <span data-ng-show="'POST'==sub_post_put">{{ user.hall.hall_name}}</span>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right"><b style="color: red">*</b>戶口編號：</td>
+                    <td class="text-left">
+                        <span data-ng-show="'PUT'==sub_post_put && !COPY_BOOKING_air">{{ agent_about.agent_code }}</span>
+                        <input data-ng-show="'POST'==sub_post_put || COPY_BOOKING_air" type="text" data-input-uppercase name="agent_info_id" data-ng-model="agent_about.agent_code" class="form-control"></td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{agent_about.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                  <td class="text-right"><b style="color: red">*</b>年月：</td>
+                  <td class="text-left">
+                    <p class="input-group ui-datepicker">
+                      <input type="text" class="form-control input-92" name="consumption_year_month" datepicker-popup datepicker-mode="month" ng-model="airBooking.consumption.year_month"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_air"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                    </p>
+                  </td>
+                </tr>
+                <tr height="50">
+
+                    <td class="text-right"><b style="color: red">*</b>結算日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="airBooking.consumption.shift_date"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_air"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" min-screen-width="10" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                    </td>
+                    <td class="text-right"><b style="color: red">*</b>更數：</td>
+                    <td class="text-left">
+                        <select name="consumption_shift" class="form-control" data-ng-model="airBooking.consumption.shift"  ng-disabled="COPY_BOOKING_air">
+                            <option value="">請選擇更數</option>
+                            <option value="早更">{{shiftLists.morning}}</option>
+                            <option value="中更">{{shiftLists.afternoon}}</option>
+                            <option value="晚更">{{shiftLists.evening}}</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+            <table class="BGcolor-626571" width="100%">
+                <tbody>
+                <tr height="50">
+                    <!--<td class="text-right" min-screen-width="80" width="100">供應商：</td>-->
+                    <!--<td class="text-left" min-screen-width="60">-->
+                        <!--<select name="hotel_travel_id" class="form-control" data-ng-model="airBooking.hotel_travel_id" ng-options="n.id as n.name for n in consumptionHoteltravels | filter:{'hotel_travel_type':'2'}" ng-disabled="COPY_BOOKING_air">-->
+                            <!--<option value="">請選擇供應商</option>-->
+                        <!--</select>-->
+                    <!--</td>-->
+                    <td class="text-right" min-screen-width="72" width="100">預訂數量：</td>
+                    <td class="text-left" min-screen-width="60">
+                        <div class="input-group ui-spinner" data-ui-spinner  data-ng-model="airBooking.count">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-spin="down" ng-disabled="COPY_BOOKING_air">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </span>
+                            <input type="text" data-min="1" class="spinner-input form-control" name="count" data-ng-model="airBooking.count" ng-disabled="COPY_BOOKING_air">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up" ng-disabled="COPY_BOOKING_air">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                            &nbsp;&nbsp;
+                        </div>
+                    </td>
+                    <td min-screen-width="72" width="105"></td>
+                    <td  width="160" min-screen-width="100"></td>
+                    <td width="20" min-screen-width="2">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">去程出發地：</td>
+                    <td class="text-left" ><input type="text" name="from_place" data-ng-model="airBooking.from_place" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td class="text-right">去程目的地：</td>
+                    <td class="text-left"><input type="text" data-ng-model="airBooking.to_place" name="to_place" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right"><b style="color: red">*</b>出發日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="airBooking.departure_date"  date-disabled="disabled(date, mode)" close-text="Close" name="departure_date" ng-disabled="COPY_BOOKING_air" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-datepicker" min-screen-width="10" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </td>
+                    <td class="text-right"><b style="color: red">*</b>出發時間：</td>
+                    <td class="text-left">
+                        <div class=" pull-left form-inline input-group ui-datepicker">
+                            <div class="form-group">
+                                <input size="6" class="form-control input-01"
+                                       data-ng-required="enableClientValidation"
+                                       ng-model="airBooking.departure_time"
+                                       name="departure_time"
+                                       ng-disabled="COPY_BOOKING_air"
+                                       style="width:110px;"
+                                       min-screen-width="70"
+                                       placeholder="例如：12:00"
+                                       type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </td>
+                    <td >&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">航班編號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="airBooking.flight_no" name="flight_no" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td class="text-right">艙位：</td>
+                    <td class="text-left">
+                        <select name="seat_type_id" style="padding:0" class="form-control" data-ng-model="airBooking.seat_type_id" data-ng-options="n.id as n.flight_seat_type for n in flight_seattypes" ng-disabled="COPY_BOOKING_air">
+                            <option value="">請選擇艙位</option>
+                        </select>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr height="50" ng-show="agent_about.isReturn">
+                    <td class="text-right" >返程出發地：</td>
+                    <td class="text-left" ><input type="text" name="return_from_place" data-ng-model="airBooking.return_from_place" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td class="text-right">返程目的地：</td>
+                    <td class="text-left"><input type="text" data-ng-model="airBooking.return_to_place" name="return_to_place" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr height="50" ng-show="agent_about.isReturn">
+                    <td class="text-right"><b style="color: red">*</b>返程日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="airBooking.return_departure_date" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" name="return_departure_date" ng-disabled="COPY_BOOKING_air" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-datepicker" min-screen-width="10" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </td>
+                    <td class="text-right"><b style="color: red">*</b>返程時間：</td>
+                    <td class="text-left">
+                        <div class=" pull-left form-inline input-group ui-datepicker">
+                            <div class="form-group">
+                                <input size="6" class="form-control input-01"
+                                       data-ng-required="enableClientValidation"
+                                       ng-model="airBooking.return_departure_time"
+                                       name="return_departure_time"
+                                       ng-disabled="COPY_BOOKING_air"
+                                       style="width:110px;"
+                                       min-screen-width="70"
+                                       placeholder="例如：12:00"
+                                        type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr height="50" ng-show="agent_about.isReturn">
+                    <td class="text-right">航班編號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="airBooking.return_flight_no" name="flight_no" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td class="text-right">艙位：</td>
+                    <td class="text-left">
+                        <select name="return_seat_type_id" style="padding:0" class="form-control" data-ng-model="airBooking.return_seat_type_id" data-ng-options="n.id as n.flight_seat_type for n in flight_seattypes" ng-disabled="COPY_BOOKING_air">
+                            <option value="">請選擇艙位</option>
+                        </select>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+            <div style="position: relative;">
+                <perfect-scrollbar class="animate-fade-up" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div style="max-height: 200px;">
+                        <table width="100%">
+                            <tbody  ng-repeat="consumptionFlightSub in airBooking.consumptionFlightSubs">
+                            <tr height="50">
+                                <td class="text-right"  width="100"><b style="color: red">*</b>乘客姓名：</td>
+                                <td class="text-left" width="160"><input type="text" data-ng-model="consumptionFlightSub.passenger" data-dynamic-name="consumptionFlightSubs_{{ $index }}_passenger" ng-change="ChangeRegister($index, consumptionFlightSub)" class="form-control" ng-disabled="COPY_BOOKING_air" list="air_agent_list"></td>
+                                <td class="text-right" width="100"><b style="color: red">*</b>證件類型：</td>
+                                <td class="text-left" width="160"><select data-dynamic-name="consumptionFlightSubs_{{ $index }}_idcard_type_id" class="form-control" data-ng-model="consumptionFlightSub.idcard_type_id"  ng-options="n.id as n.idcard_type_name for n in idCardtypes" ng-disabled="COPY_BOOKING_air">
+                                    <option value="">證件類型</option>
+
+                                </select></td>
+                                <td width="20">&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right"  width="100"><b style="color: red">*</b>證件號碼：</td>
+                                <td class="text-left" width="160"><input type="text" data-ng-model="consumptionFlightSub.idcard_no" data-dynamic-name="consumptionFlightSubs_{{ $index }}_idcard_no" class="form-control" ng-disabled="COPY_BOOKING_air" list="air_idcard_list"></td>
+                                <td class="text-right" width="100">聯絡電話：</td>
+                                <td class="text-left" width="165">
+                                    <div class="pull-left" style="width: 57px;" min-screen-width="55">
+                                        <select class="form-control no-padding" data-ng-model="consumptionFlightSub.area_code_id" data-dynamic-name="consumptionFlightSubs_{{$index}}_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_air">
+                                            <option value="">區號</option>
+                                        </select>
+                                    </div>
+                                    <div class="pull-left" style="width: 102px;" min-screen-width="69">
+                                        <input type="text" data-ng-model="consumptionFlightSub.telephone_number" data-dynamic-name="consumptionFlightSubs_{{ $index }}_telephone_number" class="form-control" ng-disabled="COPY_BOOKING_air" list="air_tel_list">
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+
+            <table width="100%">
+                <tbody>
+                <tr height="50">
+                    <td class="text-right" width="100">訂票人：</td>
+                    <td class="text-left" width="160"><input type="text" data-ng-model="airBooking.consumption.trader" name="consumption_trader" class="form-control" ng-disabled="COPY_BOOKING_air" list="air_agent_list"></td>
+                    <td class="text-right" width="100">電話：</td>
+                    <td class="text-left" >
+                    <td class="text-left" width="165">
+                        <div class="pull-left" style="width: 57px;" min-screen-width="55">
+                            <select class="form-control no-padding" data-ng-model="airBooking.consumption.area_code_id" name="consumption_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_air">
+                                <option value="">區號</option>
+                            </select>
+                        </div>
+                        <div class="pull-left" style="width: 102px;" min-screen-width="69">
+                            <input type="text" data-ng-model="airBooking.consumption.trader_tel" name="consumption_trader_tel" class="form-control" ng-disabled="COPY_BOOKING_air" list="air_tel_list">
+                        </div>
+                    </td>
+                    <td width="20">&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+            <table  class="BGcolor-626571" width="100%">
+                <tbody>
+                <tr height="50">
+                    <td class="text-right"  width="100"><b style="color: red">*</b>成本單價：</td>
+                    <td class="text-left" width="160"><input type="text" data-ng-model="airBooking.cost" name="cost"  class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td class="text-right" width="100"><b style="color: red">*</b>實收單價：</td>
+                    <td class="text-left" width="160"><input type="text" data-ng-model="airBooking.sell" name="sell" class="form-control" ng-disabled="COPY_BOOKING_air"></td>
+                    <td width="20">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">成本總數：</td>
+                    <td class="text-left">{{air_total.cost | parseYuan}}</td>
+                    <td class="text-right">實收總數：</td>
+                    <td class="text-left">{{air_total.sell | parseYuan}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left" colspan="3">{{air_total.profit | parseYuan}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tr height="50">
+                    <td class="text-right" width="100"><b style="color: red">*</b>應付消費：</td>
+                    <td class="text-left" width="160"><input type="text" name="consumption_should_pay" data-ng-model="airBooking.consumption.should_pay" class="form-control"></td>
+                    <td class="text-right" width="100">付款方式：</td>
+                    <td class="text-left" width="160">
+                        <select name="consumption_pay_type_id" class="form-control" data-ng-model="airBooking.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types" ng-disabled="COPY_BOOKING_air">
+                            <option value="">請選擇付款方式</option>
+                        </select>
+                    </td>
+                    <td width="20">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td valign="top" class="text-right">
+                        備註：<br>
+                        <button class="btn btn-information btn-table margin-right-5" phrasebooktis="air" insertmodel="airBooking_consumption_remark" type="button" >常用</button>
+                    </td>
+                    <td colspan="3">
+                      <div class="text-right">
+                        <button class="btn btn-information btn-table text-right"type="button" ng-click="creatremark()">生成備註</button>
+                      </div>
+                      <textarea id="remark" name="airBooking_consumption_remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4"  data-ng-model="airBooking.consumption.remark"></textarea></td>
+                </tr>
+                <!--<tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td class="text-left"><input type="password" name="pin_code" data-ng-model="airBooking.pin_code" class="form-control input-140" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+                    <td>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                    </td>
+                    <td ><span class="red">{{ agent_about.username }}</span></td>
+                </tr>-->
+                </tbody>
+            </table>
+            <table ng-show="popupWindow">
+              <tr height="50">
+                <td class="text-right" width="100">操作密碼：</td>
+                <td class="text-left " width="160"><input type="password" name="pin_code" data-ng-model="airBooking.pin_code" class="form-control" data-enter-key="add()"></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn  btn-confirm margin-right-15" ng-show="'PUT' != sub_post_put && (user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED')" data-ng-disabled="isDisabled" data-ng-click="add(true)" type="button">提交并發送短訊</button>
+                <button class="btn btn-confirm margin-right-15" check-permissions="consumptionCreate" data-ng-disabled="isDisabled" data-ng-click="add()" type="button">提 交</button>
+                <button class="btn btn-cancel" data-ng-click="cancel()" type="button">取 消</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <datalist id="air_tel_list">
+        <option ng-repeat="tel_list in air_tel_list" value="{{ tel_list.telephone_number }}">
+    </datalist>
+    <datalist id="air_agent_list">
+        <option ng-repeat="agent_list in air_agent_list" value="{{ agent_list.agent_guest_name }}">
+    </datalist>
+    <datalist id="air_idcard_list">
+        <option ng-repeat="idcard_list in air_idcard_list" value="{{ idcard_list.idcard_number }}">
+    </datalist>
+</div>

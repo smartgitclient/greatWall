@@ -1,0 +1,101 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+<div class="row">
+<div class="col-md-12 pop-modal">
+<div class="panel panel-form-list">
+    <div class="panel-heading"><strong>{{message_title}}</strong></div>
+    <div class="panel-content">
+        <div class="row">
+            <div class="col-md-12">
+                <form name="form_search">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">指派部門：</td>
+                        <td align="left">
+                            <ui-select class="select-140" ng-model="message.receiver">
+                                <ui-select-match placeholder="請選擇接收部門">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="r in receivers">
+                                    <div ng-bind-html="r"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <!-- <td width="100" align="right">戶口編碼：</td>
+                        <td align="left"><input type="text" ng-model="message.agent_code" class="form-control input-01"></td> -->
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">戶口編號：</td>
+                        <td align="left">
+                            <input class="form-control input-01 ng-pristine ng-valid input-140" type="text" ng-model="certificate.certificate_number">
+                        </td>
+                        <!--
+                        <td align="right">創建時間：</td>
+                        <td align="left">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup ng-model="message.create_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        -->
+                    </tr>
+                    <tr>
+                        <td align="right">有效時間：</td>
+                        <td align="left">
+                            <p class="input-group ui-datepicker" style="width: 140px;">
+                                <input type="text" class="form-control" datepicker-popup ng-model="message.effective_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <!--
+                        <td align="right">操作人：</td>
+                        <td align="left">
+                            <input type="text" data-ng-model="message.operator" class="form-control">
+                        </td>
+                        -->
+                    </tr>
+                    <tr>
+                        <td align="right">顯示模組：</td>
+                        <td align="left">
+                            <ui-select class="select-140" ng-model="message.status">
+                                <ui-select-match placeholder="請選擇狀態">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="s in status">
+                                    <div ng-bind-html="s"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <!--
+                        <td align="right">模組：</td>
+                        <td align="left">
+                            <ui-select ng-model="message.module">
+                                <ui-select-match placeholder="請選擇模組">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="m in modules">
+                                    <div ng-bind-html="m"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        -->
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 93px">內容：</td>
+                        <td align="left">
+                            <textarea id="" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="message.content" name=""></textarea>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-confirm" ng-click="add()">提交</button>
+            <button class="btn btn-inf btn-cancel" ng-click="remove()">重置</button>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>
+</div>
+</div>
+</div>

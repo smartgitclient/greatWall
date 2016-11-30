@@ -1,0 +1,240 @@
+
+<div id="nav-wrapper">
+
+    <div style="display: none">2015-8-7 8:52</div>
+    <!-- <div class="tools">
+    <span class="toggle-min" href="#/" data-toggle-min-nav>
+        <i class="fa fa-bars"></i>
+        2014-05-25   早更</span>
+    </div>
+    -->
+    <ul id="nav"
+        data-ng-controller="NavCtrl"
+        data-slim-scroll
+        data-collapse-nav
+        data-highlight-active>
+        <li class="tools">
+            <a class="tools-a" href="#/buttons" data-toggle-min-nav>
+            <i class="fa fa-bars"></i>
+            <span data-ng-hide="user.hall.hall_type == 3" data-i18n="{{shift_mark.data.shift_date|parseDate:'yyyy-MM-dd'}} "></span>
+            <span data-ng-hide="user.hall.hall_type == 3 || user.department.code == 'SCENE_DEPT'" data-i18n="{{shift_mark.data.shift}} "></span>
+            </a>
+        </li>
+        <li  data-ng-show="checkPermissions(['agentView','agentGuestView','agentStatusView','agentGroupView','agentStructureView','agentContactView','agentBindSMSView','agentBatchBindSMSView','agentOrderView','agentMessageView'])">
+            <a href="#/agent"><i class="fa fa-agent"></i><span data-i18n="戶口管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('agentView')"><a href="#/agent/list"><i class="fa fa-caret-right"></i><span data-i18n="戶口列表"></span></a></li>
+                <li data-ng-show="checkPermissions('agentGuestView')"><a href="#/agent/guest-list"><i class="fa fa-caret-right"></i><span data-i18n="客人列表"></span></a></li>
+                <li data-ng-show="checkPermissions('agentStatusView')"><a href="#/agent/agent-info-list"><i class="fa fa-caret-right"></i><span data-i18n="戶口信息表"></span></a></li>
+                <li data-ng-show="checkPermissions('agentGroupView')"><a href="#/agent/agent-group"><i class="fa fa-caret-right"></i><span data-i18n="戶組管理"></span></a></li>
+                <li data-ng-show="checkPermissions('agentStructureView')"><a href="#/agent/agent-structure"><i class="fa fa-caret-right"></i><span data-i18n="戶口結構圖"></span></a></li>
+                <li data-ng-show="checkPermissions('agentContactView')"><a href="#/agent/contact-list"><i class="fa fa-caret-right"></i><span data-i18n="聯絡人列表"></span></a></li>
+                <li data-ng-show="checkPermissions('agentBindSMSView')"><a href="#/agent/bound-message-people"><i class="fa fa-caret-right"></i><span data-i18n="綁定短信通知"></span></a></li>
+                <li data-ng-show="checkPermissions('agentBatchBindSMSView')"><a href="#/agent/batch-bound-message-people"><i class="fa fa-caret-right"></i><span data-i18n="上線短信設定"></span></a></li>
+                <li data-ng-show="checkPermissions('agentOrderView')"><a href="#/agent/message-order"><i class="fa fa-caret-right"></i><span data-i18n="Order紙管理"></span></a></li>
+                <li data-ng-show="checkPermissions('birthdayReminderView')"><a href="#/agent/birthday-sms-list"><i class="fa fa-caret-right"></i><span data-i18n="生日短信"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('agentMessageView')"><a href="#/agent/message-list"><i class="fa fa-caret-right"></i><span data-i18n="即時消息"></span></a></li>-->
+
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['depositCardView','depositCardRecordView','depositTicketView','depositTicketRecordView','crossTransferView'])">
+            <a href="#/deposit"><i class="fa fa-deposit"></i><span data-i18n="存款管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('depositCardView')"><a href="#/deposit/card-list"><i class="fa fa-caret-right"></i><span data-i18n="存卡列表"></span></a></li>
+                <li data-ng-show="checkPermissions('depositCardRecordView')"><a href="#/deposit/card-manager"><i class="fa fa-caret-right"></i><span data-i18n="存卡管理"></span></a></li>
+                <li data-ng-show="checkPermissions('depositTicketView')"><a href="#/deposit/ticket-manager"><i class="fa fa-caret-right"></i><span data-i18n="存單管理"></span></a></li>
+                <li data-ng-show="checkPermissions('depositTicketRecordView')"><a href="#/deposit/ticket-stream"><i class="fa fa-caret-right"></i><span data-i18n="存單流水"></span></a></li>
+                <li data-ng-show="checkPermissions('crossTransferView')"><a href="#/cross-transfer/cross-transfer-manager"><i class="fa fa-caret-right"></i><span data-i18n="飛數管理"></span></a></li>
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['loanCreate','loanView','markerFeeRepayRepay','markerFeePayView','loanQuotaSettingView','commonLoanQuotaSettingView','loanRecoveryView'])">
+            <a href="#/loan"><i class="fa fa-loan"></i><span data-i18n="貸款管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('loanCreate')"><a href="#/loan/create"><i class="fa fa-caret-right"></i><span data-i18n="新增貸款"></span></a></li>
+                <li data-ng-show="checkPermissions('loanView')"><a href="#/loan/list"><i class="fa fa-caret-right"></i><span data-i18n="貸款列表"></span></a></li>
+                <li data-ng-show="checkPermissions('loanRecordView')"><a href="#/loan/loan-stream-list"><i class="fa fa-caret-right"></i><span data-i18n="貸款流水"></span></a></li>
+                <li data-ng-show="checkPermissions('markerFeePayView')"><a href="#/loan/overdue-charge"><i class="fa fa-caret-right"></i><span data-i18n="手續費付款"></span></a></li>
+                <li data-ng-show="checkPermissions('markerExpiredFeeManageView')"><a href="#/loan/account-overdue-charge"><i class="fa fa-caret-right"></i><span data-i18n="手續費管理"></span></a></li>
+                <li data-ng-show="checkPermissions('loanQuotaSettingView')"><a href="#/loan/quota-setting"><i class="fa fa-caret-right"></i><span data-i18n="批額設定"></span></a></li>
+                <li data-ng-show="checkPermissions('loanQuotaSettingRecordView')"><a href="#/loan/stream-quota-setting"><i class="fa fa-caret-right"></i><span data-i18n="批額流水"></span></a></li>
+                <li data-ng-show="checkPermissions('commonLoanQuotaSettingView')"><a href="#/loan/common-quota-setting"><i class="fa fa-caret-right"></i><span data-i18n="公共批額設定"></span></a></li>
+                <li data-ng-show="checkPermissions('loanRecoveryView')"><a href="#/loan/loan-recovery"><i class="fa fa-caret-right"></i><span data-i18n="貸款追收"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('loanRecalculate')"><a href="#/loan/loan-recalculate"><i class="fa fa-caret-right"></i><span data-i18n="貸款重算"></span></a></li>-->
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['rollingStart','rollingAddCapital','rollingDetailView','rollingDailyView','rollingSummaryView','rollingMainSceneView','rollingTransferView'])">
+            <a href="#/rolling/"><i class="fa fa-rolling"></i><span data-i18n="轉碼管理"></span></a>
+            <ul>
+                <!--data-ng-show="checkPermissions('rollingDailyNotice')"-->
+                <li data-ng-show="checkPermissions(['rollingStart','rollingAddCapital'])"><a href="#/rolling/rolling/"><i class="fa fa-caret-right"></i><span data-i18n="即時轉碼"></span></a></li>
+                <li data-ng-show="checkPermissions('rollingDetailView')"><a href="#/rolling/rolling-list"><i class="fa fa-caret-right"></i><span data-i18n="轉碼明細"></span></a></li>
+                <li data-ng-show="checkPermissions('rollingDailyView')"><a href="#/rolling/rolling-daily-list"><i class="fa fa-caret-right"></i><span data-i18n="轉碼日結"></span></a></li>
+                <li data-ng-show="checkPermissions('rollingSummaryView')"><a href="#/rolling/rolling-summary"><i class="fa fa-caret-right"></i><span data-i18n="轉碼滙總"></span></a></li>
+                <li data-ng-show="checkPermissions('rollingMainSceneView')"><a href="#/rolling/rolling-card-record"><i class="fa fa-caret-right"></i><span data-i18n="轉碼場次記錄"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('rollingTransferRecord')"><a href="#/rolling-transfer/rolling-record"><i class="fa fa-caret-right"></i><span data-i18n="流量查詢"></span></a></li>-->
+                <li data-ng-show="checkPermissions('rollingTransferView')"><a href="#/rolling-transfer/transfer-list"><i class="fa fa-caret-right"></i><span data-i18n="流量轉移記錄"></span></a></li>
+
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['buyChipView'])">
+            <a href="#/buy-chip"><i class="fa fa-buy-chip"></i><span data-i18n="買碼管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('buyChipView')"><a href="#/buy-chip/buy-chip-manager"><i class="fa fa-caret-right"></i><span data-i18n="買碼管理"></span></a></li>
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['shiftMarkView','settlementMonthView','shiftDailyView'])">
+            <a href="#/shift-record"><i class="fa fa-shift-record"></i><span data-i18n="圍數管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('shiftMarkView')"><a href="#/shift-record/shift-record-manager"><i class="fa fa-caret-right"></i><span data-i18n="截更管理"></span></a></li>
+                <li data-ng-show="checkPermissions('settlementMonthView')"><a href="#/shift-record/shift-record-month"><i class="fa fa-caret-right"></i><span data-i18n="截大數管理"></span></a></li>
+                <!--<li><a href="#/shift-record/shift-record-create"><i class="fa fa-caret-right"></i><span data-i18n="新增截更"></span></a></li>-->
+                <li data-ng-show="checkPermissions('shiftDailyView')"><a href="#/shift-record/shift-record-daily"><i class="fa fa-caret-right"></i><span data-i18n="日結詳情"></span></a></li>
+            </ul>
+        </li>
+        <!--<li data-ng-show="checkPermissions(['mortgageCreate','mortgageRecordView','mortgageSharingView'])">-->
+            <!--<a href="#/mortgage"><i class="fa fa-mortgage"></i><span data-i18n="抵押管理"></span></a>-->
+            <!--<ul>-->
+                <!--<li data-ng-show="checkPermissions('mortgageCreate')"><a href="#/mortgage/mortgage-create"><i class="fa fa-caret-right"></i><span data-i18n="新增抵押"></span></a></li>-->
+                <!--<li data-ng-show="checkPermissions('mortgageRecordView')"><a href="#/mortgage/mortgage-list"><i class="fa fa-caret-right"></i><span data-i18n="抵押記錄"></span></a></li>-->
+                <!--&lt;!&ndash;<li><a href="#/mortgage/mortgage-detail"><i class="fa fa-caret-right"></i><span data-i18n="抵押詳細"></span></a></li>&ndash;&gt;-->
+                <!--<li data-ng-show="checkPermissions('mortgageSharingView')"><a href="#/mortgage/mortgage-sharing"><i class="fa fa-caret-right"></i><span data-i18n="抵押分成"></span></a></li>-->
+            <!--</ul>-->
+        <!--</li>-->
+
+        <li data-ng-show="checkPermissions(['integralView','integralTransferRecordView','integralSendSMS','settlementTypeView','consumptionCreate','consumptionSetting','consumptionRecordView','consumptionSummaryView'])">
+            <a href="#/consumption-record/"><i class="fa fa-consumption-record"></i><span data-i18n="消費管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('integralView')"><a href="#/integral/integral-manager"><i class="fa fa-caret-right"></i><span data-i18n="積分管理"></span></a></li>
+                <li data-ng-show="checkPermissions('nextMonthExpiredAllowanceView')"><a href="#/integral/allowance-retrieve"><i class="fa fa-caret-right"></i><span data-i18n="下月過期津貼"></span></a></li>
+                <li data-ng-show="checkPermissions('integralTransferRecordView')"><a href="#/integral/integral-transfer-record"><i class="fa fa-caret-right"></i><span data-i18n="積分轉移記錄"></span></a></li>
+                <li data-ng-show="checkPermissions('integralDueSendSMS')"><a href="#/integral/integral-sms"><i class="fa fa-caret-right"></i><span data-i18n="積分到期提醒"></span></a></li>
+                <li data-ng-show="checkPermissions('settlementTypeView')"><a href="#/consumption-record/settlement-type"><i class="fa fa-caret-right"></i><span data-i18n="結算方式"></span></a></li>
+                <li data-ng-show="checkPermissions('consumptionTransferTransfer')"><a href="#/consumption-manager/consumption-transfer"><i class="fa fa-caret-right"></i><span data-i18n="消費過賬"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('consumptionRecordView')"><a href="#/consumption-manager/consumption-transfer"><i class="fa fa-caret-right"></i><span data-i18n="消費轉移"></span></a></li>-->
+                <li data-ng-show="checkPermissions('consumptionCreate')"><a href="#/consumption-manager/consumption-manager/hotel"><i class="fa fa-caret-right"></i><span data-i18n="新增消費"></span></a></li>
+                <li data-ng-show="checkPermissions('consumptionSettingView')"><a href="#/consumption-set/consumption-set-manager/hotel"><i class="fa fa-caret-right"></i><span data-i18n="消費設定"></span></a></li>
+                <li data-ng-show="checkPermissions('consumptionRecordView')"><a href="#/consumption-manager/consumption-record"><i class="fa fa-caret-right"></i><span data-i18n="消費記錄"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('consumptionRecordView')"><a href="#/consumption-manager/consumption-transfer"><i class="fa fa-caret-right"></i><span data-i18n="消費記錄"></span></a></li>-->
+                <li data-ng-show="checkPermissions('consumptionSummaryView')"><a href="#/consumption-manager/consumption-summary"><i class="fa fa-caret-right"></i><span data-i18n="消費匯總"></span></a></li>
+
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['commissionCommonRuleSettingView','rollingCardView','commissionRecordPreReleaseView','commissionRecordReleaseView','differenceTicketView','commissionEarningsRecordView','immediatePaymentCreate','immediatePaymentRecordView'])">
+            <a href="#/commission/"><i class="fa fa-commission"></i><span data-i18n="碼佣管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('commissionCommonRuleSettingView')"><a href="#/commission/commission-common-rule-setting"><i class="fa fa-caret-right"></i><span data-i18n="碼佣公共設定"></span></a></li>
+                <li data-ng-show="checkPermissions('rollingCardView')"><a href="#/rolling-card/rolling-card-agent-setting"><i class="fa fa-caret-right"></i><span data-i18n="轉碼卡管理"></span></a></li>
+                <li data-ng-show="checkPermissions('commissionRecordPreReleaseView')"><a href="#/commission-calculate/commission-pre-release-manager"><i class="fa fa-caret-right"></i><span data-i18n="預出佣管理"></span></a></li>
+                <li data-ng-show="checkPermissions('commissionRecordReleaseView')"><a href="#/commission-calculate/commissionRecord"><i class="fa fa-caret-right"></i><span data-i18n="出佣單管理"></span></a></li>
+                <li data-ng-show="checkPermissions('differenceTicketView')"><a href="#/commission-calculate/difference-record"><i class="fa fa-caret-right"></i><span data-i18n="差額單管理"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('commissionEarningsRecordView')"><a href="#/commission/commission-earnings-record"><i class="fa fa-caret-right"></i><span data-i18n="碼佣收益記錄"></span></a></li>-->
+                <!--<li data-ng-show="checkPermissions('cutMonthSetting')" ><a href="#/commission-calculate/cut-month-setting"><i class="fa fa-caret-right"></i><span data-i18n="截月時間"></span></a></li>-->
+                <li data-ng-show="checkPermissions('immediatePaymentCreate')"><a href="#/immediate-payment/payment-create"><i class="fa fa-caret-right"></i><span data-i18n="新增即出"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('commissionRecord')"><a href="#/immediate-payment/payment-record"><i class="fa fa-caret-right"></i><span data-i18n="即出記錄"></span></a></li>-->
+                <li data-ng-show="checkPermissions('immediatePaymentRecordView')"><a href="#/immediate-payment/commission-record"><i class="fa fa-caret-right"></i><span data-i18n="即出記錄"></span></a></li>
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['sceneShiftNumberCreate','sceneSummaryView','sceneRecordView','sceneCreateView','gamblingTableView','sceneCreateView'])">
+            <a href="#/scene/"><i class="fa fa-scene"></i><span data-i18n="場面管理"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('sceneShiftNumberCreate')"><a href="#/scene/scene-shift-record"><i class="fa fa-caret-right"></i><span data-i18n="場面截數"></span></a></li>
+                <li data-ng-show="checkPermissions('sceneSummaryView')"><a href="#/scene/scene-collect"><i class="fa fa-caret-right"></i><span data-i18n="場面數匯總"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('sceneCollect')"><a href="#/scene/screening-list"><i class="fa fa-caret-right"></i><span data-i18n="場面數記錄"></span></a></li>-->
+                <li data-ng-show="checkPermissions('sceneRecordView')"><a href="#/scene/screening-shift-list"><i class="fa fa-caret-right"></i><span data-i18n="場面數記錄"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('sceneCreateView')"><a href="#/scene/screening-create"><i class="fa fa-caret-right"></i><span data-i18n="新增場面"></span></a></li>-->
+                <li data-ng-show="checkPermissions('gamblingTableView')"><a href="#/scene/gambling-table-manager"><i class="fa fa-caret-right"></i><span data-i18n="賭枱管理"></span></a></li>
+                <li data-ng-show="checkPermissions('sceneWordsView')"><a href="#/scene/scene-term-manager"><i class="fa fa-caret-right"></i><span data-i18n="場面數用語管理"></span></a></li>
+            </ul>
+        </li>
+
+        <li data-ng-show="checkPermissions(['reportDepositTicketTotalView','reportDepositTicketWaterReportView','reportDepositTicketReportView','reportDepositTicketDayReportView','reportDepositCardTotalView','reportDepositCardReportView','reportDepositStatisticsReportView','reportLoanBusinessTotalView','reportLoanReportView','reportLoanDailyReportView','reportEveryHallLoanRecordReportView','reportRollingTotalView','reportRollingReportView','reportConsumptionTotalView','reportConsumptionProfitReportView','reportConsumptionReportView','reportSceneCountReportView','reportOverdueAllowanceView','reportUnderlingAllowanceView','reportAllowanceRetrieveView'])">
+            <a href="#/report/"><i class="fa fa-report"></i><span data-i18n="報表管理"></span></a>
+            <ul>
+                <!--<li data-ng-show="checkPermissions('reportManager')"><a href="#/report/report-manager"><i class="fa fa-caret-right"></i><span data-i18n="報表管理"></span></a></li>-->
+
+                <li data-ng-show="checkPermissions('reportDepositTicketTotalView')"><a href="#/report/deposit-ticket-summary-report"><i class="fa fa-caret-right"></i><span data-i18n="存單匯總"></span></a></li>
+                <li data-ng-show="checkPermissions('reportDepositTicketWaterReportView')"><a href="#/report/deposit-ticket-stream-report"><i class="fa fa-caret-right"></i><span data-i18n="存單流水報表"></span></a></li>
+                <li data-ng-show="checkPermissions('reportDepositTicketReportView')"><a href="#/report/deposit-ticket-report"><i class="fa fa-caret-right"></i><span data-i18n="存單報表"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('reportDepositTicketDayReportView')"><a href="#/report/deposit-ticket-day-report"><i class="fa fa-caret-right"></i><span data-i18n="存單日報表"></span></a></li>-->
+                <li data-ng-show="checkPermissions('reportDepositCardTotalView')"><a href="#/report/deposit-card-summary-report"><i class="fa fa-caret-right"></i><span data-i18n="存卡匯總"></span></a></li>
+                <li data-ng-show="checkPermissions('reportDepositcardRecordReportView')"><a href="#/report/deposit-card-water-report"><i class="fa fa-caret-right"></i><span data-i18n="存卡流水"></span></a></li>
+                <li data-ng-show="checkPermissions('reportTransferReportView')"><a href="#/report/transfer-water-report"><i class="fa fa-caret-right"></i><span data-i18n="轉賬流水"></span></a></li>
+                <li data-ng-show="checkPermissions('reportCrossTransferReportView')"><a href="#/report/cross-transfer-water-report"><i class="fa fa-caret-right"></i><span data-i18n="飛數流水"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('reportDepositCardReportView')"><a href="#/report/deposit-card-report"><i class="fa fa-caret-right"></i><span data-i18n="存卡報表"></span></a></li>-->
+                <li data-ng-show="checkPermissions('reportDepositStatisticsReportView')"><a href="#/report/deposit-total-report"><i class="fa fa-caret-right"></i><span data-i18n="存款統計報表"></span></a></li>
+                <li data-ng-show="checkPermissions('reportLoanBusinessTotalView')"><a href="#/report/loan-summary-report"><i class="fa fa-caret-right"></i><span data-i18n="貸款匯總"></span></a></li>
+                <li data-ng-show="checkPermissions('reportLoanReportView')"><a href="#/report/loan-report"><i class="fa fa-caret-right"></i><span data-i18n="貸款報表"></span></a></li>
+                <li data-ng-show="checkPermissions('reportMarkerRepaymentReportView')"><a href="#/report/loan-water-report"><i class="fa fa-caret-right"></i><span data-i18n="貸款流水"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('reportLoanDailyReportView')"><a href="#/report/loan-day-report"><i class="fa fa-caret-right"></i><span data-i18n="貸款日報表"></span></a></li>-->
+                <!--<li data-ng-show="checkPermissions('reportEveryHallLoanRecordReportView')"><a href="#/report/every-hall-loan-record-report"><i class="fa fa-caret-right"></i><span data-i18n="各館貸款記錄報表"></span></a></li>-->
+                <li data-ng-show="checkPermissions('reportRollingTotalView')"><a href="#/report/rolling-summary-report"><i class="fa fa-caret-right"></i><span data-i18n="轉碼匯總"></span></a></li>
+                <li data-ng-show="checkPermissions('reportRollingReportView')"><a href="#/report/rolling-report"><i class="fa fa-caret-right"></i><span data-i18n="轉碼報表"></span></a></li>
+
+                <li data-ng-show="checkPermissions('reportConsumptionTotalView')"><a href="#/report/consumption-summary-report"><i class="fa fa-caret-right"></i><span data-i18n="消費匯總"></span></a></li>
+                <li data-ng-show="checkPermissions('reportConsumptionProfitReportView')"><a href="#/report/consumption-income-report"><i class="fa fa-caret-right"></i><span data-i18n="消費收益報表"></span></a></li>
+                <li data-ng-show="checkPermissions('reportConsumptionReportView')"><a href="#/report/consumption-report"><i class="fa fa-caret-right"></i><span data-i18n="消費報表"></span></a></li>
+                <li data-ng-show="checkPermissions('reportSceneCountReportView')"><a href="#/report/scene-record-report"><i class="fa fa-caret-right"></i><span data-i18n="場面數報表"></span></a></li>
+
+                <li data-ng-show="checkPermissions('reportOverdueAllowanceView')"><a href="#/report/overdue-allowance-report"><i class="fa fa-caret-right"></i><span data-i18n="逾期津貼"></span></a></li>
+                <li data-ng-show="checkPermissions('reportUnderlingAllowanceView')"><a href="#/report/winding-allowance-income-report"><i class="fa fa-caret-right"></i><span data-i18n="下線津貼收益"></span></a></li>
+                <li data-ng-show="checkPermissions('reportAllowanceRetrieveView')"><a href="#/report/allowance-recovery-report"><i class="fa fa-caret-right"></i><span data-i18n="津貼回收"></span></a></li>
+                <li data-ng-show="checkPermissions('reportAllowanceRetrieveView')"><a href="#/report/divided-into"><i class="fa fa-caret-right"></i><span data-i18n="分成報表"></span></a></li>
+
+            </ul>
+        </li>
+        <li data-ng-show="checkPermissions(['commissionLimitView','commissionDivideView','specialAgentView','integralTypeBindView','integralTypeView','userView','personalPasswordUpdate','compContactView','workstationView','shortCutsView'])">
+            <a href="#/system-set/"><i class="fa fa-scene"></i><span data-i18n="系統設置"></span></a>
+            <ul>
+                <li data-ng-show="checkPermissions('commissionLimitView')"><a href="#/system-set/commission-limit"><i class="fa fa-caret-right"></i><span data-i18n="佣金限制"></span></a></li>
+                <!--<li data-ng-show="checkPermissions('commissionDivideView')"><a href="#/system-set/commission-fraction"><i class="fa fa-caret-right"></i><span data-i18n="佣金份數"></span></a></li>-->
+                <li data-ng-show="checkPermissions('commissionDivideView')"><a href="#/system-set/commission-sharing"><i class="fa fa-caret-right"></i><span data-i18n="佣金分成默認"></span></a></li>
+                <li data-ng-show="checkPermissions('specialAgentView')"><a href="#/system-set/company-agent-manager"><i class="fa fa-caret-right"></i><span data-i18n="公司戶口管理"></span></a></li>
+                <li data-ng-show="checkPermissions('integralTypeBindView')"><a href="#/system-set/integral-type-bind"><i class="fa fa-caret-right"></i><span data-i18n="積分類型綁定"></span></a></li>
+                <li data-ng-show="checkPermissions('integralTypeView')"><a href="#/system-set/integral-type-create"><i class="fa fa-caret-right"></i><span data-i18n="積分類型管理"></span></a></li>
+                <li data-ng-show="checkPermissions('userView')"><a href="#/system-set/userinfo-list"><i class="fa fa-caret-right"></i><span data-i18n="用戶管理"></span></a></li>
+                <li data-ng-show="checkPermissions('personalPasswordUpdate')"><a href="#/system-set/user-password"><i class="fa fa-caret-right"></i><span data-i18n="個人修改密碼"></span></a></li>
+                <li data-ng-show="checkPermissions('compContactView')"><a href="#/system-set/company-contact-create"><i class="fa fa-caret-right"></i><span data-i18n="公司聯絡人"></span></a></li>
+                <li data-ng-show="checkPermissions('workstationView')"><a href="#/system-set/workstation"><i class="fa fa-caret-right"></i><span data-i18n="操作機器"></span></a></li>
+                <li data-ng-show="checkPermissions('shortCutsView')"><a href="#/system-set/keyboard-manager"><i class="fa fa-caret-right"></i><span data-i18n="系統快捷鍵管理"></span></a></li>
+                <li><a href="#/system-set/printer-set"><i class="fa fa-caret-right"></i><span data-i18n="打印機設置"></span></a></li>
+            </ul>
+        </li>
+        <!--短信管理-->
+        <li data-ng-show="checkPermissions(['smsTemplateView','smsGroupView','smsSendView','smsRecordView','smsStatisticsView'])">
+            <a href="#/sms-manager/"><i class="fa fa-sms-manager"></i><span data-i18n="短信管理"></span></a>
+            <ul>
+                <!--<li data-ng-show="checkPermissions('smsTemplateView')"><a href="#/sms-manager/sms-template-set"><i class="fa fa-caret-right"></i><span data-i18n="短訊模板設定"></span></a></li>-->
+                <li data-ng-show="checkPermissions('smsTemplateView')"><a href="#/sms-manager/useful-phrase-template"><i class="fa fa-caret-right"></i><span data-i18n="常用短信模板"></span></a></li>
+                <li data-ng-show="checkPermissions('smsGroupView')"><a href="#/sms-manager/sms-group-manager"><i class="fa fa-caret-right"></i><span data-i18n="短信群組"></span></a></li>
+                <li data-ng-show="checkPermissions('smsSendView')"><a href="#/sms-manager/send-sms" data-ng-hide="user.hall.hall_type==1 || (user.hall.hall_type == 3 && user.hall.id != '03A667A339366225E0539715A8C018ED')"><i class="fa fa-caret-right"></i><span data-i18n="發送短信"></span></a></li>
+                <li data-ng-show="checkPermissions('smsRecordView')"><a href="#/sms-manager/sms-record"><i class="fa fa-caret-right"></i><span data-i18n="短信記錄"></span></a></li>
+                <li data-ng-show="checkPermissions('smsStatisticsView')"><a href="#/sms-manager/sms-flow-count"><i class="fa fa-caret-right"></i><span data-i18n="短信流量統計"></span></a></li>
+            </ul>
+        </li>
+        <!--旧数据-->
+        <!--<li data-ng-show="checkPermissions('oldDataView')">-->
+            <!--<a href="#/old/"><i class="fa fa-mortgage"></i><span data-i18n="舊數查詢"></span></a>-->
+            <!--<ul>-->
+                <!--<li><a href="#/old/marker-record"><i class="fa fa-caret-right"></i><span data-i18n="貸款流水"></span></a></li>-->
+                <!--<li><a href="#/old/rolling-record-list"><i class="fa fa-caret-right"></i><span data-i18n="轉碼流水"></span></a></li>-->
+                <!--<li><a href="#/old/scene-shift-record"><i class="fa fa-caret-right"></i><span data-i18n="場面截數"></span></a></li>-->
+                <!--<li><a href="#/old/screening-shift-list"><i class="fa fa-caret-right"></i><span data-i18n="場面數記錄"></span></a></li>-->
+                <!--<li><a href="#/old/shift-record-monthly"><i class="fa fa-caret-right"></i><span data-i18n="截大數管理"></span></a></li>-->
+                <!--<li><a href="#/old/shift-record-day"><i class="fa fa-caret-right"></i><span data-i18n="截更管理"></span></a></li>-->
+                <!--<li><a href="#/old/deposit-card-record"><i class="fa fa-caret-right"></i><span data-i18n="存卡流水"></span></a></li>-->
+                <!--<li><a href="#/old/consumption-record-list"><i class="fa fa-caret-right"></i><span data-i18n="消費記錄"></span></a></li>-->
+                <!--<li><a href="#/old/deposit-ticket-record"><i class="fa fa-caret-right"></i><span data-i18n="存單流水"></span></a></li>-->
+                <!--<li><a href="#/old/buy-chips"><i class="fa fa-caret-right"></i><span data-i18n="買碼記錄"></span></a></li>-->
+                <!--<li><a href="#/old/commission-immediate"><i class="fa fa-caret-right"></i><span data-i18n="即出記錄"></span></a></li>-->
+            <!--</ul>-->
+        <!--</li>-->
+        <!--新需求-->
+        <li data-ng-show="checkPermissions('oldDataView')">
+            <a href="#/profit-share"><i class="fa fa-mortgage"></i><span data-i18n="分成管理"></span></a>
+            <ul>
+                <li><a href="#/profit-share/profit-share-print"><i class="fa fa-caret-right"></i><span data-i18n="分成開場"></span></a></li>
+                <li><a href="#/profit-share/profit-share-list"><i class="fa fa-caret-right"></i><span data-i18n="分成記錄"></span></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h3>找消費</h3>
+</div>
+<div>
+    <label style="margin-left: 20px">選取記錄統計</label>
+    <label style="margin-left: 20px">現金消費數: {{case_consumption_all}}</label>
+    <label style="margin-left: 20px">非現金消費數：{{both_consumption_all}}</label>
+    <label style="margin-left: 20px">合計：{{loan_consumption_all}}</label>
+<div class="modal-body">
+    <div class="panel panel-list-detail">
+        <div class="panel-content"style="position: relative">
+
+                <div class="panel-content consumption_record" >
+                    <div>
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>
+                                <input type="checkbox" data-ng-model="cheked_all" data-ng-click = "marker_check_all(cheked_all)" name="aaa">
+                                非現金找
+                            </td>
+                            <td>
+                                <input type="checkbox" data-ng-model="cheked_all_cash" data-ng-click = "marker_check_cash_all(cheked_all_cash)" name="aaa">
+                                現金找
+                            </td>
+                            <td>戶口編號</td>
+                            <td>消費類型</td>
+                            <td>實收</td>
+                            <td>新增時間</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="x in consumptions"  data-selected-rows>
+                            <td><input type="checkbox"  data-ng-change="is_checkbox_item(consumptions,$index)" name="selected" data-ng-model="x.selected"></td>
+                            <td><input type="checkbox"  data-ng-change="is_checkbox_item_cash(consumptions,$index)" name="cash_selected" data-ng-model="x.cash_selected"></td>
+                            <td>{{x.agent_code}}</td>
+                            <td>{{x.consumption_type}}</td>
+                            <td>{{ x.sell_total | parseTenThousandToYuan | parseYuan }}</td>
+                            <td>{{ x.book_time | limitTo : 16}}</td>
+                        </tr>
+                        <tr data-ng-show="consumptions.length == 0">
+                            <td colspan="30">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    </div>
+                </div>
+            <footer class="table-footer">
+                <div class="text-right pagination-container pull-right">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                </div>
+            </footer>
+            <!--<div style="width: 100%;margin-top: 70px">
+                操作密碼：<input data-ng-model="consumption_transfer.pin_code" type="password"/>
+            </div>-->
+            <div class="row" style="text-align: center;margin-top: 10px">
+                <button class="btn btn-info btn-information margin-right-15" ng-click="submit_btn()">提交</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+    </div>

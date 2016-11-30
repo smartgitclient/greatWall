@@ -1,0 +1,66 @@
+<div class="page ">
+    <form name="$parent.form_hotel_sub" class="ng-valid ng-dirty form-validation"  server-validation="{{sub_post_put}}{{consumptionhotelSubs_url}}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading"><strong>房間消費</strong></div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td width="180" align="center">入住日期</td>
+                                <td align="center">房間號碼</th>
+                                <td width="180" align="center">房間消費</td>
+                                <td width="180" align="center">結算日期</td>
+                                <td width="180" align="center">更數</th>
+                                <td width="180" align="center">付款方式</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="sub in consumptionHotelSubs | orderBy:'day'">
+                            <td>
+                                <span data-ng-show="!view_type">{{sub.day}} {{ day_types[sub.day_type] }}</span>
+                                <span data-ng-show="'detail' == view_type">{{sub.checkin_datetime | limitTo : 10}} {{ day_types[sub.day_type] }}</span>
+                            </td>
+                            <td>
+                                <span data-ng-show="!view_type">{{sub.room_no}}</span>
+                                <span data-ng-show="'detail' == view_type">{{ sub.room_no }}</span>
+                            </td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.should_pay | parseTenThousandToYuan : false | parseYuan :false }}</span>
+                                <input type="text" data-ng-show="!view_type" data-ng-model="sub.should_pay" dynamic-name="consumptionHotelSubs_{{$index}}_should_pay" class="form-control" ></td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.shift_date | limitTo : 10 }}</span>
+                                <p class="input-group ui-datepicker" data-ng-show="!view_type">
+                                    <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="sub.shift_date" date-disabled="disabled(date, mode)" close-text="Close" dynamic-name="consumptionHotelSubs_{{$index}}_shift_date" ng-disabled="COPY_BOOKING_hotel" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.shift }}</span>
+                                <select data-ng-show="!view_type" name="shift" dynamic-name="consumptionHotelSubs_{{$index}}_shift" class="form-control" data-ng-model="sub.shift" data-ng-options="n.shift_name as n.shift_name for n in shiftLists"  >
+                                    <option value="">請選擇更數</option>
+                                </select>
+                            </td>
+                            <td>
+                                <span data-ng-show="'detail' == view_type">{{ sub.pay_type }}</span>
+                                <select data-ng-show="!view_type" name="pay_type_id" dynamic-name="consumptionHotelSubs_{{$index}}_pay_type_id" class="form-control" data-ng-model="sub.pay_type_id" ng-options="n.id as n.pay_type_name for n in pay_types"  >
+                                    <option value="">請選擇付款方式</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button data-ng-show="!view_type" class="btn btn-confirm" data-ng-disabled="isDisabled" ng-click="add()">提交</button>
+            <button data-ng-show="!view_type" class="btn btn-cancel" ng-click="cancel()">取消</button>
+            <button data-ng-show="'detail' == view_type" class="btn  btn-confirm" ng-click="cancel_detail()">返回</button>
+        </div>
+    </div>
+    </form>
+</div>

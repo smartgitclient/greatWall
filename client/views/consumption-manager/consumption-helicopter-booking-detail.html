@@ -1,0 +1,126 @@
+ <div class="col-md-4" data-ng-controller="consumptionHelicopterBookingDetailCtrls">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr height="50">
+                    <td class="text-right"  width="100">預訂單號：</td>
+                    <td class="text-left"  width="160">{{helicopterBooking.consumption.book_no}}</td>
+                    <td class="text-right"  width="100">所屬廳館：</td>
+                    <td class="text-left"  width="160">{{helicopterBooking.consumption.hall_name}}</td>
+                </tr>
+                <tr>
+                  <td class="text-right">新增時間：</td>
+                  <td class="text-left">{{helicopterBooking.consumption.book_time  | limitTo : 16}}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="text-right ">年月：</td>
+                  <td class="text-left">{{helicopterBooking.consumption.year_month | limitTo : 7 }}</td>
+                  <td class="text-right ">結算日期：</td>
+                  <td class="text-left">{{helicopterBooking.consumption.shift_date | limitTo : 11 }}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left">{{helicopterBooking.consumption.agent_code}}</td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{helicopterBooking.consumption.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">行程：</td>
+                    <td class="text-left">{{helicopterBooking.trip}}</td>
+                    <td class="text-right">出發日期：</td>
+                    <td class="text-left">{{helicopterBooking.setout_date}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">時間：</td>
+                    <td class="text-left">{{helicopterBooking.setout_time | limitTo: -8 | limitTo: 5 }}</td>
+                    <td class="text-right">數量：</td>
+                    <td class="text-left">{{helicopterBooking.count}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <br>
+            <div style="position: relative;">
+                <perfect-scrollbar class="animate-fade-up" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div style="max-height: 200px;">
+                        <table class="BGcolor-626571 table table-bordered table-striped">
+                            <tbody  ng-repeat="consumptionHelicopterSub in helicopterBooking.consumptionHelicopterSubs">
+                            <tr height="50">
+                                <td width="100" class="text-right">客人名稱：</td>
+                                <td width="160" class="text-left">{{ consumptionHelicopterSub.passenger }}</td>
+                                <td width="100" class="text-right">證件類型：</td>
+                                <td width="160" class="text-left">{{ consumptionHelicopterSub.id_card }}</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">證件號碼：</td>
+                                <td class="text-left">{{ consumptionHelicopterSub.idcard_no }}</td>
+                                <td class="text-right">聯絡電話：</td>
+                                <td class="text-left">{{ consumptionHelicopterSub.telephone_number }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+
+            <br>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr height="50">
+                    <td class="text-right" width="100">成本單價：</td>
+                    <td class="text-left" width="160">{{ helicopterBooking.cost | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right" width="110">實收單價：</td>
+                    <td class="text-left" width="160">{{ helicopterBooking.sell | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">成本總數：</td>
+                    <td class="text-left">{{ helicopterBooking.consumption.cost_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">實收總數：</td>
+                    <td class="text-left">{{ helicopterBooking.consumption.sell_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left">{{ helicopterBooking.consumption.profit | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">狀態：</td>
+                    <td class="text-left">{{ bookingState_items[helicopterBooking.consumption.status] }}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right" width="100">應付消費：</td>
+                    <td class="text-left" width="160">{{helicopterBooking.consumption.should_pay | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">付款方式：</td>
+                    <td class="text-left">{{ helicopterBooking.pay_type }}</td>
+                </tr>
+                <!--<tr height="50">
+                    <td class="text-right">簽單人：</td>
+                    <td class="text-left">{{  }}</td>
+                    <td class="text-right">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                </tr>-->
+                <tr height="50">
+                    <td class="text-right">訂票人：</td>
+                    <td class="text-left">{{ helicopterBooking.consumption.trader }}</td>
+                    <td class="text-right">電話：</td>
+                    <td class="text-left">{{helicopterBooking.consumption.area_code}} {{ helicopterBooking.consumption.trader_tel }}</td>
+                </tr>
+                <tr>
+                    <td valign="top" class="text-right">備註：</td>
+                    <td  valign="top" colspan="3"  class="text-left">{{ helicopterBooking.consumption.remark}}</td>
+                </tr>
+                <!--tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td colspan="3" class="text-left"><input type="text" data-ng-model="helicopter.pwd" class="form-control input-140"></td>
+                </tr-->
+                </tbody>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;" check-permissions="consumptionRecordUpdate">
+                <button class="btn btn-confirm margin-right-15"  data-ng-click="detail_update()"
+                        ng-show='bookingState_items[helicopterBooking.consumption.status]!="已結算"'>修 改</button>
+                <button class="btn btn-cancel" data-ng-click="detail_cancel()">取 消</button>
+            </div>
+        </div>
+    </div>
+    </div>

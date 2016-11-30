@@ -1,0 +1,83 @@
+<div class="page page-services ng-scope">
+<div class="panel-content">
+
+   <div class="row">
+        <div class="col-md-6">
+           <div class="panel panel-list-detail">
+              <div class="panel-heading">
+                <strong>常用模板</strong>
+              </div>
+              <div class="panel-content">
+                  <table class="table table-bordered table-striped table-hover table-click">
+                      <thead>
+                      <tr>
+                          <td width="85">部門</td>
+                          <td width="85">顯示模組</td>
+                          <td>模板名稱</td>
+                          <!--<td width="50">操作</td>-->
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr data-ng-repeat="smsTemplate in smsTemplates" data-selected-rows data-ng-click="detail(smsTemplate)">
+                          <td><span class="a-hover">{{smsTemplate.department_name}}</span></td>
+                          <td><span class="a-hover">常用</span></td>
+                          <td><span class="a-hover">{{smsTemplate.template_name}}</span></td>
+                          <!--<td>-->
+                              <!--<button class="btn btn-information btn-table margin-right-5" data-ng-click="detail(smsTemplate)" type="button">詳細</button>-->
+                          <!--</td>-->
+                      </tr>
+                      <tr data-ng-show="smsTemplates.length == 0">
+                          <td colspan="4">暫無符合條件的記錄</td>
+                      </tr>
+                      </tbody>
+                  </table>
+                  <footer class="table-footer">
+                      <div class="text-right pagination-container">
+                          <pagination class="pagination"
+                                      page="pagination.page"
+                                      total-items="pagination.total_items"
+                                      on-select-page="select(page)"
+                                      max-size = "pagination.max_size"
+                                      items-per-page = "pagination.items_per_page"
+                                      data-ng-show="smsTemplates.length > 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                          <!--<paginationselect pageCtrl="pagination" select-page="select"></paginationselect>-->
+                      </div>
+                  </footer>
+
+        </div>
+    </div>
+</div>
+        <div class="col-md-6">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong></strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                        <tr style="min-height: 400px;">
+                            <td width="100" valign="top" class="text-right">
+                                模板內容：
+                            </td>
+                            <td>
+                               {{record.content}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+       <br/><br/>
+       <div class="col-md-12">
+           <div class="row" style="text-align: center;">
+               <button class="btn btn-confirm margin-right-15" data-ng-click="selected()" type="button">選取</button>
+               <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" type="button">關閉</button>
+           </div>
+       </div>
+   </div>
+
+</div>
+
+
+</div>

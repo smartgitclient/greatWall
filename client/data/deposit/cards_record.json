@@ -1,0 +1,6 @@
+[
+    {"id":"0","hall":"永利鉅星","agent_code":"FA233","agent_name":"陳達文","type":"存款","amount":"300","balance":"300","available_balance":"100","frozen_fund":"0","created":"2014-8-8 16:28:00","duty_number":"中更","brokerage":"李麗","dealer":"張三","remark":""},
+    {"id":"1","hall":"永利鉅星","agent_code":"FV8","agent_name":"王易","type":"存款","amount":"300","balance":"300","available_balance":"100","frozen_fund":"0","created":"2014-8-8 16:28:00","duty_number":"中更","brokerage":"李麗","dealer":"張三","remark":""},
+    {"id":"2","hall":"永利鉅星","agent_code":"FV8","agent_name":"王易","type":"存款","amount":"200","balance":"500","available_balance":"100","frozen_fund":"0","created":"2014-8-8 16:28:00","duty_number":"中更","brokerage":"李麗","dealer":"張三","remark":""},
+    {"id":"3","hall":"永利鉅星","agent_code":"QU666","agent_name":"于飛","type":"存款","amount":"500","balance":"500","available_balance":"100","frozen_fund":"0","created":"2014-8-8 16:28:00","duty_number":"中更","brokerage":"李麗","dealer":"張發","remark":""}
+ ]

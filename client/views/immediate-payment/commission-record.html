@@ -1,0 +1,133 @@
+<div class="page page-services ng-scope" data-ng-controller="commissionRecordCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>出佣查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table class="block-center" style="width: 70%">
+                    <tr height="50">
+                        <!--<td width="140" class="text-right">出佣廳：</td>-->
+                        <!--<td width="180">-->
+                            <!--<select data-ng-model="condition.out_hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                            <!--<option value = "">請選擇出佣廳</option>-->
+                            <!--</select>-->
+                        <!--</td>-->
+                        <td width="140" class="text-right">即出到：</td>
+                        <td width="180">
+                            <input type="text"
+                                   data-ng-model="condition.toAgent.agent_code"
+                                   data-input-uppercase
+                                   class="form-control">
+                        </td>
+                        <td width="140" class="text-right">年   月：</td>
+                        <td width="180">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.shiftMark.year_month[0]" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                            </p>
+                        </td>
+                        <td width="140" class="text-right">日   期：</td>
+                        <td width="180">
+                            <p class="input-group ui-datepicker  pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.immediate_date[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <!--<tr height="50">-->
+                        <!--<td width="140" class="text-right">即出到：</td>-->
+                        <!--<td width="180">-->
+                            <!--<input type="text"-->
+                                   <!--data-ng-model="condition.toAgent.agent_code"-->
+                                   <!--data-input-uppercase-->
+                                   <!--class="form-control">-->
+                        <!--</td>-->
+                        <!--<td width="120" class="text-right">狀態：</td>-->
+                        <!--<td width="180">-->
+                                <!--<select data-ng-model="condition.status" class="form-control" >-->
+                                    <!--<option value="">請選擇狀態</option>-->
+                                    <!--<option ng-repeat="(key,title) in commission_record_status.items" value="{{key}}">{{title}}</option>-->
+                                <!--</select>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm margin-right-15" ng-click="select()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <div class="panel-heading">
+            <strong>出佣記錄</strong>
+            <button class="btn btn-information pull-right" ng-click="addOrder('','')">列印</button>
+            <!--button class="btn btn-information pull-right" ng-click="addOrder('','')">導出Excel</button-->
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <!--<td>出佣廳</td>-->
+                    <td>即出廳</td>
+                    <td>新增時間</td>
+                    <td>戶口編號</td>
+                    <td>姓名</td>
+                    <td>即出到</td>
+                    <td>應出佣金</td>
+                    <td>實出佣金</td>
+                    <td>尾數</td>
+                    <td>總轉碼(萬)</td>
+                    <td>負消費</td>
+                    <td width="200">備註</td>
+                    <!--<td>狀態</td>-->
+                    <td>經手人</td>
+                    <td width="120" data-min-screen-width="100" check-permissions="immediatePaymentRecordRelease,immediatePaymentRecordView,immediatePaymentRecordDelete">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="commissionRecord in commissionRecords" data-selected-rows>
+                    <!--<td>{{commissionRecord.out_hall_name}}</td>-->
+                    <td>{{commissionRecord.hall_name}}</td>
+                    <td>{{commissionRecord.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{commissionRecord.from_agent_code}}</td>
+                    <td>{{commissionRecord.from_agent_name}}</td>
+                    <td>{{commissionRecord.to_agent_code}}</td>
+                    <td>{{commissionRecord.commission_amount|parseDollar:true}}</td>
+                    <td>{{commissionRecord.actual_commission|parseDollar:true}}</td>
+                    <td>{{commissionRecord.omit_commission|parseDollar:true}}</td>
+                    <td>{{commissionRecord.rolling_amount|parseTenThousand2}}</td>
+                    <td>{{commissionRecord.negative_consumption|parseDollar:true}}</td>
+                    <td class="text-left">{{commissionRecord.remark}}</td>
+                    <!--<td>{{commission_record_status.items[commissionRecord.status]}}</td>-->
+                    <td>{{commissionRecord.user_name}}</td>
+                    <td check-permissions="immediatePaymentRecordRelease,immediatePaymentRecordView,immediatePaymentRecordDelete">
+                        <!--<button class="btn btn-information btn-table margin-right-5" data-ng-click="immediateCommission(commissionRecord.id)" data-ng-show="commissionRecord.status == '1'" check-permissions="immediatePaymentRecordRelease">出佣</button>-->
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-click="detail(commissionRecord.id)" check-permissions="immediatePaymentRecordView">詳細</button>
+                        <!--<button class="btn btn-information btn-table margin-right-5" data-ng-click="delete(commissionRecord.id)" check-permissions="immediatePaymentRecordDelete">刪除</button>-->
+                    </td>
+                </tr>
+                <tr data-ng-show="commissionRecords.length == 0">
+                    <td colspan="15">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+            </div>
+        </footer>
+
+    </div>
+</div>

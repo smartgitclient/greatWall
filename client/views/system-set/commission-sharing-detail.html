@@ -1,0 +1,108 @@
+<div class="page page-services ng-scope" >
+    <div class="row">
+        <div class="col-md-12 pop-dotal">
+            <div class="panel panel-form-list" style="margin-bottom: 0px;padding: 20px 15px 15px 0px">
+                <form name="$parent.form_commission" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{commissions_rule_url}}">
+                <div class="panel-content" style="padding-bottom: 0px;">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="120" class="text-right">所在廳：</td>
+                            <td data-min-screen-width="200">{{hall_name}}</td>
+                            <td width="120" class="text-right" data-min-screen-width="165">佣金類型：</td>
+                            <td data-min-screen-width="200">{{commissionTypes[commissiondivide.commission_type]}}</td>
+                            <td width="120" class="text-right">本金類型：</td>
+                            <td data-min-screen-width="200">{{commissiondivide.capital_type_name}}</td>
+                            <td width="120" class="text-right">字母：</td>
+                            <td data-min-screen-width="200">{{commissiondivide.letter_mark}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-list-detail">
+                                <div class="panel-heading" style="padding: 0;">新設定</div>
+                                <div class="panel-content">
+                                    <table>
+                                        <tbody>
+                                        <tr height="50">
+                                            <td class="text-right">佣金總額：</td>
+                                            <td width="100">{{commission_total()}}</td>
+                                            <td class="text-right">積分總額：</td>
+                                            <td>{{integral_total()}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>用戶類型</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="commissionDivideHallSub in commissiondivide_detail.commissionDivideHallSubs">
+                                            <td>{{userType[$index]}}</td>
+                                            <td><input data-dynamic-name ="commissionDivideHallSubs_{{num}}_commissionDivideHallSubs_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionDivideHallSub.commission_should"></td>
+                                            <td><input data-dynamic-name ="commissionDivideHallSubs_{{num}}_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionDivideHallSub.integral_should"></td>
+                                            <td>
+                                                <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addCommissions()"></i>
+                                                <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeCommissions($index)"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="float: right;">
+                            <div class="panel panel-list-detail">
+                                <div class="panel-heading" style="padding: 0;">原設定</div>
+                                <div class="panel-content">
+                                    <table>
+                                        <tbody>
+                                        <tr height="50">
+                                            <td class="text-right">佣金總額：</td>
+                                            <td width="100">{{commissiondivide_update.commission_total}}</td>
+                                            <td class="text-right">積分總額：</td>
+                                            <td>{{commissiondivide_update.integral_total}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>用戶類型</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="commissionDivideHallSub_update in commissiondivide_update.commissionDivideHallSubs">
+                                            <td>{{userType[$index]}}</td>
+                                            <td>{{commissionDivideHallSub_update.commission_should}}</td>
+                                            <td>{{commissionDivideHallSub_update.integral_should}}</td>
+                                        </tr>
+                                        <tr data-ng-show="commission_update.commissionDivideHallSubs.length == 0">
+                                            <td colspan="5">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-information margin-right-15" ng-click="update()" data-ng-disabled="disabled_submit" >確定</button>
+                        <button class="btn btn-cancel" data-ng-click="return()">關閉</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="page page-grid" data-ng-controller="ConsumptionSetShipBascCtrls">
+    <div class="col-md-5">
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <form name="form_ship"  class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{form_url}}">
+
+                    <strong>城市地區管理</strong>
+                    <table class="pull-right">
+                        <tbody>
+                        <tr>
+                            <td width="140"><input type="text" data-ng-model="ship.boat_city" name="boat_city" class="form-control margin-top-10"></td>
+                            <td><button class="btn btn-inf btn-confirm" data-ng-disabled="isDisabled" data-ng-click="submit()">新增</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>城市地區</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="city in boat_citys" data-selected-rows>
+                        <td>{{ city.boat_city }}</td>
+                        <td class="no-padding"><button class="btn btn-inf btn-information btn-table" data-ng-click="delete (city.id)">刪除</button></td>
+                    </tr>
+                    <tr data-ng-show="!boat_citys.length">
+                        <td colspan="2">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="page.page"
+                                total-items="page.total_items"
+                                on-select-page="search(page)"
+                                max-size = "page.max_size"
+                                data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                </div>
+            </footer>
+        </div>
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <form name="form_seat"  class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{form_url_seat}}">
+                    <strong>艙位管理</strong>
+                    <table class="pull-right">
+                        <tbody>
+                        <tr>
+                            <td width="140"><input type="text" name="boat_seat_type" data-ng-model="seat.boat_seat_type" class="form-control margin-top-10"></td>
+                            <td><button class="btn btn-confirm" data-ng-disabled="isDisabled_seat" data-ng-click="submit_seat()">新增</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>艙位</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  data-ng-repeat="boat_seat_type in boat_seat_types" data-selected-rows>
+                        <td>{{ boat_seat_type.boat_seat_type }}</td>
+                        <td class="no-padding"><button class="btn  btn-information btn-table" data-ng-click="delete_seat(boat_seat_type.id)">刪除</button></td>
+                    </tr>
+                    <tr data-ng-show="!boat_seat_types.length">
+                        <td colspan="2">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="page_seat.page"
+                                    total-items="page_seat.total_items"
+                                    on-select-page="seat_search(page)"
+                                    max-size = "page_seat.max_size"
+                                    items-per-page = "page_seat.items_per_page"
+                                    data-ng-hide="page_seat.total_items <= page_seat.items_per_page"></pagination>
+                        <paginationselect pageCtrl="page_seat" select-page="seat_search"></paginationselect>
+                    </div>
+                </footer>
+                <button class="btn btn-information pull-right" data-ng-click="goback()">返回</button>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

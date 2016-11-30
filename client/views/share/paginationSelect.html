@@ -1,0 +1,11 @@
+<div class="pull-left text-left pagination-select" data-ng-show="page_directive.total_items">
+    <div class="pull-left pagination" style="padding: 4px 5px; margin-right: 10px">
+        每頁<input class="form-control"  data-enter-key="paginationSelectChange()" data-ng-model="page_directive.items_per_page" style="width: 30px;display: inline;padding: 4px; height: 22px"/>條
+    </div>
+    <div class="pull-left pagination" style="padding: 4px 5px;margin-right: 4px">
+        <input class="form-control"  data-enter-key="paginationSelectChange()" data-ng-model="page_directive.page" style="width: 30px;display: inline;padding: 4px; height: 22px"/>/{{ page_directive.total_pages }}頁
+    </div>
+    <div class="pull-left pagination" style="padding: 7px 5px 6px 5px; margin-right: 10px">
+        <a src="#"data-ng-click="paginationSelectChange()" style="color: #FFF;cursor: pointer"><i class="fa fa-long-arrow-right"></i></a>
+    </div>
+</div>

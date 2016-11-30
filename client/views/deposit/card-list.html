@@ -1,0 +1,167 @@
+<div class="page page-grid" data-ng-controller="depositCardListCtrl">
+<div class="panel panel-default">
+<div class="col-md-4" data-ng-show="user.checkPermissions('depositCardCreate') || (user.checkPermissions('depositCardNameUpdate') && deposit_card.id)">
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>新增存卡</strong>
+                <button class="btn btn-confirm pull-right" data-ng-click="addCard()" check-permissions="depositCardCreate">新增存卡</button>
+            </div>
+            <div class="panel-content">
+                <form name="form_deposit_card_create" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{deposit_card_url}}">
+                    <table>
+                        <tr height="50">
+                            <td data-min-screen-width="70" class="text-right">戶口編號：</td>
+                            <td data-min-screen-width="100"><input data-input-uppercase data-ng-required="enableClientValidation" name="agent_info_id" type="text" data-ng-model="deposit_card.agent_code" data-ng-disabled="disabled_update" class="form-control"></td>
+                            <td width="120" class="text-right">戶口姓名：</td>
+                            <td>{{deposit_card.agent_name}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">存卡名稱：</td>
+                            <td><input data-input-uppercase type="text" name = "card_name" data-ng-model="deposit_card.card_name" class="form-control"></td>
+                            <td align="center" colspan="2">
+                                <span check-permissions="depositCardNegativeCreate"><input type="checkbox" name="selected" data-ng-model="deposit_card.selected">&nbsp;允許負數</span>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">操作密碼：</td>
+                            <td><input type="password" name = "pin_code" data-ng-model="deposit_card.pin_code" class="form-control" data-enter-key="add()"></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table><br/><br/>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交并列印</button>
+                        <!--<button class="btn btn-cancel" ng-click="reset_deposit_card()" >重置</button>-->
+                        <button class="btn btn-cancel" ng-click="addCard()" >取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>存卡查詢</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td class="text-right" width="120" >廳館：</td>
+                                <td width="160" data-ng-show="user.isAllHall()">
+                                    <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                        <option value = "">請選擇廳館</option>
+                                    </select>
+                                </td>
+                                <td width="160" data-ng-hide="user.isAllHall()">
+                                    {{user.hall.hall_name}}
+                                </td>
+                                <td width="120" class="text-right">戶口編號：</td>
+                                <td width="200"><input data-input-uppercase type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                                <td width="120" class="text-right">戶口姓名：</td>
+                                <td width="200"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                                <td width="120" class="text-right">存卡名稱：</td>
+                                <td width="200"><!-- Split button -->
+                                    <input type="text" data-input-uppercase data-ng-model="condition.card_name" class="form-control">
+                                </td>
+                                <td width="60">&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right" width="120">狀態：</td>
+                                <td width="160">
+                                    <select data-ng-model="status" class="form-control">
+                                        <option value = "">全部</option>
+                                        <!--<option value = "0">全部</option>-->
+                                        <option value = "0">有餘額</option>
+                                        <option value = "1">無餘額</option>
+                                    </select>
+                                </td>
+                                <td width="120" class="text-right">戶組：</td>
+                                <td width="200"><input data-input-uppercase type="text" data-ng-model="condition.agentGroup.agent_group_name" class="form-control"></td>
+                                <td colspan="5"></td>
+                            </tr>
+                        </table><br/><br/>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <button class="btn btn-info btn-information pull-right" report-btn channel-type="{{report_code}}" report-params="excel_condition">&nbsp;&nbsp;&nbsp;&nbsp;導出EXCEL&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    <!--button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button-->
+                </div>
+                <div class="panel-content table-dynamic">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>所屬廳館</td>
+                            <td data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="select" data-td-sort-pagination="pagination">戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td data-td-sort data-td-sort-up="card_name ASC" data-td-sort-down="card_name DESC" data-td-sort-select="select" data-td-sort-pagination="pagination">存卡名稱</td>
+                            <td>存卡餘額(萬)</td>
+                            <td>已凍結(飞数)(萬)</td>
+                            <td>存卡凍結(萬)</td>
+                            <td>可用餘額(萬)</td>
+                            <td>允許負數</td>
+                            <td check-permissions="depositCardNameUpdate,depositCardDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="deposit_card in deposit_cards" data-selected-rows>
+                            <td data-ng-show="user.isAllHall()">{{hall_name}}</td>
+                            <td data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</td>
+                            <td>{{deposit_card.agent_code}}</td>
+                            <td>{{deposit_card.agent_name}}</td>
+                            <td>{{deposit_card.card_name}}</td>
+                            <td><!--{{deposit_card.deposit_amount}}-->
+                                <span data-ng-show="deposit_card.deposit_amount >= 0" >{{deposit_card.deposit_amount|parseTenThousand2}}</span>
+                                <span data-ng-show="deposit_card.deposit_amount < 0" class="minus-number">{{deposit_card.deposit_amount|parseTenThousand2|plusMinus}}</span>
+
+                            </td>
+                            <td>{{deposit_card.frozen_amount|parseTenThousand2}}</td>
+                            <td>{{deposit_card.frozen_deposit_amount|parseTenThousand2}}</td>
+                            <!--<td><span data-ng-show="ticket.frozen_deposit_amount == 0">0</span>-->
+                                <!--<span data-ng-show="ticket.frozen_deposit_amount != '0'" class="minus-number ng-binding">{{ticket.frozen_deposit_amount|parseTenThousand2|plusMinus}}</span>-->
+                            <!--</td>-->
+                            <td>
+                                <span data-ng-show="deposit_card.usable_amount >= 0" >{{deposit_card.usable_amount|parseTenThousand2}}</span>
+                                <span data-ng-show="deposit_card.usable_amount < 0" class="minus-number">{{deposit_card.usable_amount|parseTenThousand2|plusMinus}}</span>
+                            </td>
+                            <td>{{deposit_card.allow_negative == '1'?'是':'否'}}</td>
+                            <td check-permissions="depositCardNameUpdate,depositCardDelete">
+                                <button class="btn btn-information btn-table" ng-click="update(deposit_card.id)" check-permissions="depositCardNameUpdate">修改</button>
+                                <button data-ng-hide="deposit_card.status > 0" class="btn btn-information btn-table" ng-click="delete(deposit_card.id)" check-permissions="depositCardDelete">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="deposit_cards.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer" data-ng-hide="show">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

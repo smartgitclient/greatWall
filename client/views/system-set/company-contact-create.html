@@ -1,0 +1,167 @@
+<div class="page page-grid" data-ng-controller="companyContactCreateCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-5" check-permissions="compContactCreate">
+            <div class="panel_r">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading">
+                        <strong>新增公司聯絡人</strong>
+                        <button class="btn btn-confirm pull-right" data-ng-click="addContact()">新增公司聯絡人</button>
+                    </div>
+                    <div class="panel-content">
+                        <form name="form_com_contact_create" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{comp_contact_url}}">
+                            <table>
+                                <tr height="50">
+                                    <td width="70" class="text-right">姓名：</td>
+                                    <td><input data-ng-required="enableClientValidation" name="comp_contact_name" type="text" data-ng-model="comp_contact.comp_contact_name" data-ng-disabled="disabled_update" class="form-control"></td>
+
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">電話：</td>
+                                    <td>
+                                        <table class="table table-bordered table-striped">
+                                            <!--<thead>-->
+                                            <!--<tr>-->
+                                            <!--&lt;!&ndash;<td width="180">聯絡人類型</td>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<td width="150">姓名</td>&ndash;&gt;-->
+                                            <!--<td width="250">通知類型</td>-->
+                                            <!--<td width="200">地區</td>-->
+                                            <!--<td width="200">號碼</td>-->
+                                            <!--<td></td>-->
+                                            <!--</tr>-->
+                                            <!--</thead>-->
+                                            <tbody>
+                                            <tr data-ng-repeat="comp_contact_tel in comp_contact.compContactTels">
+                                                <!--<td>-->
+                                                <!--<select data-ng-required="enableClientValidation" data-dynamic-name = "compContactTels_{{$index}}_notice_type" data-ng-model="comp_contact_tel.notice_type" class="form-control"  >&lt;!&ndash;data-ng-options="st.type_code as st.sms_notice_type for st in smsnoticeTypes"&ndash;&gt;-->
+                                                <!--<option value="">請選擇通知類型</option>-->
+                                                <!--<option value="3">全部</option>-->
+                                                <!--<option value="1">短信</option>-->
+                                                <!--<option value="2">電話</option>-->
+                                                <!--</select>-->
+                                                <!--</td>-->
+                                                <td>
+                                                    <select data-ng-required="enableClientValidation" data-dynamic-name = "compContactTels_{{$index}}_area_code_id" data-ng-model="comp_contact_tel.area_code_id" class="form-control" data-ng-options="ac.id as ac.area_code for ac in areaCodes">
+                                                        <option value="">請選擇地區</option>
+                                                    </select>
+                                                </td>
+                                                <td><input data-ng-required="enableClientValidation" data-dynamic-name = "compContactTels_{{$index}}_telephone_number" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="comp_contact_tel.telephone_number"></td>
+                                                <td class="td_icon">
+                                                    <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addTel()"></i>
+                                                    <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeTel($index)"></i>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td class="text-right">備註：</td>
+                                    <td>
+                                        <textarea id="remark" data-ng-maxlength="100" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="comp_contact.remark" name="remark"></textarea>
+                                    </td>
+                                </tr>
+                                <tr height="50">
+                                    <td width="70" class="text-right">密碼：</td>
+                                    <td><input data-ng-required="enableClientValidation" name="password" type="password" data-ng-model="comp_contact.pin_code" class="form-control" data-enter-key="add()"></td>
+
+                                </tr>
+                            </table>
+                            <br><br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                                <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel_l col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+                    <!--<div class="panel panel-form-list">-->
+                    <!--<div class="panel-heading"><strong>公司聯絡人列表</strong></div>-->
+                    <!--<div class="panel-content">-->
+                    <!--<form name="form_search">-->
+                    <!--<table>-->
+                    <!--<tr height="50">-->
+                    <!--<td class="text-right" width="120" >廳館：</td>-->
+                    <!--<td width="160" data-ng-show="user.isAllHall()">-->
+                    <!--<select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                    <!--<option value = "">請選擇廳館</option>-->
+                    <!--</select>-->
+                    <!--</td>-->
+                    <!--<td width="160" data-ng-hide="user.isAllHall()">-->
+                    <!--{{user.hall.hall_name}}-->
+                    <!--</td>-->
+                    <!--<td width="120" class="text-right">戶口編號：</td>-->
+                    <!--<td width="200"><input data-input-uppercase type="text" data-ng-model="condition.agent_code" class="form-control"></td>-->
+                    <!--<td width="120" class="text-right">戶口姓名：</td>-->
+                    <!--<td width="200"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>-->
+                    <!--<td width="120" class="text-right">存卡名稱：</td>-->
+                    <!--<td width="200">&lt;!&ndash; Split button &ndash;&gt;-->
+                    <!--<input type="text" data-input-uppercase data-ng-model="condition.card_name" class="form-control">-->
+                    <!--</td>-->
+                    <!--<td width="60">&nbsp;</td>-->
+                    <!--</tr>-->
+                    <!--</table>-->
+                    <!--<br><br><br>-->
+                    <!--<div class="row" style="text-align: center;">-->
+                    <!--<button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>-->
+                    <!--<button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>-->
+                    <!--</div>-->
+                    <!--</form>-->
+                    <!--</div>-->
+                    <!--<div class="panel-footer">-->
+
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td width="100">姓名</td>
+                                    <td>備註</td>
+                                    <td width="150" check-permissions="compContactDelete,compContactUpdate">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="contact in comp_contacts" data-selected-rows>
+                                    <td>{{contact.comp_contact_name}}</td>
+                                    <td>{{contact.remark}}</td>
+                                    <td check-permissions="compContactDelete,compContactUpdate">
+                                        <button class="btn btn-information btn-table" check-permissions="compContactUpdate" ng-click="update(contact.id)">修改</button>
+                                        <button class="btn btn-information btn-table" check-permissions="compContactDelete" ng-click="delete(contact.id)">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="comp_contacts.length == 0">
+                                    <td colspan="3">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

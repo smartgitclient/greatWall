@@ -1,0 +1,200 @@
+<div class="page page-services ng-scope">
+    <div class="modal-header">
+        <!--<button type="button" class="close" ng-click="cancel()">×</button>-->
+        <h4 class="modal-title" id="myModalLabel">
+            <h3>離場信息</h3>
+        </h4>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="col-md-6">
+                    <div class="panel-heading">場次記錄</div>
+                    <div class="row">
+                        <table class="table table-bordered table-striped table-02">
+                            <tr>
+                                <td width="100">場次編號：</td>
+                                <td>{{scene_record.scene_no}}</td>
+                                <td width="100">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>轉碼戶口：</td>
+                                <td>{{scene_record.agent_code}}</td>
+                                <td>戶口姓名：</td>
+                                <td>{{scene_record.agent_name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel-heading"></div>
+                    <table class="table table-bordered table-striped  table-detail-01" height="87">
+                        <tr>
+                            <td class="text-right" width="100">批額備註：</td>
+                            <td>{{scene_record.quota_remark}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="col-md-6">
+                    <div class="panel-heading">入場本金記錄</div>
+                    <div class="row">
+                        <table class="table table-bordered table-striped table-02">
+                            <tr>
+                                <td>本金(萬)</td>
+                                <td>資金類型</td>
+                            </tr>
+                            <tr data-ng-repeat="refrecentlyRolling in refrecentlyRollings">
+                                <td>{{refrecentlyRolling.amount|parseTenThousand2}}</td>
+                                <td>{{loanTypes[refrecentlyRolling.ld_type]}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" data-ng-hide="refrecentlyRollings.length>0">
+                                    暫無數據
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel-heading">轉碼流水記錄</div>
+                    <div data-ng-show="rollingRecords.length < 8 ">
+                            <table class="table table-bordered table-striped table-02">
+                                <tr>
+                                    <td>轉碼數(萬)</td>
+                                    <td>轉碼時間</td>
+                                    <td>備註</td>
+                                </tr>
+                                <tr data-ng-repeat="rollingRecord in rollingRecords">
+                                    <td>{{rollingRecord.rolling|parseTenThousand2}}</td>
+                                    <td>{{rollingRecord.roll_time |parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{rollingRecord.remark}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" data-ng-hide="rollingRecords.length>0">
+                                        暫無數據
+                                    </td>
+                                </tr>
+                            </table>
+                    </perfect-scrollbar>
+                    <div class="clear"></div>
+                    </div>
+                    <div style="height:345px" data-ng-show="rollingRecords.length >= 8 ">
+                        <perfect-scrollbar id="content" class="animate-fade-up col-md-6" style="left:0;top:50px;height:343px;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+                            <table class="table table-bordered table-striped table-02">
+                                <tr>
+                                    <td>轉碼數(萬)</td>
+                                    <td>轉碼時間</td>
+                                    <td>備註</td>
+                                </tr>
+                                <tr data-ng-repeat="rollingRecord in rollingRecords">
+                                    <td>{{rollingRecord.rolling|parseTenThousand2}}</td>
+                                    <td>{{rollingRecord.roll_time |parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{rollingRecord.remark}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" data-ng-hide="rollingRecords.length>0">
+                                        暫無數據
+                                    </td>
+                                </tr>
+                            </table>
+                        </perfect-scrollbar>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+                <div class="panel panel-form-list">
+                    <div class="col-md-6">
+                        <form name="$parent.form_departure" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_departure_url}}">
+                            <div class="panel-heading">
+                                轉碼數分卡
+                                <span class="pull-right">總轉碼數：{{rolling_total|parseTenThousand2}}</span>
+                            </div>
+                            <div class="row">
+                                <table class="table table-bordered table-striped table-02">
+                                    <tr>
+                                        <td width="80">本金(萬)</td>
+                                        <td>類型</td>
+                                        <td>轉碼數</td>
+                                        <td>轉碼卡</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr data-ng-repeat="card_type in card_types.cards track by $index">
+                                        <td width="60">{{card_type.capital_amount|parseTenThousand2}}</td>
+                                        <td>{{card_type.capital_type}}</td>
+                                        <td>
+                                            <input type="text" data-ng-model="card_type.rolling_amount" class="form-control">
+                                        </td>
+                                        <td>{{card_type.card_type}}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-information pull-right" ng-click="card_selected(card_type)">選擇</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" data-ng-hide="card_types.cards.length>0">
+                                            暫無數據
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <td width="120" class="text-right">操作密碼：</td>
+                                        <td><input type="password" name="pin_code" data-ng-model="record_create.pin_code" class="form-control" data-enter-key="submit()"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel-heading">
+                            <form name="$parent.form_create_card" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_create_card_url}}">
+                            <table class="pull-right" style="font-size: 14px;">
+                                <tr>
+                                    <td width="80" class="text-right">卡名稱：</td>
+                                    <td class="text-right"><input type="text" data-ng-model="card_name" data-input-uppercase name="card_name" pattern="[A-Za-z0-9]+" title="只能輸入英文字母或數字" class="form-control"></td>
+                                    <td width="80" class="text-right">操作密碼：</td>
+                                    <td class="text-right"><input type="password" data-ng-model="pin_code" name="pin_code" class="form-control" data-enter-key="add_scene(card_name,pin_code)"></td>
+                                    <td class="text-right">
+                                        <button class="btn btn-info btn-information" ng-click="add_scene(card_name,pin_code)" style="margin-bottom: 10px;float: right;">新增</button>
+                                    </td>
+                                </tr>
+                            </table>
+                             </form>
+                        </div>
+                        <table class="table table-bordered table-check" style="padding-top: 0;">
+                            <tr>
+                                <td colspan="10" data-ng-show="type_record.capital_amount">本金：{{type_record.capital_amount|parseTenThousand}}&nbsp;&nbsp;本金類型：{{type_record.capital_type}}</td>
+                                <td colspan="10" data-ng-hide="type_record.capital_amount"></td>
+                            </tr>
+                            <tr data-ng-repeat="cards in card_rows">
+                                <td data-ng-repeat="card in cards">
+                                    <label class="btn btn-primary {{type_record.card_type==card.card_name?'active':''}}" ng-model="type_record_create.card_name" btn-radio="card.card_name" data-ng-click="card_change(card.card_name)">{{card.card_name}}</label>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="card_rows.length == 0">
+                                <td colspan="10">暫無符合條件的記錄</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="modal-footer">
+                <button class="btn btn-info btn-confirm" ng-click="submit()" data-ng-disabled="disabled_submit">提交</button>
+                <button class="btn btn-inf btn-cancel" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

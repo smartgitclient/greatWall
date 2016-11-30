@@ -1,0 +1,84 @@
+<div class="col-md-4" data-ng-controller="consumptionFoodFlyBookingDetailCtrls">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <tr height="50">
+                    <td class="text-right"  width="100">預訂單號：</td>
+                    <td class="text-left"  width="160">{{foodBooking.consumption.book_no}}</td>
+                    <td class="text-right"  width="100">所屬廳館：</td>
+                    <td class="text-left"  width="160">{{foodBooking.consumption.hall_name}}</td>
+                </tr>
+
+              <tr>
+                <td class="text-right">新增時間：</td>
+                <td class="text-left">{{foodBooking.consumption.book_time  | limitTo : 16}}</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="text-right ">年月：</td>
+                <td class="text-left">{{foodBooking.consumption.year_month | limitTo : 7 }}</td>
+                <td class="text-right ">結算日期：</td>
+                <td class="text-left">{{foodBooking.consumption.shift_date | limitTo : 11 }}</td>
+              </tr>
+
+                <tr height="50">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left">{{foodBooking.consumption.agent_code}}</td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{foodBooking.consumption.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">酒店：</td>
+                    <td class="text-left">{{foodBooking.hotel_name}}</td>
+                    <td class="text-right">餐廳：</td>
+                    <td class="text-left">{{foodBooking.restaurant}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">食額成本：</td>
+                    <td class="text-left">{{foodBooking.consumption.cost_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">食額實收：</td>
+                    <td class="text-left">{{foodBooking.consumption.sell_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left">{{foodBooking.consumption.profit | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">狀態：</td>
+                    <td class="text-left">{{ bookingState_items[foodBooking.consumption.status] }}</td>
+                </tr>
+                <!--<tr height="50">
+                    <td class="text-right">食額實收：</td>
+                    <td class="text-left">{{foodBooking.consumption.sell_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">狀態：</td>
+                    <td class="text-left">{{ bookingState_items[foodBooking.consumption.status] }}</td>
+                </tr>-->
+                <tr height="50">
+                    <td class="text-right">應付消費：</td>
+                    <td class="text-left">{{foodBooking.consumption.should_pay | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                    <td class="text-right">付款方式：</td>
+                    <td class="text-left">{{ pay_type_name }} </td>
+
+                </tr>
+                <tr height="50">
+                    <td class="text-right">簽單人：</td>
+                    <td class="text-left">{{foodBooking.consumption.trader}}</td>
+                    <td class="text-right">電話：</td>
+                    <td class="text-left">{{foodBooking.consumption.area_code}} {{foodBooking.consumption.trader_tel}}</td>
+                </tr>
+                <tr height="50">
+                    <td valign="top" class="text-right">
+                        備註：
+                    </td>
+                    <td valign="top" colspan="3"  class="text-left">{{foodBooking.consumption.remark}}</td>
+                </tr>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;" check-permissions="consumptionRecordUpdate" >
+                <button class="btn btn-confirm margin-right-15" data-ng-click="update()"
+                        ng-show='bookingState_items[foodBooking.consumption.status]!="已結算"'>修改</button>
+                <button class="btn btn-cancel" data-ng-click="cancel()">取 消</button>
+            </div>
+        </div>
+
+    </div>
+</div>

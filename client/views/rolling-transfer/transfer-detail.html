@@ -1,0 +1,102 @@
+<div class="page page-grid" data-ng-controller="rollingTransferDetailCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>基本信息</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table class="block-center">
+                                    <tr height="50">
+                                        <td width="150" class="text-right">所在廳：</td>
+                                        <td width="140">{{ transfer.hall_name }}</td>
+                                        <td width="150" class="text-right">轉出戶口：</td>
+                                        <td width="140">{{ transfer.out_agent_code }}</td>
+                                        <td width="150" class="text-right">轉出姓名：</td>
+                                        <td width="140">{{ transfer.out_agent_name }}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">轉出卡：</td>
+                                        <td width="140">{{ transfer.out_comm_card }}</td>
+                                        <td width="150" class="text-right">轉入戶口：</td>
+                                        <td width="140">{{ transfer.in_agent_code }}</td>
+                                        <td width="150" class="text-right">轉入姓名：</td>
+                                        <td width="140">{{ transfer.in_agent_name }}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">轉入卡：</td>
+                                        <td width="140">{{ transfer.in_comm_card }}</td>
+                                        <td width="150" class="text-right">轉移流量：</td>
+                                        <td width="140">{{ transfer.amount }}</td>
+                                        <td width="150" class="text-right">轉移時間：</td>
+                                        <td width="140">{{ transfer.oper_time }}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">備註：</td>
+                                        <td width="140" colspan="5">{{ transfer.remark }}</td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <!--div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                                </div-->
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉碼流水</strong>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>轉碼流水號</td>
+                                    <td>轉碼金額</td>
+                                    <td>資金類型</td>
+                                    <td>更數</td>
+                                    <td>轉碼時間</td>
+                                    <!--td>授權人</td-->
+                                    <td>操作機器</td>
+                                    <td width="260">備註</td>
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="refRollCardRecdTransfer in transfer.refRollCardRecdTransfers">
+                                    <td>{{ refRollCardRecdTransfer.rolling_record_no }}</td>
+                                    <td>{{ refRollCardRecdTransfer.amount }}</td>
+                                    <td>{{ fundSourceTypes_items[refRollCardRecdTransfer.funds_source]}}</td>
+                                    <td>{{ refRollCardRecdTransfer.shift }}</td>
+                                    <td>{{ refRollCardRecdTransfer.create_time }}</td>
+                                    <!--td>{{ refRollCardRecdTransfer.contact_name }}</td-->
+                                    <td>{{ refRollCardRecdTransfer.machine_name }}</td>
+                                    <td>{{ refRollCardRecdTransfer.remark }}</td>
+                                </tr>
+                                <tr data-ng-show="refRollCardRecdTransfers.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <!--footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items == 0 && pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

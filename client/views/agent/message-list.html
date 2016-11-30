@@ -1,0 +1,160 @@
+<div class="page page-services ng-scope" data-ng-controller="agentMessageListCtrl">
+<div class="page page-services ng-scope" data-ng-controller="agentMessageListCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>消息查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="120" align="right">接收部門：</td>
+                        <td width="209">
+                            <ui-select ng-model="condition.receiver">
+                                <ui-select-match placeholder="請選擇發出部門">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="r in receivers">
+                                    <div ng-bind-html="r"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                        <td width="120" align="right">户口編號：</td>
+                        <td width="209"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="60">&nbsp;</td>
+                        <td width="120" align="right">有效時間：</td>
+                        <td colspan="2">
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.effective_start_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.effective_end_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                        <td width="120" align="right">創建時間：</td>
+                        <td colspan="2">
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.created_start_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.created_end_time"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                        <td width="60">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" align="right">發出部門：</td>
+                        <td width="209"><!-- Split button -->
+                            <ui-select ng-model="condition.sender">
+                                <ui-select-match placeholder="請選擇發出部門">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="s in senders">
+                                    <div ng-bind-html="s"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="60">&nbsp;</td>
+                        <td width="100" align="right">操作人：</td>
+                        <td width="209">
+                            <input type="text" data-ng-model="condition.operator" class="form-control">
+                        </td>
+                        <td width="60">&nbsp;</td>
+                        <td width="120" align="right">狀態：</td>
+                        <td width="209">
+                            <ui-select ng-model="condition.status">
+                                <ui-select-match placeholder="請選擇狀態">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="s in status">
+                                    <div ng-bind-html="s"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="150">&nbsp;</td>
+                        <td width="60">&nbsp;</td>
+                        <td width="120" align="right">顯示模組：</td>
+                        <td width="209">
+                            <ui-select ng-model="condition.module">
+                                <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="m in modules">
+                                    <div ng-bind-html="m"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="150">&nbsp;</td>
+                        <td width="60">&nbsp;</td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class="row" style="text-align: right;">
+                <button class="btn btn-info btn-confirm" ng-click="add()">新增信息</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <div class="panel-content">
+        <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <td>接收部門</td>
+            <td>戶口編號</td>
+            <td>顯示模組</td>
+            <td>有效時間</td>
+            <td>內容</td>
+            <td>創建時間</td>
+            <td>操作人</td>
+            <td>狀態</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="mage in messages">
+            <td>{{mage.receiver}}</td>
+            <td>{{mage.agent_code}}</td>
+            <td>{{mage.module}}</td>
+            <td>{{mage.content}}</td>
+            <td>{{mage.create_time}}</td>
+            <td>{{mage.sender}}</td>
+            <td>{{mage.operator}}</td>
+            <td>{{mage.status}}</td>
+            <td>
+                <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="edit($index,mage.id)">編輯 </button>
+                <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="remove($index)">刪除</button>
+            </td>
+        </tr>
+        <tr data-ng-show="all_messages.length == 0">
+            <td colspan="10">暫無符合條件的記錄</td>
+        </tr>
+        </tbody>
+    </table>
+        </div>
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-12 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="current_page"
+                                total-items="all_messages.length"
+                                on-select-page="select(page)"
+                                data-ng-show="loans.length != 0"></pagination>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

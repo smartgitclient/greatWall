@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <h3>積分轉移</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_integral_transfer" class="form-validation" server-validation="POST{{integral_transfer_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">廳館：</td>
+                        <td align="left" width="150">{{integral.hall_name}}</td>
+                        <td width="100" align="right">積分類型：</td>
+                        <td align="left" width="150">{{integral.integral_type}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">轉碼卡：</td>
+                        <td align="left" width="150">{{integral.commission_card}}</td>
+                        <td width="100" align="right">可用積分：</td>
+                        <td align="left" width="150">{{integral.usable_integral|parseDollar}}</td><!-- | parseTenThousandToYuan | number-->
+                   </tr>
+                   <tr>
+                       <td width="100" align="right">轉出戶口：</td>
+                       <td align="left" width="150">{{integral.agent_code}}</td>
+                        <td width="100" align="right">月結月：</td>
+                        <td align="left" width="150">{{integral.settlement_month|parseDate:"yyyy-MM"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">過期月：</td>
+                        <td align="left" width="150">{{integral.expired_month|parseDate:"yyyy-MM"}}</td>
+                        <td width="100" align="right">有效期：</td>
+                        <td align="left" width="150">{{integral.validity_month}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">轉入戶口：</td>
+                        <td align="left" width="150"> <input type="text" data-input-uppercase name="in_agent_id" data-ng-model="integral_transfer.in_agent_code" class="form-control"></td>
+                        <td width="100" align="right">積分額：</td>
+                        <td align="left" width="150"> <input type="text" name="amount" data-ng-model="integral_transfer.amount" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">轉入卡：</td>
+                        <td align="left" width="150">
+                            <select data-ng-required="enableClientValidation" name="in_comm_card_id" data-ng-model="integral_transfer.in_comm_card_id" class="form-control" data-ng-options="card.id as card.card_name for card in commissionCards" >
+                                <option value="">請選擇轉入卡</option>
+                            </select>
+                        </td>
+                        <td width="100" align="right">&nbsp;</td>
+                        <td align="left" width="150">&nbsp;</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" width="116">操作密碼：</td>
+                        <td>
+                            <input type="password" name="pin_code" data-ng-model="integral_transfer.pin_code" class="form-control" data-enter-key="add()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </form>
+</div>

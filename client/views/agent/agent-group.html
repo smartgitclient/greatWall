@@ -1,0 +1,241 @@
+<div class="page page-grid" data-ng-controller="agentGroupCtrl">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>戶組查詢</strong></div>
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <div class="form-group has-success has-feedback col-md-2 text-sear02">
+                            <input class="form-control" type="text" data-input-uppercase placeholder="請輸入戶組名稱" data-ng-model="agent_group_name">
+                            <span class="fa fa-search form-control-feedback"></span>
+                        </div>
+                        <button class="btn btn-info btn-confirm pull-right" data-ng-click="addGroupShow()" check-permissions="agentGroupCreate">新增戶組</button>
+                        <!--button class="btn btn-information pull-right" data-ng-click="addTranscoding()">導出Excel</button-->
+                    </div>
+                    <div class="panel-content table-dynamic">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <td data-td-sort data-td-sort-up="agent_group_name ASC" data-td-sort-down="agent_group_name DESC" data-td-sort-select="select" data-td-sort-pagination="pagination" data-min-screen-width="100">
+                                    戶組編號
+                                </td>
+                                <td width="90">上層戶組</td>
+                                <td width="90">戶組股東</td>
+                                <td width="150" data-min-screen-width="120" check-permissions="agentGroupUpdate,agentGroupDelete">操作</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="agent_group in agent_groups" data-selected-rows>
+                                    <td>{{agent_group.agent_group_name}}</td>
+                                    <td>{{agent_group.parent_group_name}}</td>
+                                    <td>{{agent_group.owner_name}}</td>
+                                    <td class="no-padding" check-permissions="agentGroupUpdate,agentGroupDelete">
+                                        <button class="btn btn-information btn-table" data-ng-click="bindGroup(agent_group.id)" data-ng-disabled="disabled_bind" check-permissions="agentGroupUpdate">設定</button>
+                                        <button  class="btn btn-information btn-table" data-ng-click="deleteGroup(agent_group.id)" check-permissions="agentGroupDelete">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="agent_groups.length == 0">
+                                    <td colspan="4">暫無符合條件的記錄</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <footer class="table-footer" style="height:80px;">
+                            <div class="text-right pagination-container" style="padding:0 0 30px">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination.total_items"
+                                            on-select-page="select(page)"
+                                            max-size = "pagination.max_size"
+                                            items-per-page = "pagination.items_per_page"
+                                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-ng-show="!show_group && user.checkPermissions('agentGroupUpdate')">
+            <div class="panel panel-form-list">
+                <div class="panel-heading">
+                    <strong>戶組設定</strong>
+                </div>
+                <div class="panel-content text-center">
+                    <form name="form_bind_agent_group" class="ng-valid ng-dirty form-validation" server-validation="{{sub_put}}{{bind_agent_group_url}}">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                            <tr height="50">
+                                <td width="200" data-min-screen-width="120" class="text-right">戶組名稱：</td>
+                                <td class="text-left">{{bind_agent_group.agent_group_name}}</td>
+                            </tr>
+                            <tr height="50">
+                                <td  class="text-right">上層戶組：</td>
+                                <td>
+                                    <select name="parent_id" data-ng-model="bind_agent_group.parent_id" class="form-control" data-ng-options="ag.id as ag.agent_group_name for ag in bind_agent_groups">
+                                        <option value="">請選擇上層戶組</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">戶組股東：</td>
+                                <td class="text-left"><input data-ng-required="enableClientValidation" data-input-uppercase name="agent_info_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" ng-model="bind_agent_code" /></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">股東姓名：</td>
+                                <td class="text-left">{{agent[0].agent_name}}</td>
+                            </tr>
+                            <tr height="50">
+                                <td  class="text-right">操作密碼：</td>
+                                <td class="text-left"><input name="password" class="form-control input-01 ng-pristine ng-valid input-140" type="password" ng-model="bind_agent_group.pin_code" data-enter-key="addBindGroup()" /></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-confirm margin-right-15" ng-click="addBindGroup()" data-ng-disabled="bind_disabled_submit" >保存</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="resetBindGroup()" data-ng-disabled="bind_disabled_submit">重置</button>
+                        </div>
+                    </form><br/><br/>
+                        <div class="panel panel-list-detail">
+                                <div class="panel-heading">
+                                    <strong class="pull-left">戶組成員</strong>
+                                    <div class="form-group has-success has-feedback col-md-2 pull-right text-sear02">
+                                        <input class="form-control" type="text" data-input-uppercase placeholder="請輸入戶口編號" data-ng-model="refAgentGroup">
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            <div class="panel-content">
+                            <form name="form_bind_agent" class="form-validation" server-validation="{{sub_post}}{{bind_agent_url}}">
+                            <table class="table table-bordered table-striped">
+                            <tbody>
+                            <tr>
+                                <td width="149">戶口編號</td>
+                                <td width="149">戶口姓名</td>
+                                <td width="149">操作</td>
+                            </tr>
+                            <tr>
+                                <td><input data-input-uppercase data-ng-required="enableClientValidation" name="agent_info_id" class="form-control input-01 pull-right" type="text" data-ng-model="ref_agent_code"/></td>
+                                <td>{{ref_agent_name}}</td>
+                                <td><button class="btn btn-confirm btn-table" ng-click="addBindAgent()" data-ng-disabled="bind_ref_disabled_submit" >保存</button></td>
+                            </tr>
+                            <tr data-ng-repeat="refAgentGroupType in refAgentGroupTypes" data-selected-rows>
+                                <td>{{refAgentGroupType.agent_code}}</td>
+                                <td>{{refAgentGroupType.agent_name}}</td>
+                                <td class="no-padding"><button data-ng-show="refAgentGroupType.agent_type == '2'" class="btn btn-information btn-table" data-ng-click="ref_delete(refAgentGroupType.id)">刪除</button></td>
+                            </tr>
+                            <tr data-ng-show="refAgentGroupTypes.length == 0">
+                                <td colspan="3">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </form>
+                                <footer class="table-footer">
+                                    <div class="text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="pagination_refAgentGroupType.page"
+                                                    total-items="pagination_refAgentGroupType.total_items"
+                                                    on-select-page="selectRefAgentGroupTypes(page,bind_agent_group.id)"
+                                                    max-size = "pagination_refAgentGroupType.max_size"
+                                                    items-per-page = "pagination_refAgentGroupType.items_per_page"
+                                                    data-ng-hide="pagination_refAgentGroupType.total_items <= pagination_refAgentGroupType.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination_refAgentGroupType" select-page="selectRefAgentGroupTypes"></paginationselect>
+                                    </div>
+                                    <div style="clear: both"></div>
+                                </footer>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-ng-show="show_group && user.checkPermissions('agentGroupCreate')" >
+            <div class="panel panel-form-list">
+                <div class="panel-heading">
+                    <strong>新增戶組</strong>
+                </div>
+                <form name="form_agent_group" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{bind_agent_group_url}}">
+                <div class="panel-content">
+                    <table class="table table-bordered ">
+                        <tbody>
+                        <tr height="50">
+                            <td width="200" data-min-screen-width="120" class="text-right">戶組名稱：</td>
+                            <td class="text-left"><input data-input-uppercase data-ng-required="enableClientValidation" name="agent_group_name" class="form-control input-01 ng-pristine ng-valid input-140" type="text" ng-model="agent_group.agent_group_name" /></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">上層戶組：</td>
+                            <td>
+                                <select name="parent_group_name" data-ng-model="agent_group.parent_id" class="form-control" data-ng-options="ag.id as ag.agent_group_name for ag in agent_groups_all">
+                                    <option value="">請選擇上層戶組</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td  class="text-right">戶組股東：</td>
+                            <td class="text-left"><input data-input-uppercase data-ng-required="enableClientValidation"  name="agent_info_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" ng-model="agent_code" /></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">股東姓名：</td>
+                            <td class="text-left">{{agentID[0].agent_name}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td  class="text-right">操作密碼：</td>
+                            <td class="text-left"><input name="pin_code" class="form-control input-01 input-140" type="password" ng-model="agent_group.pin_code" data-enter-key="addGroup()" /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" data-ng-click="addGroup()" data-ng-disabled="disabled_submit">保存</button>
+                        <button class="btn btn-cancel" data-ng-click="resetGroup()">重置</button>
+                    </div>
+                 </div>
+                 </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>未绑定查询</strong>
+                    <div class="form-group has-success has-feedback col-md-2 pull-right text-sear02">
+                        <input class="form-control" type="text" data-input-uppercase placeholder="請輸入戶口編號" data-ng-model="agent_group_name_no">
+                        <span class="fa fa-search form-control-feedback"></span>
+                    </div>
+                </div>
+                    <div class="panel-content table-dynamic">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr >
+                                <td data-td-sort data-td-sort-up="agent_code ASC" data-td-sort-down="agent_code DESC" data-td-sort-select="select_no_bind" data-td-sort-pagination="pagination_no">戶口編號</td>
+                                <td>戶口姓名</td>
+                                <td data-td-sort data-td-sort-up="create_time ASC" data-td-sort-down="create_time DESC" data-td-sort-select="select_no_bind" data-td-sort-pagination="pagination_no">開戶日期</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="no_agent_group in no_agent_groups" data-selected-rows>
+                                <td>{{no_agent_group.agent_code}}</td>
+                                <td>{{no_agent_group.agent_name}}</td>
+                                <td>{{no_agent_group.create_time|parseDate:'yyyy-MM-dd'}}</td>
+                            </tr>
+                            <tr data-ng-show="no_agent_groups.length == 0">
+                                <td colspan="3">暫無符合條件的記錄</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination_no.page"
+                                            total-items="pagination_no.total_items"
+                                            on-select-page="select_no_bind(page)"
+                                            max-size = "pagination_no.max_size"
+                                            items-per-page = "pagination_no.items_per_page"
+                                            data-ng-hide="pagination_no.total_items <= pagination_no.items_per_page"></pagination>
+                                <!--<paginationselect pageCtrl="pagination_no" select-page="select_no_bind"></paginationselect>-->
+                            </div>
+                        </footer>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

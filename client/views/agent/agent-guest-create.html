@@ -1,0 +1,179 @@
+<div class="page page-grid" data-ng-controller="agentGuestCreateCtrl">
+<div class="panel panel-default">
+<form name="form_guest" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{guest_url}}">
+<div class="panel_l col-md-8">
+<div class="panel">
+<div class="panel-content">
+<div class="panel panel-list-detail" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">基本資料</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td width="150" class="text-right">戶口編號：</td>
+                <td  class="text-left" data-min-screen-width="200" >
+                   <input data-input-uppercase
+                          data-ng-required="enableClientValidation" name = "agent_info_id" class="form-control input-01 ng-pristine"  type="text" ng-model="guest.agent_code" style="width:165px;" data-min-screen-width="85">&nbsp;&nbsp;{{agent_name}}</td>
+                <td width="150" class="text-right">姓名：</td>
+                <td width="213" class="text-left" >
+                    <input  data-ng-required="enableClientValidation" name ="agent_guest_name" class="form-control input-01 ng-pristine" type="text" ng-model="guest.agent_guest_name"/>
+
+                </td>
+                <td width="150" class="text-right">性別：</td>
+                <td>
+                    <select data-ng-required="enableClientValidation" name = "gender" data-ng-model="guest.gender" class="form-control" >
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">出生日期：</td>
+                <td>
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control" data-ng-required="enableClientValidation" name="birthdate" datepicker-popup ng-model="guest.birthdate" />
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </td>
+                <td class="text-right">語言：</td>
+                <td>
+                    <select data-ng-required="enableClientValidation" name="language_type_id" data-ng-model="guest.language_type_id" class="form-control" data-ng-options="lt.id as lt.language_type_name for lt in languageTypes" >
+                        <option value="">請選擇語言</option>
+                    </select>
+                </td>
+                <td class="text-right">國籍：</td>
+                <td width="210">
+                    <select data-ng-required="enableClientValidation" name="nationality_id" data-ng-model="guest.nationality_id" class="form-control" data-ng-options="n.id as n.nationality_name for n in nationalitys" >
+                        <option value="">請選擇國籍</option>
+                    </select>
+                </td>
+            </tr>
+            <tr data-ng-repeat="idCard in guest.idCards">
+                <td class="text-right">證件類型：</td>
+                <td>
+                    <select data-ng-required="enableClientValidation" data-dynamic-name="idCards_{{$index}}_idcard_type_id" data-ng-model="idCard.idcard_type_id" class="form-control" data-ng-options="it.id as it.idcard_type_name for it in idcardTypes" >
+                        <option value="">請選擇證件類型</option>
+                    </select>
+                </td>
+                <td class="text-right">證件號碼：</td>
+                <td><input data-ng-required="enableClientValidation"  data-dynamic-name = "idCards_{{$index}}_idcard_number" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="idCard.idcard_number"></td>
+                <td class="text-right">證件有效期：</td>
+                <td>
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control" data-ng-required="enableClientValidation" data-dynamic-name ="idCards_{{$index}}_expired_date" datepicker-popup ng-model="idCard.expired_date" />
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-list-detail" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">聯絡資料</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td width="250">通知類型</td>
+                <td width="200">地區</td>
+                <td width="200">號碼</td>
+                <!--<td>備註</td>-->
+                <td width="120">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="contact in guest.guestTels">
+                <td>
+                    <select data-ng-required="enableClientValidation" data-dynamic-name = "guestTels_{{$index}}_notice_type" data-ng-model="contact.notice_type" class="form-control"  ><!--data-ng-options="st.type_code as st.sms_notice_type for st in smsnoticeTypes"-->
+                        <option value="">請選擇通知類型</option>
+                        <option value="3">全部</option>
+                        <option value="1">短信</option>
+                        <option value="2">電話</option>
+                    </select>
+                </td>
+                <td>
+                    <select data-ng-required="enableClientValidation" data-dynamic-name = "guestTels_{{$index}}_area_code_id" data-ng-model="contact.area_code_id" class="form-control" data-ng-options="ac.id as ac.area_code for ac in areaCodes" >
+                        <option value="">請選擇地區</option>
+                    </select>
+                </td>
+                <td><input data-ng-required="enableClientValidation" data-dynamic-name = "guestTels_{{$index}}_telephone_number" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="contact.telephone_number"></td>
+                <!--<td><input data-ng-required="enableClientValidation" name = "remark" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="contact.remark"></td>-->
+                <td class="td_icon">
+                    <button  ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addGuestInfo()">添加</button>
+                    <button ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeGuestInfo($index)">刪除</button>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="panel_r">
+        <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+            <div class="panel-heading">
+                <strong>證件</strong>
+                <button data-ng-show="img1 == '' && !show_guest_disable" class="btn btn-info btn-confirm btn-table pull-right" ng-file-select="onFileSelect($files)">上傳</button>
+                <button data-ng-show="img1 != '' && !show_guest_disable" class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="removeImg1()">刪除</button>
+            </div>
+            <div class="panel-content">
+                <div class="passport">
+                        <span class="passport_bg">
+                            <span class="passed" data-ng-show="guest.idCards[0].expired_date && guest.idCards[0].expired_date < now_data"><img src="images/sign.png"></span>
+                            <img data-ng-show="img1 != ''" ng-src="{{img1}}"/>
+                             <span data-ng-show="img1 == ''" style="line-height: 280px">證件照片</span>
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel_r">
+        <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+            <div class="panel-heading">
+                <strong class="pull-left">證件</strong>
+                <button data-ng-show="img2 == '' && !show_guest_disable" class="btn btn-info btn-confirm btn-table pull-right"  ng-file-select="onFileSelect2($files)">上傳</button>
+                <button data-ng-show="img2 != '' && !show_guest_disable" class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="removeImg2()">刪除</button>
+            </div>
+            <div class="panel-content">
+                <div class="passport">
+                    <span class="passport_bg">
+                        <span class="passed" data-ng-show="guest.idCards[1].expired_date && guest.idCards[1].expired_date < now_data"><img src="images/sign.png"></span>
+                        <img data-ng-show="img2 != ''" ng-src="{{img2}}"/>
+                         <span data-ng-show="img2 == ''" style="line-height: 280px">證件照片</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div><br/>
+    <div class="panel panel-list-detail" style="padding-left: 0px;width:516px;" data-min-screen-width="390">
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>操作密碼：</td>
+                    <td>
+                        <input data-ng-required="enableClientValidation" name = "pin_code" class="form-control input-01 ng-pristine ng-valid" type="password" ng-model="guest.pin_code" data-enter-key="add()">
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">保存</button>
+        <button class="btn btn-cancel" data-ng-click="reset()" >重置</button>
+    </div>
+</div>
+</form>
+</div>
+</div>

@@ -1,0 +1,105 @@
+<div class="page page-grid" data-ng-controller="commissionPreReleaseManagerCtrls">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>預出佣查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="120" class="text-right">年月：</td>
+                                        <td width="140">
+                                            <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month[0]" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                        <td>&nbsp;&nbsp;~&nbsp;&nbsp;</td>
+                                         <td width="140">
+                                            <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month[1]" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                         </td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="select()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>預出佣記錄</strong>
+                            <!--<button class="btn btn-information margin-right-15 pull-right">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <!--<button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="" report-btn>導出EXCEL</button>-->
+                            <button class="btn btn-confirm margin-right-15 pull-right" ng-click="calculate()" check-permissions="commissionRecordPreReleaseCalculate">計佣</button>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>年月</td>
+                                    <td>應出佣金(萬)</td>
+                                    <td>總佣金(萬)</td>
+                                    <td>下線佣金收益(萬)</td>
+                                    <td>津貼總額</td>
+                                    <td>應付項費用(萬)</td>
+                                    <td>已出佣(萬)</td>
+                                    <td>未出佣(萬)</td>
+                                    <td>狀態</td>
+                                    <td>經手人</td>
+                                    <td width="180" check-permissions="commissionRecordPreReleaseMonth,commissionRecordPreReleaseDelete,commissionRecordPreReleaseView">操作</td>
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="preReleaseManager in preReleaseManagers" data-selected-rows>
+                                    <td>{{preReleaseManager.year_month | parseDate:'yyyy-MM'}}</td>
+                                    <td>{{preReleaseManager.personal_commission|parseTenThousand2}}</td>
+                                    <td>{{preReleaseManager.commission_total|parseTenThousand2}}</td>
+                                    <td>{{preReleaseManager.underling_commission|parseTenThousand2}}</td>
+                                    <td>{{preReleaseManager.allowance|parseDollar:true}}</td>
+                                    <td>{{preReleaseManager.should_pay_total|parseTenThousand2}}</td>
+                                    <td>{{preReleaseManager.paid|parseTenThousand2}}</td>
+                                    <td>{{preReleaseManager.unpaid|parseTenThousand2}}</td>
+                                    <td>{{commission_month_status.items[preReleaseManager.status]}}</td>
+                                    <td>{{preReleaseManager.user_name}}</td>
+                                    <td class="no-padding" check-permissions="commissionRecordPreReleaseMonth,commissionRecordPreReleaseDelete,commissionRecordPreReleaseView">
+                                        <button class="btn btn-information btn-table margin-right-5" data-ng-click="detail(preReleaseManager.id)" check-permissions="commissionRecordPreReleaseView">詳細</button>
+                                        <button data-ng-show="preReleaseManager.status == commission_month_status.unsettlement" class="btn btn-information btn-table margin-right-5" data-ng-click="confirmMonthly(preReleaseManager.id)" check-permissions="commissionRecordPreReleaseMonth">月結</button>
+                                        <!--<button data-ng-show="preReleaseManager.status != commission_month_status.settlement"  class="btn btn-information btn-table margin-right-5" data-ng-click="delete(preReleaseManager.id)" check-permissions="commissionRecordPreReleaseDelete">刪除</button>-->
+                                        <button data-ng-show="preReleaseManager.status != commission_month_status.settlement && preReleaseManager.status!='1'"  class="btn btn-information btn-table margin-right-5" data-ng-click="resetCalculate(preReleaseManager.id,preReleaseManager.year_month)" check-permissions="commissionRecordPreReleaseDelete">重算</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="preReleaseManagers.length == 0">
+                                    <td colspan="15">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

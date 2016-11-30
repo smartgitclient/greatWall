@@ -1,0 +1,256 @@
+<div class="page page-grid" data-ng-controller="quotaSettingCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-7">
+            <div class="panel panel-form-list">
+                <div class="panel-heading">
+                    <strong>戶口信息</strong>
+                    <a ui-sref="stream-loan_quota-setting-param-one({ agent_code : condition.agent_code })" class="btn btn-confirm pull-right btn-table" check-permissions="loanQuotaSettingRecordView">批額流水</a>
+                    <button class="btn btn-information pull-right" report-params="excel_condition" channel-type="QuotaSettingReport" report-btn>導出EXCEL</button>
+                    <button class="btn btn-information pull-right" report-params="excel_condition" channel-type="QuotaReport" report-btn>導出批額</button>
+                </div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="120" class="text-right">戶口編號：</td>
+                                <td width="209"><input ng-keydown="agent_code_key_down()" ng-keyup="agent_code_key_up()" type="text" data-input-uppercase data-ng-model="condition.agent_code" name="agent_code" class="form-control"></td>
+                                <td width="120" class="text-right">戶口姓名：</td>
+                                <td width="209">{{ condition.agent_name }}</td>
+                                <td width="120" class="text-right">戶口類型：</td>
+                                <td width="209">
+                                    {{ condition.agent_type }}
+                                    <!--select data-ng-required="enableClientValidation" name="agentMaster_nationality_id" data-ng-model="condition.fund_type" class="form-control" data-ng-options="n.id as n.funds_name for n in funds" >
+                                        <option value="">請選擇戶口類型</option>
+                                    </select-->
+                                </td>
+                                <td width="120" class="text-right">上線：</td>
+                                <td width="209">{{ condition.header.agent_code }}</td>
+                            </tr>
+
+                            <!--tr>
+                                <td class="text-right">備註：</td>
+                                <td colspan="7"><pre>{{ condition.remark.content }}</pre></td>
+                            </tr-->
+
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;" data-ng-show="condition.id" >
+                            <button class="btn btn-information margin-right-5" ng-click="search()">查詢</button>
+                            <button class="btn btn-cancel" data-ng-click="resetSearch()">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>批額設定</strong>
+
+                    <button class="btn btn-confirm btn-table pull-right" data-ng-show="condition.id && '1' != condition.is_special_underling " data-ng-click="addQuotaSetting()" check-permissions="loanQuotaSettingCreate">新增批額設定</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>貸款類型</td>
+                            <td>批額範圍（萬）</td>
+                            <td>天期（天）</td>
+                            <td>息率（%）</td>
+                            <td>罰息天數（天）</td>
+                            <td>特別期限（天）</td>
+                            <td>特別息率（%）</td>
+                            <td width="130" check-permissions="loanQuotaSettingUpdate,loanQuotaSettingDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="agent_quota in agent_quotas" data-selected-rows>
+                            <td>{{funds_expend[agent_quota.funds_type_id]}}</td>
+                            <td>{{agent_quota.lower_amount}} ~ {{ agent_quota.upper_amount == 0?"∞":agent_quota.upper_amount }}</td>
+                            <td>{{agent_quota.term}}</td>
+                            <td>{{agent_quota.expired_rate|parseTenThousand2}}</td>
+                            <td>{{agent_quota.add_term}}</td>
+                            <!--td>{{quota_setting.add_term}}</td-->
+                            <td>{{agent_quota.special_term}}</td>
+                            <td>{{agent_quota.special_rate|parseTenThousand2}}</td>
+                            <!--td>{{agent.agentMasterIdcards[0].idcard_type_name}}&nbsp;<span data-ng-show="agent.agentMasterIdcards[0].idcard_type_name != null && agent.agentMasterIdcards[1].idcard_type_name != null ">/</span>&nbsp;{{agent.agentMasterIdcards[1].idcard_type_name}}</td-->
+                            <td class="no-padding" check-permissions="loanQuotaSettingUpdate,loanQuotaSettingDelete">
+                                <button data-ng-show="'1' != condition.is_special_underling" class="btn  btn-information btn-table margin-right-5" ng-click="update(agent_quota.id)" check-permissions="loanQuotaSettingUpdate">編輯</button>
+                                <button class="btn btn-information btn-table margin-right-5" data-ng-show="1 ==pagination.page && 0 == $index && '1' != condition.is_special_underling" ng-click="delete(agent_quota.id)" check-permissions="loanQuotaSettingDelete">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="agent_quotas.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>共用批額戶口</strong>
+                    <button class="btn btn-confirm btn-table pull-right" data-ng-show="!!agent_quotas && '1' != condition.is_special_underling" data-ng-click="addComman()" check-permissions="loanQuotaSettingSharingCreate">新增共用</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>戶口類型</td>
+                            <td>上線</td>
+                            <td width="150" check-permissions="loanQuotaSettingSharingDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="common_agent in common_agents" data-selected-rows>
+                            <td>{{common_agent.agent_code}}</td>
+                            <td>{{common_agent.agent_name}}</td>
+                            <td>{{ agent_type_list[common_agent.type] }}</td>
+                            <td>{{common_agent.parentSupervisor.agent_code}}</td>
+                            <td class="no-padding" check-permissions="loanQuotaSettingSharingDelete">
+                                &nbsp;
+                                <button class="btn btn-information btn-table" data-ng-show="common_agent.id != agent.id && '1' != condition.is_special_underling" ng-click="deleteComman(common_agent.id)" >撤銷共用</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="common_agents.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="common_pagination.page"
+                                        total-items="common_pagination.total_items"
+                                        on-select-page="common_select(page)"
+                                        max-size = "common_pagination.max_size"
+                                        data-ng-hide="common_pagination.total_items <= common_pagination.items_per_page"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <div class="panel_r col-md-5" >
+            <div class="panel panel-form-list" data-ng-show="(quota_setting_one.id && user.checkPermissions('loanQuotaSettingCreate')) || user.checkPermissions('loanQuotaSettingUpdate') ">
+                <div class="panel-heading">
+                    <strong>批額設定</strong>
+                </div>
+                <div class="panel-content">
+                    <form name="form_quota_setting" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{deposit_url}}">
+                        <table>
+                            <tr height="50">
+                                <td min-screen-width="70" width="120" class="text-right">戶口編號：</td>
+                                <td>
+                                    <span data-ng-show="'PUT' == sub_post_put">{{ agent_info.agent_code }}</span>
+                                    <input type="text" data-ng-show="'PUT' != sub_post_put"  data-ng-required="enableClientValidation" ng-change="quotaSettingInput()" data-ng-model="quote_agent_code" data-input-uppercase name="agent_info_id" class="form-control"></td>
+                                <td min-screen-width="70" width="120" class="text-right">戶口類型：</td>
+                                <td min-screen-width="150" width="210">{{ agent_info.type }}</td>
+                            </tr>
+                            <tr height="50">
+                                <td  class="text-right">上線：</td>
+                                <td>{{ agent_info.header }}</td>
+                                <td class="text-right">貸款類型：</td>
+                                <td>
+                                    <span data-ng-show="'POST' != sub_post_put">{{ funds_expend[quota_setting_one.funds_type_id] }}</span>
+                                    <select data-ng-required="enableClientValidation" name="funds_type_id" data-ng-show="'POST' == sub_post_put" data-ng-model="quota_setting_one.funds_type_id" class="form-control" data-ng-options="n.id as n.funds_name for n in funds" >
+                                        <option value="">請選擇貸款類型</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td width="70" class="text-right">批額範圍：</td>
+                                <td>
+                                    <p>
+                                    <span class="pull-left col-md-5">
+                                         <input disabled="disabled" class="form-control" type="text" data-ng-model="quota_setting_one.lower_amount" data-ng-required="enableClientValidation" name="lower_amount">
+                                    </span>
+                                    <span class="pull-left span-LH27">~</span>
+                                    <span class="pull-left col-md-5">
+                                         <input class="form-control" type="text" data-ng-model="quota_setting_one.upper_amount" data-ng-required="enableClientValidation" name="upper_amount">
+                                    </span>
+                                    </p>
+                                    (萬)
+                                </td>
+                                <td width="77" class="text-right">天期：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.term" name="term" data-ng-required="enableClientValidation" class="form-control input-92">&nbsp;&nbsp;天</td>
+                            </tr>
+                            <tr height="50">
+                                <td width="70" class="text-right">息率：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.expired_rate" data-ng-required="enableClientValidation" name="expired_rate" class="form-control input-92">&nbsp;&nbsp;%</td>
+                                <td width="77" class="text-right">罰息天數：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.add_term" data-ng-required="enableClientValidation" name="add_term" class="form-control input-92">&nbsp;&nbsp;天</td>
+                            </tr>
+                            <tr height="50">
+                                <td width="70" class="text-right">特別期限：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.special_term" data-ng-required="enableClientValidation" name="special_term" class="form-control input-92">&nbsp;&nbsp;天</td>
+                                <td width="77" class="text-right">特別息率：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.special_rate" data-ng-required="enableClientValidation" name="special_rate" class="form-control input-92">&nbsp;&nbsp;%</td>
+                            </tr>
+                            <tr height="50">
+                                <td  class="text-right">批額上限：</td>
+                                <td><input type="text" data-ng-model="quota_setting_one.upper_limit" name="upper_limit" class="form-control"></td>
+                                <td class="text-right">操作密碼：</td>
+                                <td><input type="password" data-ng-model="quota_setting_one.pin_code" name="pin_code" class="form-control" data-enter-key="add()"></td>
+
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="add()">提交</button>
+                            <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-form-list">
+                <div class="panel-heading">
+                    <strong>批額備註</strong>
+                    <button class="btn btn-confirm btn-table pull-right" data-ng-show="condition.id" check-permissions="loanQuotaSettingRemarkUpdate" data-ng-click="modifyRemark()">修改</button>
+                    <!--button class="btn btn-confirm btn-table pull-right" data-ng-show="condition.id" data-ng-click="deleteRemark()">清空</button-->
+                </div>
+                <div class="panel-content">
+                    <form name="form_agent_remark" class="ng-valid ng-dirty form-validation" server-validation="PUT{{create_remark_url}}">
+                        <table>
+                            <tr height="50">
+                                <td width="120" class="text-right">戶口編號：</td>
+                                <td><span>{{ remark_agent_code }}</span></td>
+                                <td width="120" class="text-right">戶口姓名：</td>
+                                <td width="210">{{ condition.agent_name }}</td>
+                            </tr>
+                            <tr height="50">
+                                <td valign="top" class="text-right">備註：<br />
+                                    <!--button dir="rightTop" class="btn btn-information hide" margin="5" insertmodel="remark" phrasebooktis="true" >常用语</button-->
+                                </td>
+                                <td colspan="3" valign="top">
+                                    <p class="no-margin" data-ng-show="!isModifyRemark && agent_remark.content" ng-bind-html="agent_remark.content|nl2br"></p>
+                                    <textarea data-ng-show="isModifyRemark" data-ng-disabled="!remark_agent_code" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-required="enableClientValidation" data-ng-model="agent_remark.content" name="content"></textarea></td>
+                            </tr>
+                            <tr height="50"  data-ng-show="isModifyRemark">
+                                <td class="text-right">操作密碼：</td>
+                                <td colspan="2"><input type="password" data-ng-model="agent_remark.pin_code" name="pin_code" class="form-control" data-enter-key="addRemark()"></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;"  data-ng-show="isModifyRemark">
+                            <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled_remark" ng-click="addRemark()">提交</button>
+                            <button class="btn btn-cancel" data-ng-click="resetRemark()">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+<div ng-class='{"col-md-12":popupWindow==true,"col-md-4":popupWindow==false}' check-permissions="consumptionCreate">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+            <div class="panel-heading" ng-show="popupWindow">
+              <strong class="pull-left">食飛修改</strong>
+            </div>
+            <form  name="$parent.form_food" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{foodcoupon_url}}">
+                <table>
+                    <tbody>
+                    <tr height="50">
+                        <td class="text-right"  width="90" min-screen-width="80">預訂單號：</td>
+                        <td class="text-left"  width="150" min-screen-width="150">
+                            <input type="text" data-ng-required="enableClientValidation" name="consumption_book_no" data-ng-model="foodBooking.consumption.book_no" class="form-control" data-input-uppercase></td>
+                        <td class="text-right" width="90" min-screen-width="80">所屬廳館：</td>
+                        <td class="text-left" width="160" min-screen-width="135">
+                            <span data-ng-show="'PUT'==sub_post_put">{{ agent_about.hall_name }}</span>
+                            <span data-ng-show="'POST'==sub_post_put">{{ user.hall.hall_name}}</span>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">戶口編號：</td>
+                        <td class="text-left">
+                            <span data-ng-show="'PUT'==sub_post_put && !COPY_BOOKING_food">{{ agent_about.agent_code }}</span>
+                            <input data-ng-show="'POST' == sub_post_put || COPY_BOOKING_food" type="text" data-ng-required="enableClientValidation" name="agent_info_id" data-input-uppercase data-ng-model="agent_about.agent_code" class="form-control"></td>
+                        <td class="text-right">戶口姓名：</td>
+                        <td class="text-left">{{agent_about.agent_name}}</td>
+                    </tr>
+                    <tr height="50">
+                      <td class="text-right">年月：</td>
+                      <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                          <input type="text" class="form-control input-92" name="consumption_year_month" datepicker-popup datepicker-mode="month" ng-model="foodBooking.consumption.year_month"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_food"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">結算日期：</td>
+                        <td class="text-left">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="foodBooking.consumption.shift_date"  date-disabled="disabled(date, mode)" close-text="Close"  ng-disabled="COPY_BOOKING_food" />
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                            </p>
+                        </td>
+                        <td class="text-right">更數：</td>
+                        <td class="text-left">
+                            <select name="consumption_shift" class="form-control" data-ng-model="foodBooking.consumption.shift"  ng-disabled="COPY_BOOKING_food" >
+                                <option value="">請選擇更數</option>
+                                <option value="早更">{{shiftLists.morning}}</option>
+                                <option value="中更">{{shiftLists.afternoon}}</option>
+                                <option value="晚更">{{shiftLists.evening}}</option>
+                            </select>
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+                <table class="BGcolor-626571" width="100%">
+                    <tbody>
+                    <tr height="50">
+                        <td class="text-right" width="100" min-screen-width="75">酒店：</td>
+                        <td class="text-left" width="205">
+                            <select name="hotel_id" style="padding: 0" class="form-control" data-ng-model="foodBooking.hotel_id"  ng-disabled="COPY_BOOKING_food" ng-options="n.id as n.hotel_name for n in hotelLists">
+                                <option value="">請選擇酒店</option>
+                            </select>
+                        </td>
+                        <td class="text-right" width="100" min-screen-width="60">餐廳：</td>
+                        <td class="text-left" width="165">
+                            <select name="restaurant_id" class="form-control" data-ng-model="foodBooking.restaurant_id"  ng-disabled="COPY_BOOKING_food">
+                                <option value="">請選擇餐廳</option>
+                                <option ng-repeat="restaurant in restaurants" value="{{ restaurant.id }}">{{ restaurant.restaurant_name }}</option>
+                            </select>
+                        </td>
+                        <td width="20" min-screen-width="2"></td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">簽單人：</td>
+                        <td class="text-left"><input type="text" data-ng-model="foodBooking.consumption.trader" data-ng-required="enableClientValidation" name="consumption_trader" list="food_agent_list" class="form-control"  ng-disabled="COPY_BOOKING_food"></td>
+                        <td class="text-right">電話：</td>
+                        <td class="text-left">
+                            <div class="pull-left" style="width: 61px;" min-screen-width="61">
+                                <select class="form-control no-padding" data-ng-model="foodBooking.consumption.area_code_id" name="consumption_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_food">
+                                    <option value="">區號</option>
+                                </select>
+                            </div>
+                            <div class="pull-left" style="width: 90px;" min-screen-width="69">
+                                <input type="text" data-ng-model="foodBooking.consumption.trader_tel" name="consumption_trader_tel" class="form-control" ng-disabled="COPY_BOOKING_food" list="food_tel_list">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table width="100%">
+                    <tbody>
+                    <tr height="50">
+                        <td class="text-right" width="100">成本：</td>
+                        <td class="text-left" width="160"><input type="text" name="consumption.cost_total" data-ng-model="foodBooking.consumption.cost_total" data-ng-required="enableClientValidation" class="form-control"  ng-disabled="COPY_BOOKING_food"></td>
+                        <td class="text-right" width="100">實收：</td>
+                        <td class="text-left" width="160"><input type="text" data-ng-required="enableClientValidation" data-ng-model="foodBooking.consumption.sell_total" name="consumption_sell_total" class="form-control"  ng-disabled="COPY_BOOKING_food"></td>
+                    </tr>
+                    <tr height="50">
+                        <!--td class="text-right" width="100">成本：</td>
+                        <td class="text-left" width="160"><input type="text" data-ng-required="enableClientValidation" data-ng-model="foodBooking.consumption.cost_total" name="consumption_cost_total" class="form-control"  ng-disabled="COPY_BOOKING_food"></td-->
+                        <td class="text-right">收益：</td>
+                        <!--<td class="text-left"><input type="text" name="consumption.profit" data-ng-model="foodBooking.consumption.profit" data-ng-required="enableClientValidation" class="form-control"  ng-disabled="COPY_BOOKING_food"></td>-->
+                        <td class="text-left">{{foodBooking.consumption.profit | parseYuan :false}}</td>
+                        <td width="100"></td>
+                        <td width="160"></td>
+                        <td width="20"></td>
+                    </tr>
+                    <!--tr height="50">
+                        <td class="text-right">收益：</td>
+                        <td class="text-left">{{foodBooking.consumption.sell_total - foodBooking.consumption.cost_total | parseYuan :false}}</td>
+                        <td class="text-right">&nbsp;</td>
+                        <td class="text-left">&nbsp;</td>
+                    </tr-->
+                    </tbody>
+                </table>
+                <table class="BGcolor-626571" width="100%">
+                    <tbody>
+                    <tr height="50">
+                        <td class="text-right" width="100">應付消費：</td>
+                        <td class="text-left" width="160"><input type="text" name="consumption_should_pay" data-ng-model="foodBooking.consumption.should_pay" class="form-control"></td>
+                        <td class="text-right" width="100">付款方式：</td>
+                        <td class="text-left" width="160">
+                            <select name="consumption_pay_type_id" class="form-control" data-ng-required="enableClientValidation" data-ng-model="foodBooking.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types"  ng-disabled="COPY_BOOKING_food">
+                                <option value="">請選擇付款方式</option>
+                            </select>
+                        </td>
+                        <td width="20"></td>
+                    </tr>
+
+                    <tr height="100">
+                        <td valign="top" class="text-right">
+                            備註：<br>
+                            <button class="btn btn-information btn-table margin-right-5" phrasebooktis="food" insertmodel="foodBooking_remark" type="button" >常用</button>
+                        </td>
+                        <td colspan="3" valign="top" >
+                          <div class="text-right">
+                            <button class="btn btn-information btn-table text-right"type="button" ng-click="creatremark()">生成備註</button>
+                          </div>
+                          <textarea class="form-control textarea-table01 ng-pristine ng-valid" rows="4" name="foodBooking_remark" data-ng-model="foodBooking.consumption.remark"></textarea>
+                        </td>
+                    </tr>
+                    <!--<tr height="50">
+                        <td class="text-right">操作密碼：</td>
+                        <td  class="text-left"><input type="password" data-ng-model="foodBooking.pin_code" name="pin_code" class="form-control input-140" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+                        <td>
+                            <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                            <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                        </td>
+                        <td ><span class="red">{{ agent_about.username }}</span></td>
+
+                    </tr>-->
+                </table>
+              <table ng-show="popupWindow">
+                <tr height="50">
+                  <td class="text-right" width="100">操作密碼：</td>
+                  <td class="text-left " width="160"><input type="password" name="pin_code" data-ng-model="foodBooking.pin_code" class="form-control" data-enter-key="add()"></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+                <br>
+                <div class="row" style="text-align: center;">
+                    <!--<button class="btn  btn-confirm margin-right-15" ng-show="'PUT' != sub_post_put" data-ng-disabled="isDisabled" data-ng-click="add(true)" type="button">提交并發送短訊</button>-->
+                    <button class="btn  btn-confirm margin-right-15" data-ng-disabled="isDisabled" data-ng-click="add()" type="button">提 交</button>
+                    <button class="btn  btn-cancel" data-ng-click="cancel()" type="button">取 消</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <datalist id="food_agent_list">
+        <option ng-repeat="agent_list in food_agent_list" value="{{ agent_list.agent_guest_name }}">
+    </datalist>
+    <datalist id="food_tel_list">
+        <option ng-repeat="tel_list in food_tel_list" value="{{ tel_list.telephone_number }}">
+    </datalist>
+</div>
+

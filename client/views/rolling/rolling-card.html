@@ -1,0 +1,71 @@
+<div class="page page-services ng-scope">
+    <div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="col-md-5">
+                    <!--<div class="panel-heading">場次記錄</div>-->
+                    <div class="row">
+                        <table class="table table-bordered table-striped table-02">
+                            <tr>
+                                <td>本金</td>
+                                <td>本金類型</td>
+                                <td>卡類型</td>
+                                <td>轉碼卡</td>
+                            </tr>
+                            <tr data-ng-repeat="card_type in card_types">
+                                <td>{{card_type.amount | parseTenThousand}}</td>
+                                <td>{{card_type.capital_type}}</td>
+                                <td>{{card_type.card_type}}</td>
+                                <td>
+                                    <button class="btn btn-info btn-information btn-table full-left" ng-click="card_selected(card_type,$index)">選擇</button>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="card_rows.length == 0">
+                                <td colspan="10">暫無符合條件的記錄</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="panel-heading">
+                        <form name="$parent.form_create_card" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_create_card_url}}">
+                            <table class="pull-right" style="font-size: 14px;">
+                                <tr>
+                                    <td width="80" class="text-right">卡名稱：</td>
+                                    <td class="text-right"><input type="text" data-ng-model="card_name" data-input-uppercase name="card_name" class="form-control" pattern="[A-Za-z0-9]+" title="只能輸入英文字母或數字"></td>
+                                    <td width="80" class="text-right">操作密碼：</td>
+                                    <td class="text-right"><input type="password" data-ng-model="pin_code" name="pin_code" class="form-control" data-enter-key="submit()"></td>
+                                    <td class="text-right">
+                                        <button class="btn btn-info btn-information" ng-click="add_scene(card_name,pin_code)" style="margin-bottom: 10px;float: right;">新增</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <table class="table table-bordered table-check" style="padding-top: 0;">
+                        <tr>
+                            <td colspan="10" data-ng-show="type_record.amount">本金：{{type_record.amount|parseTenThousand}}&nbsp;&nbsp;本金類型：{{type_record.capital_type}}</td>
+                            <td colspan="10" data-ng-hide="type_record.amount"></td>
+                        </tr>
+                        <tr data-ng-repeat="cards in card_rows">
+                            <td data-ng-repeat="card in cards">
+                                <label class="btn btn-primary {{type_record.card_type==card.card_name?'active':''}}" ng-model="type_record_create.card_name" btn-radio="card.card_name" data-ng-click="card_change(card.card_name)">{{card.card_name}}</label>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="card_rows.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="modal-footer">
+                <button class="btn btn-info btn-confirm" ng-click="submit()">提交</button>
+                <button class="btn btn-inf btn-cancel" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

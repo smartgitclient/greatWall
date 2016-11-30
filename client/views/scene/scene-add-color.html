@@ -1,0 +1,72 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>新增加彩</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="$parent.form_screening_create" class="ng-valid ng-dirty form-validation"  server-validation="POST{{screening_create_url}}">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="120" class="text-right">場次編號：</td>
+                                        <td align="center" width="170">{{agent_record.main_scene_no}}</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="120" class="text-right">子場次編號：</td>
+                                        <td align="center">{{sceneRecord.scene_no}}</td>
+                                        <td width="120"class="text-right">客戶姓名：</td>
+                                        <td align="center">{{record_create.guest_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">加彩本金：</td>
+                                        <td align="center">
+                                            <input type="text"
+                                                   data-ng-model="record_create.amount"
+                                                   class="form-control"
+                                                   data-ng-required="enableClientValidation"
+                                                   name="amount">
+                                        </td>
+                                        <!--<td class="text-right">枱號：</td>-->
+                                        <!--<td align="center">-->
+                                            <!--&lt;!&ndash;ng-options="h.id as h.layer+'區'+h.desk_no for h in desks"&ndash;&gt;-->
+                                            <!--<select data-ng-model="record_create.desk_id"-->
+                                                    <!--data-ng-required="enableClientValidation"-->
+                                                    <!--name="desk_id"-->
+                                                    <!--class="form-control"-->
+                                                    <!--ng-options="h.id as h.layer+'區'+h.desk_no for h in desks">-->
+                                                <!--<option value = "">請選擇檯號</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                        <td align="center">&nbsp;</td>
+                                        <td align="center">&nbsp;</td>
+                                </table>
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="120" class="text-right">操作密碼：</td>
+                                        <td width="170" align="left">
+                                            <input type="password" data-ng-model="record_create.pin_code" name="pin_code" class="form-control" data-enter-key="submit()">
+                                        </td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info btn-confirm margin-right-5" data-ng-click="submit()">確定</button>
+                        <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

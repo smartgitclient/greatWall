@@ -1,0 +1,413 @@
+<div ng-class='{"col-md-12":popupWindow==true,"col-md-4":popupWindow==false}' check-permissions="consumptionCreate">
+<div class="panel panel-form-list">
+<div class="panel-content">
+    <div class="panel-heading" ng-show="popupWindow">
+      <strong class="pull-left">酒店修改</strong>
+    </div>
+    <form name="$parent.form_hotel" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{consumptionhotel_url}}">
+        <table>
+            <tbody>
+            <tr height="50">
+                <td class="text-right"  width="90" min-screen-width="80">預訂單號：</td>
+                <td class="text-left" width="150" min-screen-width="150">
+                    <input  type="text" data-ng-model="hotelBooking.consumption.book_no" name="consumption_book_no" class="form-control" data-input-uppercase></td>
+                <td class="text-right" width="90" min-screen-width="80">所屬廳館：</td>
+                <td class="text-left" width="160" min-screen-width="135">
+                  <span data-ng-show="'PUT'==sub_post_put">{{ agent_about.hall_name }}</span>
+                  <span data-ng-show="'POST'==sub_post_put">{{ user.hall.hall_name}}</span>
+                </td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">戶口編號：</td>
+                <td class="text-left">
+                    <span data-ng-show="'PUT'==sub_post_put && !COPY_BOOKING_hotel">{{ agent_about.agent_code }}</span>
+                    <input data-ng-show="'POST'==sub_post_put || COPY_BOOKING_hotel" type="text" data-input-uppercase data-ng-model="agent_about.agent_code" name="agent_info_id" class="form-control"></td>
+                <td class="text-right">戶口姓名：</td>
+                <td class="text-left">{{agent_about.agent_name}}</td>
+            </tr>
+            <tr height="50">
+              <td class="text-right">年月：</td>
+              <td class="text-left">
+                <p class="input-group ui-datepicker">
+                  <input type="text" class="form-control input-92" name="consumption_year_month" datepicker-popup datepicker-mode="month" ng-model="hotelBooking.consumption.year_month"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_hotel"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                </p>
+              </td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">結算日期：</td>
+                <td class="text-left">
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="hotelBooking.consumption.shift_date"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_hotel"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                    </p>
+                </td>
+                <td class="text-right">更數：</td>
+                <td class="text-left">
+                    <select name="consumption_shift" class="form-control" data-ng-model="hotelBooking.consumption.shift"  ng-disabled="COPY_BOOKING_hotel" >
+                        <option value="">請選擇更數</option>
+                        <option value="早更">{{shiftLists.morning}}</option>
+                        <option value="中更">{{shiftLists.afternoon}}</option>
+                        <option value="晚更">{{shiftLists.evening}}</option>
+                    </select>
+                </td>
+            </tr>
+
+
+            </tbody>
+        </table>
+        <br>
+        <table class="BGcolor-626571" width="100%">
+        <tbody>
+        <tr height="50">
+        <td class="text-right" width="100" min-screen-width="60">供應商：</td>
+        <td class="text-left" width="160" min-screen-width="122">
+            <select name="hotel_travel_id" class="form-control" data-ng-model="hotelBooking.hotel_travel_id" data-ng-options="n.id as n.name for n in consumptionHoteltravels" ng-disabled="COPY_BOOKING_hotel" ng-selected="n.name == user.hall.hall_name" data-ng-change="changeHotelTravel()">
+                <option value="">請選擇供應商</option>
+            </select>
+            </td>
+        <td class="text-right" width="100" min-screen-width="60">酒店：</td>
+        <td class="text-left">
+            <input type="text" name="hotel" class="form-control" data-ng-model="hotelBooking.hotel"  ng-disabled="COPY_BOOKING_hotel || 1 == hotelBooking.hotel_travel_type" data-ng-show=" 2 == hotelBooking.hotel_travel_type">
+            <select name="hotel" style="oadding:0" class="form-control" data-ng-model="agent_about.hotel_id"  data-ng-show=" 2 != hotelBooking.hotel_travel_type" ng-disabled="COPY_BOOKING_hotel" >
+                <option value="">請選擇酒店</option>
+                <option ng-repeat="hotel in hotels" value="{{hotel.hotel.id}}" ng-selected="agent_about.hotel_id == hotel.hotel.id">{{hotel.hotel.hotel_name}}</option>
+            </select>
+        </td>
+        <td width="20">&nbsp;</td>
+        </tr>
+        <tr height="50" ng-show="isSendSms">
+            <td class="text-right" width="100" min-screen-width="60">短信類型：</td>
+            <td class="text-left" width="320" min-screen-width="122" colspan="2">
+                <select class="form-control" data-ng-model="sms_type.value" data-ng-options="s.id as s.type for s in sms_types">
+                    <option value="">請選擇短信類型</option>
+                </select>
+            </td>
+        </tr>
+        <tr height="50">
+        <td class="text-right">房型：</td>
+        <td class="text-left">
+            <input type="text" class="form-control" name="room_type" data-ng-model="hotelBooking.room" data-ng-show=" 2 == hotelBooking.hotel_travel_type" ng-disabled="COPY_BOOKING_hotel">
+            <select name="room_type" class="form-control" data-ng-model="agent_about.room_type_id" data-ng-options="n.id as n.room_type for n in hotel_roomTypes" data-ng-show=" 2 != hotelBooking.hotel_travel_type" ng-disabled="COPY_BOOKING_hotel">
+                <option value="">請選擇房型</option>
+            </select>
+           </td>
+        <td class="text-right">入住天數：</td>
+        <td class="text-left" data-ng-hide="'PUT'==sub_post_put">
+            <div class="input-group ui-spinner" data-ui-spinner  data-ng-model="hotelBooking.days">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" data-spin="down" ng-disabled="COPY_BOOKING_hotel">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </span>
+                <input min-screen-width="29" type="text" data-min="1" data-ng-model="hotelBooking.days" name="days" class="spinner-input form-control" ng-disabled="COPY_BOOKING_hotel">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" data-spin="up" ng-disabled="COPY_BOOKING_hotel">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </span>
+                &nbsp;&nbsp;
+            </div>
+        </td>
+        <td class="text-left" data-ng-hide="'POST'==sub_post_put">{{hotelBooking.days}}</td>
+        <td width="20">&nbsp;</td>
+        </tr>
+        <tr height="50">
+            <td class="text-right">批房日期：</td>
+            <td class="text-left">
+                <p class="input-group ui-datepicker">
+                    <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="hotelBooking.checkin_datetime" is-open="opened" data-ng-change="setTime()"  date-disabled="disabled(date, mode)" close-text="Close" name="checkin_datetime" ng-disabled="COPY_BOOKING_hotel" />
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default btn-datepicker" min-screen-width="15" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </td>
+            <td class="text-right">退房日期：</td>
+            <td class="text-left">{{hotelBooking.checkout_datetime}}</td>
+            <td width="20">&nbsp;</td>
+        </tr>
+
+        </tbody>
+        </table>
+        <div style="position: relative;">
+            <perfect-scrollbar class="animate-fade-up" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                <div style="max-height: 200px;">
+                    <table width="100%">
+                        <tbody ng-repeat="resigter in hotelBooking.consumptionHotelRegisters">
+                        <tr height="50">
+                            <td class="text-right" width="100" min-screen-width="105">房間登記人：</td>
+                            <td class="text-left" width="160"><input type="text" data-ng-model="resigter.register" dynamic-name="consumptionHotelRegisters_{{ $index }}_register" class="form-control"  ng-disabled="COPY_BOOKING_hotel" list="hotel_agent_list"></td><!--ng-change="ChangeRegister($index, resigter)"-->
+                            <td width="95"></td>
+                            <td class="text-right" width="160" min-screen-width="150">
+                                <div class="input-group ui-spinner ng-hide" ng-show="0 == $index" style="float: right">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up" data-ng-click="AddRegister()" ng-disabled="COPY_BOOKING_hotel">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                                </div>
+                                <div class="input-group ui-spinner" ng-show="$index" style="float: right">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up" ng-disabled="COPY_BOOKING_hotel" data-ng-click="RemoveRegister($index)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </td>
+                            <td width="20">&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right" width="100">登記人證件：</td>
+                            <td class="text-left">
+                                <select dynamic-name="consumptionHotelRegisters_{{ $index }}_idcard_type_id"  class="form-control" data-ng-model="resigter.idcard_type_id"   ng-disabled="COPY_BOOKING_hotel">
+                                    <option value="">請選擇證件</option>
+                                    <option ng-repeat="idCardType in idCardtypes" value="{{ idCardType.id }}" ng-selected="resigter.idcard_type_id == idCardType.id">{{ idCardType.idcard_type_name }}</option>
+                                </select>
+                            </td>
+                            <td class="text-right">證件號碼：</td>
+                            <td class="text-left"><input type="text" data-ng-model="resigter.idcard_no" dynamic-name="consumptionHotelRegisters_{{ $index }}_idcard_no" class="form-control" ng-disabled="COPY_BOOKING_hotel" list="hotel_idcard_list"></td>
+
+                            <td width="20" min-screen-width="2">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </perfect-scrollbar>
+        </div>
+
+
+        <table width="100%">
+        <tbody>
+            <tr height="50">
+                <td class="text-right" width="100">訂房人：</td>
+                <td class="text-left" width="160"><input type="text" data-ng-model="hotelBooking.consumption.trader" name="consumption_trader" class="form-control" ng-disabled="COPY_BOOKING_hotel" list="hotel_agent_list"></td>
+                <td class="text-right" width="100" min-screen-width="110">訂房人電話：</td>
+                <td class="text-left" width="165">
+                    <div class="pull-left" style="width: 57px;" min-screen-width="62">
+                        <select class="form-control no-padding" data-ng-model="hotelBooking.consumption.area_code_id" name="consumption_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" ng-disabled="COPY_BOOKING_hotel">
+                            <option value="">區號</option>
+                        </select>
+                    </div>
+                    <div class="pull-left" style="width: 102px;" min-screen-width="60">
+                        <input type="text" data-ng-model="hotelBooking.consumption.trader_tel" name="consumption_trader_tel" class="form-control" ng-disabled="COPY_BOOKING_hotel" list="hotel_tel_list">
+                    </div>
+                </td>
+                <td width="20" min-screen-width="2">&nbsp;</td>
+            </tr>
+            <tr height="50" data-ng-show="'POST'==sub_post_put">
+                <td colspan="4">
+                    <button type="button" class="btn btn-information btn-table margin-right-15" ng-click="getRoomNumber()"  ng-disabled="COPY_BOOKING_hotel">房間號碼</button>
+                    <!--<button type="button" class="btn btn-information btn-table margin-right-15" ng-click="getRoomConsumption()"  ng-disabled="COPY_BOOKING_hotel">房間消費</button>-->
+                    <button type="button" class="btn btn-information btn-table" ng-click="getCheckModeConsumption()"  ng-disabled="COPY_BOOKING_hotel" ng-show="1 == hotelBooking.settlement_by_checkin">入住日期計算</button>
+                    <label>
+                        <input type="checkbox" value="1" name="settlement_by_checkin" data-ng-model="hotelBooking.settlement_by_checkin" ng-disabled="COPY_BOOKING_hotel" ng-checked="1 == hotelBooking.settlement_by_checkin" ng-change="change_settlement()" >
+                        按入住日期結算
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+        <div class="panel-content" style="position: relative; padding: 0; border: 0 none;" data-ng-show="'POST'==sub_post_put">
+          <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+            <div class="panel-content consumption_record"  style="min-height: 90px; width: 830px; padding: 0; border: 0 none;">
+              <table class="BGcolor-626571 border-table">
+                <thead>
+                <tr height="40">
+                  <td width="50">&nbsp;</td>
+                  <td align="center" width="100">日期</td>
+                  <td align="center" width="75">成本價</td>
+                  <td align="center" width="75">售價</td>
+                  <td align="center" width="75">收益</td>
+                  <td align="center" width="75">應付消費</td>
+                  <td align="center" width="75">房間消費</td>
+                  <td align="center" width="100" ng-show="1 == hotelBooking.settlement_by_checkin">年月</td>
+                  <td align="center" width="100" ng-show="1 == hotelBooking.settlement_by_checkin">結算日期</td>
+                  <td align="center"width="50"  ng-show="1 == hotelBooking.settlement_by_checkin">更數</td>
+                  <td align="center" width="75">房間號碼</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr height="40" data-ng-repeat="price_list in hotelBooking.consumptionHotelSubs | orderBy:'day'" data-ng-show="hotelBooking.consumptionHotelSubs.length">
+                  <td><button type="button" data-ng-show=" ($index +1) == hotelBooking.consumptionHotelSubs.length && !COPY_BOOKING_hotel" class="btn  btn-confirm btn-table" ng-click="remove_consumptionHotelSub($index)">刪除</button></td>
+                  <td align="center">{{price_list.day}} {{ day_types[price_list.day_type] }}</td>
+                  <td><input type="text" data-ng-model="price_list.cost"
+                             ng-change="changePrice()"
+                             data-ng-required="enableClientValidation"
+                             data-dynamic-name="consumptionHotelSubs_{{$index}}_cost"
+                             class="form-control"
+                             ng-disabled="COPY_BOOKING_hotel"></td>
+                  <td><input type="text" data-ng-model="price_list.sell"
+                             ng-change="changePrice2(price_list, 1, $index)"
+                             data-ng-required="enableClientValidation"
+                             data-dynamic-name="consumptionHotelSubs_{{$index}}_sell"
+                             class="form-control"
+                             ng-disabled="COPY_BOOKING_hotel"></td>
+
+                  <td align="center">{{price_list.sell - price_list.cost | parseYuan :false}}</td>
+                  <td><input type="text" data-ng-model="price_list.actual_should_pay"
+                             ng-change="changePrice2(price_list, 2, $index)"
+                             data-ng-required="enableClientValidation"
+                             data-dynamic-name="consumptionHotelSubs_{{$index}}_actual_should_pay"
+                             class="form-control"
+                             ng-disabled="COPY_BOOKING_hotel && 0 == hotelBooking.settlement_by_checkin"></td>
+                  <td><input type="text" data-ng-model="price_list.should_pay"
+                             ng-change="changePrice()"
+                             data-ng-required="enableClientValidation"
+                             data-dynamic-name="consumptionHotelSubs_{{$index}}_should_pay"
+                             class="form-control" ></td>
+                  <td align="center" ng-show="1 == hotelBooking.settlement_by_checkin">{{ price_list.year_month | date : 'yyyy-MM' }}</td>
+                  <td align="center" ng-show="1 == hotelBooking.settlement_by_checkin">{{ price_list.shift_date_sub | date : 'yyyy-MM-dd' }}</td>
+
+                  <td align="center" ng-show="1 == hotelBooking.settlement_by_checkin">{{ price_list.shift_sub }}</td>
+                  <td ><input type="text" data-ng-model="price_list.room_no" name="room_no" class="form-control"  ng-disabled="COPY_BOOKING_hotel"></td>
+                </tr>
+                <tr height="40" data-ng-show="hotelBooking.consumptionHotelSubs.length">
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td align="right">合計：</td>
+                  <td align="center">{{ hotel_total.should_pay | parseYuan :false}}</td>
+                  <td>&nbsp;</td>
+                  <td ng-show="1 == hotelBooking.settlement_by_checkin">&nbsp;</td>
+                  <td ng-show="1 == hotelBooking.settlement_by_checkin">&nbsp;</td>
+                </tr>
+                <tr height="40" data-ng-show="!hotelBooking.consumptionHotelSubs.length">
+                  <td colspan="10" align="center">暫無數據</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </perfect-scrollbar>
+        </div>
+        <!--xhg-->
+        <table class="BGcolor-626571" width="100%" data-ng-show="'PUT'==sub_post_put && hotelBooking.consumptionHotelSubs.length>0">
+          <tbody data-ng-repeat="price_list in hotelBooking.consumptionHotelSubs | orderBy:'day'">
+          <tr height="50">
+            <td class="text-right" width="100" min-screen-width="60">日期：</td>
+            <td class="text-left" width="160" min-screen-width="122">
+              {{price_list.day}} {{ day_types[price_list.day_type] }}
+            </td>
+            <td class="text-right" width="100" min-screen-width="60">成本價：</td>
+            <td class="text-left" width="160">
+              <input style="width: 140px;" type="text" data-ng-model="price_list.cost"
+                     ng-change="changePrice()"
+                     data-ng-required="enableClientValidation"
+                     data-dynamic-name="consumptionHotelSubs_{{$index}}_cost"
+                     class="form-control"
+                     ng-disabled="COPY_BOOKING_hotel">
+            </td>
+          </tr>
+          <tr height="50">
+            <td class="text-right" width="100" min-screen-width="60">售價：</td>
+            <td class="text-left" width="160" min-screen-width="122">
+              <input type="text" data-ng-model="price_list.sell"
+                     ng-change="changePrice2(price_list, 1, $index)"
+                     data-ng-required="enableClientValidation"
+                     data-dynamic-name="consumptionHotelSubs_{{$index}}_sell"
+                     class="form-control"
+                     ng-disabled="COPY_BOOKING_hotel">
+            </td>
+            <td class="text-right" width="100" min-screen-width="60">收益：</td>
+            <td class="text-left">
+              {{price_list.sell - price_list.cost | parseYuan :false}}
+            </td>
+          </tr>
+          <tr height="50">
+            <td class="text-right" width="100" min-screen-width="60">應付消費：</td>
+            <td class="text-left" width="160" min-screen-width="122">
+              <input type="text" data-ng-model="price_list.actual_should_pay"
+                     ng-change="changePrice2(price_list, 2, $index)"
+                     data-ng-required="enableClientValidation"
+                     data-dynamic-name="consumptionHotelSubs_{{$index}}_actual_should_pay"
+                     class="form-control"
+                     ng-disabled="COPY_BOOKING_hotel && 0 == hotelBooking.settlement_by_checkin">
+            </td>
+            <td class="text-right" width="100" min-screen-width="60">房間消費：</td>
+            <td class="text-left">
+              <input style="width: 140px;"  type="text" data-ng-model="price_list.should_pay"
+                     ng-change="changePrice()"
+                     data-ng-required="enableClientValidation"
+                     data-dynamic-name="consumptionHotelSubs_{{$index}}_should_pay"
+                     class="form-control" >
+            </td>
+          </tr>
+          <tr height="50">
+            <td class="text-right" width="100" min-screen-width="60">房間號碼：</td>
+            <td class="text-left" width="160" min-screen-width="122">
+              <input type="text" data-ng-model="price_list.room_no" name="room_no" class="form-control"  ng-disabled="COPY_BOOKING_hotel">
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+<!-- xhg-->
+        <br>
+        <table width="100%" >
+            <tr height="50">
+                <td class="text-right" width="100">應付消費：</td>
+                <td class="text-left" width="160"><input type="text" name="consumption_should_pay" data-ng-model="hotelBooking.consumption.should_pay" class="form-control" data-ng-disabled="true"></td>
+                <td class="text-right" width="100">付款方式：</td>
+                <td width="140">
+                    <select name="consumption_pay_type_id" class="form-control" data-ng-model="hotelBooking.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types" ng-disabled="COPY_BOOKING_hotel">
+                        <option value="">請選擇付款方式</option>
+                    </select>
+                </td>
+                <td width="20"></td>
+            </tr>
+        <tr>
+            <td valign="top" class="text-right" width="100">
+                備註：<br>
+                <button class="btn btn-information btn-table margin-right-5" phrasebooktis="hotel" insertmodel="hotelBooking_consumption_remark" type="button" >常用</button>
+            </td>
+            <td colspan="3">
+              <div class="text-right">
+                <button class="btn btn-information btn-table text-right"type="button" ng-click="creatremark()">生成備註</button>
+              </div>
+              <textarea id="remark" name="hotelBooking_consumption_remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="hotelBooking.consumption.remark">
+              </textarea>
+            </td>
+        </tr>
+        <!--<tr height="50">
+            <td class="text-right">操作密碼：</td>
+            <td class="text-left"><input type="password" name="pin_code" data-ng-model="hotelBooking.pin_code" class="form-control input-140" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+            <td>
+                <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+            </td>
+            <td ><span class="red">{{ agent_about.username }}</span></td>
+        </tr>-->
+        </tbody>
+        </table>
+        <table ng-show="popupWindow">
+          <tr height="50">
+            <td class="text-right" width="100">操作密碼：</td>
+            <td class="text-left " width="160"><input type="password" name="pin_code" data-ng-model="hotelBooking.pin_code" class="form-control" data-enter-key="add()"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <br>
+        <div class="row" style="text-align: center;">
+            <button class="btn  btn-confirm margin-right-15" ng-show="'PUT' != sub_post_put && (user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED')" data-ng-disabled="isDisabled" data-ng-click="add(true)" type="button">提交并發送短訊</button>
+            <button class="btn  btn-confirm margin-right-15" data-ng-disabled="isDisabled" data-ng-click="add()" type="button">提 交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" type="button">取 消</button>
+        </div>
+    </form>
+</div>
+</div>
+<datalist id="hotel_tel_list">
+    <option ng-repeat="tel_list in hotel_tel_list" value="{{ tel_list.telephone_number }}">
+</datalist>
+<datalist id="hotel_agent_list">
+    <option ng-repeat="agent_list in hotel_agent_list" value="{{ agent_list.agent_guest_name }}">
+</datalist>
+<datalist id="hotel_idcard_list">
+    <option ng-repeat="idcard_list in hotel_idcard_list" value="{{ idcard_list.idcard_number }}">
+</datalist>
+</div>

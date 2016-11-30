@@ -1,0 +1,123 @@
+<div class="page page-services ng-scope" data-ng-controller="loanRecoveryCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>貸款查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+					 <td data-min-screen-width="80" width="100" class="text-right">廳館：</td>
+                        <!--<td width="160">-->
+                            <!--<select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                                <!--<option value = "">請選擇廳會</option>-->
+                            <!--</select>-->
+                        <!--</td>-->
+                        <td width="160">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="100" class="text-right">戶口編號：</td>
+                        <td data-min-screen-width="120" width="140"><input type="text" data-ng-model="condition.loanBusiness.agent_code" data-input-uppercase class="form-control"></td>
+                        <td width="100" class="text-right">戶口姓名：</td>
+                        <td data-min-screen-width="120" width="140"><input type="text" data-ng-model="condition.loanBusiness.agent_name" class="form-control"></td>
+                       
+                        <!--<td width="160" data-ng-hide="user.isAllHall()">-->
+                            <!--{{user.hall.hall_name}}-->
+                        <!--</td>-->
+
+                        <td width="100" class="text-right">貸款單號：</td>
+                        <td data-min-screen-width="120" width="140"><input type="text" data-ng-model="condition.marker_seqnumber" class="form-control"></td>
+                        <td width="100" class="text-right">貸款日期：</td>
+                        <td data-min-screen-width="340">
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.loanBusiness.loan_time[0]" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                            <p class="pull-left col-md-1">~</p>
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup ng-model="condition.loanBusiness.loan_time[1]"/>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" ng-click="select()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail">
+        <div class="panel-heading">
+            <button class="btn btn-info btn-confirm pull-right" check-permissions="loanRecoverySendSMS" ng-click="sendSMS()" data-ng-show="user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED'">發送SMS</button>
+            <button class="btn btn-info btn-information pull-right" report-params="excel_condition" channel-type="LoanRecovery" report-btn all-show="true">導出EXCEL</button>
+        </div>
+        <div class="panel-content">
+        <tabset class="ui-tab">
+            <tab heading="已過期貸款" ng-click="search()"></tab>
+            <tab data-ng-repeat = "dateText in markerDates" heading="{{$index==0 ? '今日到期' : dateText.date}}" ng-click="search(dateText.date)"></tab>
+        </tabset>
+        <div>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>貸款時間</td>
+                    <td>廳館</td>
+                    <td>戶口編號</td>
+                    <td>戶口姓名</td>
+                    <td>貸款單編號</td>
+                    <td>貸款金額</td>
+                    <td>貸款類型</td>
+                    <td>尚欠金額</td>
+                    <td>期限</td>
+                    <td>過期天數</td>
+                    <td>過期手續費</td>
+                    <!--<td>發送追收（次）</td>-->
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="markerList in markerLists" data-selected-rows>
+                    <td>{{markerList.loan_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{markerList.hall_name}}</td>
+                    <td>{{markerList.agent_code}}</td>
+                    <td>{{markerList.agent_name}}</td>
+                    <td>{{markerList.marker_seqnumber}}</td>
+                    <td>{{markerList.marker_amount|parseTenThousand2}}</td>
+                    <td>{{markerList.funds_type}}</td>
+                    <td>{{markerList.settlement_amount|parseTenThousand2}}</td>
+                    <td>{{markerList.term}}</td>
+                    <td>{{markerList.expired_days}}</td>
+                    <td>{{markerList.fee|parseTenThousand2}}</td>
+                    <!--<td>{{markerList.}}</td>-->
+                    <td class="no-padding">
+                        <button class="btn btn-info btn-information btn-table" ng-click="detail(markerList.loan_id)">詳細</button>
+                    </td>
+                </tr>
+                <tr data-ng-show="markerLists.length == 0">
+                    <td colspan="13">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-show="loans.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                </div>
+            </footer>
+        </div>
+        </div>
+    </div>
+</div>

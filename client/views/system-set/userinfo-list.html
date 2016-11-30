@@ -1,0 +1,93 @@
+<div class="page page-grid" data-ng-controller="userInfoCtrl">
+<div class="panel panel-default">
+<div class="panel_l col-md-12">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>用戶列表</strong>
+                <!--<button class="btn btn-information btn-table pull-right" data-ng-click="addTicketManager()">新增存單</button>-->
+            </div>
+            <div class="panel-content">
+                <form name="form_search">
+                    <table>
+                        <tr height="50">
+                            <td width="200" class="text-right"><span class="span-formlist">登錄名稱：</span></td>
+                            <td width="209"><input type="text" data-ng-model="condition.username" class="form-control"></td>
+                            <td width="200" class="text-right"><span class="span-formlist">員工編號：</span></td>
+                            <td width="209"><input type="text" data-ng-model="condition.user_no" class="form-control"></td>
+                            <td width="200" class="text-right"><span class="span-formlist">姓名：</span></td>
+                            <td width="209"><input type="text" data-ng-model="condition.name" class="form-control"></td>
+                            <td width="200" class="text-right">部門：</td>
+                            <td width="209">
+                                <select data-ng-required="enableClientValidation"name = "department_id" data-ng-model="condition.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                                    <option value="">請選擇部門</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br/><br/>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-information margin-right-15" ng-click="select()">查詢</button>
+                        <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                    <button class="btn btn-information pull-right" check-permissions="userCreate" data-ng-click="addUser()">新增用戶</button>
+                </div>
+                <div class="panel-content table-dynamic">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>員工編號</td>
+                            <td>登錄名稱</td>
+                            <td>姓名</td>
+                            <td>部門</td>
+                            <td width="50%">職位</td>
+                            <td width="200" min-screen-width="100" check-permissions="userUpdate,userDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="user in users" data-selected-rows>
+                            <td>{{user.user_no}}</td>
+                            <td>{{user.username}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.department}}</td>
+                            <td><span ng-repeat="role in user.allRoles">{{ role.description }}<samp ng-show="($index + 1) != user.allRoles.length">, </samp></span></td>
+                            <td class="no-padding" check-permissions="userUpdate,userDelete">
+                                <button class="btn btn-information btn-table margin-right-5" check-permissions="userUpdate" data-ng-click="update(user.id)">修改</button>
+                                <button class="btn btn-information btn-table margin-right-5" check-permissions="userDelete" data-ng-click="delete(user.id)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="users.length == 0">
+                            <td colspan="6">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>

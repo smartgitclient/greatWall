@@ -1,0 +1,79 @@
+//来电提醒
+.callreminderBtn{
+
+  .btn-add{
+    font-size: 14px;
+    padding: 3px 15px;
+    margin-right:40px;
+  }
+
+  i{
+    margin-right: 10px;
+  }
+
+}
+
+.callreminder{
+  position: absolute;
+  bottom:50px;
+  right: 0px;
+  background:#000000;
+  float: right;
+  height: 0px;
+  overflow: hidden;
+
+  a:hover{
+    text-decoration: none;
+  }
+
+  .topbar{
+    padding:5px 15px 5px 0px  ;
+    color: #fff;
+    text-align: right;
+    background:#a96013;
+  }
+  .scrollbar{
+
+
+    overflow-x: hidden;
+    position: relative;
+    left:0px;
+    border: 1px solid #000000;
+      .ps-scrollbar-y-rail{
+        right: 0px;
+      }
+  }
+  .glyphicon-earphone{
+    color:#fff;
+  }
+
+  table{
+
+    td{
+      color: #fff;
+      padding: 15px  0px 15px 20px;
+      border-bottom: 1px solid #303030;
+    }
+
+    tr:hover{
+      background: #282828;
+    }
+
+    .glyphicon-earphone{
+      color:#a96013;
+    }
+
+    .btn {
+      padding:5px 17px;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+

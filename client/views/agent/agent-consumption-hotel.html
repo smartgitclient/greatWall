@@ -1,0 +1,91 @@
+<div class="panel_l col-md-12">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-list-detail">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;">
+                            <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <td>預訂單號</td>
+                                <td>所屬廳館</td>
+                                <td>戶口編號</td>
+                                <td>戶口姓名</td>
+                                <td>訂房人</td>
+                                <td>供應商</td>
+                                <td>酒店</td>
+                                <td>房型</td>
+                                <td>入住日期</td>
+                                <td>退房日期</td>
+                                <td>房間編號</td>
+                                <td>成本</td>
+                                <td>實收</td>
+                                <td>收益</td>
+                                <td>應付消費</td>
+                                <td>房間消費</td>
+                                <td>新增時間</td>
+                                <td  width="1000">備註</td>
+                                <td>更數</td>
+                                <td>結算日期</td>
+                                <td>狀態</td>
+                                <td>經手人</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="hotelBooking in hotelBookings" data-selected-rows>
+                                <td>{{hotelBooking.consumptionHotel.consumption.book_no}}</td>
+                                <td>{{hotelBooking.consumptionHotel.consumption.hall_name}}</td>
+                                <td>{{hotelBooking.consumptionHotel.consumption.agent_code}}</td>
+                                <td>{{hotelBooking.consumptionHotel.consumption.agent_name}}</td>
+                                <td>{{hotelBooking.consumptionHotel.consumption.trader}}</td>
+                                <td>{{hotelBooking.consumptionHotel.hotel_travel_name}}</td>
+                                <td>{{hotelBooking.consumptionHotel.hotel_name}}</td>
+                                <td>{{hotelBooking.consumptionHotel.room_type}}</td>
+                                <td>{{hotelBooking.checkin_datetime | parseDate : 'yyyy-MM-dd'}}</td>
+                                <td>{{hotelBooking.checkout_datetime | parseDate : 'yyyy-MM-dd'}}</td>
+                                <td>{{hotelBooking.room_no}}</td>
+                                <td>{{hotelBooking.cost | parseTenThousandToYuan | parseYuan }}</td>
+                                <td>{{hotelBooking.sell | parseTenThousandToYuan | parseYuan }}</td>
+                                <td>{{hotelBooking.profit | parseTenThousandToYuan | parseYuan }}</td>
+                                <td>{{hotelBooking.actual_should_pay | parseTenThousandToYuan | parseYuan }}</td>
+                                <td>{{hotelBooking.should_pay | parseTenThousandToYuan | parseYuan }}</td>
+                                <td>{{hotelBooking.consumptionHotel.consumption.book_time | limitTo : 16}}</td>
+                                <td align="left">{{hotelBooking.consumptionHotel.consumption.remark}}</td>
+                                <!--<td>{{hotelBooking.shift_sub}}</td>-->
+                                <td>
+                                    <span data-ng-show="'1' == hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.shift_sub }}</span>
+                                    <span data-ng-show="'1' != hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.consumptionHotel.consumption.shift }}</span>
+                                </td>
+                                <td>
+                                    <span data-ng-show="'1' == hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.shift_date_sub | limitTo : 11 }}</span>
+                                    <span data-ng-show="'1' != hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.consumptionHotel.consumption.shift_date | limitTo : 11 }}</span>
+                                </td>
+                                <td>{{ bookingState_items[hotelBooking.consumptionHotel.consumption.status] }}</td>
+                                <td>{{ hotelBooking.user_name }}</td>
+                            </tr>
+                            <tr data-ng-show="hotelBookings.length == 0">
+                                <td colspan="30">暫無符合條件的記錄</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                        </div>
+                    </perfect-scrollbar>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="hotel_page.page"
+                                        total-items="hotel_page.total_items"
+                                        on-select-page="hotel_search(page)"
+                                        max-size = "hotel_page.max_size"
+                                        items-per-page = "hotel_page.items_per_page"
+                                        data-ng-hide="hotel_page.total_items <= hotel_page.items_per_page"></pagination>
+                            <paginationselect pageCtrl="hotel_page" select-page="hotel_search"></paginationselect>
+                        </div>
+                    </footer>
+
+            </div>
+        </div>
+    </div>
+</div>

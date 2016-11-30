@@ -1,0 +1,65 @@
+<div class="page page-grid" data-ng-controller="printersetCtrl">
+<div class="panel panel-default">
+<div class="col-md-5" >
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-content">
+                <form name="form_printerset_create" class="ng-valid ng-dirty form-validation" server-validation="PUT{{printerset_url}}">
+                    <table  >
+                        <tr height="50">
+                            <td width="120" class="text-right">操作機器：</td>
+                            <td width="180">{{printerset_pc_name}}</td>
+                            <td width="120" class="text-right">MAC地址：</td>
+                            <td width="180">{{printerset_mac}}</p></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">票據打印機：</td>
+                            <td ng-show="modify_show" colspan=3>{{printerset.stylus_printer}}</td>
+                            <td ng-show="add_show" colspan=3>
+                              <select data-ng-model="printerset.stylus_printer" class="form-control" name="stylus_printer" ng-options="option for option in  printers_list">
+                                  <option value = "">請選擇打印機</option>
+                              </select>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                          <td class="text-right">小票打印機：</td>
+                          <td ng-show="modify_show" colspan=3>
+                            {{printerset.thermal_printer}}
+                          </td>
+                          <td ng-show="add_show" colspan=3>
+                            <select data-ng-model="printerset.thermal_printer" class="form-control" name="hall_id" ng-options="option for option in  printers_list">
+                              <option value = "">請選擇打印機</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr height="50">
+                          <td class="text-right">印表打印機：</td>
+                          <td ng-show="modify_show" colspan=3>
+                            {{printerset.laser_printer}}
+                          </td>
+                          <td ng-show="add_show" colspan=3>
+                            <select data-ng-model="printerset.laser_printer" class="form-control" name="hall_id" ng-options="option for option in  printers_list">
+                              <option value = "">請選擇打印機</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr ng-show="add_show" height="50">
+                            <td  class="text-right">操作密碼：</td>
+                            <td ><input name="pin_code" type="password" data-ng-model="printerset.pin_code" class="form-control" data-enter-key="add()"></td>
+                            <td colspan=2>&nbsp;</td>
+
+                        </tr>
+                    </table>
+                    <br><br><br>
+                    <div class="row" style="text-align: center;">
+                        <button ng-show="modify_show" class="btn btn-confirm margin-right-15" ng-click="modify()" >修改</button>
+                        <button ng-show="add_show" class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                        <button ng-show="add_show" class="btn btn-cancel" ng-click="reset()" >重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

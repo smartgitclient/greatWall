@@ -1,0 +1,104 @@
+<div class="page page-grid" data-ng-controller="commissionLimitCtrl">
+<div class="panel panel-default">
+<div class="col-md-5" check-permissions="commissionLimitCreate">
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>本金分成限制</strong>
+                <button class="btn btn-confirm pull-right" data-ng-click="addCommissionLimit()">新增佣金限制</button>
+            </div>
+            <div class="panel-content">
+                <form name="form_commission_limit_create" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{commission_limit_url}}">
+                    <table>
+                        <tr height="50">
+                            <td data-min-screen-width="80" width="100" class="text-right">廳會名稱：</td>
+                            <td data-min-screen-width="180" width="180">
+                                <select data-ng-model="commission_limit.hall_id" class="form-control" name="hall_id" ng-options="h.id as h.hall_name for h in halls">
+                                    <option value = "">請選擇廳會</option>
+                                </select>
+                            </td>
+                            <td data-min-screen-width="80" width="100" class="text-right">本金類型：</td>
+                            <td data-min-screen-width="150" width="180">
+                                <select name="capital_type_id" data-ng-model="commission_limit.capital_type_id" data-ng-required="enableClientValidation"  class="form-control" data-ng-options="ct.id as ct.capital_name for ct in capitalTypes" >
+                                    <option value="">請選擇本金類型</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">佣金限制：</td>
+                            <td style="vertical-align: middle;">
+                                <input data-ng-required="enableClientValidation" name="commission_limit" type="text" data-ng-model="commission_limit.commission_limit" class="form-control" style="width: 145px;float: left">&nbsp;&nbsp;/份
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">操作密碼：</td>
+                            <td><input name="pin_code" type="password" data-ng-model="commission_limit.pin_code" class="form-control" data-enter-key="add()"></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <br><br><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                        <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="panel_l col-md-7">
+    <div class="panel">
+        <div class="panel-content">
+
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td width="250">廳會名稱</td>
+                            <td>本金類型</td>
+                            <td>佣金限制(份)</td>
+                            <td width="150" check-permissions="commissionLimitUpdate,commissionLimitDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="commission_limit in commission_limits" data-selected-rows>
+                            <td>{{commission_limit.hall_name}}</td>
+                            <td>{{commission_limit.capital_name}}</td>
+                            <td>{{commission_limit.commission_limit}}</td>
+                            <td check-permissions="commissionLimitUpdate,commissionLimitDelete">
+                                <button class="btn btn-information btn-table" check-permissions="commissionLimitUpdate" ng-click="update(commission_limit.id)">修改</button>
+                                <button class="btn btn-information btn-table" check-permissions="commissionLimitDelete" ng-click="delete(commission_limit.id)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="commission_limits.length == 0">
+                            <td colspan="4">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

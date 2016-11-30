@@ -1,0 +1,97 @@
+<div class="page page-grid" data-ng-controller="allowanceRetrieveCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="150" class="text-right"><span class="span-formlist">戶口編號：</span></td>
+                                        <td width="180"><input type="text"
+                                                               data-ng-model="agent_code"
+                                                               data-input-uppercase
+                                                               class="form-control">
+                                        </td>
+                                        <td width="150" class="text-right"><span class="span-formlist">戶口姓名：</span></td>
+                                        <td width="120">{{agent_name}}</td>
+                                        <td  width="150" class="text-right">户组：</td>
+                                        <td  width="180"><input type="text" data-input-uppercase class="form-control" data-ng-model="condition.agent_group_name"/></td>
+                                        <td  width="150" class="text-right">轉碼卡：</td>
+                                        <td  width="180"><input type="text" data-input-uppercase class="form-control" data-ng-model="condition.card_name"/></td>
+                                        <td  width="150" class="text-right">積分類型：</td>
+                                        <td  width="180">
+                                            <select class="form-control" data-ng-model="condition.integral_type_id" ng-options="it.id as it.integral_name for it in integralTypes">
+                                                <option value = "">請選擇類型</option>
+                                            </select>
+
+                                        </td>
+
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>&nbsp;</strong>
+                            <!--data-ng-hide="user.isAllHall()"-->
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button  class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="AllowanceRetrievenNext" report-btn>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td  data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="select" data-td-sort-pagination="pagination" data-min-screen-width="85">戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>户组</td>
+                                    <td>轉碼卡</td>
+                                    <td>積分類型</td>
+                                    <td data-ng-repeat="expiredIntegralDate in expiredIntegralDates">{{expiredIntegralDate.date}}</td>
+                                    <td>長期有效</td>
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="expired_integral in expired_integrals" data-selected-rows>
+                                    <td>{{expired_integral.agent_code}}</td>
+                                    <td>{{expired_integral.agent_name}}</td>
+                                    <td>{{expired_integral.agent_group_name}}</td>
+                                    <td>{{expired_integral.card_name}}</td>
+                                    <td>{{expired_integral.integral_type_name}}</td>
+                                    <td data-ng-repeat="label in expiredIntegralLabels">{{expired_integral[label.text]|parseDollar:true}}</td>
+                                    <td>{{expired_integral.never_expire|parseDollar:true}}</td>
+                                </tr>
+                                <tr data-ng-show="expired_integrals.length == 0">
+                                    <td colspan="20">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

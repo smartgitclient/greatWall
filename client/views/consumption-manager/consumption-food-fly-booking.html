@@ -1,0 +1,346 @@
+<div class="panel panel-default">
+<div class="col-md-4">
+    <div class="panel panel-form-list">
+        <div class="panel-content">
+            <table>
+                <tr height="50">
+                    <td class="text-right" width="85">消費單號：</td>
+                    <td class="text-left" width="160">&nbsp;</td>
+                    <td class="text-right" width="100">&nbsp;</td>
+                    <td class="text-left" width="160">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">預訂單號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.dan" class="form-control"></td>
+                    <td class="text-right">所屬廳館：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="food.hall">
+                            <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.code" class="form-control"></td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{food.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">酒店：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="food.hotel">
+                            <ui-select-match placeholder="請選擇酒店">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hotel in ['永利','MGM','新葡京','銀河','舊葡京']">
+                                <div ng-bind-html="hotel"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td class="text-right">餐廳：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="food.canting">
+                            <ui-select-match placeholder="請選擇餐廳">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in ['天幕咖啡GPC','江戶日本料理','金殿堂','食八方','寶雅座','Cafe Esplanada','永利軒','Red　8']">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">食額成本：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.chenbeng" class="form-control"></td>
+                    <td class="text-right">食額實收：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.shishou" class="form-control"></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left">0</td>
+                    <td class="text-right">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">付款方式：</td>
+                    <td class="text-left">
+                        <ui-select ng-model="food.payment">
+                            <ui-select-match placeholder="請選擇付款方式">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="payment in ['積分','佣金','存卡','現金']">
+                                <div ng-bind-html="payment"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td class="text-right">&nbsp;</td>
+                    <td class="text-left">&nbsp;</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">簽單人：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.booker" class="form-control"></td>
+                    <td class="text-right">電話：</td>
+                    <td class="text-left"><input type="text" data-ng-model="food.phone" class="form-control"></td>
+                </tr>
+                <tr height="50">
+                    <td valign="top" class="text-right">
+                        備註：
+                        <button class="btn  btn-information btn-table btn-remark">常用</button>
+                    </td>
+                    <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="food.remark" name=""></textarea></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td colspan="3" class="text-left"><input type="text" data-ng-model="food.pwd" class="form-control input-140" data-enter-key="update()"></td>
+                </tr>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn  btn-confirm margin-right-15" data-ng-click="update()">提 交</button>
+                <button class="btn  btn-cancel" data-ng-click="check('消費轉移')">取 消</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="200" class="text-right">消費單號：</td>
+                                <td width="209"><input type="text" data-ng-model="condition1.dan" class="form-control"></td>
+
+                                <td width="229" class="text-right">所屬廳館：</td>
+                                <td width="209"><input type="text" data-ng-model="condition1.fall" class="form-control"></td>
+
+                                <td width="229" class="text-right">戶口編號：</td>
+                                <td width="209"><input type="text" data-ng-model="condition1.agent_code" class="form-control"></td>
+                            </tr>
+                            <tr height="50">
+                                <td width="229" class="text-right">戶口姓名：</td>
+                                <td width="209"><input type="text" data-ng-model="condition1.agent_name" class="form-control"></td>
+                                <td width="100" class="text-right">簽單人：</td>
+                                <td width="209">
+                                    <!--<ui-select ng-model="condition.hall">-->
+                                        <!--<ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>-->
+                                        <!--<ui-select-choices repeat="hall in halls">-->
+                                            <!--<div ng-bind-html="hall"></div>-->
+                                        <!--</ui-select-choices>-->
+                                    <!--</ui-select>-->
+                                    <input type="text" data-ng-model="condition1.booker" class="form-control">
+                                </td>
+                                <td class="text-right">預訂單號：</td>
+                                <td><input type="text" data-ng-model="condition1.yuding" class="form-control"></td>
+                                <td width="60">&nbsp;</td>
+
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn  btn-information margin-right-15" ng-click="search()">查詢</button>
+                            <button class="btn  btn-cancel" data-ng-click="searchReset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>消費單號</td>
+                            <td>預訂單號</td>
+                            <td>所屬廳館</td>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>酒店</td>
+                            <td>餐廳</td>
+                            <td>簽單人</td>
+                            <td>電話</td>
+                            <td>狀態</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>623877</td>
+                            <td>64358112</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>MGM</td>
+                            <td>寶雅座</td>
+                            <td>陳明</td>
+                            <td>15845472322</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>623876</td>
+                            <td>64358078</td>
+                            <td>永利鉅星</td>
+                            <td>FA233</td>
+                            <td>李達文</td>
+                            <td>MGM</td>
+                            <td>寶雅座</td>
+                            <td>李洪</td>
+                            <td>13225472323</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>623875</td>
+                            <td>64357989</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>永利</td>
+                            <td>Red　8</td>
+                            <td>王曉光</td>
+                            <td>13124152324</td>
+                            <td>未核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>623874</td>
+                            <td>64357965</td>
+                            <td>永利鉅星</td>
+                            <td>FA112</td>
+                            <td>鐘達</td>
+                            <td>MGM</td>
+                            <td>食八方</td>
+                            <td>吳益民</td>
+                            <td>16585472325</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>623873</td>
+                            <td>64357923</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>永利</td>
+                            <td>Red　8</td>
+                            <td>陳毅</td>
+                            <td>13255472326</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+
+                        </tr>
+                        <tr height=18 style='height:13.5pt'>
+                            <td>623872</td>
+                            <td>64357812</td>
+                            <td>永利鉅星</td>
+                            <td>FA8</td>
+                            <td>吳清</td>
+                            <td>永利</td>
+                            <td>Red　8</td>
+                            <td>錢朱峰</td>
+                            <td>15154212327</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr height=18 style='height:13.5pt'>
+                            <td>623871</td>
+                            <td>64357795</td>
+                            <td>永利鉅星</td>
+                            <td>FA203</td>
+                            <td>陳好</td>
+                            <td>永利</td>
+                            <td>Cafe Esplanada</td>
+                            <td>霍佳樂</td>
+                            <td>13225472328</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr height=18 style='height:13.5pt'>
+                            <td>623870</td>
+                            <td>64357746</td>
+                            <td>永利鉅星</td>
+                            <td>F8</td>
+                            <td>王大文</td>
+                            <td>MGM</td>
+                            <td>天幕咖啡GPC</td>
+                            <td>吳三聖</td>
+                            <td>15245632329</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr height=18 style='height:13.5pt'>
+                            <td>623869</td>
+                            <td>64357556</td>
+                            <td>永利鉅星</td>
+                            <td>FA408</td>
+                            <td>李強</td>
+                            <td>永利</td>
+                            <td>Cafe Esplanada</td>
+                            <td>金葉</td>
+                            <td>13242472330</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        <tr height=18 style='height:13.5pt'>
+                            <td>623868</td>
+                            <td>64357342</td>
+                            <td>永利鉅星</td>
+                            <td>H11</td>
+                            <td>李鑫</td>
+                            <td>MGM</td>
+                            <td>食八方</td>
+                            <td>陳建明</td>
+                            <td>15845472331</td>
+                            <td>已核對</td>
+                            <td class="no-padding">
+                                <button class="btn  btn-information btn-table margin-right-5" data-ng-click="">詳細</button>
+                                <button class="btn  btn-confirm btn-table" data-ng-click="">修改</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="current_page"
+                                        total-items="all_buyChips.length"
+                                        on-select-page="select(page)"
+                                        data-ng-show="buyChips.length != 0"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

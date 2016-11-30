@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h3>新增轉碼卡</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_record_card_create" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_create_card_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td width="100" align="right">卡名稱：</td>
+                            <td align="left" width="150">
+                                <input data-input-uppercase type="text" name="card_name" data-ng-model="card_record.card_name" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">操作密碼：</td>
+                            <td align="left" width="150">
+                                <input type="password" name="pin_code" data-ng-model="card_record.pin_code" class="form-control" data-enter-key="add()">
+                            </td>
+                        </tr>
+                    </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="add()">新增</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+        </div>
+    </form>
+</div>

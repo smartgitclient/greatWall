@@ -1,0 +1,40 @@
+//
+.well {
+  background-color: #33363f;
+  border: 1px solid #666666;
+  thead {
+    tr {
+      background-color: #c68833;
+      .btn-default {
+        background-color: #c68833;
+        border: none;
+        font-size: 14px;
+      }
+      &.h6 {
+        font-size: 14px;
+        th {
+          padding: 8px 14px;
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        border: 1px solid #4f525b;
+      }
+    }
+    .btn-default {
+      background-color: #33363f;
+      border: none;
+      padding: 5px 14px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .btn-info,
+    :focus{
+
+      background-color: #c68833;
+    }
+  }
+}

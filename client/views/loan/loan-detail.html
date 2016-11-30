@@ -1,0 +1,196 @@
+<div class="page page-services ng-scope" data-ng-controller="loanDetailCtrl">
+    <div class="panel panel-list-detail col-md-5">
+        <div class="panel-heading">
+            <strong class="pull-left">貸款詳細</strong>
+        </div>
+        <div class="panel-content">
+            <!--class="table table-bordered table-striped table-detail-01"-->
+            <table>
+                <tr height="50">
+                    <td width="120" class="text-right">業務單號：</td>
+                    <td width="160">{{loan.loan_seqnumber}}</td>
+                    <td width="120" class="text-right">戶口編號：</td>
+                    <td>{{loan.agent_code}}</td>
+                </tr>
+                <tr height="50">
+                    <td width="120" class="text-right">廳館：</td>
+                    <td>{{loan.hall_name}}</td>
+                    <td width="120" class="text-right">貸款金額：</td>
+                    <td>{{loan.loan_amount|parseTenThousand}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">貸款時間：</td>
+                    <td>{{loan.loan_time}}</td>
+                    <td class="text-right">經手人：</td>
+                    <td>{{loan.user_name}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">貸款人姓名：</td>
+                    <td>{{loan.borrower}}</td>
+                    <td class="text-right">還款狀態：</td>
+                    <td>{{markerStatus[loan.status]}}</td>
+                </tr>
+                <tr height="50" data-ng-repeat="supervisor in loan.loanSupervisors">
+                    <td class="text-right">上線批核人：</td>
+                    <td>{{supervisor.supervisor}}</td>
+                    <td colspan="2"></td>
+                    <!--<td>上線批核人電話：</td>-->
+                    <!--<td>{{supervisor.supervisor_tel}}</td>-->
+                </tr>
+                <tr height="50">
+                    <td class="text-right" style="vertical-align: top;">備註：</td>
+                    <td colspan="3" style="vertical-align: top; padding-left: 10px;">
+                        <span data-ng-hide="user.checkPermissions('loanRemarkUpdate')">{{ loan.remark }}</span>
+                        <textarea data-ng-model="loan.remark" data-ng-show="user.checkPermissions('loanRemarkUpdate')" class="form-control" rows="2"></textarea>
+                    </td>
+                </tr>
+                <tr check-permissions="loanRemarkUpdate">
+                    <td class="text-right" colspan="4" style="padding-top: 5px">
+                        <button class="btn btn-info btn-information btn-table"  ng-click="edit_remark()">
+                            <span>保存</span>
+                        </button>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-list-detail col-md-7">
+        <div class="panel-heading">
+            <button class="btn btn-information pull-right" ng-click="gotoRolling()" check-permissions="rollingDetailView">查看轉碼記錄</button>
+            <button class="btn btn-information pull-right" ng-click="gotoOperationRecord()" check-permissions="loanOperationRecordView">貸款單操作記錄</button>
+            <!-- <button class="btn btn-info btn-confirm pull-right" ng-click="copy()">複製</button>-->
+            <button class="btn btn-confirm pull-right" check-permissions="loanDelete" ng-click="delete()">刪除</button>
+            <button class="btn btn-confirm pull-right" check-permissions="loanUpdate" ng-click="update()">修改</button>
+            <button class="btn btn-information pull-right" ng-click="print(loan.id)" data-ng-disabled="disable_print">列印</button>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>貸款單號</td>
+                    <td>貸款類型</td>
+                    <td>貸款餘額(萬)</td>
+                    <td>天期</td>
+                    <td>息率</td>
+                    <td>特別期限</td>
+                    <td>特別息率</td>
+                    <td>罰息天數</td>
+                    <td>過期天數</td>
+                    <!--<td>過期手續費</td>-->
+                    <td>還款狀態</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="marker in loan.markers">
+                    <td>{{marker.marker_seqnumber}}</td>
+                    <td>{{loan.is_special==1 && marker.funds_type=='' ? "工作碼" : marker.funds_type}}</td>
+                    <!--loan.is_special==1 && marker.funds_type=='' ? "升紅" :-->
+                    <td>{{marker.settlement_amount|parseTenThousand2}}</td>
+                    <td>{{marker.term}}</td>
+                    <td>{{marker.expired_rate|parseFloatKing}}</td>
+                    <td>{{marker.special_term}}</td>
+                    <td>{{marker.special_rate|parseFloatKing}}</td>
+                    <td>{{marker.expired_add_days}}</td>
+                    <td>{{marker.expired_days}}</td>
+                    <!--<td>{{marker.fee}}</td>-->
+                    <td>{{markerStatus[marker.status]}}</td>
+                    <td class="no-padding">
+                        <button class="btn btn-info btn-information btn-table" data-ng-hide="loan.is_special==1 && marker.funds_type==''" ng-click="markerDetail(marker.id)">詳細</button>
+                        <button class="btn btn-info btn-confirm btn-table" data-ng-hide="marker.status=='3'" ng-click="repayment(marker.id)" check-permissions="loanRepay">還款</button>
+                        <button class="btn btn-information btn-table" ng-click="trial(marker)" >試算手續費</button>
+                    </td>
+                </tr>
+                <tr data-ng-show="loan.markers.length==0">
+                    <td colspan="12">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>戶口編號</td>
+                    <td>資金類型</td>
+                    <td>天期</td>
+                    <td>息率</td>
+                    <td>特別期限</td>
+                    <td>特別息率</td>
+                    <td>過期天數</td>
+                    <!--<td>過期手續費</td>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr  data-ng-repeat="markerTerm in markerTerms">
+                    <td>{{markerTerm.agent_code}}</td>
+                    <td>{{markerTerm.funds_type}}</td>
+                    <td>{{markerTerm.term}}</td>
+                    <td>{{markerTerm.expired_rate|parseFloatKing}}</td>
+                    <td>{{markerTerm.special_term}}</td>
+                    <td>{{markerTerm.special_rate|parseFloatKing}}</td>
+                    <td>{{markerTerm.expired_days}}</td>
+                    <!--<td>{{}}</td>-->
+                </tr>
+                <tr data-ng-show="markerTerms.length == 0">
+                    <td colspan="11">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<footer class="table-footer">-->
+            <!--<div class="text-right pagination-container">-->
+                <!--<pagination class="pagination-sm"-->
+                            <!--page="pagination.page"-->
+                            <!--total-items="pagination.total_items"-->
+                            <!--on-select-page="select(page)"-->
+                            <!--max-size = "pagination.max_size"-->
+                            <!--data-ng-hide="loan.markerRepayments.length == 0"></pagination>-->
+            <!--</div>-->
+        <!--</footer>-->
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading">
+            <strong class="pull-left">還款記錄</strong>
+        </div>
+        <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>貸款單號</td>
+                <td>還款金額(萬)</td>
+                <td>還款類型</td>
+                <td>還款方式</td>
+                <td>還款項目</td>
+                <td>未還金額(萬)</td>
+                <!--<td>免息天期</td>-->
+                <!--<td>息率</td>-->
+                <td>還款日期</td>
+                <td>經手人</td>
+                <td width="150">備註</td>
+                <td check-permissions="loanRollBack">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  data-ng-repeat="payment in repaymentList">
+                <td>{{payment.marker_seqnumber}}</td>
+                <td>{{payment.repayment_amount|parseTenThousand2}}</td>
+                <td>{{repaymentType[payment.is_all_repay]}}</td>
+                <td>{{repaymentMethod[payment.repayment_type]}}</td>
+                <td>本金</td>
+                <td>{{payment.settlement_amount|parseTenThousand2}}</td>
+                <td>{{payment.repayment_time}}</td>
+                <td>{{payment.user_name}}</td>
+                <td>{{payment.remark}}</td>
+                <td check-permissions="loanRollBack">
+                    <button class="btn btn-info btn-information btn-table" data-ng-hide="payment.is_shift==1" ng-click="rollbackRepayment(payment.id)">回滾</button>
+                </td>
+            </tr>
+            <tr data-ng-show="repaymentList.length == 0">
+                <td colspan="11">暫無符合條件的記錄</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>

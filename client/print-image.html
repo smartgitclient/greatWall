@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>&nbsp;</title>
+</head>
+<style type="text/css">
+@media print{
+    .btn{display: none}
+}
+
+</style>
+<body onload="window.print()" style=" border:1px solid #000">
+    <div class="warp" style=" padding:35px 80px;">
+        <div id = 'img' style="text-align: center">
+        <img id="picture" src="" style="max-width: 400px">
+        </div>
+        <div style="text-align: center;">
+            <!--<a href="javascript:void(0)" onclick="closed()" style="display: inline-block; text-decoration:none;padding:8px 32px;cursor: pointer;background: #a86014;color:#fff;margin:50px 0;font-size: 14px;" class="btn" onclick="closed()">關&nbsp;閉</a>-->
+            <button style="border:none;padding:8px 32px;cursor: pointer;background: #a86014;color:#fff;margin:50px 0;font-size: 14px;" class="btn" onclick="closed()">Close</button>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    document.getElementById("picture").src = getQueryString("url");
+
+//    function print(){
+//        var newstr = document.all.item('img').innerHTML;
+//        printWindow = window.open();
+//        printWindow.document.write(newstr);
+//        printWindow.print();
+//    }
+    function closed(){
+        window.close();
+    }
+
+</script>

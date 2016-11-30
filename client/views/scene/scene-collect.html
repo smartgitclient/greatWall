@@ -1,0 +1,219 @@
+<div class="page page-services" data-ng-controller="sceneCollectCtrl">
+    <style type="text/css">
+        @media screen and (max-width: 1440px){
+            .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+                line-height: 1.42857;
+                padding: 3px 3px;
+            }
+            .panel button.btn-table {
+                padding: 3px 5px;
+            }
+            .btn-confirm, .btn-information, .btn-cancel {
+                padding: 3px 20px;
+            }
+        }
+    </style>
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>場面數查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <div class="col-md-10 center-block pull-none">
+                    <table>
+                    <tr height="50">
+                        <!--<td class="text-right" width="140">所在廰：</td>-->
+                        <!--<td class="text-left" width="155">-->
+                            <!--<select data-ng-model="condition.hall_id"-->
+                                    <!--class="form-control" ng-selected="user.hall.id==h.id" ng-options="h.id as h.hall_name for h in halls">-->
+                                <!--<option value = "">請選擇廳館</option>-->
+                            <!--</select>-->
+                        <!--</td>-->
+                        <td width="120" data-min-screen-width="140" class="text-right">廳館：</td>
+                        <td width="160" data-min-screen-width="150" data-ng-show="user.isAllHall()">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="160" data-min-screen-width="150"  data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td class="text-right" width="140">線頭：</td>
+                        <td class="text-left" width="200">
+                            <input data-input-uppercase class="form-control input-140 ng-pristine ng-valid"
+                                   type="text"
+                                   ng-model="condition.agent_group"
+                                   name="agent_group" /></td>
+                        <td class="text-right" width="70">年   月：</td>
+                        <td width="160">
+                            <table class="table-inner">
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" name="year_month" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <!--<td class="text-right" width="140">狀態：</td>-->
+                        <!--<td class="text-left" width="155"><select name="status" class="form-control" data-ng-model="condition.status" data-ng-options="k as v for (k, v) in matchesStatus" >-->
+                            <!--<option value="">請選擇狀態</option>-->
+                        <!--</select></td>-->
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">戶口編號：</td>
+                        <td>
+                            <input data-input-uppercase class="form-control input-140 ng-pristine ng-valid"
+                                   type="text"
+                                   ng-model="condition.agent_code"
+                                   name="agent_code" />
+                        </td>
+                        <td class="text-right">指定日期：</td>
+                        <td width="200" colspan="4">
+                            <div class=" col-md-4">
+                                <p class="input-group ui-datepicker">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.date[0]" name="date"/>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                                </p>
+                            </div>
+
+                            <p class="col-md-2" style="width: 20px; padding: 0;">~</p>
+                            <div class=" col-md-4">
+                                <p class="input-group ui-datepicker">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.date[1]" name="date"/>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                                </p>
+                            </div>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-confirm margin-right-15" ng-click="search()">查詢</button>
+                        <button class="btn btn-info btn-cancel" ng-click="reset()">重置</button>
+                    </div>
+
+                </div>
+                <div class="clear"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-list-detail col-md-4">
+            <div class="panel-heading"><strong>場面數匯總</strong></div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <td>戶口編號</td>
+                        <td>中文姓名</td>
+                        <td>上下數合計(萬)</td>
+                        <td>轉碼數合計(萬)</td>
+                        <td>操作</td>
+                    </tr>
+                    <tr data-ng-repeat="scene_total_list in scene_total_lists" data-selected-rows>
+                        <td>{{scene_total_list.agent_code}}</td>
+                        <td>{{scene_total_list.agent_name}}</td>
+                        <td>
+                            <span data-ng-show="scene_total_list.loss_win_total>0" class="positive-number">{{"+"+scene_total_list.loss_win_total|parseTenThousand2}}</span>
+                            <span data-ng-hide="scene_total_list.loss_win_total>0" class="minus-number">{{scene_total_list.loss_win_total|parseTenThousand2}}</span>
+                        </td>
+                        <td>{{scene_total_list.rolling_total | parseTenThousand2}}</td>
+                        <td><button class="btn btn-info btn-information btn-table" ng-click="select(scene_total_list.agent_info_id)">詳細</button></td>
+                    </tr>
+                    <tr data-ng-show="scene_total_lists.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+
+                </table>
+            </div>
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="search(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-show="scene_total_lists.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="search"></paginationselect>
+                </div>
+            </footer>
+        </div>
+        <div class="panel panel-list-detail col-md-8">
+            <div class="panel-heading">
+                <strong>戶口場面數明細</strong>
+                <button class="btn btn-info btn-information pull-right" ng-click="search()">列印</button>
+                <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+            </div>
+            <div class="panel-content">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record"  style="min-height: 100px; width: 1300px;">
+                            <table class="table table-bordered table-striped table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <!--<td>狀態</td>-->
+                                <td>場次</td>
+                                <td>所在廳</td>
+                                <td>客人姓名</td>
+                                <td>日期</td>
+                                <td>開場時間</td>
+                                <td>離場時間</td>
+                                <td>入場本金(萬)</td>
+                                <td>離場本金(萬)</td>
+                                <td>上下數(萬)</td>
+                                <td>轉碼數(萬)</td>
+                                <td>經手人</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="scene_detail in scene_details" data-selected-rows>
+                                <!--<td>{{ matchesStatus[scene_detail.status]}}</td>-->
+                                <td>{{scene_detail.scene_no}}</td>
+                                <td>{{scene_detail.hall_name}}</td>
+                                <td>{{scene_detail.guest_name}}</td>
+                                <td>{{scene_detail.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                                <td>{{scene_detail.in_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                <td>{{scene_detail.out_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                <td>{{in_capital_show(scene_detail.inCapitals)}}</td>
+                                <!-- scene_detail.in_capital_scene-->
+                                <td>{{out_capital_show(scene_detail.outCapitals)}}</td>
+                                <!--scene_detail.out_capital_scene-->
+                                <td>
+                                    <span data-ng-show="scene_detail.loss_win_amount>0" class="positive-number">{{"+"+scene_detail.loss_win_amount|parseTenThousand2}}</span>
+                                    <span data-ng-hide="scene_detail.loss_win_amount>0" class="minus-number">{{scene_detail.loss_win_amount|parseTenThousand2}}</span>
+                                </td>
+                                <td>{{scene_detail.rolling_total | parseTenThousand2}}</td>
+                                <td>{{scene_detail.user_name}}</td>
+                            </tr>
+                            <tr data-ng-show="scene_details.length == 0">
+                                <td colspan="11">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_details.page"
+                                    total-items="pagination_details.total_items"
+                                    on-select-page="search_details(page)"
+                                    max-size = "pagination_details.max_size"
+                                    items-per-page = "pagination_details.items_per_page"
+                                    data-ng-hide="pagination_details.total_items <= pagination_details.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_details" select-page="search_details"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+
+
+        </div>
+    </div>
+</div>

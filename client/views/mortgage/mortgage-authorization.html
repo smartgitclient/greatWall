@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h3>授權</h3>
+</div>
+<div class="modal-body">
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr>
+                    <td class="text-right">授權戶口：</td>
+                    <td class="text-left">{{agent_name}}</td>
+                </tr>
+                <t>
+                    <td class="text-right">授權電話：</td>
+                    <td class="text-left">
+                        <select ng-model="phone" class="form-control" style="width:150px;">
+                            <option value="">請選擇交易人</option>
+                        </select>
+                    </td>
+                </t>
+            </table>
+    <p class="color-warning" data-ng-show="show">授權成功</p>
+    <br><br><br>
+    <div class="row" style="text-align: center;" data-ng-show="showMortgage">
+        <button class="btn btn-info btn-confirm margin-right-15" ng-click="authorization()">電話授權</button>
+        <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+    <div class="row" style="text-align: center;" data-ng-show="closeMortgage">
+        <button class="btn btn-inf btn-cancel" data-ng-click="close()">返回抵押記錄</button>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<div class="panel-form-list">
+<div class="modal-header">
+    <!--<button type="button" class="close" ng-click="cancel()">×</button>-->
+    <h4 class="modal-title" id="myModalLabel">
+        <h3>還款</h3>
+    </h4>
+</div>
+<div class="modal-body">
+    <!--<label style="margin-left: 25px">單號:<input data-ng-model="loanSequnmber.number" type="text"/></label>-->
+    <form name="$parent.form_repayment" class="ng-valid ng-dirty form-validation" server-validation="POST{{repayment_url}}" >
+    <div class="modal-body">
+        <table class="table table-bordered table-striped table-detail-01" style="text-align: left;">
+            <tr>
+                <td class="text-right">單號：</td>
+                <td><input data-ng-model="loanSequnmber.number" class="form-control" type="text"/></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="text-right">業務單號：</td>
+                <td>{{ loan.loan_seqnumber}}</td>
+                <td class="text-right">貸款單號：</td>
+                <td>{{ marker.marker_seqnumber}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">貸款金額：</td>
+                <td>{{ marker.marker_amount|parseTenThousand}}</td>
+                <td class="text-right">剩餘天期：</td>
+                <td>{{marker.settlement_term}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">息率：</td>
+                <td>{{marker.expired_rate|parseTenThousand2}}</td>
+                <td class="text-right">過期天期：</td>
+                <td>{{ marker.expired_days}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">已還金額：</td>
+                <td>{{ (marker.marker_amount - marker.settlement_amount)|parseTenThousand}}</td>
+                <td class="text-right">未還金額：</td>
+                <td>{{ marker.settlement_amount|parseTenThousand}}</td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered table-striped table-detail-01">
+            <tr>
+                <td class="text-right">還款類型：</td>
+                <td width="175">
+                    <select data-ng-model="repayment.is_all"
+                            data-ng-required="enableClientValidation"
+                            name="is_all"
+                            class="form-control">
+                        <option value = "">請選擇還款類型</option>
+                        <option value = "1">{{repaymentType[1]}}</option>
+                        <option value = "0">{{repaymentType[0]}}</option>
+                    </select>
+                </td>
+                <td class="text-right">還款金額：</td>
+                <td width="163" align="left">
+                    <input type="text" class="form-control input-01 width-83"
+                           data-ng-required="enableClientValidation"
+                           name="amount"
+                           data-ng-model="repayment.amount"
+                           style="width:120px;"
+                           data-ng-disabled="repayment.is_all == '1'">&nbsp;萬
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">還款戶口：</td>
+                <td width="175">
+                    <input type="text" ng-model="loan.agent_code" data-input-uppercase name="agent_code" class="form-control input-180">
+                </td>
+                <td class="text-right">戶口姓名：</td>
+                <td width="163">{{loan.agent_name}} </td>
+            </tr>
+            <tr>
+                <td class="text-right">還款人：</td>
+                <td width="175">
+                    <!--<select data-ng-model="repayment.repay_name"-->
+                            <!--data-ng-required="enableClientValidation"-->
+                            <!--name="repay_name"-->
+                            <!--class="form-control"-->
+                            <!--ng-options="h.id as h.agent_contact_name for h in agentContacts">-->
+                        <!--<option value = "">請選擇還款人</option>-->
+                    <!--</select>-->
+                    <input class="form-control" type="text"
+                           data-ng-model="repayment.repay_name"
+                           list="repay_name_id"
+                           data-dynamic-name="repay_name"/>
+                    <datalist id="repay_name_id">
+                        <option data-ng-repeat="s in agentContacts" value ="{{s.agent_contact_name}}">
+                    </datalist>
+                </td>
+                <td class="text-right">&nbsp;</td>
+                <td width="163">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="text-right">還款方式：</td>
+                <td width="163">
+
+                    <select data-ng-model="repayment.repayment_type"
+                            data-ng-required="enableClientValidation"
+                            name="repayment_type"
+                            class="form-control">
+                        <option value = "">請選擇還款方式</option>
+                        <option value = "5">{{repaymentMethod[5]}}</option>
+                        <option value = "2">{{repaymentMethod[2]}}</option>
+                        <option value = "7">{{repaymentMethod[7]}}</option>
+                        <option value = "4">{{repaymentMethod[4]}}</option>
+                        <option value = "1">{{repaymentMethod[1]}}</option>
+                    </select>
+                </td>
+                <td class="text-right">還款項目：</td>
+                <td width="163">本金</td>
+            </tr>
+            <tr data-ng-show="repayment.repayment_type==1">
+                <td class="text-right">存卡：</td>
+                <td>
+                    <select data-ng-model="repayment.card_id"
+                            data-ng-required="enableClientValidation"
+                            name="card_id"
+                            class="form-control"
+                            ng-options="h.id as h.card_name for h in depositCards">
+                        <option value = "">請選擇存卡類型</option>
+                    </select>
+                </td>
+                <td class="text-right">存款餘額：</td>
+                <td>{{transaction_amount|parseTenThousand}}</td>
+            </tr>
+            <tr data-ng-show="repayment.repayment_type==4">
+                <td class="text-right">存M：</td>
+                <td>
+                    <select data-ng-model="repayment.ticket_id"
+                            data-ng-required="enableClientValidation"
+                            name="ticket_id"
+                            class="form-control"
+                            ng-options="h.id as h.depositTicket_seqnumber for h in depositOrders">
+                        <option value = "">請選擇存M單號</option>
+                    </select>
+                </td>
+                <td class="text-right">存M餘額：</td>
+                <td>{{transaction_amount|parseTenThousand}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">備註：<br />
+                    <button class="btn btn-information btn-table margin-right-5" style="padding: 6px 16px;" phrasebooktis="loan" insertmodel="remark" type="button" >常用</button>
+                </td>
+                <td colspan="3"><textarea data-ng-model="repayment.remark" name="remark" class="form-control textarea-table01" rows="4"></textarea></td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered table-striped table-detail-01">
+            <!--<tr>-->
+                <!--<td class="text-right">操作員身份確認：</td>-->
+                <!--<td>&nbsp;</td>-->
+            <!--</tr>-->
+            <tr>
+                <td class="text-right">操作密碼：
+
+                </td>
+                <td class="text-left"><input type="password" ng-model="repayment.pin_code" name="pin_code" class="form-control input-180" data-enter-key="submit(true)"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-confirm" data-ng-disabled="isDisabled" ng-click="submit(true)">提交并列印</button>
+        <button class="btn btn-confirm" data-ng-disabled="isDisabled" ng-click="submit()">提交</button>
+        <button class="btn btn-cancel" data-ng-disabled="isDisabled" ng-click="cancel()">取消</button>
+    </div>
+    </form>
+</div>
+</div>

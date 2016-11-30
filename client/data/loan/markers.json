@@ -1,0 +1,16 @@
+[
+    {"marker_id":0,"loan_id":"0","marker_seqnumber":"M201407311200-1","marker_type":"V","marker_amount":300,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":1,"loan_id":"0","marker_seqnumber":"M201407311200-2","marker_type":"M","marker_amount":200,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":2,"loan_id":"1","marker_seqnumber":"M201407311221-1","marker_type":"M","marker_amount":300,"paid_amount":0,"credit_days":18,"rate":0.2,"status":"未還"},
+    {"marker_id":3,"loan_id":"2","marker_seqnumber":"M201407311223-1","marker_type":"V","marker_amount":200,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":4,"loan_id":"3","marker_seqnumber":"M201407311225-1","marker_type":"V","marker_amount":300,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":5,"loan_id":"3","marker_seqnumber":"M201407311225-2","marker_type":"M","marker_amount":200,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":6,"loan_id":"4","marker_seqnumber":"M201407311227-1","marker_type":"U","marker_amount":200,"paid_amount":0,"credit_days":18,"rate":0.2,"status":"未還"},
+    {"marker_id":7,"loan_id":"5","marker_seqnumber":"M201407311228-1","marker_type":"V","marker_amount":300,"paid_amount":300,"credit_days":16,"rate":0.2,"status":"已還"},
+    {"marker_id":8,"loan_id":"6","marker_seqnumber":"M201407311229-1","marker_type":"V","marker_amount":100,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":9,"loan_id":"7","marker_seqnumber":"M201407311230-1","marker_type":"U","marker_amount":100,"paid_amount":100,"credit_days":16,"rate":0.2,"status":"已還"},
+    {"marker_id":10,"loan_id":"8","marker_seqnumber":"M201407311230-1","marker_type":"U","marker_amount":100,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":11,"loan_id":"9","marker_seqnumber":"M201407311230-1","marker_type":"U","marker_amount":100,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":12,"loan_id":"10","marker_seqnumber":"M201407311230-1","marker_type":"U","marker_amount":100,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"},
+    {"marker_id":13,"loan_id":"11","marker_seqnumber":"M201407311230-1","marker_type":"U","marker_amount":100,"paid_amount":0,"credit_days":16,"rate":0.2,"status":"未還"}
+]

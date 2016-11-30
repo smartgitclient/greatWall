@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h3>{{title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_update_localtion" class="form-validation" server-validation="PUT{{localtion_url}}">
+        <div class="row">
+            <div class="col-md-12" style="height: 50px">
+                請插入 {{selected_deposit_card.agent_code}}&nbsp;&nbsp;{{selected_deposit_card.agent_name}}&nbsp;&nbsp;存卡{{selected_deposit_card.card_name}}
+            </div>
+            <div class="col-md-12" style="height: 50px">
+                當前打印第
+                <input data-ng-required="enableClientValidation" name="print_page" type="text" data-ng-model="localtion.print_page" data-ng-disabled="disabled_update"  class="form-control input-01 width-83" style="width:50px">
+                &nbsp;頁第
+                <input data-ng-required="enableClientValidation" name="print_row" type="text" data-ng-model="localtion.print_row" data-ng-disabled="disabled_update"  class="form-control input-01 width-83" style="width:50px">
+                &nbsp;行
+                <button class="btn btn-confirm" data-ng-click="update_location()">更新位置</button>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="print()" data-ng-disabled="disable_print">提交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+        </div>
+    </form>
+</div>

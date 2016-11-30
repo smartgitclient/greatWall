@@ -1,0 +1,96 @@
+.ui-select {
+    position: relative;
+    > select {
+        margin: 10px 0;
+        padding: 10px 15px 10px 10px;
+        width: 200px;
+        position: relative;
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: bold;
+        text-indent: 0.01px;
+        border: 1px solid $input-border;
+        border-radius: $border-radius-base;
+        text-overflow: ellipsis;
+        -webkit-appearance: none;
+    }
+
+    &:after {
+        z-index: 0;
+        content: "";
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        color: $input-border;
+        width: 0;
+        margin-top: -3px;
+        height: 0;
+        border-top: 6px solid;
+        border-right: 6px solid transparent;
+        border-left: 6px solid transparent;
+    }
+}
+.btn-group.formlist {
+  .btn-danger {
+    background-color: #cccccc;
+    border-color:#797979;
+    color: #333333;
+  }
+}
+
+.btn-group.select01 {
+  .btn-danger {
+    background-color: #cccccc;
+    border-color:#797979;
+    color: #333333;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+.ui-select-bootstrap{
+  > button.btn {
+    background-color: #CCCCCC;
+    border-color: #797979;
+    color: #666666;
+    padding:0 0 0 12px !important;
+  }
+  > button.btn[disabled] {
+    background-color: #666666;
+    border-color: #666666;
+    color: #000000;
+    padding:0 0 0 12px !important;
+  }
+  .dropdown-menu {
+    background-color: #CCCCCC;
+    color: #000;
+    margin-top: 0px;
+    border-top:none;
+  }
+  .ui-select-choices-row {
+    &.active {
+      > a {
+
+        background-color: #A86014;
+      }
+    }
+  }
+}
+
+.select-92 {
+  width: 92px;
+}
+.select-80 {
+  width: 80px;
+}
+.select-140 {
+  width: 140px;
+}
+.span-LH27 {
+  line-height: 27px;
+}
+.span-LH39 {
+  line-height: 39px;
+}
+.padding-LR3 {
+  padding:  0 3px;
+}

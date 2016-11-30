@@ -1,0 +1,96 @@
+[
+    {"id":"0","agent_name":"王毅","nationality":"中國","language":"中文","birthday":"1965-05-11","sex":"男","images":[{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF512151251251","images":"images/index/passport02.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport02.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853 ", "phone_number":"6654213"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654213"}
+        ],
+        "agents":[
+            {"id":"0","agent_code":"FA233","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬"],"remark":""}
+        ]
+    },
+    {"id":"1","agent_name":"陳四","nationality":"澳門","language":"中文","birthday":"1965-05-13","sex":"男","images":[{"img":"images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF512151251555","images":"images/index/passport03.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF512151251555","images":"images/index/passport03.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654214"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654214"}
+        ],
+        "agents":[
+            {"id":"0","agent_code":"FA233","contacts_type":"助手","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+        ]
+    },
+    {"id":"2","agent_name":"郭明","nationality":"澳門","language":"中文","birthday":"1965-05-14","sex":"男","images":[{"img":"images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport03.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040201","images":"images/index/passport03.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654216"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654216"}
+        ],
+        "agents":[
+            {"agent_code":"PA328M","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+
+        ]
+    },
+    {"id":"3","agent_name":"李三","nationality":"澳門","language":"中文","birthday":"1965-05-15","sex":"男","images":[{"img":"images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport02.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport02.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654217"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654217"}
+        ],
+        "agents":[
+            {"agent_code":"VW5232M","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+
+        ]
+    },
+    {"id":"4","agent_name":"徐明","nationality":"澳門","language":"中文","birthday":"1985-09-01","sex":"男","images":[{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport03.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport03.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654218"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654218"}
+        ],
+        "agents":[
+            {"agent_code":"VW5232M","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+
+        ]
+    },
+    {"id":"5","agent_name":"唐果","nationality":"澳門","language":"中文","birthday":"1965-05-16","sex":"男","images":[{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport01.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport01.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654219"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654219"}
+        ],
+        "agents":[
+            {"agent_code":"Y780","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+        ]
+    },
+    {"id":"6","agent_name":"易過","nationality":"澳門","language":"中文","birthday":"1965-05-17","sex":"男","images":[{"img":"../images/index/passport01.jpg"},{"img":"../images/index/passport01.jpg"}],
+        "certificate":[
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport02.jpg"},
+            {"certificate_type":"身份證","certificate_number":"DF061616040202","images":"images/index/passport02.jpg"}
+        ],
+        "contact_info":[
+            { "notification_type":"電話", "area_code":"+853", "phone_number":"6654220"},
+            { "notification_type":"短信", "area_code":"+853", "phone_number":"6654220"}
+        ],
+        "agents":[
+            {"agent_code":"M626M","contacts_type":"客人","authorization":["貸款","存卡","存單","飛數","轉賬","消費","出佣"],"remark":""}
+        ]
+    }
+]

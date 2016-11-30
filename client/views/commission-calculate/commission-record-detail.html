@@ -1,0 +1,164 @@
+<div class="page page-services ng-scope" data-ng-controller="commissionRecordDetailCtrls">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="panel panel-list-detail col-md-4">
+                <div class="panel-heading">
+                    <strong>出佣詳細</strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td width="180" class="text-right">戶口編號：</td>
+                            <td width="235" class="text-left">{{commission_record.agent_code}}</td>
+                            <td width="180" class="text-right">中文姓名：</td>
+                            <td width="235" class="text-left">{{commission_record.agent_name}}</td>
+                        </tr>
+                        <tr>
+                            <td width="180" class="text-right">年月：</td>
+                            <td width="235" class="text-left">{{commission_record.year_month | parseDate:'yyyy-MM'}}</td>
+                            <td class="text-right">&nbsp;</td>
+                            <td class="text-right">&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+         </div>
+        <div class="row">
+            <div class="panel panel-list-detail col-md-6">
+                <div class="panel-heading">
+                    <strong>應付項明細</strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>應付項</td>
+                            <td>總額</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-hide="true">
+                            <td>逾期手續費</td>
+                            <td>{{commission_record.expired_fee|parseDollar:true}}</td>
+                        </tr>
+                        <tr>
+                            <td>扣超額消費</td>
+                            <td>{{commission_record.negative_consumption|parseDollar:true}}</td>
+                        </tr>
+                        <tr>
+                            <td>雜項現金消費</td>
+                            <td>{{commission_record.miscellaneous_cash|parseDollar:true}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+
+                </div>
+            </div>
+       </div>
+        <form name="form_commission" class="ng-valid ng-dirty form-validation" server-validation="POST{{commission_url}}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-form-list ">
+                    <div class="panel-heading">
+                        <strong>其他收益明細</strong>
+                    </div>
+                    <div class="panel-content">
+                        <table>
+                            <tr height="50">
+                                <td width="100" class="text-right">實出佣金：</td>
+                                <td colspan="3" width="480">
+                                    <!--{{commission_record.should_commission|parseDollar:true}} -->
+                                    {{commission_record.actual_commission|parseDollar:true}}
+                                </td>
+                            </tr>
+                            <tr height="50" data-ng-hide="true">
+                                <td class="text-right">扣減款項：</td>
+                                <td colspan="3">
+                                    <!--<span data-ng-repeat="should in shoulds" data-ng-show="$index == 0">-->
+                                        <!--<input type="checkbox" data-ng-model="should.selected" data-ng-click="should_pay(should,$index)" data-ng-disabled="commission_record.status_wages ==  commission_record_status.commissionPaid">{{should.title}}&nbsp;&nbsp;&nbsp;&nbsp;-->
+                                    <!--</span>-->
+                                    <input type="checkbox" data-ng-model="commission_records.selected" data-ng-click="should_pay()" data-ng-disabled="commission_record.status_wages ==  commission_record_status.commissionPaid">逾期手續費
+                                    <!--<input type="checkbox" data-ng-model="selecteds[1].selected" data-ng-click="should_pay(commission_record.over_comsumption)">扣超額消費-->
+                                    <!--<input type="checkbox" data-ng-model="selecteds[2].selected" data-ng-click="should_pay(commission_record.miscellaneous_cash)">雜項現金消費-->
+                                </td>
+                            </tr>
+                            <tr data-ng-show="expired_fee_show">
+                                <td class="text-right">還手續費類型：</td>
+                                <td width="180"> <select data-ng-model="commission_records.expired_fee_type"
+                                             data-ng-required="enableClientValidation"
+                                             name="is_all"
+                                             class="form-control width-180">
+                                    <option value = "">請選擇還手續費類型</option>
+                                    <option value = "1">{{repaymentType[1]}}</option>
+                                    <option value = "2">{{repaymentType[0]}}</option>
+                                </select></td>
+                                <td  width="150" class="text-right">還手續費金額：</td>
+                                <td  width="150"><input type="text" class="form-control input-01"
+                                           data-ng-required="enableClientValidation"
+                                           name="expired_fee_amount"
+                                           data-ng-model="commission_records.expired_fee_amount"
+                                           data-ng-disabled="commission_records.expired_fee_type == '1'">
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">除尾數：</td>
+                                <td >{{commission_record.actual_commission|actualCommission}}</td><!--actual_commission-->
+                                <td>尾數：&nbsp;&nbsp;{{commission_record.actual_commission|omitCommission}}</td>
+                                <td></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">備註：</td>
+                                <td colspan="3">
+                                    <textarea name="remark"
+                                              class="form-control textarea-table01 ng-pristine ng-valid"
+                                              data-ng-model="commission_records.remark"
+                                              rows="4"></textarea>
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">出佣公司户口：</td>
+                                <td>
+                                    <input name="commission_id" data-input-uppercase type="text" data-ng-model="com_agent_code" class="form-control" >
+                                    <!--<select data-ng-required="enableClientValidation"-->
+                                            <!--name="com_agent_id"-->
+                                            <!--data-ng-model="commission_records.com_agent_id"-->
+                                            <!--data-ng-change="select_card()"-->
+                                            <!--class="form-control"-->
+                                            <!--data-ng-disabled="commission_record.round_commission==0"-->
+                                            <!--data-ng-options="agent.agent_info_id as agent.agent_code for agent in agents" >-->
+                                        <!--<option value="">請選擇户口</option>-->
+                                    <!--</select>-->
+
+                                </td><!--actual_commission-->
+                                <td class="text-right">存卡：</td>
+                                <td>
+                                    <select data-ng-required="enableClientValidation"
+                                            name="com_card_name"
+                                            data-ng-model="commission_records.com_card_name"
+                                            data-ng-disabled="disabled_update || commission_record.round_commission==0"
+                                            class="form-control"
+                                            data-ng-options="card.card_name as card.card_name for card in commission_records_sreach" >
+                                        <option value="">請選擇存卡</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">操作密碼：</td>
+                                <td><input name="pin_code" type="password" data-ng-model="commission_records.pin_code" class="form-control" data-enter-key="add()"></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;margin:50px 0 20px">
+            <button data-ng-show="commission_record.status_wages == commission_record_status.commissionUnpay" class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit" check-permissions="commissionRecordRelease">出佣</button>
+            <button data-ng-show="commission_record.status_wages == commission_record_status.commissionPaid" class="btn btn-confirm margin-right-15" data-ng-click="return()" >返回</button>
+            <!--<button class="btn btn-information" ng-click="print()">列印</button>-->
+        </div>
+        </form>
+        </div>
+    </div>

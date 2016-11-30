@@ -1,0 +1,12 @@
+{
+    "name": "Megastar Treasury Management System",
+    "version": "1.0.0.r1",
+    "main": "index.html",
+    "window": {
+        "toolbar": false,
+        "frame": false,
+        "icon": "images/icon.png",
+        "position": "center",
+        "resizable": true
+    }
+}

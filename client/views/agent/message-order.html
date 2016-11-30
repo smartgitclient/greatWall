@@ -1,0 +1,175 @@
+<div class="page page-services ng-scope" data-ng-controller="agentMessageOrderCtrl">
+        <div class="panel panel-form-list">
+            <div class="panel-heading"><strong>Order紙查詢</strong></div>
+            <div class="panel-content">
+                <form name="form_search">
+                    <table>
+                        <tr height="50">
+                            <td width="100" class="text-right">廳館：</td>
+                            <td width="180">
+                                <select data-ng-model="condition.hall_id" class="form-control" data-ng-options="hall.id as hall.hall_name for hall in halls" >
+                                    <option value="">請選擇廳館</option>
+                                </select>
+                            </td>
+                            <td width="180" class="text-right">戶口編號：</td>
+                            <td><input type="text" data-input-uppercase data-ng-model="condition.agentInfos.agent_code" class="form-control"></td>
+                            <td width="120" class="text-right">戶組：</td>
+                            <td width="180"><input type="text" data-input-uppercase data-ng-model="condition.agentGroups.agent_group_name" class="form-control"></td>
+                            <td width="120" class="text-right">狀態：</td>
+                            <td width="180">
+                                <select data-ng-model="condition.is_expired" class="form-control">
+                                    <option value="">請選擇狀態</option>
+                                    <option value="0">有效</option>
+                                    <option value="1">無效</option>
+                                </select>
+                            </td>
+                            <td width="120">&nbsp;</td>
+                        </tr>
+                        <tr height="50">
+                            <td width="100" class="text-right">對象類型：</td>
+                            <td width="180" data-min-screen-width="185">
+                                <select data-ng-model="condition.is_group" class="form-control">
+                                    <option value="">請選擇對象類型</option>
+                                    <option value="{{orderTypes.agent}}">{{orderTypes.items[orderTypes.agent]}}</option>
+                                    <option value="{{orderTypes.group}}">{{orderTypes.items[orderTypes.group]}}</option>
+                                </select>
+                            </td>
+
+                            <td width="120" class="text-right">顯示模組：</td>
+                            <td width="180" data-min-screen-width="185">
+                                <select data-ng-model="condition.modules.module_id" class="form-control" data-ng-options="am.id as am.module_name for am in agentModules">
+                                    <option value="">請選擇顯示模組</option>
+                                </select>
+                            </td>
+
+                            <td width="120" class="text-right">標題：</td>
+                            <td width="180">
+                                <select data-ng-model="condition.order_type_id" class="form-control" data-ng-options="at.id as at.order_name for at in agentOrderTypes" >
+                                    <option value="">請選擇標題</option>
+                                </select>
+                            </td>
+                            <td width="120" class="text-right">創建日期：</td>
+                            <td colspan="2" ><!-- Split button -->
+                                <p class="input-group ui-datepicker col-md-5  pull-left" data-min-screen-width="125">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.create_time[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <p class="pull-left  col-md-1">~</p>
+                                <p class="input-group ui-datepicker col-md-5  pull-left" data-min-screen-width="125">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.create_time[1]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr height="50">
+
+                            <td width="100" class="text-right">有效日期：</td>
+                            <td colspan="2">
+                                <p class="input-group ui-datepicker col-md-5  pull-left" data-min-screen-width="125">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.end_time[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <p class="pull-left  col-md-1">~</p>
+                                <p class="input-group ui-datepicker  col-md-5  pull-left" data-min-screen-width="125">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.start_time[1]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+
+                            <td class="text-right" colspan="2">操作人：</td>
+                            <td>
+                                <input type="text" data-ng-model="condition.user.name" class="form-control">
+                            </td>
+                            <td width="120">&nbsp;</td>
+                            <td width="120">&nbsp;</td>
+                            <td width="120">&nbsp;</td>
+                            <td width="120">&nbsp;</td>
+                        </tr>
+                    </table><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-confirm margin-right-15" ng-click="search()">查詢</button>
+                        <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-list-detail">
+            <div class="panel-heading"><button class="btn btn-confirm pull-right" ng-click="addOrder('','')" check-permissions="agentOrderCreate">新增Order紙</button></div>
+            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                <div class="panel-content consumption_record"  style="min-height: 80px; min-width: 1900px;">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td width="125" data-min-screen-width="120" check-permissions="agentOrderUpdate,agentOrderDelete">操作</td>
+                        <td width="65" data-min-screen-width="65">優先級</td>
+                        <td data-min-screen-width="80">廳館</td>
+                        <td data-min-screen-width="80">對象類型</td>
+                        <td data-min-screen-width="80">對象戶口</td>
+                        <td width="350">顯示模組</td>
+                        <td data-min-screen-width="100">標題</td>
+                        <td data-min-screen-width="120">創建時間</td>
+                        <td data-min-screen-width="200">有效日期</td>
+                        <td width="250">內容</td>
+                        <td data-min-screen-width="80">操作人</td>
+                        <td data-min-screen-width="65">狀態</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="order in orders" data-selected-rows>
+                        <td class="no-padding" check-permissions="agentOrderUpdate,agentOrderDelete">
+                            <button class="btn btn-information btn-table margin-right-5" data-ng-click="addOrder(order.id,'')" check-permissions="agentOrderUpdate">修改</button>
+                            <button class="btn btn-information btn-table margin-right-5" data-ng-click="delete(order.id)" check-permissions="agentOrderDelete">刪除</button>
+                        </td>
+                        <td>{{prioritys[order.priority]}}</td>
+                        <td>{{order.hall_name}}</td>
+                        <td>{{orderTypes.items[order.is_group]}}</td>
+                        <td>{{order.ref_agent}}</td>
+                        <td>
+                            <span data-ng-repeat="m in order.modules">
+                                {{m.module_name}}<i data-ng-show="$index != (order.modules.length-1) && 2 != $index">、</i><i data-ng-show="2 == $index"><br/></i>
+                            </span>
+                        </td>
+                        <td>{{order.order_type_name}}</td>
+                        <td>{{order.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>
+                            {{order.start_time|parseDate:"yyyy-MM-dd HH:mm"}}
+                            <span data-ng-show="order.start_time">~</span>
+                            <span data-ng-show="order.end_time">{{order.end_time|parseDate:"yyyy-MM-dd HH:mm"}}</span>
+                            <span data-ng-show="!order.end_time">長期有效</span>
+                        </td>
+                        <td  class="text-left">{{order.order_content}}</td>
+                        <td>{{order.user_name}}</td>
+                        <td>
+                            <span>{{order.is_expired ==0 ?'有效':'無效'}}</span>
+                        </td>
+
+                    </tr>
+                    <tr data-ng-show="orders.length == 0">
+                        <td colspan="15">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+             </perfect-scrollbar>
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                </div>
+            </footer>
+        </div>
+    </div>

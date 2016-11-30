@@ -1,0 +1,329 @@
+﻿<div class="page page-grid" data-ng-controller="agentCreateCtrl">
+<div class="panel panel-default">
+<form name="form_agent" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{agent_url}}">
+
+<div class="panel_l col-md-8">
+<div class="panel">
+<div class="panel-content">
+<div class="panel panel-list-detail" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">基本資料</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td class="text-right" data-min-screen-width="80"> <strong style="color:red">*</strong>戶口編號：</td>
+                <td>
+                    <input  data-ng-show="agent_id == ''" data-input-uppercase data-ng-required="enableClientValidation1" ng-class="{true: 'ng-invalid-server', false: ''}[enableClientValidation1]" name = "agent_code" class="form-control input-01 ng-pristine"  type="text" ng-model="agent.agent_code">
+                    <span data-ng-show="agent_id != ''" >{{agent.agent_code}}</span>
+
+                </td>
+                <td class="text-right" data-min-screen-width="80">介紹人</td>
+                <td class="text-left">
+                    <input data-input-uppercase data-ng-required="enableClientValidation" name ="introducer_agent_code" class="form-control input-01 ng-pristine" type="text" ng-model="agent.introducer_agent_code" style="width:120px"/>
+                    {{agent.introducer}}
+                </td>
+                <td class="text-right" data-min-screen-width="96">&nbsp;</td>
+                <td width="213">&nbsp;</td>
+            </tr>
+            <tr data-ng-show="agent.id">
+                <td class="text-right">開戶廳管：</td>
+                <td width="168">{{agent.hall_name}}</td>
+                <td class="text-right">開戶日期：</td>
+                <td>
+                    {{agent.register_time|parseDate:"yyyy-MM-dd"}}
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="text-right"><strong style="color:red">*</strong>姓名：</td>
+                <td width="213" class="text-left" >
+                    <input  data-ng-required="enableClientValidation2" ng-class="{true: 'ng-invalid-server', false: ''}[enableClientValidation2]" name ="agentMaster_agent_contact_name" data-ng-hide="agent_data.length>0" class="form-control input-01 ng-pristine" type="text" ng-model="agent.agentMaster.agent_contact_name" style="width:130px"/>
+                    <select data-ng-model="agent_filter.agent_id"
+                            data-ng-change="redirectUpdate()"
+                            data-ng-show="agent_data.length>0"
+                            data-ng-required="enableClientValidation"
+                            class="form-control"
+                            style="width:135px;float:left"
+                            name="contact_id"
+                            ng-options="ad.id as (ad.agent_contact_name +' '+ad.birthdate|getDate) for ad in agent_data">
+                        <option value = "">請選擇聯繫人</option>
+                    </select>
+                    <button style="float: right" data-ng-show="agent_id == '' && agent_data.length == 0" class="btn btn-confirm btn-table" data-ng-click="searchAgents()">查詢</button>
+                    <button style="float: right"  data-ng-show="agent_data.length > 0" class="btn btn-confirm btn-table" data-ng-click="writeAgents()">輸入</button>
+                </td>
+                <td class="text-right">出生日期：</td>
+                <td>
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control" data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" name="agentMaster_birthdate" datepicker-popup ng-model="agent.agentMaster.birthdate" />
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </td>
+                <td class="text-right"><strong style="color:red">*</strong>性別：</td>
+                <td>
+                    <select  data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" name = "agentMaster_gender" data-ng-model="agent.agentMaster.gender" class="form-control" >
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right"><strong style="color:red">*</strong>語言</td>
+                <td>
+                    <select  data-ng-required="enableClientValidation3" ng-class="{true: 'ng-invalid-server', false: ''}[enableClientValidation3]" data-ng-disabled="show_agent_disable" name="agentMaster_language_type_id" data-ng-model="agent.agentMaster.language_type_id" class="form-control ng-pristine" data-ng-options="lt.id as lt.language_type_name for lt in languageTypes" >
+                        <option value="">請選擇語言</option>
+                    </select>
+
+                </td>
+                <td class="text-right">國籍：</td>
+                <td width="210">
+                    <select data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" name="agentMaster_nationality_id" data-ng-model="agent.agentMaster.nationality_id" class="form-control" data-ng-options="n.id as n.nationality_name for n in nationalitys" >
+                        <option value="">請選擇國籍</option>
+                    </select>
+                </td>
+                <td class="text-right">職業：</td>
+                <td><input data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" name = "agentMaster_occupation" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="agent.agentMaster.occupation"></td>
+            </tr>
+            <!--<tr data-ng-repeat="idCard in agent.agentMaster.agentContactIdcards">-->
+                <!--<td class="text-right">證件類型：</td>-->
+                <!--<td>-->
+                    <!--<select style="width: 180px;float: left" data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" data-dynamic-name="agentMaster_agentContactIdcards_{{$index}}_idcard_type_id" data-ng-model="idCard.idcard_type_id" class="form-control" data-ng-options="it.id as it.idcard_type_name for it in idcardTypes" >-->
+                        <!--<option value="">請選擇證件類型：</option>-->
+                    <!--</select>-->
+                    <!--<strong ng-show="$index==0" style="color:red">*</strong>-->
+                <!--</td>-->
+                <!--<td class="text-right">證件號碼：</td>-->
+                <!--<td>-->
+                    <!--<input style="width: 177px;" data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" data-dynamic-name = "agentMaster_agentContactIdcards_{{$index}}_idcard_number" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="idCard.idcard_number">-->
+                    <!--<strong ng-show="$index==0" style="color:red">*</strong>-->
+                <!--</td>-->
+                <!--<td class="text-right">證件有效期：</td>-->
+                <!--<td>-->
+                    <!--<p class="input-group ui-datepicker">-->
+                        <!--<input type="text" class="form-control" data-ng-required="enableClientValidation" data-ng-disabled="show_agent_disable" name="agentMaster_expire_date" datepicker-popup ng-model="idCard.expire_date" />-->
+                        <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                        <!--</span>-->
+                    <!--</p>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <tr>
+                <td class="text-right"><strong style="color:red">*</strong>證件類型：</td>
+                <td>
+                    <select data-ng-model="contactsIdCards.idcard_type_id[0]"
+                            data-ng-required="enableClientValidation4"
+                            name="agentMasterIdcards_0_idcard_type_id"
+                            class="form-control"
+                            ng-class="{true: 'ng-invalid-server', false: ''}[enableClientValidation4]"
+                            ng-options="h.id as h.idcard_type_name for h in idcardTypes">
+                        <option value = "">請選擇類型</option>
+                    </select>
+
+                </td>
+                <td class="text-right"><strong style="color:red">*</strong>證件號碼：</td>
+                <td>
+                    <input type="text"  data-ng-required="enableClientValidation5" ng-class="{true: 'ng-invalid-server', false: ''}[enableClientValidation5]" name="agentMasterIdcards_0_idcard_number" class="form-control input-01 ng-pristine ng-valid" data-ng-model="contactsIdCards.idcard_number[0]" >
+
+
+                </td>
+                <td>證件有效期：</td>
+                <td>
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control" data-ng-required="enableClientValidation" name="agentMasterIdcards_0_expire_date" datepicker-popup ng-model="contactsIdCards.expire_date[0]"/>
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <!--<input data-ng-model="contactsIdCards.image_path[1]" data-ng-show="false" data-ng-required="enableClientValidation" name="image_path[0]" class="form-control input-01 ng-pristine ng-valid"type="text">-->
+                    <!--<button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>-->
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">證件類型：</td>
+                <td>
+                    <select data-ng-model="contactsIdCards.idcard_type_id[1]"  data-ng-required="enableClientValidation" name="agentMasterIdcards_1_idcard_type_id" class="form-control" ng-options="h.id as h.idcard_type_name for h in idcardTypes">
+                        <option value = "">請選擇類型</option>
+                    </select>
+                </td>
+                <td class="text-right">證件號碼：</td>
+                <td><input data-ng-model="contactsIdCards.idcard_number[1]"  data-ng-required="enableClientValidation" name="agentMasterIdcards_1_idcard_number" class="form-control input-01 ng-pristine ng-valid" type="text"></td>
+                <!--<td class="text-right">證件操作：</td>-->
+                <td>證件有效期：</td>
+                <td>
+                    <p class="input-group ui-datepicker">
+                        <input type="text" class="form-control"
+                               data-ng-required="enableClientValidation"
+                               name="agentMasterIdcards_1_expire_date"
+                               datepicker-popup ng-model="contactsIdCards.expire_date[1]"/>
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <!--<input data-ng-model="contactsIdCards.image_path[1]" data-ng-show="false" data-ng-required="enableClientValidation" name="image_path[0]" class="form-control input-01 ng-pristine ng-valid"type="text">-->
+                    <!--<button class="btn btn-info btn-information btn-table" ng-click="removeCertificate($index)">刪除</button>-->
+                </td>
+
+            </tr>
+            <tr>
+                <td class="text-right">聯絡地址：</td>
+                <td colspan="3"><input name="agent_agentMaster_address" data-ng-disabled="show_agent_disable" class="form-control input-0" type="text" ng-model="agent.agentMaster.address" /></td>
+                <td class="text-right">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <table class="table table-bordered table-striped" style="width: 40%">
+            <tr data-ng-repeat="refAgentComp in agent.refAgentComps">
+                <td width="150">聯絡人：</td>
+                <td width="200">
+                    <select data-ng-required="enableClientValidation" data-dynamic-name="refAgentComps_{{$index}}_comp_contact_id" data-ng-model="refAgentComp.comp_contact_id" class="form-control" data-ng-options="c.id as c.comp_contact_name for c in contacts">
+                        <option value="">請選擇聯絡人</option>
+                    </select>
+                </td>
+                <td>
+                    <button  data-ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addContact()">添加</button>
+                    <button data-ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeContact($index)">刪除</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-list-detail" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">聯絡資料</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td width="250" data-min-screen-width="150">通知類型</td>
+                <td width="200" data-min-screen-width="120">地區</td>
+                <td width="200" data-min-screen-width="150">號碼</td>
+                <td>備註</td>
+                <td width="120">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="contact in agent.refTelAgentMasterNoticeType">
+                <td>
+                    <select data-ng-required="enableClientValidation" data-dynamic-name = "refTelAgentMasterNoticeType_{{$index}}_notice_type" data-ng-model="contact.notice_type" class="form-control"  ><!--data-ng-options="st.type_code as st.sms_notice_type for st in smsnoticeTypes"-->
+                        <option value="">請選擇通知類型</option>
+                        <option value="3">全部</option>
+                        <option value="1">短信</option>
+                        <option value="2">電話</option>
+                    </select>
+                </td>
+                <td>
+                    <select data-ng-required="enableClientValidation"  data-dynamic-name = "refTelAgentMasterNoticeType_{{$index}}_agentContactTel_area_code_id" data-ng-model="contact.agentContactTel.area_code_id" class="form-control" data-ng-options="ac.id as ac.area_code for ac in areaCodes" >
+                        <option value="">請選擇地區</option>
+                    </select>
+                </td>
+                <td><input data-ng-required="enableClientValidation"  data-dynamic-name = "refTelAgentMasterNoticeType_{{$index}}_agentContactTel_telephone_number" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="contact.agentContactTel.telephone_number"></td>
+                <td><input data-ng-required="enableClientValidation" name = "remark" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="contact.agentContactTel.remark"></td>
+                <td class="td_icon">
+                    <button  ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addContactInfo()">添加</button>
+                    <button ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeContactInfo($index)">刪除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="panel panel-list-detail" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">戶口備註</strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>內容</td>
+                <td width="183">部門</td>
+                <td width="120">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="remark in agent.agentRemarks">
+                <td>
+                    <input data-ng-required="enableClientValidation" data-dynamic-name = "agentRemarks_{{$index}}_content" class="form-control input-01 ng-pristine ng-valid" type="text" ng-model="remark.content" />
+                </td>
+                <td>
+                    <select data-ng-required="enableClientValidation" data-dynamic-name = "agentRemarks_{{$index}}_department_id" data-ng-model="remark.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                        <option value="">請選擇部門</option>
+                    </select>
+                </td>
+                <td class="td_icon">
+                    <button  ng-show="$index == 0" class="btn btn-info btn-information btn-table" ng-click="addRemark()">添加</button>
+                    <button ng-show="$index > 0" class="btn btn-info btn-information btn-table" ng-click="removeRemark($index)">刪除</button>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="panel_r">
+        <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+            <div class="panel-heading">
+                <strong>證件</strong>
+                <button data-ng-show="img1 == '' && !show_agent_disable" class="btn btn-info btn-confirm btn-table pull-right" ng-file-select="onFileSelect($files)">上傳</button>
+                <button data-ng-show="img1 != '' && !show_agent_disable" class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="removeImg1()">刪除</button>
+            </div>
+            <div class="panel-content">
+                <div class="passport">
+                        <span class="passport_bg">
+                            <span class="passed" data-ng-show="agent.agentMaster.agentContactIdcards[0].expire_date && agent.agentMaster.agentContactIdcards[0].expire_date < now_data"><img src="images/sign.png"></span>
+                            <img data-ng-show="img1 != ''" ng-src="{{img1}}"/>
+                             <span data-ng-show="img1 == ''" style="line-height: 280px">證件照片</span>
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel_r">
+        <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+            <div class="panel-heading">
+                <strong class="pull-left">證件</strong>
+                <button data-ng-show="img2 == '' && !show_agent_disable" class="btn btn-info btn-confirm btn-table pull-right"  ng-file-select="onFileSelect2($files)">上傳</button>
+                <button data-ng-show="img2 != '' && !show_agent_disable" class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="removeImg2()">刪除</button>
+            </div>
+            <div class="panel-content">
+                <div class="passport">
+                    <span class="passport_bg">
+                        <span class="passed" data-ng-show="agent.agentMaster.agentContactIdcards[1].expire_date && agent.agentMaster.agentContactIdcards[1].expire_date < now_data"><img src="images/sign.png"></span>
+                        <img data-ng-show="img2 != ''" ng-src="{{img2}}" />
+                         <span data-ng-show="img2 == ''" style="line-height: 280px">證件照片</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div><br/>
+    <div class="panel panel-list-detail" style="padding-left: 0px;width:516px;" data-min-screen-width="390">
+        <div class="panel-content">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>操作密碼：</td>
+                    <td>
+                        <input data-ng-required="enableClientValidation" name = "pin_code" class="form-control input-01 ng-pristine ng-valid" type="password" ng-model="agent.pin_code" data-enter-key="add()">
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">保存</button>
+        <button class="btn btn-cancel" data-ng-click="reset()" >重置</button>
+    </div>
+</div>
+</div>
+</form>
+</div>
+</div>                                                                                                                                                                                                                                         

@@ -1,0 +1,372 @@
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="40">
+                                <td width="120" class="text-right">所屬廳館：</td>
+                                <td width="160">
+                                    <select  data-ng-show="user.isAllHall()" name="hall_id" class="form-control" data-ng-model="condition_hotel.hall_id"
+                                            data-ng-options="n.id as n.hall_name for n in halls ">
+                                        <option value="">請選擇廳館</option>
+                                    </select>
+                                    <span  data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</span>
+                                </td>
+                                <!--<td width="150" class="text-right">消費單號：</td>-->
+                                <!--<td width="160"><input type="text" name="consumption_no" data-ng-model="condition_hotel.consumption.consumption_no" class="form-control"></td>-->
+
+                                <!--<td width="130" class="text-right">預訂單號：</td>-->
+                                <!--<td width="180"><input type="text" name="consumption_book_no" data-ng-model="condition_hotel.consumption.book_no" class="form-control"></td>-->
+
+                                <td width="150" class="text-right">預訂單號：</td>
+                                <td width="160"><input type="text" name="consumption_book_no" data-ng-model="condition_hotel.consumption.book_no" class="form-control" data-input-uppercase></td>
+                                <td width="130" class="text-right">付款方式：</td>
+                                <td width="180">
+                                    <select name="consumption_pay_type_id" class="form-control" data-ng-model="condition_hotel.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types">
+                                        <option value="">請選擇付款方式</option>
+                                    </select>
+                                </td>
+
+
+                            </tr>
+                            <tr height="40">
+
+                                <td width="120" class="text-right">戶口編號：</td>
+                                <td width="160"><input type="text" name="agent_code" data-input-uppercase data-ng-model="condition_hotel.agentInfo.agent_code" class="form-control"></td>
+                                <td class="text-right">戶口姓名：</td>
+                                <td>{{ condition_hotel.agentMaster.agent_contact_name }}<!--input type="text" name="agent_contact_name" data-ng-model="condition_hotel.agentMaster.agent_contact_name" class="form-control"--></td>
+                                <td class="text-right">供應商：</td>
+                                <td><select name="hotel_travel_id" class="form-control" data-ng-model="condition_hotel.hotel_travel_id" ng-options="n.id as n.name for n in consumptionHoteltravels ">
+                                    <option value="">請選擇供應商</option>
+                                </select></td>
+
+
+                            </tr>
+                            <tr  height="40">
+                                <td width="120" class="text-right">酒店：</td>
+                                <td width="200">
+                                    <span data-ng-hide="2 == condition_hotel.hotel_travel_type || !condition_hotel.hotel_travel_type">{{ condition_hotel.hotel_name }}</span>
+                                    <input type="text" name="hotel_name" class="form-control" data-ng-model="condition_hotel.hotel_name"  data-ng-hide="1 == condition_hotel.hotel_travel_type">
+
+                                <td class="text-right">訂房人：</td>
+                                <td>
+                                    <input type="text" name="consumption_trader" data-ng-model="condition_hotel.consumption.trader" class="form-control">
+                                </td>
+                              <td class="text-right">新增日期：</td>
+                              <td>
+                                <p class="input-group ui-datepicker">
+                                  <input type="text" class="form-control input-92" datepicker-popup="{{format}}"
+                                         ng-model="condition_hotel.consumption.book_time[0]"
+                                         date-disabled="disabled(date, mode)" close-text="Close"/>
+<span class="input-group-btn">
+<button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i
+  class="glyphicon glyphicon-calendar"></i></button>
+</span>
+                                </p>
+                              </td>
+                            </tr>
+
+                            <tr  height="40">
+
+
+
+                                <td class="text-right"><span ng-show="2 == hotel_search_type.type">房間號碼：</span></td>
+                                <td>
+                                    <input type="text" ng-show="2 == hotel_search_type.type" name="consumption_trader" data-ng-model="hotel_search_type.room_no" class="form-control">
+
+                                </td>
+                               <!-- <td class="text-right"><span ng-show="2 == hotel_search_type.type">入住日期：</span></td>
+                                <td colspan="3">
+
+                                  <div ng-show="2 == hotel_search_type.type" class="pull-left form-inline input-group ui-datepicker">
+                                    <div class="form-group">
+                                    <input type="text" size="9" class="form-control input-01" datepicker-popup="{{format}}"
+                                               ng-model="hotel_search_type.checkin_datetime[0]"style="width:150px;"
+                                               date-disabled="disabled(date, mode)" close-text="Close"/></div>
+                                  </div>
+                                  <div class="form-group">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                  <span class="pull-left">&nbsp;~&nbsp;</span>
+                                  <div ng-show="2 == hotel_search_type.type" class="pull-left form-inline input-group ui-datepicker">
+                                    <div class="form-group">
+                                    <input type="text" size="9" class="form-control input-01" datepicker-popup="{{format}}"
+                                           ng-model="hotel_search_type.checkin_datetime[0]"style="width:150px;"
+                                           date-disabled="disabled(date, mode)" close-text="Close"/></div>
+                                  </div>
+                                  <div class="form-group">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                </td>
+-->                           <td class="text-right" ng-show="2 == hotel_search_type.type">住房日期：</td>
+                              <td colspan="3" ng-show="2 == hotel_search_type.type">
+                                <div class=" pull-left form-inline input-group ui-datepicker">
+                                  <div class="form-group">
+                                    <input size="9" class="form-control input-01"
+                                           ng-model="hotel_search_type.checkin_datetime[0]"
+                                           data-ng-required="enableClientValidation"
+                                           style="width:150px;"
+                                           bs-datepicker type="text" placeholder="入住日期">
+                                  </div>
+                                  <div class="form-group">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                </div>
+                                <span class="pull-left">&nbsp;~&nbsp;</span>
+                                <div class=" pull-left form-inline input-group ui-datepicker">
+                                  <div class="form-group">
+                                    <input size="9" class="form-control input-01"
+                                           ng-model="hotel_search_type.checkin_datetime[1]"
+                                           data-ng-required="enableClientValidation"
+                                           style="width:150px;"
+                                           bs-datepicker type="text" placeholder="退房日期">
+                                  </div>
+                                  <div class="form-group">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr height="40">
+                               <!-- <td class="text-right">顯示模式：</td>
+                                <td>
+                                    <select name="hotel_search_type" class="form-control" ng-model="hotel_search_type.type">
+                                        <option value="1">按消費單</option>
+                                        <option value="2">按入住日期</option>
+                                    </select>
+                                </td>-->
+                                <td class="text-right">結算日期：</td>
+                                <td colspan="3">
+                                    <div class=" pull-left form-inline input-group ui-datepicker">
+                                        <div class="form-group">
+                                            <input size="9" class="form-control input-01"
+                                                   ng-model="condition_hotel.consumption.shift_date[0]"
+                                                   data-ng-required="enableClientValidation"
+                                                   style="width:150px;"
+                                                   bs-datepicker type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <span class="pull-left">&nbsp;~&nbsp;</span>
+                                    <div class=" pull-left form-inline input-group ui-datepicker">
+                                        <div class="form-group">
+                                            <input size="9" class="form-control input-01"
+                                                   ng-model="condition_hotel.consumption.shift_date[1]"
+                                                   data-ng-required="enableClientValidation"
+                                                   style="width:150px;"
+                                                   bs-datepicker type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td align="right">備註：</td>
+                                <td width="150"><input type="text" class="form-control" data-ng-model="condition_hotel.consumption.remark"> </td>
+                            </tr>
+                        </table>
+                        
+                        <br><br><br>
+
+                        <div class="row" style="text-align: center;">
+                            <button class="btn  btn-information margin-right-15" ng-click="hotel_search()">查詢</button>
+                            <button class="btn  btn-cancel" data-ng-click="hotel_search_reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content" style="position: relative" data-ng-show="1 == hotel_search_type_submit">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 3400px;">
+                            <table class="table table-bordered table-striped table-hover" width="100%">
+                                <thead>
+                                <tr>
+                                    <td width="190" min-screen-width="150">操作</td>
+                                    <!--<td>消費單號</td>-->
+                                    <td>預訂單號</td>
+                                    <td>所屬廳館</td>
+                                    <td data-td-sort data-td-sort-up="agentInfo.agent_code NUMASC" data-td-sort-down="agentInfo.agent_code NUMDESC" data-td-sort-select="hotel_search" data-td-sort-pagination="hotel_page">戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>訂房人</td>
+                                    <td>供應商</td>
+                                    <td>酒店</td>
+                                    <td>房型</td>
+                                    <td>批房日期</td>
+                                    <td>入住天數</td>
+                                    <td>成本</td>
+                                    <td>實收</td>
+                                    <td>收益</td>
+                                    <td>應付消費</td>
+                                    <td>付款方式</td>
+                                    <!--td>房間消費</td-->
+                                    <td>新增時間</td>
+                                    <td  width="1000">備註</td>
+                                    <td data-td-sort data-td-sort-up="consumption.shift_date ASC" data-td-sort-down="consumption.shift_date DESC" data-td-sort-select="hotel_search" data-td-sort-pagination="hotel_page">年月</td>
+                                    <td data-td-sort data-td-sort-up="consumption.shift_date ASC" data-td-sort-down="consumption.shift_date DESC" data-td-sort-select="hotel_search" data-td-sort-pagination="hotel_page">結算日期</td>
+                                  <td>更數</td>
+                                    <td>狀態</td>
+                                    <td>經手人</td>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="hotelBooking in hotelBookings track by $index" data-selected-rows>
+                                    <td class="no-padding" align="left" style="padding-left: 15px;">
+                                        <button class="btn  btn-information btn-table margin-right-5"  ui-sref=".consumption-hotel-booking-detail({id: '{{ hotelBooking.consumption_id}}'})">詳細</button>
+                                        <button class="btn  btn-confirm btn-table" ui-sref=".consumption-hotel-booking-copy({id: '{{ hotelBooking.consumption_id}}'})" check-permissions="consumptionRecordCopy">複製</button>
+                                        <button ng-show="!!hotelBooking.consumption.allow_delete" class="btn  btn-information btn-table" data-ng-click="hotel_booking_delete(hotelBooking.id)" check-permissions="consumptionRecordDelete">删除</button>
+                                    </td>
+                                    <!--<td>{{hotelBooking.consumption.consumption_no}}</td>-->
+                                    <td>{{hotelBooking.consumption.book_no}}</td>
+                                    <td>{{hotelBooking.consumption.hall_name}}</td>
+                                    <td>{{hotelBooking.consumption.agent_code}}</td>
+                                    <td>{{hotelBooking.consumption.agent_name}}</td>
+                                    <td>{{hotelBooking.consumption.trader}}</td>
+                                    <td>{{hotelBooking.hotel_travel_name}}</td>
+                                    <td>{{hotelBooking.hotel_name}}</td>
+                                    <td>{{hotelBooking.room_type}}</td>
+                                    <td>{{hotelBooking.checkin_datetime | parseDate : 'yyyy-MM-dd'}}</td>
+                                    <td>{{hotelBooking.days}}</td>
+                                    <td>{{hotelBooking.consumption.cost_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                    <td>{{hotelBooking.consumption.sell_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                    <td>{{hotelBooking.consumption.profit | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                    <td>{{hotelBooking.consumption.should_pay | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                    <td>{{hotelBooking.consumption.pay_type}}</td>
+                                    <!--td>{{hotelBooking.room_consumption | parseTenThousandToYuan :false | parseYuan : false}}</td-->
+                                    <td>{{hotelBooking.consumption.book_time | limitTo : 16}}</td>
+                                    <td align="left">{{hotelBooking.consumption.remark}}</td>
+                                    <td>{{hotelBooking.consumption.year_month | limitTo : 7 }}</td>
+                                    <td>{{hotelBooking.consumption.shift_date | limitTo : 11 }}</td>
+                                    <td>{{hotelBooking.consumption.shift}}</td>
+                                    <td>{{ bookingState_items[hotelBooking.consumption.status] }}</td>
+                                    <td>{{hotelBooking.consumption.user_name}}</td>
+                                </tr>
+                                <tr data-ng-show="hotelBookings.length == 0">
+                                    <td colspan="30">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </perfect-scrollbar>
+
+
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="hotel_page.page"
+                                        total-items="hotel_page.total_items"
+                                        on-select-page="hotel_search(page)"
+                                        max-size = "hotel_page.max_size"
+                                        items-per-page = "hotel_page.items_per_page"
+                                        data-ng-hide="hotel_page.total_items <= hotel_page.items_per_page"></pagination>
+                            <paginationselect pageCtrl="hotel_page" select-page="hotel_search"></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+                <div class="panel-content" style="position: relative" data-ng-show="2 == hotel_search_type_submit">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 3400px;">
+                            <table class="table table-bordered table-striped table-hover" width="100%">
+                                <thead>
+                                <tr>
+                                    <td width="190" min-screen-width="140">操作</td>
+                                    <!--<td>消費單號</td>-->
+                                    <td>預訂單號</td>
+                                    <td>所屬廳館</td>
+                                    <td data-td-sort data-td-sort-up="consumptionHotel.agentInfo.agent_code NUMASC" data-td-sort-down="consumptionHotel.agentInfo.agent_code NUMDESC" data-td-sort-select="hotel_search" data-td-sort-pagination="hotel_page">戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>訂房人</td>
+                                    <td>供應商</td>
+                                    <td>酒店</td>
+                                    <td>房型</td>
+                                    <td>入住日期</td>
+                                    <td>退房日期</td>
+                                    <td>房間編號</td>
+                                    <td>成本</td>
+                                    <td>實收</td>
+                                    <td>收益</td>
+                                    <td>應付消費</td>
+                                    <td>房間消費</td>
+                                    <td>新增時間</td>
+                                    <td  width="1000">備註</td>
+                                    <td>更數</td>
+                                    <td data-td-sort data-td-sort-up="shift_date_sub ASC" data-td-sort-down="shift_date_sub DESC" data-td-sort-select="hotel_search" data-td-sort-pagination="hotel_page2">結算日期</td>
+                                    <td>狀態</td>
+                                    <td>經手人</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="hotelBooking in hotelBookings" data-selected-rows>
+                                  <td class="no-padding" align="left" style="padding-left: 15px;">
+                                    <button class="btn  btn-information btn-table margin-right-5"  ui-sref=".consumption-hotel-booking-detail({id: '{{ hotelBooking.consumptionHotel.consumption_id}}'})">詳細</button>
+                                      <button class="btn  btn-confirm btn-table" ui-sref=".consumption-hotel-booking-copy({id: '{{ hotelBooking.consumptionHotel.consumption_id}}'})" check-permissions="consumptionRecordCopy">複製</button>
+                                      <button ng-show="!!hotelBooking.consumptionHotel.consumption.allow_delete" class="btn  btn-information btn-table" data-ng-click="hotel_booking_delete(hotelBooking.consumptionHotel.id)" check-permissions="consumptionRecordDelete">删除</button>
+                                  </td>
+                                    <!--<td>{{hotelBooking.consumptionHotel.consumption.consumption_no}}</td>-->
+                                    <td>{{hotelBooking.consumptionHotel.consumption.book_no}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.consumption.hall_name}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.consumption.agent_code}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.consumption.agent_name}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.consumption.trader}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.hotel_travel_name}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.hotel_name}}</td>
+                                    <td>{{hotelBooking.consumptionHotel.room_type}}</td>
+                                    <td>{{hotelBooking.checkin_datetime | parseDate : 'yyyy-MM-dd'}}</td>
+                                    <td>{{hotelBooking.checkout_datetime | parseDate : 'yyyy-MM-dd'}}</td>
+                                    <td>{{hotelBooking.room_no}}</td>
+                                    <td>{{hotelBooking.cost | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{hotelBooking.sell | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{hotelBooking.profit | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{hotelBooking.actual_should_pay | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{hotelBooking.should_pay | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{hotelBooking.consumptionHotel.consumption.book_time | limitTo : 16}}</td>
+                                    <td align="left">{{hotelBooking.consumptionHotel.consumption.remark}}</td>
+                                    <!--<td>{{hotelBooking.shift_sub}}</td>-->
+                                    <td>
+                                        <span data-ng-show="'1' == hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.shift_sub }}</span>
+                                        <span data-ng-show="'1' != hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.consumptionHotel.consumption.shift }}</span>
+                                    </td>
+                                    <td>
+                                        <span data-ng-show="'1' == hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.shift_date_sub | limitTo : 11 }}</span>
+                                        <span data-ng-show="'1' != hotelBooking.consumptionHotel.settlement_by_checkin">{{hotelBooking.consumptionHotel.consumption.shift_date | limitTo : 11 }}</span>
+                                    </td>
+                                    <td>{{ bookingState_items[hotelBooking.consumptionHotel.consumption.status] }}</td>
+                                    <td>{{ hotelBooking.user_name }}</td>
+                                </tr>
+                                <tr data-ng-show="hotelBookings.length == 0">
+                                    <td colspan="30">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </perfect-scrollbar>
+
+
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="hotel_page2.page"
+                                        total-items="hotel_page2.total_items"
+                                        on-select-page="hotel_search(page)"
+                                        max-size = "hotel_page2.max_size"
+                                        items-per-page = "hotel_page2.items_per_page"
+                                        data-ng-hide="hotel_page2.total_items <= hotel_page2.items_per_page"></pagination>
+                            <paginationselect pageCtrl="hotel_page2" select-page="hotel_search"></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,149 @@
+<div class="page page-grid" data-ng-controller="oldCommissionImmediateCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <strong>即出記錄</strong>
+                        </div>
+                        <div class="panel-content">
+                            <form name="form_searchSceneRecord">
+                                <table>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">所在廰：</td>
+                                        <td width="209">
+                                            <select data-ng-model="condition.hall_name" class="form-control" ng-options="h.hall_name as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="120" class="text-right">戶口編號：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.agent_code" data-input-uppercase class="form-control"></td>
+                                        <td width="120" class="text-right">中文名：</td>
+                                        <td width="160">{{agent_name}}</td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">年  月：</td>
+                                        <td style="padding-top: 7px;">
+                                            <table class="table-inner">
+                                                <tr>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker">
+                                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month "/>
+                                                            <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="text-right">日期范围：</td>
+                                        <td width="350" colspan="3">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.operation_date[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.operation_date[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" type="button" report-params="excel_condition" channel-type="OldCommissionImmediateReport" report-btn >導出EXCEL</button>
+                        </div>
+                        <div class="panel-content">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 2000px;">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>新增時間</td>
+                                    <td>所在廳</td>
+                                    <td>戶口</td>
+                                    <td>戶名</td>
+                                    <td>即出到</td>
+                                    <td>轉碼數</td>
+                                    <td>佣金</td>
+                                    <td>消費總額</td>
+                                    <td>稅收</td>
+                                    <td>實出佣金</td>
+                                    <td>零頭</td>
+                                    <td>備註</td>
+                                    <td>年份</td>
+                                    <td>月份</td>
+                                    <td>日期</td>
+                                    <td>更數</td>
+                                    <td>經手人</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="commission in commissions" data-selected-rows>
+                                    <td>{{commission.operation_date | parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{commission.hall_name}}</td>
+                                    <td>{{commission.agent_code}}</td>
+                                    <td>{{commission.agent_name}}</td>
+                                    <td>{{commission.to_agent_name}}</td>
+                                    <td>{{commission.rolling_amount}}</td>
+                                    <td>{{commission.commission}}</td>
+                                    <td>{{commission.consumption_total}}</td>
+                                    <td>{{commission.tax}}</td>
+                                    <td>{{commission.actual_commission}}</td>
+                                    <td>{{commission.omit_commission}}</td>
+                                    <td>{{commission.remark}}</td>
+                                    <td>{{commission.year}}</td>
+                                    <td>{{commission.month}}</td>
+                                    <td>{{commission.o_date | parseDate:"yyyy-MM-dd"}}</td>
+                                    <td>{{commission.shift}}</td>
+                                    <td>{{commission.handling}}</td>
+                                </tr>
+                                <tr ng-show="commissions.length == 0">
+                                    <td colspan="17">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                                    </div>
+                                </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="pagination.page"
+                                                    total-items="pagination.total_items"
+                                                    on-select-page="select(page)"
+                                                    max-size = "pagination.max_size"
+                                                    items-per-page = "pagination.items_per_page"
+                                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,278 @@
+<div class="page page-services ng-scope" data-ng-controller="shiftRecordCreateCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>新增截更</strong></div>
+        <div class="panel-content">
+                <table class="table-shift">
+                    <tr height="50">
+                        <td colspan="6" style="color: #ff0000;font-size: 18px;">{{user.hall.hall_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>日期：</td>
+                        <td width="160">{{shift_mark.shift_date|parseDate}}</td>
+                        <td>更數：</td>
+                        <td>{{shift_mark.shift}}</td>
+                        <td width="100"></td>
+                        <td><button class="btn btn-confirm margin-right-5" data-ng-show="jiegen" data-ng-click="jieGen()" data-ng-disabled="disabled_submits">截 更</button></td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <form name="form_shift_record" class="ng-valid ng-dirty form-validation" server-validation="POST{{shift_record_url}}">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>數據明細</strong></div>
+        <div class="panel-content">
+
+                <table ng-show="!isPhilippine" class="table-shift">
+                    <tr>
+                        <td>上更餘特碼：</td>
+                        <td width="160">{{shift_record.lastshift_depositspecialcode}}<span data-ng-show="shift_record.lastshift_depositspecialcode">&nbsp;&nbsp;萬</span></td>
+                        <td>上月餘特碼：</td>
+                        <td width="160">{{shift_record.lastmonth_depositspecialcode}}<span data-ng-show="shift_record.lastmonth_depositspecialcode">&nbsp;&nbsp;萬</span></td>
+                        <td>檯面銀頭：</td>
+                        <td width="200">
+                            <input data-ng-required="enableClientValidation" name = "incase_amount" type="text" data-ng-model="shift_record.incase_amount" class="form-control" style="width:135px;float: left">
+                            <!--{{shift_record.incase_amount}}--><span>&nbsp;&nbsp;萬</span></td>
+                        <td>外借銀頭：</td>
+                        <td>{{shift_record.borrow_amount}}<span data-ng-show="shift_record.borrow_amount">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table>
+                <table ng-show="isPhilippine" class="table-shift">
+                    <tr>
+                        <td>上更餘特碼A：</td>
+                        <td width="160">{{shift_record.lastshift_depositspecialcode_a}}<span data-ng-show="shift_record.lastshift_depositspecialcode_a">&nbsp;&nbsp;萬</span></td>
+                        <td>上月餘特碼A：</td>
+                        <td width="160">{{shift_record.lastmonth_depositspecialcode_a}}<span data-ng-show="shift_record.lastmonth_depositspecialcode_a">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>上更餘特碼B：</td>
+                        <td width="160">{{shift_record.lastshift_depositspecialcode_b}}<span data-ng-show="shift_record.lastshift_depositspecialcode_b">&nbsp;&nbsp;萬</span></td>
+                        <td>上月餘特碼B：</td>
+                        <td width="160">{{shift_record.lastmonth_depositspecialcode_b}}<span data-ng-show="shift_record.lastmonth_depositspecialcode_b">&nbsp;&nbsp;萬</span></td>
+                        <td>檯面銀頭：</td>
+                        <td width="200">
+                            <input data-ng-required="enableClientValidation" name = "incase_amount" type="text" data-ng-model="shift_record.incase_amount" class="form-control" style="width:135px;float: left">
+                            <!--{{shift_record.incase_amount}}--><span>&nbsp;&nbsp;萬</span></td>
+                        <td>外借銀頭：</td>
+                        <td>{{shift_record.borrow_amount}}<span data-ng-show="shift_record.borrow_amount">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <div class="panel panel-form-list  col-md-12 panel-shift">
+        <div class="panel-heading"><strong>本更明細</strong></div>
+        <div class="panel-content" ng-show="!isPhilippine">
+                <div class="col-md-3">
+                    <div class="table-title02"><strong>本更明細</strong></div>
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td>本更買碼數：</td>
+                            <td>{{shift_record.shift_buycode}}<span data-ng-show="shift_record.shift_buycode">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                        <tr>
+                            <td>本更轉碼數：</td>
+                            <td>{{shift_record.shift_rolling}}<span data-ng-show="shift_record.shift_rolling">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <div class="table-title02">
+                        <strong>本月明細</strong>
+                    </div>
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td>本月買碼數：</td>
+                            <td>{{shift_record.thismonth_buycode}}<span data-ng-show="shift_record.thismonth_buycode">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                        <tr>
+                            <td>本月轉碼數：</td>
+                            <td>{{shift_record.thismonth_rolling}}<span data-ng-show="shift_record.thismonth_rolling">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <div class="table-title02">
+                        <strong>匯總明細</strong>
+                    </div>
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td>存單總數：</td>
+                            <td>{{shift_record.depositticket_total}}<span data-ng-show="shift_record.depositticket_total">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                        <tr>
+                            <td>存卡總數：</td>
+                            <td>{{shift_record.depositcard_total}}<span data-ng-show="shift_record.depositcard_total">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                        <tr>
+                            <td>貸款總數：</td>
+                            <td>{{shift_record.loan_total}}<span data-ng-show="shift_record.loan_total">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                        <tr>
+                            <td>飛數總數：</td>
+                            <td>{{shift_record.transfer_total}}<span data-ng-show="shift_record.transfer_total">&nbsp;&nbsp;萬</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="clear: both;"></div>
+        </div>
+        <div class="panel-content" ng-show="isPhilippine">
+            <div class="col-md-3">
+                <div class="table-title02"><strong>本更明細</strong></div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本更買碼數A：</td>
+                        <td>{{shift_record.shift_buycode_a}}<span data-ng-show="shift_record.shift_buycode_a">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本更轉碼數A：</td>
+                        <td>{{shift_record.shift_rolling_a}}<span data-ng-show="shift_record.shift_rolling_a">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本更買碼數B：</td>
+                        <td>{{shift_record.shift_buycode_b}}<span data-ng-show="shift_record.shift_buycode_b">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本更轉碼數B：</td>
+                        <td>{{shift_record.shift_rolling_b}}<span data-ng-show="shift_record.shift_rolling_b">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>本月明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>本月買碼數A：</td>
+                        <td>{{shift_record.thismonth_buycode_a}}<span data-ng-show="shift_record.thismonth_buycode_a">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本月轉碼數A：</td>
+                        <td>{{shift_record.thismonth_rolling_a}}<span data-ng-show="shift_record.thismonth_rolling_a">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本月買碼數B：</td>
+                        <td>{{shift_record.thismonth_buycode_b}}<span data-ng-show="shift_record.thismonth_buycode_b">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>本月轉碼數B：</td>
+                        <td>{{shift_record.thismonth_rolling_b}}<span data-ng-show="shift_record.thismonth_rolling_b">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="table-title02">
+                    <strong>匯總明細</strong>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td>存單總數：</td>
+                        <td>{{shift_record.depositticket_total}}<span data-ng-show="shift_record.depositticket_total">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>存卡總數：</td>
+                        <td>{{shift_record.depositcard_total}}<span data-ng-show="shift_record.depositcard_total">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>貸款總數：</td>
+                        <td>{{shift_record.loan_total}}<span data-ng-show="shift_record.loan_total">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                    <tr>
+                        <td>飛數總數：</td>
+                        <td>{{shift_record.transfer_total}}<span data-ng-show="shift_record.transfer_total">&nbsp;&nbsp;萬</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="panel panel-form-list col-md-12">
+        <div class="panel-heading"><strong>即時圍數</strong></div>
+        <div class="panel-content">
+
+                <table ng-show="isPhilippine">
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼A：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositspecialcode_a" type="text" data-ng-model="shift_record.shift_depositspecialcode_a" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">本更餘特碼B：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositspecialcode_b" type="text" data-ng-model="shift_record.shift_depositspecialcode_b" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="160" class="text-right">存碼櫃餘現金：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "depositbox_depositcash" type="text" data-ng-model="shift_record.depositbox_depositcash" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="160" class="text-right">存碼櫃總數：</td>
+                        <td width="209">
+                            <input data-ng-required="enableClientValidation" data-ng-disabled="true" name = "depositbox_total" type="text" data-ng-model="shift_record.depositbox_total" class="form-control input-01 width-83" >&nbsp;&nbsp;萬
+                        </td>
+                    </tr>
+
+
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼A：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositcashcode_a" type="text" data-ng-model="shift_record.shift_depositcashcode_a" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">本更餘現碼B：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositcashcode_b" type="text" data-ng-model="shift_record.shift_depositcashcode_b" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="160" class="text-right">存碼櫃餘現碼A：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "depositbox_cashcode_a" type="text" data-ng-model="shift_record.depositbox_cashcode_a" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">&nbsp;<!--操作密碼：--></td>
+                        <td width="209"><!--<input class="form-control input-01 width-83" type="password" ng-model="shift_record.pin_code" name="pin_code" data-enter-key="saveJieGen()">--></td>
+                    </tr>
+
+
+                    <tr height="50">
+                        <td width="120" class="text-right">轉碼對比A：</td>
+                        <td width="209"><input type="text" data-ng-disabled="true" data-ng-model="shift_record.rolling_compare_a" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">轉碼對比B：</td>
+                        <td width="209"><input type="text" data-ng-disabled="true" data-ng-model="shift_record.rolling_compare_b" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼B：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "depositbox_cashcode_b" type="text" data-ng-model="shift_record.depositbox_cashcode_b" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                    </tr>
+
+                    <tr height="50">
+                        <td width="120" class="text-right"></td>
+                        <td width="209"></td>
+                        <td width="120" class="text-right"></td>
+                        <td width="209"></td>
+                        <td width="120" class="text-right">銀頭對比：</td>
+                        <td width="209"><input type="text" data-ng-disabled="true" data-ng-model="shift_record.amount_compare" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>{{depositboxTotal()}}
+                    </tr>
+
+
+                </table><br/><br/>
+
+
+
+                <table ng-show="!isPhilippine">
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘特碼：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositspecialcode" type="text" data-ng-model="shift_record.shift_depositspecialcode" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="160" class="text-right">存碼櫃餘現金：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "depositbox_depositcash" type="text" data-ng-model="shift_record.depositbox_depositcash" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="160" class="text-right">存碼櫃總數：</td>
+                        <td width="209">
+                            <input data-ng-required="enableClientValidation" data-ng-disabled="true" name = "depositbox_total" type="text" data-ng-model="shift_record.depositbox_total" class="form-control input-01 width-83" >&nbsp;&nbsp;萬
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">本更餘現碼：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "shift_depositcashcode" type="text" data-ng-model="shift_record.shift_depositcashcode" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">存碼櫃餘現碼：</td>
+                        <td width="209"><input data-ng-required="enableClientValidation" name = "depositbox_cashcode" type="text" data-ng-model="shift_record.depositbox_cashcode" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">&nbsp;<!--操作密碼：--></td>
+                        <td width="209"><!--<input class="form-control input-01 width-83" type="password" ng-model="shift_record.pin_code" name="pin_code" data-enter-key="saveJieGen()">--></td>
+                    </tr>
+                    <tr height="50">
+                        <td width="120" class="text-right">轉碼對比：</td>
+                        <td width="209"><input type="text" data-ng-disabled="true" data-ng-model="shift_record.rolling_compare" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120" class="text-right">銀頭對比：</td>
+                        <td width="209"><input type="text" data-ng-disabled="true" data-ng-model="shift_record.amount_compare" class="form-control input-01 width-83" >&nbsp;&nbsp;萬</td>
+                        <td width="120"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="209">&nbsp;{{depositboxTotal()}}<!--{{rolling_compare()}}{{amount_compare()}} --></td>
+                    </tr>
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-5" ng-click="saveJieGen()" data-ng-disabled="disabled_submit">圍數</button>
+                    <button class="btn btn-information" data-ng-click="print()" data-ng-disabled="disable_print">列印</button>
+                </div>
+        </div>
+    </div>
+    </form>
+
+</div>

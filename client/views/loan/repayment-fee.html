@@ -1,0 +1,163 @@
+<div class="panel-form-list">
+<div class="modal-header">
+    <!--<button type="button" class="close" ng-click="cancel()">×</button>-->
+    <h4 class="modal-title" id="myModalLabel">
+        <h3>存款</h3>
+    </h4>
+</div>
+    <form name="$parent.form_repayment" class="ng-valid ng-dirty form-validation" server-validation="POST{{repayment_url}}" >
+        <div class="modal-body">
+            <!--<table class="table table-bordered table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td>還息戶口</td>-->
+                    <!--<td>貸款戶口</td>-->
+                    <!--<td>貸款人</td>-->
+                    <!--<td>貸款單號</td>-->
+                    <!--<td>類型</td>-->
+                    <!--&lt;!&ndash;<td>貸款金額(萬)</td>&ndash;&gt;-->
+                    <!--<td>計息金額(萬)</td>-->
+                    <!--<td>計息天數</td>-->
+                    <!--<td>息率</td>-->
+                    <!--<td>應收手續費</td>-->
+                    <!--<td>減免總額</td>-->
+                    <!--<td>尚欠手續費(元)</td>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr data-ng-repeat="markerExpiredFee in markerExpiredFees">-->
+                    <!--<td>{{markerExpiredFee.out_agent_code}}</td>-->
+                    <!--<td>{{markerExpiredFee.loan_agent_code}}</td>-->
+                    <!--<td>{{markerExpiredFee.borrower}}</td>-->
+                    <!--<td>{{markerExpiredFee.marker_seqnumber}}</td>-->
+                    <!--&lt;!&ndash;<td>{{markerExpiredFee.marker_amount|parseTenThousand2}}</td>&ndash;&gt;-->
+                    <!--<td>{{feeTypes[markerExpiredFee.type]}}</td>-->
+                    <!--<td>{{markerExpiredFee.calc_amount|parseTenThousand2}}</td>-->
+                    <!--<td>{{markerExpiredFee.days}}</td>-->
+                    <!--<td>{{markerExpiredFee.markerExpiredFees?markerExpiredFee.markerExpiredFees[0].rate:""}}%</td>-->
+                    <!--<td>{{(markerExpiredFee.fee-markerExpiredFee.reduction_amount) |parseDollar:true}} </td>-->
+                    <!--<td>{{markerExpiredFee.reduction_amount|parseDollar:true}}</td>-->
+                    <!--<td>{{markerExpiredFee.settlement_amount|parseDollar:true}}</td>-->
+                <!--</tr>-->
+                <!--<tr data-ng-show="markerExpiredFees.length == 0">-->
+                    <!--<td colspan="11">暫無符合條件的記錄</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<footer class="table-footer">-->
+                <!--<div class="text-right pagination-container">-->
+                    <!--<pagination class="pagination_fee"-->
+                                <!--page="pagination.page"-->
+                                <!--total-items="pagination.total_items"-->
+                                <!--on-select-page="select(page)"-->
+                                <!--max-size = "pagination.max_size"-->
+                                <!--items-per-page = "pagination.items_per_page"-->
+                                <!--data-ng-show="pagination.total_items > pagination.items_per_page"></pagination>-->
+                    <!--<paginationselect pageCtrl="pagination" select-page="select"></paginationselect>-->
+                <!--</div>-->
+            <!--</footer>-->
+
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr>
+                    <td class="text-right" width="120">還息戶口：</td>
+                    <td width="120">{{condition.outAgent.agent_code}}</td>
+                    <td class="text-right" width="100">戶口姓名</td>
+                    <td width="120">{{out_agent_name}}</td>
+                    <td class="text-right" >手續費總額：</td>
+                    <td width="180">{{(feeTotal.settlement_amount)|parseDollar:true}}</td>
+                    <td class="text-right" >未還手續費：</td>
+                    <td width="180">{{(feeTotal.settlement_amount-feeTotal.repayment)|parseDollar:true}}</td>
+                </tr>
+            </table>
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr class="">
+                    <td class="text-right" width="120">存款戶口</td>
+                    <td><input type="text" data-ng-model="repayment.agent_code" data-input-uppercase class="form-control"></td>
+                    <td class="text-right" width="100">戶口姓名</td>
+                    <td>{{agent.agent_name}}</td>
+                    <td class="text-right" width="120">存款類型：</td>
+                    <td>
+                        <select data-ng-model="repayment.deposit_type"
+                        data-ng-required="enableClientValidation"
+                        name="deposit_type"
+                        class="form-control">
+                            <option value = "">請選擇存款類型</option>
+                            <option value = "1">{{repaymentMethod[1]}}</option>
+                            <option value = "2">{{repaymentMethod[2]}}</option>
+                        </select>
+
+                    </td>
+                    <!--<td class="text-right" width="120">還款類型：</td>-->
+                    <!--<td>-->
+                        <!--<select data-ng-model="repayment.is_all"-->
+                                <!--data-ng-required="enableClientValidation"-->
+                                <!--name="is_all"-->
+                                <!--class="form-control">-->
+                            <!--<option value = "">請選擇還款類型</option>-->
+                            <!--<option value = "1">{{repaymentType[1]}}</option>-->
+                            <!--<option value = "0">{{repaymentType[0]}}</option>-->
+                        <!--</select>-->
+                    <!--</td>-->
+
+                </tr>
+                <tr data-ng-show="repayment.deposit_type == 1">
+                    <td class="text-right">廳館：</td>
+                    <td >{{user.hall.hall_name}}
+                        <!--<select data-ng-model="repayment.hall_id" data-ng-change="change_card()" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                            <!--<option value = "">請選擇廳館</option>-->
+                        <!--</select>-->
+                    </td>
+                    <!--<td class="text-right" width="120">還款方式：</td>-->
+                    <!--<td>-->
+                        <!--<select data-ng-model="repayment.deposit_type"-->
+                                <!--data-ng-required="enableClientValidation"-->
+                                <!--name="deposit_type"-->
+                                <!--class="form-control">-->
+                            <!--<option value = "">請選擇還款方式</option>-->
+                            <!--<option value = "1">{{repaymentMethod[1]}}</option>-->
+                            <!--<option value = "2">{{repaymentMethod[2]}}</option>-->
+                        <!--</select>-->
+
+                    <!--</td>-->
+                    <td class="text-right">存卡：</td>
+                    <td>
+                        <select data-ng-model="repayment.deposit_card_id"
+                                data-ng-required="enableClientValidation"
+                                name="card_id"
+                                class="form-control"
+                                ng-options="h.id as h.card_name for h in depositCards">
+                            <option value = "">請選擇存卡名稱</option>
+                        </select>
+                    </td>
+                    <td class="text-right">存卡餘額：</td>
+                    <td>{{transaction_amount|parseTenThousand}}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">存款金額(萬)：</td>
+                    <td>
+                        <input type="text" class="form-control input-01"
+                        data-ng-required="enableClientValidation"
+                        name="amount"
+                        data-ng-model="repayment.amount"><!--&nbsp;萬-->
+                    </td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+
+                    <td class="text-right"> 備註：<br><button style="padding: 4px 10px;margin: 0" class="btn btn-information btn-table margin-right-5" type="button" ng-click="add_booktis()">常用</button></td>
+                    <td colspan="3"><textarea data-ng-model="repayment.remark" name="remark" class="form-control textarea-table01" rows="4"></textarea></td>
+                </tr>
+            </table>
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr>
+                    <td class="text-right" width="120">操作密碼：</td>
+                    <td class="text-left" colspan="3"><input type="password" ng-model="repayment.pin_code" name="pin_code" class="form-control input-180" data-enter-key="add()"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-confirm" ng-click="add()" data-ng-disabled="disabled_submit">确定</button>
+            <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+        </div>
+        </form>
+</div>

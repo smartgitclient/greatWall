@@ -1,0 +1,125 @@
+        <div class="col-md-4" data-ng-controller="consumptionManagerDetailCtrls">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td class="text-right" width="108">預訂單號：</td>
+                            <td class="text-left" width="152">{{hotelBooking.consumption.book_no}}</td>
+                            <td class="text-right" width="108">所屬廳館：</td>
+                            <td class="text-left" width="152">{{hotelBooking.consumption.hall_name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">新增時間：</td>
+                            <td class="text-left">{{hotelBooking.consumption.book_time  | limitTo : 16}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                          <td class="text-right ">年月：</td>
+                          <td class="text-left">{{hotelBooking.consumption.year_month | limitTo : 7 }}</td>
+                          <td class="text-right ">結算日期：</td>
+                          <td class="text-left">{{hotelBooking.consumption.shift_date | limitTo : 11 }} &nbsp;{{hotelBooking.consumption.shift}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">戶口編號：</td>
+                            <td class="text-left">{{hotelBooking.consumption.agent_code}}</td>
+                            <td class="text-right ">戶口姓名：</td>
+                            <td class="text-left">{{hotelBooking.consumption.agent_name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">酒店：</td>
+                            <td class="text-left">{{hotelBooking.hotel_name}}</td>
+                            <td class="text-right">房型：</td>
+                            <td class="text-left">{{hotelBooking.room_type}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">入住日期：</td>
+                            <td class="text-left">{{hotelBooking.checkin_datetime }}</td>
+                            <td class="text-right ">入住天數：</td>
+                            <td class="text-left">{{hotelBooking.days}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">退房日期：</td>
+                            <td class="text-left">{{hotelBooking.checkout_datetime | limitTo : 11}}</td>
+                            <td class="text-right">&nbsp;</td>
+                            <td class="text-left">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">訂房人：</td>
+                            <td class="text-left">{{hotelBooking.consumption.trader}}</td>
+                            <td class="text-right">訂房人電話：</td>
+                            <td class="text-left">{{hotelBooking.consumption.area_code}} {{hotelBooking.consumption.trader_tel}}</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped" ng-repeat="register in hotelBooking.consumptionHotelRegisters">
+                        <tr>
+                          <td class="text-right" width="108">房間登記人：</td>
+                          <td class="text-left" width="152">{{register.register}}</td>
+                           <td class="text-right" width="108"></td>
+                           <td class="text-left" width="152"></td>
+                        </tr>
+                        <tr>
+                          <td class="text-right">登記人證件：</td>
+                          <td class="text-left">{{register.idcard_type_name}}</td>
+                          <td class="text-right">證件號碼：</td>
+                          <td class="text-left">{{register.idcard_no}}</td>
+                        </tr>
+                    </table>
+                  <!--xhg 日期-->
+                  <table class="table table-bordered table-striped" >
+                    <tbody ng-repeat="consumptionHotelSub in hotelBooking.consumptionHotelSubs">
+                    <tr>
+                      <td class="text-right" width="108">日期：</td>
+                      <td class="text-left" width="152">{{consumptionHotelSub.checkin_datetime | limitTo : 10}}&nbsp; {{ day_types[consumptionHotelSub.day_type] }}</td>
+                      <td class="text-right" width="108">成本價：</td>
+                      <td class="text-left" width="152">{{consumptionHotelSub.cost | parseTenThousandToYuan | parseYuan}}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right">售價：</td>
+                      <td class="text-left">{{consumptionHotelSub.sell | parseTenThousandToYuan | parseYuan}}</td>
+                      <td class="text-right">收益：</td>
+                      <td class="text-left">{{ consumptionHotelSub.profit | parseTenThousandToYuan | parseYuan }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right">應付消費：</td>
+                      <td class="text-left">{{ consumptionHotelSub.actual_should_pay | parseTenThousandToYuan | parseYuan}}</td>
+                      <td class="text-right">房間消費：</td>
+                      <td class="text-left">{{ consumptionHotelSub.should_pay | parseTenThousandToYuan | parseYuan}}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right">房間號碼：</td>
+                      <td class="text-left">{{ consumptionHotelSub.room_no }}</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                    <table width="100%" class="BGcolor-626571 table table-bordered table-striped">
+                        <tr>
+                            <td class="text-right" width="108">應付消費：</td>
+                            <td class="text-left" width="152">{{hotelBooking.consumption.should_pay | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                            <td class="text-right" width="108">付款方式：</td>
+                            <td class="text-left" width="152">{{hotelBooking.pay_type}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">狀態：</td>
+                            <td class="text-left">{{ bookingState_items[hotelBooking.consumption.status]}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" width="108">備註：</td>
+                            <td  valign="top" colspan="3" class="text-left">{{ hotelBooking.consumption.remark }}</td>
+                        </tr>
+                    </table>
+                    <div class="row" style="text-align: center;" data-ng-show="!record_consumption_id" check-permissions="consumptionRecordUpdate">
+                        <!--<button class="btn  btn-information margin-right-15" onclick="alert('核對成功')">核對</button>-->
+                        <button class="btn  btn-confirm margin-right-15"
+                                ng-show='bookingState_items[hotelBooking.consumption.status]!="已結算"'
+                                check-permissions="consumptionRecordUpdate" data-ng-click="update()">修改</button>
+                        <!--<button class="btn  btn-confirm" data-ng-click="check('消費轉移')">消費轉移</button>-->
+                        <button class="btn  btn-cancel" data-ng-click="cancel()">取 消</button>
+                    </div>
+                </div>
+            </div>
+        </div>

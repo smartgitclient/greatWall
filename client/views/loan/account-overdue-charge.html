@@ -1,0 +1,1323 @@
+<div class="page page-services ng-scope" data-ng-controller="loanAccountOverdueChargeCtrl">
+    <tabset class="ui-tab" >
+        <tab heading="手續費總表" data-ng-controller="loanAccountOverdueChargeAdjustCtrl" active="tab.total" check-permissions="markerExpiredFeeView">
+            <div class="row">
+                <div class="col-md-8">
+                    <br />
+                    <div class="panel panel-default panel-form-list">
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="120" class="text-right">貸款單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition.marker_seqnumber"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">貸款戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition.loan_agent_code"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">還息戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition.outAgent.agent_code"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">收益戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition.inAgent.agent_code"
+                                                               placeholder="多戶口查詢用逗號隔開"
+                                                               class="form-control"></td>
+                                        <!--<td width="120" class="text-right">業務單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-ng-model="condition.marker.loanBusiness.loan_seqnumber"
+                                                               class="form-control"></td>-->
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">戶組：</td>
+                                        <td ><input type="text"
+                                                    data-input-uppercase
+                                                    style="width:95px;float: left"
+                                                    data-ng-model="condition.agentGroup.agent_group_name"
+                                                    class="form-control">&nbsp;&nbsp;
+                                            <span style="float: right">
+                                                <input type="checkbox" class="form-control" data-ng-model="chk_group.group1"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+
+                                        </td>
+                                        <td class="text-right">入數月份：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker pull-left" >
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-right">類型：</td>
+                                        <!--<td>-->
+                                            <!--<select data-ng-model="condition.fee_type" class="form-control" name="fee_type"-->
+                                                    <!--ng-options="k as v for (k,v) in feeTypes">-->
+                                                <!--<option value="">請選擇</option>-->
+                                            <!--</select>-->
+                                        <td class="select-td">
+                                            <select data-ng-model="select_types" class="form-control" multiple bs-select ng-options="h.id as h.name for h in selectTypes" data-live-search="true" placeholder="請選擇類型">
+                                                <option value = "">請選擇</option>
+                                            </select>
+                                        </td>
+                                        <!--<td class="text-right">結算日期：</td>-->
+                                        <!--<td>-->
+                                            <!--<p class="input-group ui-datepicker pull-left">-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.end_date[0]" />-->
+                                    <!--<span class="input-group-btn">-->
+                                    <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                    <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <td class="text-right">狀態：</td>
+                                        <td class="select-td">
+                                            <select data-ng-model="select_status" class="form-control" multiple bs-select ng-options="h.id as h.name for h in selectStatus" data-live-search="true" placeholder="請選擇狀態">
+                                                <option value = "">請選擇</option>
+                                            </select>
+                                            <!--<select data-ng-model="condition.status" class="form-control" name="status"-->
+                                                    <!--ng-options="k as v for (k,v) in markerStatus">-->
+                                                <!--<option value="">請選擇</option>-->
+                                            <!--</select>-->
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-confirm margin-right-15" ng-click="select()" >查詢</button>
+                                    <button class="btn btn-cancel" ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4" data-ng-hide="addRemarkbtnshow">
+                  <br />
+                  <div class="panel panel-default panel-form-list">
+                    <div class="panel-content" style="height: 192px;padding: 2px 10px">
+                      <div class="panel-heading ">
+                        <strong> <span >備註信息</span></strong>
+                        <button class="btn btn-info btn-confirm btn-table pull-right" ng-disabled='addRemarkbtnshow' data-ng-click="addRemark('')">新增備註</button>
+                      </div>
+                      <div style="position: relative">
+                        <perfect-scrollbar id="content"  class="animate-fade-up" ng-class="{true:'scroll-show'}[refTelAgentMasterNoticeType.length <4]" style="left:0;top:0px;height:130px;overflow-y: hidden;" wheel-propagation="true" wheel-speed="50">
+                          <div  style="min-height:160px">
+                            <table class="table table-bordered table-striped table-hover" >
+                              <thead>
+                              <tr>
+                                <td width="100">記錄時間</td>
+                                <td >內容</td>
+                                <td width="120">經手人</td>
+                                <td width="125">操作</td>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr data-ng-repeat="remark in remarks" data-selected-rows>
+                                <td>{{remark.create_time  | parseDate:'yyyy-MM-dd'}}</td>
+                                <td>{{remark.content}}</td>
+                                <td>{{remark.user_name}}</td>
+                                <td>
+                                  <button class="btn btn-information btn-table" ng-click="addRemark(remark)" ng-disabled='addRemarkbtnshow'>修改</button>
+                                  <button class="btn btn-information btn-table" ng-click="delRemark(remark.id)" >刪除</button>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </perfect-scrollbar>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                總記錄：{{ fee_total.count}} &nbsp; 尚欠總額：{{ fee_total.settlement_amount_total| parseTenThousandToYuan | number }}
+                            </div>
+                            <button class="btn btn-info btn-information pull-right" report-params="excel_condition" channel-type="AccountOverdueChargeNew" report-btn >導出EXCEL</button>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" data-ng-click="addFees()">新增手續費</button>-->
+                        </div>
+                        <div class="panel-content"style="position: relative">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <!--<tr>-->
+                                            <!--<td width="180" check-permissions="overdueChargeReduce">操作</td>-->
+                                            <!--<td>年月</td>-->
+                                            <!--<td>廳館</td>-->
+                                            <!--<td>還息戶口</td>-->
+                                            <!--<td>貸款戶口</td>-->
+                                            <!--<td>貸款單號</td>-->
+                                            <!--<td>貸款類型</td>-->
+                                            <!--<td>貸款金額(萬)</td>-->
+                                            <!--<td>貸款日期</td>-->
+                                            <!--<td>類型</td>-->
+                                            <!--<td>計息金額(萬)</td>-->
+                                            <!--<td>開始計手續費</td>-->
+                                            <!--<td>結算日期</td>-->
+                                            <!--<td>貸款總天數</td>-->
+                                            <!--<td>免收天期</td>-->
+                                            <!--<td>計息天數</td>-->
+                                            <!--<td>應收手續費</td>-->
+                                            <!--<td>未還手續費</td>-->
+                                            <!--<td>狀態</td>-->
+                                            <!--<td>收益戶口</td>-->
+                                            <!--<td>線頭</td>-->
+                                        <!--</tr>-->
+                                        <tr>
+                                            <!--<td width="180" check-permissions="overdueChargeReduce">操作</td>-->
+                                            <td>入數月份</td>
+                                            <td>廳館</td>
+                                            <td>貸款戶口</td>
+                                            <td>姓名</td>
+                                            <td>貸款人</td>
+                                            <td>貸款單號</td>
+                                            <td>貸款時間</td>
+                                            <td>貸款類型</td>
+                                            <td>類型</td>
+                                            <td>計息金額(萬)</td>
+                                            <td>開始計手續費</td>
+                                            <td>結算日期</td>
+                                            <td>貸款天數</td>
+                                            <td>免收天期</td>
+                                            <td>過期天數</td>
+                                            <td>罰息天數</td>
+                                            <td>計息天數</td>
+                                            <td>息率</td>
+                                            <td>原本手續費(元)</td>
+                                            <td>扣除上線</td>
+                                            <td>應收手續費(元)</td>
+                                            <td>減免總額</td>
+                                            <td>已還總額</td>
+                                            <td>尚欠手續費</td>
+                                            <td>還息戶口</td>
+                                            <td>收益戶口</td>
+                                            <td>線頭</td>
+                                            <td>付款月份</td>
+                                            <td>狀態</td>
+                                            <td>抵押時間</td>
+                                            <!--<td>貸款金額(萬)</td>-->
+                                            <!--<td>貸款日期</td>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!--<tr data-ng-repeat="marker in markerExpiredFees" data-selected-rows>-->
+                                            <!--<td class="no-padding" check-permissions="overdueChargeReduce">-->
+                                                <!--<button class="btn btn-confirm" data-ng-click="detail(markerFee.id)">詳細</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" ng-click="addFees()" >新增</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" ng-click="reduction(marker)" ng-hide='marker.status=="3"||marker.status=="4"'>減免</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" data-ng-show="marker.status == 1 || marker.status == 2" ng-click="payment(marker)" >代付</button>-->
+                                            <!--</td>-->
+                                            <!--<td>{{marker.year_month | parseDate:'yyyy-MM'}}</td>-->
+                                            <!--<td>{{marker.hall_name}}</td>-->
+                                            <!--<td>{{marker.out_agent_code}}</td>-->
+                                            <!--<td>{{marker.loan_agent_code}}</td>-->
+                                            <!--<td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)">{{marker.marker_seqnumber}}</a></td>-->
+                                            <!--<td>{{ marker.loan_type }}</td>-->
+                                            <!--<td>{{ marker.marker_amount | number }}</td>-->
+                                            <!--<td>{{ marker.loan_date | parseDate:'yyyy-MM-dd' }}</td>-->
+                                            <!--<td>{{ feeTypes[marker.fee_type] }}</td>-->
+                                            <!--<td>{{ marker.calc_amount | number}}</td>-->
+                                            <!--<td>{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>-->
+                                            <!--<td>{{ marker.end_date | parseDate:'yyyy-MM-dd'  }}</td>-->
+                                            <!--<td>{{ marker.loan_total_days }}</td>-->
+                                            <!--<td>{{ marker.term }}</td>-->
+                                            <!--<td>{{ marker.days }}</td>-->
+                                            <!--<td>{{marker.fee | parseTenThousandToYuan | number}}</td>-->
+                                            <!--<td>{{marker.settlement_amount | parseTenThousandToYuan | number}}</td>-->
+                                            <!--<td>{{markerStatus[marker.status]}}</td>-->
+                                            <!--<td>{{ marker.in_agent_code }}</td>-->
+                                            <!--<td>{{ marker.top_agent }}</td>-->
+                                        <!--</tr>-->
+                                        <tr data-ng-repeat="marker in markerExpiredFees" data-selected-rows>
+                                            <!--<td class="no-padding" check-permissions="overdueChargeReduce">-->
+                                            <!--<button class="btn btn-confirm" data-ng-click="detail(markerFee.id)">詳細</button>-->
+                                            <!--<button class="btn btn-confirm btn-table" ng-click="addFees()" >新增</button>-->
+                                            <!--<button class="btn btn-confirm btn-table" ng-click="reduction(marker)" ng-hide='marker.status=="3"||marker.status=="4"'>減免</button>-->
+                                            <!--<button class="btn btn-confirm btn-table" data-ng-show="marker.status == 1 || marker.status == 2" ng-click="payment(marker)" >代付</button>-->
+                                            <!--</td>-->
+                                            <td>{{marker.year_month | parseDate:'yyyy-MM'}}</td>
+                                            <td>{{marker.hall_name}}</td>
+                                            <td>{{marker.loan_agent_code}}</td>
+                                            <td>{{marker.loan_agent_name}}</td>
+                                            <td>{{marker.borrower}}</td>
+                                            <td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)"><span class="a-hover">{{marker.marker_seqnumber}}</span></a></td>
+                                            <td>{{ marker.loan_date | parseDate:'yyyy-MM-dd' }}</td>
+                                            <td>{{ marker.loan_type }}</td>
+                                            <td>{{ feeTypes[marker.fee_type] }}</td>
+                                            <td>{{ marker.calc_amount | number}}</td>
+                                            <td>{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                            <td>{{ marker.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>
+                                            <td>{{ marker.loan_total_days }}</td>
+                                            <td>{{ marker.term}}</td>
+                                            <td>{{marker|parseDay}}</td>
+                                            <td>{{marker.expired_add_days}}</td>
+                                            <td>{{ marker.days}}</td>
+                                            <td>{{ marker.rate|parseFloatKing}}<span data-ng-show="marker.rate">%</span></td>
+                                            <td>{{marker.original_fee | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.deduction_fee | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.fee | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.reduction_amount | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.repayment_amount_total | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.settlement_amount | parseTenThousandToYuan | number}}</td>
+                                            <td>{{ marker.out_agent_code }}</td>
+                                            <td>{{ marker.in_agent_code }}</td>
+                                            <td>{{ marker.top_agent }}</td>
+                                            <td>{{marker.repayment_time| parseDate:'yyyy-MM'}}</td>
+                                            <td>{{markerStatus[marker.status]}}</td>
+                                            <td>{{marker.mortgage_time| parseDate:'yyyy-MM-dd'}}</td>
+                                            <!--<td>{{ marker.marker_amount | number }}</td>-->
+                                        </tr>
+                                        <tr data-ng-show="markerExpiredFees.length == 0">
+                                            <td colspan="30">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                        </div>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination.total_items"
+                                            on-select-page="select(page)"
+                                            max-size = "pagination.max_size"
+                                            items-per-page = "pagination.items_per_page"
+                                            data-ng-show="pagination.total_items > pagination.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+
+        </tab>
+        <tab heading="手續費收付記錄" data-ng-controller="loanAccountOverdueChargeAdjustCtrl" active="tab.record" check-permissions="markerExpiredFeeRepaymentView">
+            <div class="row">
+                <div class="col-md-12">
+                    <br />
+                    <div class="panel panel-default panel-form-list">
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <!--tr height="50">
+
+                                        <td width="120" class="text-right">貸款戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition_record.loan_agent_code"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">貸款單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-ng-model="condition_record.marker_seqnumber"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">業務單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-ng-model="condition_record.marker.loanBusiness.loan_seqnumber"
+                                                               class="form-control"></td>
+
+                                    </tr-->
+                                    <tr>
+                                        <!--<td width="140" class="text-right">月份：</td>-->
+                                        <!--<td width="200">-->
+                                            <!--<p class="input-group ui-datepicker pull-left" >-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition_record.markerFeeMonth.year_month[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <td class="text-right" width="140">廳館：</td>
+                                        <td width="200" data-ng-show="user.isAllHall()" class="select-td">
+                                            <!--<select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">-->
+                                                <!--<option value = "">請選擇廳館</option>-->
+                                            <!--</select>-->
+                                            <select data-ng-model="select_halls" class="form-control" multiple bs-select ng-options="h.id as h.hall_name for h in halls" data-live-search="true" placeholder="請選擇廳館">
+                                            <option value = "">請選擇廳館</option>
+                                        </select>
+                                        </td>
+                                        <td data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="140" class="text-right">還息戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="condition_record.out_agent_code"
+                                                               class="form-control"></td>
+                                        <td width="140" class="text-right" data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">狀態：</td>
+                                        <td width="200" data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">
+                                            <select data-ng-model="condition_record.type" class="form-control" name="type">
+                                                <option value="">請選擇</option>
+                                                <option value="1">未分派</option>
+                                                <option value="2">已分派</option>
+                                            </select>
+                                        </td>
+                                    <td width="140" class="text-right">還息日期：</td>
+                                    <td >
+                                        <!--<p class="input-group ui-datepicker pull-left">-->
+                                            <!--<input type="text" class="form-control" name="repayment_time" datepicker-popup datepicker-mode="day" ng-model="condition_record.repayment_time[0]" />-->
+                            <!--<span class="input-group-btn">-->
+                            <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                            <!--</span>-->
+                                        <!--</p>-->
+
+                                        <p class="input-group ui-datepicker col-md-5 pull-left">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition_record.repayment_time[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                                        </p>
+                                        <p class="pull-left  col-md-1">~</p>
+                                        <p class="input-group ui-datepicker col-md-5 pull-left">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition_record.repayment_time[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn btn-confirm margin-right-15" ng-click="select_record()">查詢</button>
+                                <button class="btn btn-cancel" ng-click="reset_record()">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <!--button class="btn btn-information pull-right" report-params="excel_condition" channel-type="MInterestManage" report-btn>導出EXCEL</button-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <!--<td width="100">年月</td>-->
+                                    <td width="120">廳館</td>
+                                    <td width="120">還息戶口</td>
+                                    <td>戶口姓名</td>
+                                    <td>還息金額</td>
+                                    <td>退款金額</td>
+                                    <td>還息日期</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">已分派金額</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">未分派金額</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">狀態</td>
+                                    <td>備註</td>
+                                    <td  check-permissions = "markerExpiredFeeRepaymentAssigned,markerExpiredFeeRepaymentRollback">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="marker in markerFeeRepayments" data-selected-rows>
+                                    <!--<td>{{ marker.year_month | parseDate:'yyyy-MM'}}</td>-->
+                                    <td>{{ marker.hall_name }}</td>
+                                    <td>{{ marker.out_agent_code}}</td>
+                                    <td>{{ marker.out_agent_name}}</td>
+                                    <td>{{ marker.amount | parseTenThousandToYuan | number }}</td>
+                                    <td>{{ marker.refund_amount | parseTenThousandToYuan | number }}</td>
+                                    <td>{{ marker.repayment_time | parseDate:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">{{ marker.assigned_amount | parseTenThousandToYuan | number }}</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">{{ marker.not_assign_amount | parseTenThousandToYuan | number }}</td>
+                                    <td data-ng-hide="user.deparment.id == '03X3EAE12CA45F7EE0539715A8C07DE6'">{{marker.not_assign_amount == 0?"已分派":"未分派"}}</td>
+                                    <td>{{marker.remark}}</td>
+                                    <td check-permissions = "markerExpiredFeeRepaymentAssigned,markerExpiredFeeRepaymentRollback">
+                                        <button class="btn btn-confirm" data-ng-click="detail(marker.id)" check-permissions="markerExpiredFeeRepaymentAssigned">詳細</button>
+                                        <button class="btn btn-confirm" data-ng-click="refund(marker)" check-permissions="markerExpiredFeeRepaymentRefund" data-ng-show="marker.not_assign_amount != 0">退款</button>
+                                        <button class="btn btn-confirm" data-ng-click="rollback(marker.id,1)" check-permissions="markerExpiredFeeRepaymentRollbackAssigned" data-ng-show="user.department.id == '03X3EAE12CA45F7EE0539715A8C07DE6' &&  marker.assigned_amount > 0">回滾分派</button>
+                                        <button class="btn btn-confirm" data-ng-click="rollback(marker.id,2)" check-permissions="markerExpiredFeeRepaymentRollback" data-ng-show="user.department.id == '03X3EAE12CA45F7EE0539715A8C07DE6' && marker.assigned_amount == 0">回滾</button>
+                                        <button class="btn btn-confirm" data-ng-click="refundReord(marker)" data-ng-show="marker.refund_amount" check-permissions="markerExpiredFeeRepaymentRefundView">退款記錄</button>
+
+                                        <!--<button class="btn btn-confirm" data-ng-click="rollback(marker.id)" check-permissions="markerExpiredFeeRepaymentRollback">回滾</button>-->
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="markerFeeRepayments.length == 0">
+                                    <td colspan="17">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination_record.page"
+                                                total-items="pagination_record.total_items"
+                                                on-select-page="select_record(page)"
+                                                max-size = "pagination_record.max_size"
+                                                items-per-page = "pagination_record.items_per_page"
+                                                data-ng-show="pagination_record.total_items > pagination_record.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination_record" select-page="select_record"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <tab heading="手續費確認" active="tab.total_ok" check-permissions="markerExpiredFeeConfirmView " >
+            <div class="row">
+                <div class="col-md-12">
+                    <br />
+                    <div class="panel panel-default panel-form-list">
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="120" class="text-right">貸款單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="fee_condition.marker_seqnumber"
+                                                               class="form-control"></td>
+                                        <td width="120" class="text-right">貸款戶口：</td>
+                                        <td width="200"><input type="text"
+                                                               data-input-uppercase
+                                                               data-ng-model="fee_condition.loan_agent_code"
+                                                               class="form-control"></td>
+                                        <!--<td width="120" class="text-right">還息戶口：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-input-uppercase-->
+                                                               <!--data-ng-model="fee_condition.outAgent.agent_code"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="120" class="text-right">收益戶口：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-input-uppercase-->
+                                                               <!--data-ng-model="fee_condition.inAgent.agent_code"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="120" class="text-right">業務單號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-ng-model="condition.marker.loanBusiness.loan_seqnumber"
+                                                               class="form-control"></td>-->
+                                        <td width="120" class="text-right">戶組：</td>
+                                        <td width="200">
+                                            <input type="text"
+                                                   data-input-uppercase
+                                                   style="width:120px;float: left"
+                                                   data-ng-model="fee_condition.agent_group_name"
+                                                   class="form-control">&nbsp;&nbsp;
+                                            <span style="float: right">
+                                                <input type="checkbox" class="form-control" data-ng-model="chk_loan_group.group1"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+                                        </td>
+                                        <!--<td class="text-right">入數月份：</td>-->
+                                        <!--<td>-->
+                                            <!--<p class="input-group ui-datepicker pull-left" >-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="fee_condition.year_month[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <td width="120" class="text-right">狀態：</td>
+                                        <td width="200">
+                                            <select data-ng-model="fee_condition.status" class="form-control" name="status"
+                                                    ng-options="k as v for (k,v) in confirmStatus">
+                                                <option value="">請選擇</option>
+                                            </select>
+                                        </td>
+                                        <!--<td class="text-right">類型：</td>-->
+                                        <!--<td>-->
+                                            <!--<select data-ng-model="fee_condition.fee_type" class="form-control" name="fee_type"-->
+                                                    <!--ng-options="k as v for (k,v) in feeTypes">-->
+                                                <!--<option value="">請選擇</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                        </tr>
+                                    <tr>
+                                        <td width="120" class="text-right">結算日期：</td>
+                                        <td colspan="2">
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="fee_condition.end_date[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="fee_condition.end_date[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-confirm margin-right-15" ng-click="select_fee()" >查詢</button>
+                                    <button class="btn btn-cancel margin-right-15" ng-click="reset_fee()">重置</button>
+                                    <button class="btn btn-info btn-information" report-params="excel_condition" channel-type="LoanConfirmReport" report-btn >導出EXCEL</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" report-params="excel_condition" channel-type="AccountOverdueCharge" report-btn >導出EXCEL</button>-->
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" data-ng-click="addFees()">新增手續費</button>-->
+                            <!--<button class="btn btn-confirm btn-confirm btn-table" data-ng-click="marker_ok(marker.id)" check-permissions="markerExpiredFeeConfirmConfirm">確認</button>-->
+                        </div>
+                        <div class="panel-content"style="position: relative">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 2000px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" data-ng-model="account_overdue.cheked_all" data-ng-click = "marker_check_all(account_overdue.cheked_all)" name="cheked_all">
+                                                <button class="btn btn-confirm btn-confirm btn-table" data-ng-click="marker_ok(marker.id)" check-permissions="markerExpiredFeeConfirmConfirm">確認</button>
+                                            </td>
+                                            <td width="100" check-permissions="markerExpiredFeeConfirmDetail,markerExpiredFeeConfirmConfirm">操作</td>
+                                            <td>入數月份</td>
+                                            <td>廳館</td>
+                                            <td>貸款戶口</td>
+                                            <td>姓名</td>
+                                            <td>貸款人</td>
+                                            <td>貸款單號</td>
+                                            <td>貸款時間</td>
+                                            <td>貸款類型</td>
+                                            <td>類型</td>
+                                            <td>計息金額(萬)</td>
+                                            <td>結算日期</td>
+                                            <td>貸款天數</td>
+                                            <td>應收手續費(元)</td>
+                                            <td>尚欠金額(元)</td>
+                                            <td>線頭</td>
+                                            <td>狀態</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="marker in markerExpiredFeesConfirms" data-selected-rows>
+                                            <td><input type="checkbox" data-ng-click="is_checkbox_item()" name="selected" data-ng-model="marker.selected" data-ng-disabled="marker.status == 1"/></td>
+                                            <td class="no-padding" check-permissions="markerExpiredFeeConfirmDetail,markerExpiredFeeConfirmConfirm">
+                                                <button class="btn btn-confirm btn-confirm btn-table" data-ng-click="confirm_detail(marker)" check-permissions="markerExpiredFeeConfirmDetail">詳細</button>
+                                                <!--<button class="btn btn-confirm btn-confirm btn-table" data-ng-click="marker_ok(marker.id)" check-permissions="markerExpiredFeeC.onfirmConfirm" data-ng-show="marker.status != 1">確認</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" ng-click="addFees()" >新增</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" ng-click="reduction(marker)" check-permissions="overdueChargeReduce" ng-hide='marker.status=="3"'>減免</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" data-ng-show="marker.status == 1 || marker.status == 2" ng-click="payment(marker)" >代付</button>-->
+                                                <!--<button class="btn btn-confirm btn-table" data-ng-show="marker.status == 1" check-permissions="markerExpiredFeeConfirmAdjust" ng-click="confirm(marker)" >調整</button>-->
+                                            </td>
+                                            <td>{{marker.year_month | parseDate:'yyyy-MM'}}</td>
+                                            <td>{{marker.hall_name}}</td>
+                                            <td>{{marker.loan_agent_code}}</td>
+                                            <td>{{marker.loan_agent_name}}</td>
+                                            <td>{{marker.borrower}}</td>
+                                            <td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)">{{marker.marker_seqnumber}}</a></td>
+                                            <td>{{ marker.loan_date | parseDate:'yyyy-MM-dd' }}</td>
+                                            <td>{{ marker.loan_type }}</td>
+                                            <td>{{ feeTypes[marker.fee_type] }}</td>
+                                            <td>{{ marker.calc_amount | number}}</td>
+                                            <td>{{ marker.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>
+                                            <td>{{ marker.loan_total_days }}</td>
+                                            <td>{{marker.fee | parseTenThousandToYuan | number}}</td>
+                                            <td>{{marker.settlement_amount | parseTenThousandToYuan | number}}</td>
+                                            <td>{{ marker.top_agent }}</td>
+                                            <td>{{confirmStatus[marker.status]}}</td>
+                                        </tr>
+                                        <tr data-ng-show="markerExpiredFeesConfirms.length == 0">
+                                            <td colspan="30">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                        </div>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination_fee"
+                                            page="pagination_fee.page"
+                                            total-items="pagination_fee.total_items"
+                                            on-select-page="select_fee(page)"
+                                            max-size = "pagination_fee.max_size"
+                                            items-per-page = "pagination_fee.items_per_page"
+                                            data-ng-show="pagination_fee.total_items > pagination_fee.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination_fee" select-page="select"></paginationselect>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+
+        </tab>
+        <!--<tab heading="調整記錄" data-ng-controller="loanAccountOverdueChargeAdjustCtrl" active="tab.record_ok" check-permissions="markerExpiredFeeAdjustRecordView">-->
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<br />-->
+                    <!--<div class="panel panel-default panel-form-list">-->
+                        <!--<div class="panel-content">-->
+                            <!--<form name="form_search">-->
+                                <!--<table>-->
+                                    <!--<tr height="50">-->
+                                        <!--<td width="120" class="text-right">貸款單號：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-ng-model="adjust_condition.markerExpiredFee.marker_seqnumber"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="120" class="text-right">貸款戶口：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-input-uppercase-->
+                                                               <!--data-ng-model="adjust_condition.markerExpiredFee.loan_agent_code"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="120" class="text-right">還息戶口：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-input-uppercase-->
+                                                               <!--data-ng-model="adjust_condition.markerExpiredFee.outAgent.agent_code"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="120" class="text-right">收益戶口：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-input-uppercase-->
+                                                               <!--data-ng-model="adjust_condition.markerExpiredFee.inAgent.agent_code"-->
+                                                               <!--placeholder="多戶口查詢用逗號隔開"-->
+                                                               <!--class="form-control"></td>-->
+
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td class="text-right">戶組：</td>-->
+                                        <!--<td ><input type="text"-->
+                                                    <!--data-input-uppercase-->
+                                                    <!--style="width:120px;float: left"-->
+                                                    <!--data-ng-model="adjust_condition.agentGroup.agent_group_name"-->
+                                                    <!--class="form-control"> &nbsp;&nbsp;-->
+                                            <!--<span style="float: right">-->
+                                                <!--<input type="checkbox" class="form-control" data-ng-model="chk_group.group2"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股-->
+                                            <!--</span>-->
+                                        <!--</td>-->
+                                        <!--<td class="text-right">入數月份：</td>-->
+                                        <!--<td>-->
+                                            <!--<p class="input-group ui-datepicker pull-left" >-->
+                                                <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="adjust_condition.markerExpiredFee.year_month[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>-->
+                                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <!--<td class="text-right">類型：</td>-->
+                                        <!--<td class="select-td">-->
+                                            <!--<select data-ng-model="select_fee_types" class="form-control" multiple bs-select ng-options="h.id as h.name for h in selectFeeTypes" data-live-search="true" placeholder="請選擇類型">-->
+                                                <!--<option value = "">請選擇</option>-->
+                                            <!--</select>-->
+                                            <!--&lt;!&ndash;<select data-ng-model="adjust_condition.markerExpiredFee.fee_type" class="form-control" name="fee_type"&ndash;&gt;-->
+                                                    <!--&lt;!&ndash;ng-options="k as v for (k,v) in feeTypes">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<option value="">請選擇</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                                        <!--</td>-->
+                                        <!--<td class="text-right"></td>&lt;!&ndash;操作類型：&ndash;&gt;-->
+                                        <!--<td>-->
+                                            <!--&lt;!&ndash;<select data-ng-model="adjust_condition.operation_type" class="form-control" name="operation_type"&ndash;&gt;-->
+                                                    <!--&lt;!&ndash;ng-options="k as v for (k,v) in adjustTypes">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<option value="">請選擇</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                                <!--<br><br>-->
+                                <!--<div class="row" style="text-align: center;">-->
+                                    <!--<button class="btn btn-confirm margin-right-15" ng-click="select_adjust()" >查詢</button>-->
+                                    <!--<button class="btn btn-cancel" ng-click="reset_adjust()">重置</button>-->
+                                <!--</div>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-12">-->
+                    <!--<div class="panel panel-list-detail">-->
+                        <!--<div class="panel-heading">-->
+                            <!--&lt;!&ndash;<button class="btn btn-info btn-information pull-right" report-params="excel_condition" channel-type="AccountOverdueCharge" report-btn >導出EXCEL</button>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button class="btn btn-info btn-information margin-right-15 pull-right" data-ng-click="addFees()">新增手續費</button>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<div class="panel-content"style="position: relative">-->
+                            <!--<perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">-->
+                                <!--<div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;">-->
+                                    <!--<table class="table table-bordered table-striped table-hover">-->
+                                        <!--<thead>-->
+                                        <!--<tr>-->
+                                            <!--<td>入數月份</td>-->
+                                            <!--<td>廳館</td>-->
+                                            <!--<td>貸款戶口</td>-->
+                                            <!--<td>姓名</td>-->
+                                            <!--<td>貸款人</td>-->
+                                            <!--<td>貸款單號</td>-->
+                                            <!--<td>貸款時間</td>-->
+                                            <!--<td>貸款類型</td>-->
+                                            <!--<td>類型</td>-->
+                                            <!--<td>計息金額(萬)</td>-->
+                                            <!--<td>開始計手續費</td>-->
+                                            <!--<td>結算日期</td>-->
+                                            <!--&lt;!&ndash;<td>貸款天數</td>&ndash;&gt;-->
+                                            <!--<td>免收天數</td>-->
+                                            <!--&lt;!&ndash;<td>過期天數</td>&ndash;&gt;-->
+                                            <!--<td>罰息天數</td>-->
+                                            <!--<td>計息天數</td>-->
+                                            <!--<td>息率</td>-->
+                                            <!--<td>還息戶口</td>-->
+                                            <!--<td>收益戶口</td>-->
+                                            <!--<td>線頭</td>-->
+                                            <!--<td>減免金額</td>-->
+                                            <!--&lt;!&ndash;<td>操作類型</td>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<td>金額</td>&ndash;&gt;-->
+                                            <!--<td>調整結算日期</td>-->
+                                            <!--<td>調整免收天數</td>-->
+                                            <!--<td>調整息率</td>-->
+                                            <!--<td>調整計息天數</td>-->
+                                            <!--<td>調整還息戶口</td>-->
+                                            <!--<td>調整收益戶口</td>-->
+                                            <!--<td>備註</td>-->
+                                            <!--<td>操作日期</td>-->
+                                            <!--<td>經手人</td>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr data-ng-repeat="marker_adjust_record in markerExpiredFeesAdjustRecords" data-selected-rows>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.year_month | parseDate:'yyyy-MM'}}</td>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.hall_name}}</td>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.loan_agent_code}}</td>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.loan_agent_name}}</td>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.borrower}}</td>-->
+                                            <!--<td><a href="javascript:void(0);" ng-click="loan_detail(marker_adjust_record.markerExpiredFee.marker_id)">{{marker_adjust_record.markerExpiredFee.marker_seqnumber}}</a></td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.loan_date | parseDate:'yyyy-MM-dd' }}</td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.loan_type }}</td>-->
+                                            <!--<td>{{ feeTypes[marker_adjust_record.markerExpiredFee.fee_type] }}</td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.calc_amount | number}}</td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.expired_date | parseDate:'yyyy-MM-dd'  }}</td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>-->
+                                            <!--&lt;!&ndash;<td>{{ marker_adjust_record.markerExpiredFee.loan_total_days }}</td>&ndash;&gt;-->
+                                            <!--<td>{{ marker_adjust_record.old_term}}</td>-->
+                                            <!--&lt;!&ndash;<td>{{ marker_adjust_record | parseComfireDay}}</td>&ndash;&gt;-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.expired_add_days}}</td>-->
+                                            <!--<td>{{ marker_adjust_record.old_days}}</td>-->
+                                            <!--<td>{{ marker_adjust_record.old_rate}}%</td>-->
+                                            <!--<td>{{ marker_adjust_record.old_out_agent_code }}</td>-->
+                                            <!--<td>{{ marker_adjust_record.old_in_agent_code }}</td>-->
+                                            <!--<td>{{ marker_adjust_record.markerExpiredFee.top_agent }}</td>-->
+                                            <!--<td>{{marker_adjust_record.markerExpiredFee.reduction_amount | parseTenThousandToYuan | number}}</td>-->
+                                            <!--&lt;!&ndash;<td>{{ adjustTypes[marker_adjust_record.operation_type] }}</td>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<td>{{marker_adjust_record.amount | parseTenThousandToYuan | number}}</td>&ndash;&gt;-->
+                                            <!--<td>{{ marker_adjust_record.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>-->
+                                            <!--<td>{{marker_adjust_record.term}}</td>-->
+                                            <!--<td>{{marker_adjust_record.rate}}%</td>-->
+                                            <!--<td>{{marker_adjust_record.days}}</td>-->
+                                            <!--<td>{{marker_adjust_record.out_agent_code}}</td>-->
+                                            <!--<td>{{marker_adjust_record.in_agent_code}}</td>-->
+                                            <!--<td>{{marker_adjust_record.remark}}</td>-->
+                                            <!--<td>{{marker_adjust_record.create_time | parseDate:"yyyy-MM-dd"}}</td>-->
+                                            <!--<td>{{marker_adjust_record.user_name}}</td>-->
+                                        <!--</tr>-->
+                                        <!--<tr data-ng-show="markerExpiredFeesAdjustRecords.length == 0">-->
+                                            <!--<td colspan="30">暫無符合條件的記錄</td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</perfect-scrollbar>-->
+                        <!--</div>-->
+                        <!--<footer class="table-footer">-->
+                            <!--<div class="text-right pagination-container">-->
+                                <!--<pagination class="pagination_fee"-->
+                                            <!--page="pagination_adjust.page"-->
+                                            <!--total-items="pagination_adjust.total_items"-->
+                                            <!--on-select-page="select_adjust(page)"-->
+                                            <!--max-size = "pagination_adjust.max_size"-->
+                                            <!--items-per-page = "pagination_adjust.items_per_page"-->
+                                            <!--data-ng-show="pagination_adjust.total_items > pagination_adjust.items_per_page"></pagination>-->
+                                <!--<paginationselect pageCtrl="pagination_adjust" select-page="select"></paginationselect>-->
+                            <!--</div>-->
+                        <!--</footer>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</tab>-->
+        <tab heading="截息" check-permissions="markerMonthlyView"active="tab.monthly"><!--check-permissions="overdueChargeMonth"-->
+            <form name="$parent.form_overdue"  class="ng-valid ng-dirty form-validation" server-validation="POST{{account_overdue_url}}">
+            <div class="row">
+                <div class="col-md-12">
+                    <br />
+                    <div class="panel panel-default panel-form-list">
+                        <div class="panel-content">
+
+                                <table>
+                                    <tr height="50">
+                                        <!--<td width="140" class="text-right">月結月份：</td>-->
+                                        <!--<td width="200">-->
+                                            <!--<p class="input-group ui-datepicker pull-left">-->
+                                                <!--<input type="text" class="form-control" name="year_month" datepicker-popup datepicker-mode="month" ng-model="account_overdue.year_month" />-->
+                                <!--<span class="input-group-btn">-->
+                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <!--<td width="140" class="text-right">月結時間：</td>-->
+                                        <!--<td width="200">-->
+                                            <!--<p class="input-group ui-datepicker pull-left">-->
+                                                <!--<input type="text" class="form-control" name="date" datepicker-popup datepicker-mode="day" ng-model="account_overdue.date" />-->
+                                <!--<span class="input-group-btn">-->
+                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</td>-->
+                                        <td width="140" class="text-right">戶口編號：</td>
+                                        <td width="200"><input data-input-uppercase type="text" name="agent_id" data-ng-model="account_overdue.agentInfo.agent_code" class="form-control"></td>
+                                        <td width="140" class="text-right">戶口姓名：</td>
+                                        <td width="200">{{account_overdue.agent_name}}</td>
+                                        <td class="text-right" width="140">戶組：</td>
+                                        <td width="200">
+                                            <input type="text"
+                                                   data-input-uppercase
+                                                   style="width:120px;float: left"
+                                                   data-ng-model="account_overdue.agentGroup.agent_group_name"
+                                                   class="form-control">&nbsp;&nbsp;
+                                            <span style="float: right">
+                                                <input type="checkbox" class="form-control" data-ng-model="chk_loan_group.group2"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+
+                                            <!--<input data-input-uppercase type="text" name="agent_group_id" data-ng-model="account_overdue.agentGroup.agent_group_name" class="form-control">-->
+                                        </td>
+                                        <!--<td class="text-right" width="140">戶組股東：</td>-->
+                                        <!--<td width="200">{{account_overdue.agent_group}}</td>-->
+                                        <td class="text-right" width="140">貸款單號：</td>
+                                        <td width="200"><input data-input-uppercase name="pin_code" type="text" data-ng-model="account_overdue.marker_seqnumber" class="form-control" ></td>
+                                    </tr>
+                                    <tr height="50">
+
+                                        <!--<td class="text-right">貸款單號：</td>-->
+                                        <!--<td ><input name="pin_code" type="text" data-ng-model="account_overdue.marker_seqnumber" class="form-control" ></td>-->
+                                        <td width="140" class="text-right">結算日期：</td>
+                                        <td width="200">
+                                            <p class="input-group ui-datepicker pull-left">
+                                                <input type="text" size="10" data-ng-required="enableClientValidation"  name="end_date" class="form-control" ng-model="account_overdue.date" style="width:93px" data-autoclose="1" placeholder="Date" bs-datepicker>
+                                                <!--<input type="text" class="form-control" name="date" datepicker-popup datepicker-mode="day" ng-model="account_overdue.date" style="width:93px" />-->
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                <input type="text" size="8" class="form-control" data-ng-required="enableClientValidation"  name="start_time_min" ng-model="account_overdue.date" data-autoclose="1" placeholder="Time" bs-timepicker>
+                                            </p>
+                                        </td>
+                                        <td class="text-right" width="140">貸款天數：</td>
+                                        <td width="200"><input name="pin_code" type="text" data-ng-model="account_overdue.loan_days" class="form-control" ></td>
+                                        <td  colspan="4"></td>
+                                        <!--<td class="text-right">業務單號：</td>-->
+                                        <!--<td ><input name="loan_seqnumber" type="text" data-ng-model="account_overdue.loanBusiness.loan_seqnumber" class="form-control" ></td>-->
+                                    </tr>
+                                </table>
+                                <br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-confirm margin-right-15" type="button" ng-click="monthlyNextStep()" >查詢</button>
+                                    <button class="btn btn-cancel" ng-click="reset_nextstep()" type="button">重置</button>
+                                    <!--<button class="btn btn-confirm" data-ng-click="monthly()">月結</button>-->
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="show_monthly_list">
+                    <div class="panel panel-list-detail">
+                            <div class="panel-heading">
+                                <!--button class="btn btn-information pull-right" report-params="excel_condition" channel-type="MInterestManage" report-btn>導出EXCEL</button-->
+                            </div>
+                            <div class="panel-content"style="position: relative">
+                            <!--<perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 2500px;">
+
+                                </div>
+                            </perfect-scrollbar>-->
+
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="100"><label>確認截息<input type="checkbox" ng-model="account_overdue.select_all" value="1" name="select_all" ng-change="monthly_select_all()"></label></td>
+                                            <!--<td>年月</td>-->
+                                            <!--<td>廳館</td>-->
+                                            <!--<td>貸款戶口</td>-->
+                                            <!--<td>貸款人</td>-->
+                                            <!--<td>貸款單號</td>-->
+                                            <!--<td>貸款類型</td>-->
+                                            <!--<td>貸款金額(萬)</td>-->
+                                            <!--<td>貸款日期</td>-->
+                                            <!--<td>類型</td>
+                                            <td>計息金额</td>
+                                            <td>開始計手續費</td>
+                                            <td>結算日期</td>
+                                            <td>免收天期</td>
+                                            <td>計息天數</td>
+                                            <td>應收手續費</td>
+                                            <td>未還手續費</td>
+                                            <td>狀態</td>
+                                            <td>收益戶口</td>
+                                            <td>線頭</td>-->
+                                            <td>廳館</td>
+                                            <td>貸款戶口</td>
+                                            <td>姓名</td>
+                                            <td>貸款人</td>
+                                            <td>貸款單號</td>
+                                            <td>貸款金額(萬)</td>
+                                            <td>計息金額(萬)</td>
+                                            <td>貸款時間</td>
+                                            <td>貸款類型</td>
+                                            <td>免收天數</td>
+                                            <td>計息日</td>
+                                            <td>貸款天數</td>
+                                            <td>過期天數</td>
+                                            <td>息率</td>
+                                            <td>線頭</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  ng-repeat="marker in marker_list" data-selected-rows>
+                                            <td class="no-padding">
+                                                <input type="checkbox" data-ng-click="check_one(marker)" ng-model="marker.selected" name="selected">
+                                            </td>
+                                            <td>{{ marker.hall_name}}</td>
+                                            <td>{{ marker.agent_code}}</td>
+                                            <td>{{ marker.agent_name}}</td>
+                                            <td>{{ marker.borrower }}</td>
+                                            <td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)">{{marker.marker_seqnumber}}</a></td>
+                                            <td>{{ marker.marker_amount | number }}</td>
+                                            <td>{{ marker.settlement_amount | number}}</td>
+                                            <td>{{ marker.loan_time | parseDate:'yyyy-MM-dd'}}</td>
+                                            <td>{{ marker.funds_type }}</td>
+                                            <td>{{ marker.term}}</td>
+                                            <td>{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                            <td>{{ marker.loan_days }}</td>
+                                            <td>{{marker|parseLoanDay}}</td>
+                                            <td>{{ marker.expired_rate|parseTenThousand2}}%</td>
+                                            <td>{{marker.agentGroup.agent_group_name}}</td>
+
+                                            <!--<td>{{ marker.year_month | parseDate:'yyyy-MM' }}</td>-->
+                                            <!--<td>{{ marker.hall_name}}</td>-->
+                                            <!--<td>{{ marker.agent_code}}</td>-->
+                                            <!--<td>{{ marker.borrower }}</td>-->
+                                            <!--<td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)">{{marker.marker_seqnumber}}</a></td>-->
+                                            <!--<td>{{ marker.funds_type }}</td>-->
+                                            <!--<td>{{ marker.marker_amount | number }}</td>-->
+                                            <!--<td>{{ marker.loan_time | parseDate:'yyyy-MM-dd HH:mm' }}</td>-->
+                                            <!--<td>{{ feeTypes[marker.fee_type] }}</td>
+                                            <td>{{ marker.calc_amount | parseDollar | number}}</td>
+                                            <td>{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                            <td>{{ marker.last_settlement_time | parseDate:'yyyy-MM-dd'  }}</td>
+                                            <td>{{ marker.term }}</td>
+                                            <td>{{ marker.days }}</td>
+                                            <td>{{ marker.fee | parseDollar | number}}</td>
+                                            <td>{{ marker.settlement_amount | parseDollar | number}}</td>
+                                            <td>{{ markerStatus[marker.status]}}</td>
+                                            <td>{{ marker.in_agent_code }}</td>
+                                            <td>{{ marker.top_agent }}</td>-->
+                                        </tr>
+                                        <tr data-ng-show="marker_list.length == 0">
+                                            <td colspan="25">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <footer class="table-footer">
+                                        <div class="text-right pagination-container">
+                                            <pagination class="pagination-sm"
+                                                        page="pagination_monthly.page"
+                                                        total-items="pagination_monthly.total_items"
+                                                        on-select-page="monthlyNextStep(page)"
+                                                        max-size = "pagination_monthly.max_size"
+                                                        items-per-page = "pagination_monthly.items_per_page"
+                                                        data-ng-show="pagination_monthly.total_items > pagination_monthly.items_per_page"></pagination>
+                                            <paginationselect pageCtrl="pagination_monthly" select-page="monthlyNextStep"></paginationselect>
+                                        </div>
+                                    </footer>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <td width="200" class="text-right">入數月份：</td>
+                                            <td width="200">
+                                            <p class="input-group ui-datepicker pull-left">
+                                            <input type="text" class="form-control" name="year_month" datepicker-popup datepicker-mode="month" ng-model="account_overdue.year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                            </td>
+                                            <td width="200" class="text-right">結算日期：</td>
+                                            <td width="200">{{expired_date | parseDate:"yyyy-MM-dd HH:mm"}} </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">操作密碼：</td>
+                                            <td class="text-left"><input class="form-control input-180 ng-pristine ng-valid" type="password" name="pin_code" data-ng-model="account_overdue.pin_code" data-enter-key="monthly()"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" align="center">
+                                                <button class="btn btn-confirm margin-right-15" data-ng-disabled="monthly_isDisabled" data-ng-click="monthly()" type="button" check-permissions="markerMonthlyMonthly">截息</button>
+                                                <button class="btn btn-cancel" data-ng-click="reset_month()" type="button">取消</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </tab>
+        <tab heading="分派流水" data-ng-controller="loanAccountOverdueChargeAdjustCtrl" active="tab.distribution" check-permissions="markerExpiredFeeView">
+        <div class="row">
+        <div class="col-md-8">
+            <br />
+            <div class="panel panel-default panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="120" class="text-right">貸款單號：</td>
+                                <td width="200"><input type="text"
+                                                       data-input-uppercase
+                                                       data-ng-model="condition_assignment.marker_seqnumber"
+                                                       class="form-control"></td>
+                                <td width="120" class="text-right">貸款戶口：</td>
+                                <td width="200"><input type="text"
+                                                       data-input-uppercase
+                                                       data-ng-model="condition_assignment.loan_agent_code"
+                                                       class="form-control"></td>
+                                <td width="120" class="text-right">入數月份：</td>
+                                <td width="200">
+                                    <p class="input-group ui-datepicker pull-left" >
+                                        <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition_assignment.year_month[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>
+                                                </span>
+                                    </p>
+                                </td>
+                                <td width="120" class="text-right">付款月份：</td>
+                                <td class="select-td" width="200">
+                                    <p class="input-group ui-datepicker pull-left" >
+                                        <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition_assignment.pay_year_month[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>
+                                                </span>
+                                    </p>
+                                </td>
+                                <!--<td width="120" class="text-right">還息戶口：</td>-->
+                                <!--<td width="200"><input type="text"-->
+                                                       <!--data-input-uppercase-->
+                                                       <!--data-ng-model="condition_assignment.outAgent.agent_code"-->
+                                                       <!--class="form-control"></td>-->
+                                <!--<td width="120" class="text-right">收益戶口：</td>-->
+                                <!--<td width="200"><input type="text"-->
+                                                       <!--data-input-uppercase-->
+                                                       <!--data-ng-model="condition_assignment.inAgent.agent_code"-->
+                                                       <!--placeholder="多戶口查詢用逗號隔開"-->
+                                                       <!--class="form-control"></td>-->
+                                <!--<td width="120" class="text-right">業務單號：</td>
+                                <td width="200"><input type="text"
+                                                       data-ng-model="condition.marker.loanBusiness.loan_seqnumber"
+                                                       class="form-control"></td>-->
+
+                            </tr>
+                            <tr>
+                                <!--<td class="text-right">戶組：</td>-->
+                                <!--<td ><input type="text"-->
+                                            <!--data-input-uppercase-->
+                                            <!--style="width:95px;float: left"-->
+                                            <!--data-ng-model="condition_assignment.agentGroup.agent_group_name"-->
+                                            <!--class="form-control">&nbsp;&nbsp;-->
+                                            <!--<span style="float: right">-->
+                                                <!--<input type="checkbox" class="form-control" data-ng-model="chk_group_assignment.group1"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股-->
+                                            <!--</span>-->
+
+                                <!--</td>-->
+                                <!--<td class="text-right">入數月份：</td>-->
+                                <!--<td>-->
+                                    <!--<p class="input-group ui-datepicker pull-left" >-->
+                                        <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition_assignment.year_month[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>-->
+                                                <!--</span>-->
+                                    <!--</p>-->
+                                <!--</td>-->
+                                <td class="text-right">類型：</td>
+                                <td class="select-td">
+                                    <select data-ng-model="select_assignment_types" class="form-control" multiple bs-select ng-options="h.id as h.name for h in selectTypes" data-live-search="true" placeholder="請選擇類型">
+                                        <option value = "">請選擇</option>
+                                    </select>
+                                </td>
+                                <td colspan="4"></td>
+                                <!--<td class="text-right">付款月份：</td>-->
+                                <!--<td class="select-td">-->
+                                    <!--<p class="input-group ui-datepicker pull-left" >-->
+                                        <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition_assignment.pay_year_month[0]" />-->
+                                                <!--<span class="input-group-btn">-->
+                                                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>-->
+                                                <!--</span>-->
+                                    <!--</p>-->
+                                <!--</td>-->
+                            </tr>
+                        </table>
+                        <br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-confirm margin-right-15" ng-click="search_assignment()" >查詢</button>
+                            <button class="btn btn-cancel" ng-click="reset_assignment()">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-ng-hide="addAssignmetRemarkbtnshow">
+            <br />
+            <div class="panel panel-default panel-form-list">
+                <div class="panel-content" style="height: 192px;padding: 2px 10px">
+                    <div class="panel-heading ">
+                        <strong> <span >備註信息</span></strong>
+                        <button class="btn btn-info btn-confirm btn-table pull-right" ng-disabled='addAssignmetRemarkbtnshow' data-ng-click="addRemark('')">新增備註</button>
+                    </div>
+                    <div style="position: relative">
+                        <perfect-scrollbar id="content"  class="animate-fade-up" ng-class="{true:'scroll-show'}[refTelAgentMasterNoticeType.length <4]" style="left:0;top:0px;height:130px;overflow-y: hidden;" wheel-propagation="true" wheel-speed="50">
+                            <div  style="min-height:160px">
+                                <table class="table table-bordered table-striped table-hover" >
+                                    <thead>
+                                    <tr>
+                                        <td width="100">記錄時間</td>
+                                        <td >內容</td>
+                                        <td width="120">經手人</td>
+                                        <td width="125">操作</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="remark in remarks" data-selected-rows>
+                                        <td>{{remark.create_time  | parseDate:'yyyy-MM-dd'}}</td>
+                                        <td>{{remark.content}}</td>
+                                        <td>{{remark.user_name}}</td>
+                                        <td>
+                                            <button class="btn btn-information btn-table" ng-click="addRemark(remark)" ng-disabled='addRemarkbtnshow'>修改</button>
+                                            <button class="btn btn-information btn-table" ng-click="delRemark(remark.id)" >刪除</button>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </perfect-scrollbar>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <button class="btn btn-info btn-information pull-right" report-params="excel_condition" channel-type="MarkerFeeAssign" report-btn >導出EXCEL</button>
+                    <!--<button class="btn btn-info btn-information margin-right-15 pull-right" data-ng-click="addFees()">新增手續費</button>-->
+                </div>
+                <div class="panel-content"style="position: relative">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                        <div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>貸款單號</td>
+                                    <td>還息戶口</td>
+                                    <td>收益戶口</td>
+                                    <td>已還金額</td>
+                                    <td>還款日期</td>
+                                    <td>付款月份</td>
+                                    <td>入數月份</td>
+                                    <td>廳館</td>
+                                    <td>貸款戶口</td>
+                                    <td>姓名</td>
+                                    <td>貸款人</td>
+                                    <td>貸款時間</td>
+                                    <td>貸款類型</td>
+                                    <td>類型</td>
+                                    <td>計息金額(萬)</td>
+                                    <td>開始計手續費</td>
+                                    <td>結算日期</td>
+                                    <td>貸款天數</td>
+                                    <td>免收天期</td>
+                                    <td>過期天數</td>
+                                    <td>罰息天數</td>
+                                    <td>計息天數</td>
+                                    <td>息率</td>
+                                    <td>原本手續費(元)</td>
+                                    <td>扣除上線</td>
+                                    <td>應收手續費(元)</td>
+                                    <td>減免總額</td>
+                                    <!--<td>還款總額</td>-->
+                                    <td>尚欠手續費</td>
+                                    <td>線頭</td>
+                                    <!--<td>抵押時間</td>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="marker in markerExpiredAssignmentFees" data-selected-rows>
+                                    <td><a href="javascript:void(0);" ng-click="loan_detail(marker.marker_id)"><span class="a-hover">{{marker.marker_seqnumber}}</span></a></td>
+                                    <td>{{ marker.out_agent_code }}</td>
+                                    <td>{{ marker.in_agent_code }}</td>
+                                    <td>{{marker.repayment_amount | parseTenThousandToYuan | number}}</td>
+                                    <td>{{marker.repayment_date| parseDate:'yyyy-MM-dd HH:MM'}}</td>
+                                    <td>{{marker.pay_year_month| parseDate:'yyyy-MM'}}</td>
+                                    <td>{{marker.year_month | parseDate:'yyyy-MM'}}</td>
+                                    <td>{{marker.hall_name}}</td>
+                                    <td>{{marker.loan_agent_code}}</td>
+                                    <td>{{marker.loan_agent_name}}</td>
+                                    <td>{{marker.borrower}}</td>
+                                    <td>{{ marker.loan_date | parseDate:'yyyy-MM-dd' }}</td>
+                                    <td>{{ marker.loan_type }}</td>
+                                    <td>{{ feeTypes[marker.fee_type] }}</td>
+                                    <td>{{ marker.calc_amount | number}}</td>
+                                    <td>{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                    <td>{{ marker.end_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                    <td>{{ marker.loan_total_days }}</td>
+                                    <td>{{ marker.term}}</td>
+                                    <td>{{marker|parseDay}}</td>
+                                    <td>{{marker.expired_add_days}}</td>
+                                    <td>{{ marker.days}}</td>
+                                    <td>{{ marker.rate |parseTenThousand2}}<span data-ng-show="marker.rate">%</span></td>
+                                    <td>{{marker.original_fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{marker.deduction_fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{marker.fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{marker.reduction_amount | parseTenThousandToYuan | number}}</td>
+                                    <!--<td>{{(marker.fee-marker.settlement_amount) | parseTenThousandToYuan | number}}</td>-->
+                                    <td>{{marker.settlement_amount | parseTenThousandToYuan | number}}</td>
+                                    <td>{{ marker.top_agent }}</td>
+                                    <!--<td>{{marker.mortgage_time| parseDate:'yyyy-MM-dd'}}</td>-->
+                                </tr>
+                                <tr data-ng-show="markerExpiredAssignmentFees.length == 0">
+                                    <td colspan="30">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_assignment.page"
+                                    total-items="pagination_assignment.total_items"
+                                    on-select-page="search_assignment(page)"
+                                    max-size = "pagination_assignment.max_size"
+                                    items-per-page = "pagination_assignment.items_per_page"
+                                    data-ng-show="pagination_assignment.total_items > pagination_assignment.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_assignment" select-page="search_assignment"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        </div>
+
+        </tab>
+    </tabset>
+</div>
+</div>

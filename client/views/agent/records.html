@@ -1,0 +1,91 @@
+<div class="page page-services pop-dotal">
+    <div class="panel panel-form-list" ng-hide="calllog">
+        <form name="form_detail_order">
+            <div class="panel-heading">驗證記錄</div>
+            <div class="panel-content" style="
+            padding-top: 0;">
+                <div class="text-center">
+                    <table class="table">
+
+                        <tbody>
+                        <tr>
+                            <td class="no-padding" width="320">
+                            <select name=""  class="form-control" ng-model="operationMode.id" style="
+                            float:left;width:200px;height:32px;" >
+                              <option value="">請選擇</option>
+                              <option value="verify">驗證密碼</option>
+                              <option value="modify">修改驗證密碼</option>
+                              <option value="init">初始化驗證密碼</option>
+                              <option value="unlock">解鎖記錄</option>
+                            </select>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel-content" style="
+
+            padding-top: 0;">
+
+                    <div class="panel-content consumption_record table-dynamic"  style="
+                     padding: 0" >
+                        <table class="table table-bordered table-striped table-detail-01">
+                            <thead>
+                            <tr>
+                                <td>廳館</td>
+                                <td>通話日期</td>
+                                <td ng-show='recordstarget!="4"'>電話</td>
+                                <td ng-show='recordstarget=="4"'>經手人</td>
+                                <td>結果</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="record in records">
+                                <td>{{ record.hall_name }}</td>
+                                <td>{{ record.create_time | limitTo:16 }}</td>
+                                <td ng-show='recordstarget!="4"&&record.area_code'>{{ record.area_code }} {{ record.telephone_number }}</td>
+                              <td ng-show='recordstarget!="4"&&!record.area_code'>現場</td>
+                              <td ng-show='recordstarget=="4"'>
+                                {{record.username}}
+                              </td>
+                                <td ng-hide='recordstarget=="4"'>
+                                    <i class="glyphicon glyphicon-remove color-primary" ng-show="'1'== record.status"></i>
+                                    <i class="glyphicon glyphicon-ok color-success"ng-show="'0'== record.status"></i>
+                                </td>
+                              <td ng-show='recordstarget=="4"'>
+                                <i class="glyphicon glyphicon-remove color-primary" ng-show="'1'!= record.is_success"></i>
+                                <i class="glyphicon glyphicon-ok color-success"ng-show="'1'== record.is_success"></i>
+                              </td>
+                            </tr>
+<!--                            <tr ng-show="!records.length">
+                                <td colspan="4">暫無符合條件的記錄</td>
+                            </tr>-->
+                            </tbody>
+                        </table>
+
+                    </div>
+
+              <footer class="table-footer">
+                <div class="text-right pagination-container">
+                  <pagination class="pagination-sm"
+                              page="records_page.page"
+                              total-items="records_page.total_items"
+                              on-select-page="records_search(page)"
+                              max-size = "records_page.max_size"
+                              items-per-page = "records_page.items_per_page"
+                              data-ng-hide="records_page.total_items <= records_page.items_per_page"
+                            >
+
+                             </pagination>
+
+
+                </div>
+              </footer>
+            </div>
+        </form>
+
+    </div>
+
+</div>

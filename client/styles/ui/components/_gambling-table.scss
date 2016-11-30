@@ -1,0 +1,86 @@
+/***************************** Required styles *****************************/
+
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+ul[dnd-list],
+ul[dnd-list] > li {
+  position: relative;
+}
+
+.gambling-table {
+  border: 1px solid $itemlist-border;
+  border-right: none;
+  border-bottom: none;
+
+  .dndDragging {
+    opacity: 0.7;
+    cursor: hand;
+  }
+
+  ul[dnd-list] {
+    min-height: 42px;
+    margin: 0px;
+    padding-left: 0px;
+  }
+
+  .dndDraggingSource {
+    display: none;
+  }
+
+  .itemlist {
+    min-height: 120px !important;
+  }
+
+  .dndPlaceholder {
+    min-height: 42px;
+    position: relative;
+  }
+
+  .dndSelected {
+    background-color: #a86014 !important;
+    /*background-image: none;*/
+    min-height: 42px;
+    position: relative;
+  }
+
+  .itemlist > li {
+    color: #FF6C02;
+    font-size: 18px;
+    list-style:none;
+    float: left;
+    font-weight:bold;
+    text-shadow: 0 0 5px #000;
+    margin: 0px;
+    padding: 60px 0px 0px 0px;
+    text-align: center;
+    height: 110px;
+    width: 187px;
+    border: 1px solid $itemlist-border;
+    border-top: none;
+    border-left: none;
+    background: $itemlist-bg center center no-repeat;
+    &.gambling-table-disable{
+      background-image:url("../images/scene/gambling_table_disable.png");
+      cursor: pointer
+    }
+    &.gambling-table-able{
+      background-image:url("../images/scene/gambling_table_able.png");
+      cursor: pointer
+    }
+  }
+}
+@media screen and (max-width: 1450px){
+  .gambling-table{
+    .itemlist > li {
+      width: 132px;
+      &.gambling-table-disable{
+        background-image:url("../images/scene/gambling_table_disable-1440.png");
+      }
+      &.gambling-table-able{
+        background-image:url("../images/scene/gambling_table_able-1440.png");
+      } 
+    }
+  }
+}

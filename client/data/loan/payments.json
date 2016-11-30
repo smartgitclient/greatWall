@@ -1,0 +1,4 @@
+[
+    {"payment_id":"0","loan_id":5,"marker_id":7,"marker_seqnumber":"M201407311228-1","payment_amount":300,"payment_type":"存卡","payment_method":"全部還款","payment_target":"本金","balance_due":0,"credit_days":16,"rate":0.2,"payment_date":"2014-08-01","brokerage":"Ken","status":"完成"},
+    {"payment_id":"1","loan_id":7,"marker_id":9,"marker_seqnumber":"M201407311230-1","payment_amount":100,"payment_type":"存卡","payment_method":"全部還款","payment_target":"本金","balance_due":0,"credit_days":16,"rate":0.2,"payment_date":"2014-08-01","brokerage":"Ken","status":"完成"}
+]

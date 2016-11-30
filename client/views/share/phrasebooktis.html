@@ -1,0 +1,72 @@
+<div class="page">
+    <style>
+        .text-overflow{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 530px; }
+    </style>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading"><strong>常用備註</strong></div>
+                <div class="panel-content">
+                    <div class="col-md-4">
+                        <form name="$parent.form_tis" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_tis_url}}">
+                            <table width="100%">
+                                <tr height="120">
+                                    <td width="110" class="text-right" valign="top">內容：</td>
+                                    <td class="text-left" valign="top"><textarea cols="12" rows="5" class="form-control" dynamic-name="phrase"  data-ng-model="tis_params.phrase" name="phrase"></textarea></td>
+                                </tr>
+                                <tr height="40">
+                                    <td class="text-right">操作密碼：</td>
+                                    <td class="text-left"><input type="password" class="form-control" dynamic-name="pin_code" name="pin_code" data-ng-model="tis_params.pin_code" data-enter-key="addTis()"></td>
+                                </tr>
+                                <tr height="40">
+                                    <td class="text-center" colspan="2" >
+                                        <button class="btn btn-information btn-table margin-right-5" data-ng-disabled="tis_isDisabled" ng-click="addTis()" type="button">新增</button>
+                                        <button class="btn btn-cancel btn-table" type="reset">重置</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+
+                    <div class="col-md-8">
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <td>常用名稱</td>
+                                <td width="130">操作</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="tis in tiss">
+                                <td class="text-left" ><div class="text-overflow">{{ tis.phrase }}</div></td>
+                                <td class="no-padding">
+                                    <button class="btn btn-information btn-table margin-right-5" ng-click="select(tis)">選擇</button>
+                                    <button class="btn btn-confirm btn-table " ng-click="delete(tis)">刪除</button>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="!tiss.length">
+                                <td colspan="2">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="page.page"
+                                            total-items="page.total_items"
+                                            on-select-page="search(page)"
+                                            max-size = "page.max_size"
+                                            items-per-page = "page.items_per_page"
+                                            data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                                <paginationselect pageCtrl="page" select-page="search"></paginationselect>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">關閉</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,460 @@
+<div class="page page-grid" data-ng-controller="loanAccountOverdueChargeDetailCtrl">
+    <div class="row">
+        <!--<div class="col-md-8">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>手續費應收記錄</strong>
+                    &lt;!&ndash;<button class="btn btn-info btn-information pull-right" data-ng-show="overdue_charge" data-ng-click="return_list()">返回</button>
+                    <button class="btn btn-info btn-information pull-right margin-right-5" data-ng-hide="overdue_charge.status==3" data-ng-click="reduction()">減免</button>&ndash;&gt;
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="112">貸款單號：</td>
+                            <td width="212">{{overdue_charge.marker.marker_seqnumber}}</td>
+                            <td width="112">貸款時間：</td>
+                            <td width="212">{{overdue_charge.marker.loan_time}}</td>
+                            <td width="112">計息時間：</td>
+                            <td width="212">{{overdue_charge.create_time}}</td>
+                        </tr>
+                        <tr>
+                            <td>貸款戶口：</td>
+                            <td>{{overdue_charge.marker.agent_code}}</td>
+                            <td>戶口姓名：</td>
+                            <td>{{overdue_charge.marker.agent_name}}</td>
+                            <td>貸款類型：</td>
+                            <td>{{overdue_charge.marker.funds_type}}</td>
+                        </tr>
+                        <tr>
+                            <td>貸款金額(萬)：</td>
+                            <td>{{overdue_charge.marker.marker_amount | number}}</td>
+                            <td>天期：</td>
+                            <td>{{overdue_charge.marker.term}}</td>
+                            <td>息率：</td>
+                            <td>{{overdue_charge.marker.expired_rate}}</td>
+                        </tr>
+                        <tr>
+                            <td>特別天期：</td>
+                            <td>{{overdue_charge.marker.special_term}}</td>
+                            <td>特別息率：</td>
+                            <td>{{overdue_charge.marker.special_rate}}</td>
+                            <td>罰息天數：</td>
+                            <td>{{overdue_charge.marker.expired_add_days}}</td>
+                        </tr>
+                        <tr>
+                            <td>還息戶口：</td>
+                            <td>{{overdue_charge.out_agent_code}}</td>
+                            <td>計息金額(萬)：</td>
+                            <td>{{overdue_charge.calc_amount | number}}</td>
+                            <td>月份：</td>
+                            <td>{{overdue_charge.year_month | limitTo : 7}}</td>
+                        </tr>
+                        <tr>
+                            <td>應收手續費：</td>
+                            <td>{{(overdue_charge.fee)-(overdue_charge.reduction_amount) | parseDollar | number}}</td>
+                            <td>未還手續費：</td>
+                            <td>{{overdue_charge.settlement_amount | parseDollar | number}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    &lt;!&ndash;table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="112">廳館：</td>
+                            <td width="212">{{overdue_charge.marker.hall_name}}</td>
+                            <td width="112">戶口編號：</td>
+                            <td width="212">{{overdue_charge.marker.agent_code}}</td>
+                            <td width="112">貸款單號：</td>
+                            <td width="212">{{overdue_charge.marker.marker_seqnumber}}</td>
+                        </tr>
+                        <tr>
+                            <td>貸款金額：</td>
+                            <td>{{overdue_charge.marker.marker_amount}}</td>
+                            <td>貸款類型：</td>
+                            <td>{{overdue_charge.marker.funds_type}}</td>
+                            <td>天期：</td>
+                            <td>{{overdue_charge.marker.term}}</td>
+                        </tr>
+                        <tr>
+                            <td>息率：</td>
+                            <td>{{overdue_charge.rate}}</td>
+                            <td>特別天期：</td>
+                            <td>{{overdue_charge.marker.special_term}}</td>
+                            <td>特別息率：</td>
+                            <td>{{overdue_charge.marker.special_rate}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table&ndash;&gt;
+                    &lt;!&ndash;table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="112">貸款時間：</td>
+                            <td width="212">{{overdue_charge.marker.loan_time}}</td>
+                            <td width="112">計息時間：</td>
+                            <td width="212">{{overdue_charge.marker.last_repayment_time}}</td>
+                            <td width="112">&nbsp;</td>
+                            <td width="212">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td width="112">過期天數：</td>
+                            <td width="212">{{overdue_charge.days}}</td>
+                            <td>還款金額：</td>
+                            <td>{{overdue_charge.amount}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td width="112">還息戶口：</td>
+                            <td width="212">{{overdue_charge.out_agent_code}}</td>
+                            <td>收息戶口：</td>
+                            <td>{{overdue_charge.in_agent_code}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>手續費：</td>
+                            <td>{{overdue_charge.fee}}</td>
+                            <td>減免：</td>
+                            <td>{{overdue_charge.reduction_amount}}</td>
+                            <td>應收：</td>
+                            <td>{{overdue_charge.fee - overdue_charge.reduction_amount}}</td>
+                        </tr>
+                        <tr>
+                            <td>類型：</td>
+                            <td>{{feeTypes[overdue_charge.fee_type]}}</td>
+                            <td>狀態：</td>
+                            <td>{{markerStatus[overdue_charge.status]}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table&ndash;&gt;
+                    &lt;!&ndash;<footer class="table-footer">&ndash;&gt;
+                        &lt;!&ndash;<div class="row">&ndash;&gt;
+                            &lt;!&ndash;<div class="col-md-12 text-right pagination-container">&ndash;&gt;
+                                &lt;!&ndash;<pagination class="pagination-sm"&ndash;&gt;
+                                            &lt;!&ndash;page="current_page"&ndash;&gt;
+                                            &lt;!&ndash;total-items="all_overdueChargeDetails.length"&ndash;&gt;
+                                            &lt;!&ndash;on-select-page="select(page)"&ndash;&gt;
+                                            &lt;!&ndash;data-ng-show="all_overdueChargeDetails.length != 0"></pagination>&ndash;&gt;
+                            &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                    &lt;!&ndash;</footer>&ndash;&gt;
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">還息記錄
+                <!--<button class="btn btn-info btn-information pull-right margin-right-5" data-ng-hide="overdue_charge.status==3" data-ng-click="reduction()">減免</button>-->
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>還款戶口</td>
+                        <td>户口姓名</td>
+                        <td>還息金額</td>
+                        <td>還息日期</td>
+                        <td>已分派金額</td>
+                        <td>未分派金額</td>
+                        <td>狀態</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ markerFeeRepaymentRecord.out_agent_code }}</td>
+                        <td>{{ markerFeeRepaymentRecord.out_agent_name }}</td>
+                        <td>{{ markerFeeRepaymentRecord.amount | parseDollar | number }}</td>
+                        <td>{{ markerFeeRepaymentRecord.repayment_time | limitTo : 10 }}</td>
+                        <td>{{ markerFeeRepaymentRecord.assigned_amount | parseTenThousandToYuan | number }} </td>
+                        <td>{{ markerFeeRepaymentRecord.not_assign_amount | parseTenThousandToYuan | number  }}</td>
+                        <td>{{markerFeeRepaymentRecord.not_assign_amount == 0?"已分派":"未分派"}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <!--<tr>-->
+                        <!--<td>已分派</td>-->
+                        <!--<td>{{ markerFeeRepaymentRecord.assigned_amount | parseDollar | number }}</td>-->
+                        <!--<td>未分派</td>-->
+                        <!--<td>{{ markerFeeRepaymentRecord.not_assign_amount | parseDollar | number  }}</td>-->
+                    <!--</tr>-->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-default panel-form-list">
+            <div class="panel-content">
+                <form name="form_search">
+                    <table>
+                        <tr height="50">
+                            <td width="120" class="text-right">貸款單號：</td>
+                            <td width="200"><input type="text"
+                                                   data-ng-model="condition.marker_seqnumber"
+                                                   class="form-control"></td>
+                            <td width="120" class="text-right">貸款戶口：</td>
+                            <td width="200"><input type="text"
+                                                   data-input-uppercase
+                                                   data-ng-model="condition.loan_agent_code"
+                                                   class="form-control"></td>
+                            <td width="120" class="text-right">還息戶口：</td>
+                            <td width="200"><input type="text"
+                                                   data-input-uppercase
+                                                   data-ng-model="condition.outAgent.agent_code"
+                                                   class="form-control"></td>
+                            <td width="120" class="text-right">收益戶口：</td>
+                            <td width="200"><input type="text"
+                                                   data-input-uppercase
+                                                   data-ng-model="condition.inAgent.agent_code"
+                                                   class="form-control"></td>
+
+                        </tr>
+                        <tr>
+                            <!--<td class="text-right">線頭：</td>-->
+                            <!--<td ><input type="text"-->
+                                        <!--data-input-uppercase-->
+                                        <!--data-ng-model="condition.top_agent"-->
+                                        <!--class="form-control">-->
+                            <!--</td>-->
+                            <td class="text-right">戶組：</td>
+                            <td ><input type="text"
+                                        data-input-uppercase
+                                        style="width:95px;float: left"
+                                        data-ng-model="condition.agentGroup.agent_group_name"
+                                        class="form-control">&nbsp;&nbsp;
+                                            <span style="float: right">
+                                                <input type="checkbox" class="form-control" data-ng-model="chk_group.group1"   style="position: relative; top: -5px; width: 10px;float:left">&nbsp;包括內股
+                                            </span>
+
+                            </td>
+                            <td class="text-right">入數月份：</td>
+                            <td>
+                                <p class="input-group ui-datepicker pull-left" >
+                                    <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar" ></i></button>
+                                                </span>
+                                </p>
+                            </td>
+                            <td class="text-right">類型：</td>
+                            <td>
+                                <select data-ng-model="condition.fee_type" class="form-control" name="fee_type"
+                                        ng-options="k as v for (k,v) in feeTypes">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </td>
+                            <td class="text-right">狀態：</td>
+                            <td class="select-td">
+                                <select data-ng-model="select_status" class="form-control" multiple bs-select ng-options="h.id as h.name for h in selectStatus" data-live-search="true" placeholder="請選擇狀態">
+                                    <option value = "">請選擇</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="search()" >查詢</button>
+                        <button class="btn btn-cancel" ng-click="reset()">重置</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-list-detail">
+            <form name="form_markerExpiredFee" class="ng-valid ng-dirty form-validation" server-validation="POST{{form_markerExpiredFee_url}}">
+                <div class="panel-heading">
+                    手續費分成記錄
+                    <!--button class="btn btn-information pull-right" report-params="excel_condition" channel-type="MInterestManage" report-btn="">導出EXCEL</button-->
+                    <div class="pull-right">
+                        利息總計：{{ fee_total.fee_total | parseTenThousandToYuan | number }} &nbsp; 已還：{{ fee_total.fee_total - fee_total.settlement_amount_total | parseTenThousandToYuan | number }} &nbsp; 未還：{{ fee_total.settlement_amount_total| parseTenThousandToYuan | number }}
+                    </div>
+                </div>
+                <div class="panel-content"style="position: relative">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                        <div class="panel-content consumption_record"  style="min-height: 100px; width: 2600px;">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td width="150" check-permissions="markerExpiredFeeRepaymentAssigned">確認還息</td>
+                                    <!--<td>年月</td>-->
+                                    <!--<td>應收手續費</td>-->
+                                    <!--<td>未還手續費</td>-->
+                                    <!--<td>收益戶口</td>-->
+                                    <!--<td>廳館</td>-->
+                                    <!--<td>貸款戶口</td>-->
+                                    <!--<td>貸款人</td>-->
+                                    <!--<td>貸款單號</td>-->
+                                    <!--<td>貸款類型</td>-->
+                                    <!--<td>貸款日期</td>-->
+                                    <!--<td>類型</td>-->
+                                    <!--<td>計息金額(萬)</td>-->
+                                    <!--<td>開始計手續費</td>-->
+                                    <!--<td>結算日期</td>-->
+                                    <!--<td>免收天數</td>-->
+                                    <!--<td>計息天數</td>-->
+                                    <!--<td>狀態</td>-->
+                                    <!--<td>線頭</td>-->
+                                    <td width="100">付款月份</td>
+                                    <td>應收手續費(元)</td>
+                                    <td>尚欠手續費(元)</td>
+                                    <td>還息戶口</td>
+                                    <td>收益戶口</td>
+                                    <td>入數月份</td>
+                                    <td>廳館</td>
+                                    <td>貸款戶口</td>
+                                    <td>姓名</td>
+                                    <td>貸款人</td>
+                                    <td>貸款單號</td>
+                                    <td>貸款時間</td>
+                                    <td>貸款類型</td>
+                                    <td>類型</td>
+                                    <td>計息金額(萬)</td>
+                                    <td>開始計手續費</td>
+                                    <td>結算日期</td>
+                                    <td>貸款總天數</td>
+                                    <td>免收天期</td>
+                                    <td>過期天數</td>
+                                    <td>罰息天數</td>
+                                    <td>計息天數</td>
+                                    <td>息率</td>
+                                    <td>原本手續費(元)</td>
+                                    <td>扣除上線</td>
+                                    <td>減免總額</td>
+                                    <td>線頭</td>
+                                    <!--<td>付款月份</td>-->
+                                    <td>狀態</td>
+                                    <td>抵押時間</td>
+                                    <!--<td width="120">備註</td>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="overdue_charge in overdue_charges" data-ng-show="overdue_charge.status != '3' && overdue_charge.fee > 0">
+                                    <td check-permissions="markerExpiredFeeRepaymentAssigned">
+                                        <input type="text" class="form-control" ng-model="overdue_charge.sure_amount" inputFloat dynamic-name="fees_{{ $index }}_amount" ng-show="3!=overdue_charge.status">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="overdue_charge.repay_time" dynamic-name="fees_{{ $index }}_repay_time">
+                                    </td>
+                                    <!--<td>{{ overdue_charge.year_month | parseDate:'yyyy-MM' }}</td>-->
+                                    <!--<td>{{ overdue_charge.fee | parseDollar | number }}</td>-->
+                                    <!--<td>{{ overdue_charge.settlement_amount | parseDollar | number }}</td>-->
+                                    <!--<td>-->
+                                        <!--<input ng-show="3!=overdue_charge.status" type="text" class="form-control" ng-model="overdue_charge.in_agent_code" dynamic-name="fees_{{ $index }}_in_agent_id" data-input-uppercase ng-change="change_in_agent(overdue_charge)" check-permissions="overdueChargeConfirm">-->
+                                        <!--<span ng-show="3==overdue_charge.status || !user.checkPermissions('overdueChargeConfirm') ">{{ overdue_charge.in_agent_code }}</span>-->
+                                    <!--</td>-->
+                                    <!--<td>{{ overdue_charge.hall_name }}</td>-->
+                                    <!--<td>{{ overdue_charge.loan_agent_code }}</td>-->
+                                    <!--<td>{{ overdue_charge.borrower }}</td>-->
+                                    <!--<td><a href="javascript:void(0);" ng-click="loan_detail(overdue_charge.marker_id)">{{overdue_charge.marker_seqnumber}}</a></td>-->
+                                    <!--<td>{{ feeTypes[overdue_charge.fee_type] }}</td>-->
+                                    <!--<td>{{ overdue_charge.loan_date | parseDate:'yyyy-MM-dd' }}</td>-->
+                                    <!--<td>{{ feeTypes[overdue_charge.fee_type] }}</td>-->
+                                    <!--<td>{{ overdue_charge.calc_amount | number }}</td>-->
+                                    <!--<td>{{ overdue_charge.expired_date | parseDate:'yyyy-MM-dd'  }}</td>-->
+                                    <!--<td>{{ overdue_charge.end_date | parseDate:'yyyy-MM-dd'  }}</td>-->
+                                    <!--<td>{{ overdue_charge.term }}</td>-->
+                                    <!--<td>{{ overdue_charge.days }}</td>-->
+                                    <!--<td>{{ markerStatus[overdue_charge.status] }}</td>-->
+                                    <!--<td>{{ overdue_charge.top_agent }}</td>-->
+                                    <td>{{overdue_charge.fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{overdue_charge.settlement_amount | parseTenThousandToYuan | number}}</td>
+                                    <td>{{ overdue_charge.out_agent_code }}</td>
+                                    <td>{{ overdue_charge.in_agent_code }}</td>
+                                    <td>{{overdue_charge.year_month | parseDate:'yyyy-MM'}}</td>
+                                    <td>{{overdue_charge.hall_name}}</td>
+                                    <td>{{overdue_charge.loan_agent_code}}</td>
+                                    <td>{{overdue_charge.loan_agent_name}}</td>
+                                    <td>{{overdue_charge.borrower}}</td>
+                                    <td><a href="javascript:void(0);" ng-click="loan_detail(overdue_charge.marker_id)">{{overdue_charge.marker_seqnumber}}</a></td>
+                                    <td>{{ overdue_charge.loan_date | parseDate:'yyyy-MM-dd' }}</td>
+                                    <td>{{ overdue_charge.loan_type }}</td>
+                                    <td>{{ feeTypes[overdue_charge.fee_type] }}</td>
+                                    <td>{{ overdue_charge.calc_amount | number}}</td>
+                                    <td>{{ overdue_charge.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                                    <td>{{ overdue_charge.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>{{ overdue_charge.loan_total_days }}</td>
+                                    <td>{{ overdue_charge.term}}</td>
+                                    <td>{{overdue_charge|parseDay}}</td>
+                                    <td>{{ overdue_charge.expired_add_days}}</td>
+                                    <td>{{ overdue_charge.days}}</td>
+                                    <td>{{ overdue_charge.rate|parseTenThousand2}}%</td>
+                                    <td>{{overdue_charge.original_fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{overdue_charge.deduction_fee | parseTenThousandToYuan | number}}</td>
+                                    <td>{{overdue_charge.reduction_amount | parseTenThousandToYuan | number}}</td>
+                                    <td>{{ overdue_charge.top_agent }}</td>
+                                    <!--<td>{{overdue_charge.repayment_time| parseDate:'yyyy-MM'}}</td>-->
+                                    <td>{{markerStatus[overdue_charge.status]}}</td>
+                                    <td>{{overdue_charge.mortgage_time| parseDate:'yyyy-MM-dd'}}</td>
+                                    <!--<td>{{overdue_charge.remark}}</td>-->
+                                </tr>
+                                <td colspan="30" data-ng-show="overdue_charges.length==0">
+                                    暫無符合條件的記錄
+                                </td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </perfect-scrollbar>
+                    <table class="table table-bordered table-striped" check-permissions="markerExpiredFeeRepaymentAssigned">
+                        <tbody>
+                        <tr>
+                            <td width="200">操作密碼：</td>
+                            <td class="text-left"><input class="form-control input-180"
+                                       type="password"
+                                       name="pin-code"
+                                       data-ng-model="mitigate.pin_code"
+                                       data-enter-key="save()" ></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button class="btn btn-information" data-ng-click="save()" data-ng-disabled="isDisabled">保存</button>
+                                <button class="btn btn-cancel" data-ng-click="cancel()">重置</button>
+                                <button class="btn btn-confirm" data-ng-click="return()">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                <!--<table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>操作類型</td>
+                        <td>金額(萬)</td>
+                        <td>時間</td>
+                        <td>經手人</td>
+                        <td>備註</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="exfee in markerExpiredFees">
+                        <td>{{markerExpiredFeeTypes[exfee.is_reduction]}}</td>
+                        <td>{{exfee.amount}}</td>
+                        <td>{{exfee.repayment_time}}</td>
+                        <td>{{exfee.user_name}}</td>
+                        <td width="300">{{exfee.remark}}</td>
+                        <td>
+                            <button class="btn btn-info btn-information" data-ng-click="remove(exfee.id)">刪除</button>
+                        </td>
+                    </tr>
+                    <td colspan="6" data-ng-show="markerExpiredFeeRepayments.length==0">
+                        暫無符合條件的記錄
+                    </td>
+                    </tbody>
+                </table>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

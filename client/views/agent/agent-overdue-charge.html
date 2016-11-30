@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h3>未還利息</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_overdue_charge">
+        <div class="row">
+            <div class="col-md-12">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; min-width: 2000px;">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <td>年月</td>
+                                <td>廳館</td>
+                                <td>還息戶口</td>
+                                <td>貸款戶口</td>
+                                <td>貸款人</td>
+                                <td>貸款單號</td>
+                                <td>貸款類型</td>
+                                <td>貸款金額(萬)</td>
+                                <td>貸款日期</td>
+                                <td>類型</td>
+                                <td>計息金額(萬)</td>
+                                <td>開始計手續費</td>
+                                <td>結算日期</td>
+                                <td>貸款天數</td>
+                                <td>免收天期</td>
+                                <td>計息天數</td>
+                                <td>應收</td>
+                                <td>未還</td>
+                                <td>狀態</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="marker in markers" data-selected-rows>
+                                <td>{{marker.year_month|parseDate:"yyyy-MM"}}</td>
+                                <td>{{marker.hall_name}}</td>
+                                <td>{{marker.out_agent_code}}</td>
+                                <td>{{marker.loan_agent_code}}</td>
+                                <td>{{marker.borrower}}</td>
+                                <td>{{marker.marker_seqnumber}}</td>
+                                <td>{{marker.loan_type}}</td>
+                                <td>{{marker.marker_amount|parseTenThousand2}}</td>
+                                <td>{{marker.loan_date|parseDate:"yyyy-MM-dd"}}</td>
+                                <td>{{marker.type == 1 ? '還款':'月結' }}</td>
+                                <td>{{marker.calc_amount|parseTenThousand2}}</td>
+                                <td>{{marker.start_date|parseDate:"yyyy-MM-dd"}}</td>
+                                <td>{{marker.end_date|parseDate:"yyyy-MM-dd"}}</td>
+                                <td>{{marker.loan_total_days}}</td>
+                                <td>{{marker.term}}</td>
+                                <td>{{marker.days}}</td>
+                                <td>{{(marker.fee-marker.reduction_amount) |parseDollar:true}} </td>
+                                <td>{{marker.settlement_amount|parseDollar:true}}</td>
+                                <td>{{markerExpiredFeeStatus[marker.status]}}</td>
+                            </tr>
+                            <tr data-ng-show="markers.length == 0">
+                                <td colspan="20">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="current_page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </form>
+</div>

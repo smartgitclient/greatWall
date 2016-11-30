@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h3>新增卡類型:</h3>
+</div>
+<div class="modal-body" style="padding-top: 0;">
+    <div class="row">
+        <div class=" col-md-12">
+            <table class="pull-right">
+                <!--data-input-uppercase="card_name"-->
+                <tr>
+                    <td><input type="text" data-ng-model="card_name"  class="form-control"></td>
+                    <td width="10">&nbsp;</td>
+                    <td><button class="btn btn-inf btn-confirm" ng-click="add(card_name)">新增</button></td>
+                </tr>
+                    <!--<tr>-->
+                        <!--<td align="right" width="100">操作密碼：</td>-->
+                        <!--<td align="left">-->
+                            <!--<input type="password" data-ng-model="card_record.pin_code" class="form-control input-150"/>-->
+                        <!--</td>-->
+                        <!--<td>&nbsp;</td>-->
+                    <!--</tr>-->
+            </table>
+            <br><br><br>
+            <table class="table table-bordered table-check" style="padding-top: 0;">
+                <thead>
+                    <tr>
+                        <td colspan="10">卡類型</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="cards in card_rows">
+                    <td data-ng-repeat="card in cards">
+                        <label class="btn btn-primary" ng-model="type_record.card_name" btn-radio="card.card_name">{{card.card_name}}</label>
+                    </td>
+                </tr>
+
+
+                <tr data-ng-show="card_rows.length == 0">
+                    <td colspan="10">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-info btn-confirm margin-right-15" ng-click="submit()">提交</button>
+                <button class="btn btn-inf btn-cancel" ng-click="close()">取消</button>
+            </div>
+         </div>
+
+    </div>
+</div>

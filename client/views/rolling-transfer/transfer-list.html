@@ -1,0 +1,117 @@
+<div class="page page-grid" data-ng-controller="rollingTransferListCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>記錄查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table class="block-center">
+                                    <tr height="50">
+                                        <td class="text-right" width="150" >廳館：</td>
+                                        <td width="180" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="180" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="150" class="text-right">轉出戶口：</td>
+                                        <td width="180"><input type="text" data-input-uppercase data-ng-model="condition.out_agent_code" class="form-control"></td>
+                                        <td width="150" class="text-right">轉入戶口：</td>
+                                        <td width="180"><input type="text" data-input-uppercase data-ng-model="condition.in_agent_code" class="form-control"></td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">開始日期：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.oper_time[0]" data-dynamic-name="oper_time" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-right">結束日期：</td>
+                                        <td>
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup  ng-model="condition.oper_time[1]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-right">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉移記錄</strong>
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>所在廳</td>
+                                    <td>轉出戶口</td>
+                                    <td>轉出卡</td>
+                                    <td>轉入戶口</td>
+                                    <td>轉入卡</td>
+                                    <td>流量</td>
+                                    <!--td>本金類型</td-->
+                                    <td>操作時間</td>
+                                    <td>經手人</td>
+                                    <td width="260">備註</td>
+                                    <!--<td width="184">操作</td>-->
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="rollingCardTransfer in rollingCardTransfers" data-selected-rows>
+                                    <td>{{rollingCardTransfer.hall_name}}</td>
+                                    <td>{{rollingCardTransfer.out_agent_code}}&nbsp;{{rollingCardTransfer.out_agent_name}}</td>
+                                    <td>{{rollingCardTransfer.out_comm_card_name}}</td>
+                                    <td>{{rollingCardTransfer.in_agent_code}}&nbsp;{{rollingCardTransfer.in_agent_name}}</td>
+                                    <td>{{rollingCardTransfer.in_comm_card_name}}</td>
+                                    <td>{{rollingCardTransfer.amount|parseTenThousand:false:''}}</td>
+                                    <!--td>{{rollingCardTransfer.capital_type}}</td-->
+                                    <td>{{rollingCardTransfer.oper_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{rollingCardTransfer.user_name}}</td>
+                                    <td>{{rollingCardTransfer.remark}}</td>
+                                    <!--<td class="no-padding"><button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail(rollingCardTransfer.id)">詳細</button></td>-->
+                                </tr>
+                                <tr data-ng-show="rollingCardTransfers.length == 0">
+                                    <td colspan="10">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-show="rollingCardTransfers.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

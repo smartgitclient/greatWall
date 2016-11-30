@@ -1,0 +1,91 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>{{title}}</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="120" align="right">預定編號：</td>
+                                        <td align="left">100020 </td>
+                                        <td width="120" align="right">消費類型：</td>
+                                        <td align="left">酒店</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="120" align="right">金額：</td>
+                                        <td align="left">
+                                            1500
+                                        </td>
+                                        <td align="right">轉出戶口：</td>
+                                        <td align="left">
+                                          FA23
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">轉出戶口姓名：</td>
+                                        <td align="left">李三 </td>
+                                        <td align="right">付款方式：</td>
+                                        <td align="left">
+                                            扣消費積分
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">轉入戶口：</td>
+                                        <td align="left">
+                                            <input type="text" ng-init='agent_code = "F8"' data-ng-model="agent_code" class="form-control">
+                                        </td>
+                                        <td align="right">轉入戶口姓名：</td>
+                                        <td align="left">
+                                            王大文
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">付款方式：</td>
+                                        <td align="left">
+                                            <ui-select ng-model="condition.year">
+                                                <ui-select-match placeholder="請選擇付款方式">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="y in ['扣消費積分','扣佣金','扣存卡','現金'] ">
+                                                    <div ng-bind-html="y"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td align="right">狀態：</td>
+                                        <td align="left">未核對 </td>
+                                    </tr>
+
+                                </table>
+
+                                <table class="table table-bordered table-striped table-detail-01">
+
+                                    <tr>
+                                        <td align="right" width="120">操作密碼：</td>
+                                        <td align="left">
+                                            <input type="text" data-ng-model="pwd" class="form-control" data-enter-key="submit()">
+                                        </td>
+                                    </tr>
+
+
+                                </table>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-confirm" ng-click="submit()">確定</button>
+                        <button class="btn btn-inf btn-cancel" ng-click="submit()">取消</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

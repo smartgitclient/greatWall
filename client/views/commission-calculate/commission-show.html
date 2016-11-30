@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h3>佣金详细</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <thead>
+                    <tr>
+                        <td>廳館</td>
+                        <td>轉碼卡</td>
+                        <td>轉碼數(萬)</td>
+                        <td>佣金份數</td>
+                        <td>津貼份數</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="commissions in showCommissions">
+                            <td width="100">{{commissions.hall_name}}</td>
+                            <td width="100">{{commissions.commission_card_name}}</td>
+                            <td width="100">{{commissions.rolling|parseTenThousand2}}</td>
+                            <td width="100">{{commissions.commission_should|parseFloatKing}}</td>
+                            <td width="100">{{commissions.integral_should|parseFloatKing}}</td>
+                        </tr>
+                        <tr data-ng-show="showCommissions.length == 0">
+                            <td colspan="5">暫無符合條件的記錄</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" ng-click="closed()">關 閉</button>
+    </div>
+</div>

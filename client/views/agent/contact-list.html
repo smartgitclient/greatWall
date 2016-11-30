@@ -1,0 +1,113 @@
+<div class="page page-grid" data-ng-controller="agentContactListCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-8">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>聯絡人查詢</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="119" class="text-right">戶口編號：</td>
+                                <td width="209"><input data-input-uppercase type="text" data-ng-model="condition.refAgentContactTypes.agentInfo.agent_code" class="form-control"></td>
+                                <td width="" class="text-right">戶口姓名：</td>
+                                <td width="209"><input type="text" data-ng-model="condition.agent_contact_name" class="form-control"></td>
+                                <td width="119" class="text-right">證件號碼：</td>
+                                <td width="209"><input type="text" data-ng-model="condition.agentContactIdcards.idcard_number" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td width="119" class="text-right">電話：</td>
+                                <td width="209"><input type="text" data-ng-model="condition.agentContactTels.telephone_number" class="form-control"></td>
+                                <td width="119"><span class="span-formlist"></span></td>
+                                <td width="3"></td>
+                            </tr>
+                        </table><br/><br/>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-info btn-information margin-right-15" data-ng-click="search()">查詢</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <!--button class="btn btn-info btn-information btn-table pull-right" ng-click="isReadonly = ! isReadonly">導出EXCEL</button-->
+                    <button class="btn btn-info btn-confirm btn-table pull-right" ng-click="addContact()" check-permissions="agentContactCreate">新增聯絡人</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td data-min-screen-width="80">姓名</td>
+                            <td data-min-screen-width="80">性別</td>
+                            <td data-min-screen-width="80">國籍</td>
+                            <td data-min-screen-width="80">語言</td>
+                            <td data-min-screen-width="100">證件類型</td>
+                            <td data-min-screen-width="100">證件號碼</td>
+                            <td data-min-screen-width="120">聯絡電話</td>
+                            <td data-min-screen-width="200" check-permissions="agentContactView,agentContactUpdate,agentContactDelete">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="contact in contacters" data-selected-rows>
+                            <td>{{contact.agent_contact_name}}</td>
+                            <td>{{contact.gender | gender}}</td>
+                            <td>{{contact.nationality_name}}</td>
+                            <td>{{contact.language_type}}</td>
+                            <td>{{contact.agentContactIdcards[0].idcard_type_name}}&nbsp;<span data-ng-show="contact.agentContactIdcards[0].idcard_type_name != null && contact.agentContactIdcards[1].idcard_type_name != null ">/</span>&nbsp;{{contact.agentContactIdcards[1].idcard_type_name}}</td>
+                            <td>{{contact.agentContactIdcards[0].idcard_number}}&nbsp;<span data-ng-show="contact.agentContactIdcards[0].idcard_number != null && contact.agentContactIdcards[1].idcard_number != null ">/</span>&nbsp;{{contact.agentContactIdcards[1].idcard_number}}</td>
+                            <td>{{contact.agentContactTels[0].area_code}}&nbsp;&nbsp;{{contact.agentContactTels[0].telephone_number}}
+                                <i popover-placement="top" data-ng-hide="contact.agentContactTels.length==0" tooltip-html-unsafe="{{contact.agentContactTels | contactPhone}}" class="fa fa-plus-circle cursor-pointer"></i>
+                            </td>
+                            <td class="no-padding" check-permissions="agentContactView,agentContactUpdate,agentContactDelete">
+                                <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="detail(contact.id)" check-permissions="agentContactView">詳細</button>
+                                <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="edit(contact.id)" check-permissions="agentContactUpdate">修改</button>
+                                <button class="btn btn-info btn-information btn-table margin-right-5" ng-click="remove(contact.id)" check-permissions="agentContactDelete">刪除</button>
+                                <button class="btn btn-info btn-confirm btn-table" ng-click="show_certificate(contact.id)">顯示證件</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="contacters.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination.total_items"
+                                            on-select-page="select(page)"
+                                            max-size = "pagination.max_size"
+                                            items-per-page = "pagination.items_per_page"
+                                            data-ng-show="contacters.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <div class="panel_r col-md-4">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>查看證件</strong>
+                </div>
+                <div class="panel-content">
+                    <div class="passport">
+                        <div data-ng-repeat="c_image in certificate_images" style="width: 516px" data-min-screen-width="390">
+                            <a class="btn btn-confirm btn-table pull-right" style="margin: 5px 0;" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(c_image.image);">列印</a>
+                            <!--<a class="btn btn-confirm btn-table pull-right" style="margin: 5px 0;" target="_blank" href="print-image.html?url={{c_image.image}}">列印</a>-->
+                            <span class="passport_bg" >
+                                <span class="passed" data-ng-show="c_image.image && contact_image.agentContactIdcards[$index].expire_date && contact_image.agentContactIdcards[$index].expire_date < now_data"><img src="images/sign.png"></span>
+                                <img data-ng-show="c_image.image"  ng-src="{{c_image.image}}"/>
+                                <span data-ng-show="c_image.image == ''" style="line-height: 280px">證件照片</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

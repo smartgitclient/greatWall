@@ -1,0 +1,117 @@
+<div class="page page-grid" data-ng-controller="paymentDetailCtrl">
+    <div class="panel panel-default col-md-8">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>即出詳細</strong>
+            </div>
+            <div class="panel-content">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="150" data-min-screen-width="100" class="text-right">所在廳：</td>
+                            <td width="250" data-min-screen-width="150">{{user.hall.hall_name}}</td>
+                            <td  width="150" data-min-screen-width="100" class="text-right">出佣廳：</td>
+                            <td width="250" data-min-screen-width="150">{{payment.hall_name}}</td>
+                            <td  width="150" data-min-screen-width="100" class="text-right">日期：</td>
+                            <td>{{payment.immediate_date|parseDate:"yyyy-MM-dd"}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">戶口編號：</td>
+                            <td>{{payment.from_agent_code}}</td>
+                            <td class="text-right">姓   名：</td>
+                            <td>{{payment.from_agent_name}}</td>
+                            <td class="text-right">更數</td>
+                            <td>{{payment.shift}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="panel panel-form-list">
+                <div class="panel-heading">
+                    <strong></strong>
+                </div>
+                <div class="panel-content">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="150" data-min-screen-width="100" class="text-right">總轉碼：</td>
+                        <td width="250" data-min-screen-width="150">{{payment.rolling_amount|parseTenThousand}}</td>
+                        <td width="150" data-min-screen-width="100" class="text-right">份數：</td>
+                        <td width="250" data-min-screen-width="150">{{payment.discount}}</td>
+                        <td width="150" data-min-screen-width="100" class="text-right">稅率：</td>
+                        <td>{{payment.tax_rate}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">積分消費：</td>
+                        <td>{{payment.integral_consumption|parseDollar:true}}</td>
+                        <td class="text-right">佣金消費：</td>
+                        <td>{{payment.commission_consumption|parseDollar:true}}</td>
+                        <td class="text-right">本月消費數：</td>
+                        <td><span data-ng-click="showLoan()" style="cursor: pointer">{{payment.thismonth_consumption|parseDollar:true}}</span></td>
+                    <tr>
+                        <td data-min-screen-width="100" class="text-right">上月余津：</td>
+                        <td>{{payment.lastmonth_allowance|parseDollar:true}}</td>
+                        <td data-min-screen-width="100" class="text-right">負消費：</td>
+                        <td>{{payment.negative_consumption|parseDollar:true}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="150" data-min-screen-width="100" class="text-right">應出佣金：</td>
+                        <td width="250" data-min-screen-width="150">{{payment.commission_amount|parseDollar:true}}</td>
+                        <td width="150" data-min-screen-width="100" class="text-right">實出佣金：</td>
+                        <td width="250" data-min-screen-width="150">{{payment.actual_commission|parseDollar:true}}</td>
+                        <td width="150" data-min-screen-width="100" class="text-right">尾數：</td>
+                        <td>{{payment.omit_commission|parseDollar:true}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="table table-bordered table-striped table-detail-01" style=" width:74%">
+                    <tbody>
+                    <tr>
+                        <td width="150" data-min-screen-width="100" class="text-right">即出到：</td>
+                        <td width="250" data-min-screen-width="150">{{payment.to_agent_code}}</td>
+                        <td width="150" data-min-screen-width="100" class="text-right">姓名：</td>
+                        <td >{{payment.to_agent_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">轉移轉碼卡：</td>
+                        <td>{{payment.commission_card_name}}
+                        </td>
+                        <td class="text-right">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">存卡：</td>
+                        <td  width="">{{payment.depositcard_name}}</td>
+                        <td class="text-right">&nbsp;</td>
+                        <td >&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01" style="width:74%;">
+                    <tbody>
+                    <tr>
+                        <td width="150" data-min-screen-width="100" class="text-right">備   註：</td>
+                        <td colspan="3" class="text-left">{{payment.remark}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" data-ng-click="return()" >返回</button>
+                    <button class="btn btn-information margin-right-15" data-ng-click="print()" data-ng-disabled="disable_print">列印</button>
+                </div>
+            </div>
+        </div>
+</div>
+</div>

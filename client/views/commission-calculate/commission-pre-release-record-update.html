@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <h3>修改出佣記錄</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_pre_release_record" class="ng-valid ng-dirty form-validation" server-validation="PUT{{pre_release_record_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td width="100" align="right">扣超額消費：</td>
+                            <td align="left" width="150">
+                                <input class="form-control ng-pristine ng-valid" type="text" data-ng-model="commission_record.over_comsumption" name="over_comsumption" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">雜項現金消費：</td>
+                            <td align="left" width="150">
+                                <input class="form-control ng-pristine ng-valid" type="text" data-ng-model="commission_record.miscellaneous_cash" name="miscellaneous_cash" >
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td align="right" style="width: 93">備註：</td>-->
+                            <!--<td align="left" colspan="2">-->
+                                <!--<textarea data-ng-required="enableClientValidation" name="remark" id="" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="commission_record.remark"></textarea>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <td align="right">操作密碼：</td>
+                            <td align="left" width="150">
+                                <input type="password" name="pin_code" data-ng-model="commission_record.pin_code" class="form-control">
+                            </td>
+                        </tr>
+                    </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="add()" data-ng-disabled="disabled_submit">保存</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" data-ng-disabled="disabled_submit">取消</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,104 @@
+<div class="col-md-4" data-ng-controller="consumptionShipTicketBookingDateilCtrls">
+<div class="panel panel-form-list">
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <tr height="50">
+                <td class="text-right"  width="100">預訂單號：</td>
+                <td class="text-left"  width="160">{{shipBooking.consumption.book_no}}</td>
+                <td class="text-right"  width="100">所屬廳館：</td>
+                <td class="text-left"  width="160">{{shipBooking.consumption.hall_name}}</td>
+            </tr>
+            <tr>
+              <td class="text-right">新增時間：</td>
+              <td class="text-left">{{shipBooking.consumption.book_time  | limitTo : 16}}</td>
+              <td class="text-right"  width="100">取票地點：</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="text-right no-padding">年月：</td>
+              <td class="text-left">{{shipBooking.consumption.year_month | limitTo : 7 }}</td>
+              <td class="text-right ">結算日期：</td>
+              <td class="text-left">{{shipBooking.consumption.shift_date | limitTo : 11 }}</td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">戶口編號：</td>
+                <td class="text-left">{{shipBooking.consumption.agent_code}}</td>
+                <td class="text-right">戶口姓名：</td>
+                <td class="text-left">{{shipBooking.consumption.agent_name}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+
+        <table width="100%" class="table table-bordered table-striped">
+            <tbody>
+            <tr  height="40" class="BGcolor-626571">
+                <td style="text-indent: 10px;">行程</td>
+                <td>艙位</td>
+                <td>數量</td>
+                <td>成本價</td>
+                <td>賣出價</td>
+                <td>出發日期</td>
+                <td>出發時間</td>
+            </tr>
+            <tr height="50" data-ng-repeat="ship in shipBooking.consumptionBoatSubs">
+                <td>{{ship.trip}} </td>
+                <td>{{ship.seat_type}}  </td>
+                <td>{{ship.count}} 張 </td>
+                <td>{{ship.cost_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                <td>{{ship.sell_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                <td>{{ship.departure_date | parseDate:'yyyy-MM-dd'}}</td>
+                <td>{{ship.departure_time | parseDate:'HH:mm'}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="BGcolor-626571 table table-bordered table-striped" width="100%">
+            <tbody>
+            <tr height="50">
+                <td class="text-right" width="100">應付消費：</td>
+                <td class="text-left" width="160">{{shipBooking.consumption.should_pay | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                <td class="text-right" width="100">付款方式：</td>
+                <td class="text-left" width="160">
+                    {{shipBooking.consumption.pay_type}}
+                </td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">成本總數：</td>
+                <td class="text-left">{{shipBooking.consumption.cost_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                <td class="text-right">實收總數：</td>
+                <td class="text-left">{{shipBooking.consumption.sell_total | parseTenThousandToYuan : false | parseYuan :false}}</td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">收益：</td>
+                <td class="text-left">{{shipBooking.consumption.profit | parseTenThousandToYuan : false | parseYuan :false}}</td>
+                <td class="text-right">狀態：</td>
+                <td class="text-left">{{ bookingState_items[shipBooking.consumption.status] }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="BGcolor-626571 table table-bordered table-striped">
+            <tr height="50">
+                <td class="text-right" width="100">訂票人：</td>
+                <td class="text-left" width="160">{{shipBooking.consumption.trader}}</td>
+                <td class="text-right" width="100">電話：</td>
+                <td class="text-left" width="160">{{shipBooking.consumption.area_code}} {{shipBooking.consumption.trader_tel}}</td>
+            </tr>
+
+            <tr>
+                <td  valign="top" class="text-right" width="126">備註：</td>
+                <td  valign="top" class="text-left" colspan="3" >{{shipBooking.consumption.remark}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br>
+        <div class="row" style="text-align: center;" check-permissions="consumptionRecordUpdate">
+            <button class="btn btn-confirm margin-right-15" check-permissions="consumptionRecordUpdate" data-ng-click="detail_update()"
+                    ng-show='bookingState_items[shipBooking.consumption.status]!="已結算"'>修改</button>
+            <button class="btn btn-cancel" data-ng-click="detail_cancel()">取 消</button>
+        </div>
+    </div>
+</div>
+</div>

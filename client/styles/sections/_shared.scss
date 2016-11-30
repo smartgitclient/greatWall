@@ -1,0 +1,298 @@
+@media print {
+   .no-print{
+        display:none;
+    }
+}
+
+.color-warning{
+  color:#FF0000
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+.p-textarea {
+  border: 1px solid $table-border-color;
+  text-align: center;
+  padding: 30px 20px;
+  width: 400px;
+}
+.clear {
+  clear: both;
+}
+.pull-none {
+  float: none !important;
+}
+
+.BGcolor-626571 {
+  background-color: $BGcolor-626571;
+  width: 100%;
+  td {
+  }
+  &.border-table {
+    td {
+      border: 1px solid $BGcolor-626571-border;
+      padding:  0 5px;
+    }
+  }
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.structure {
+  .element {
+
+    &.parent {
+
+      }
+    &.sublevel {
+
+
+    }
+    p.con {
+      width: 135px;
+      height: 59px;
+      float: left;
+      text-align: center;
+      background-color: $R-name-bg;
+      margin: 0;
+      position: relative;
+      color: $structure-R-color;
+      span {
+        padding-right: 15px;
+        display: block;
+        &.num { padding-top: 8px;}
+        &.name { padding-bottom: 13px;}
+        &.has-sub {
+          background:  url('../images/structure/has-sub.png') no-repeat center center;
+          width: 13px;
+          height: 22px;
+          display: block;
+          position: absolute;
+          right: 12px;
+          top: 18px;
+        }
+      }
+
+    }
+    .i {
+      width: 37px;
+      height: 59px;
+      display: block;
+      float: left;
+      background:  url('../images/structure/icon-i.png') no-repeat center center;
+    }
+
+  }
+  .L {
+    width: 172px;
+    min-height: 760px;
+    float: left;
+    i.i {
+      background-color: $L-i-bg;
+    }
+    p.con {
+      background-color: $L-name-bg;
+      color: $structure-L-color;
+    }
+  }
+  .M {
+    width: 60px;
+    min-height: 760px;
+    float: left;
+    background: $structure_bor no-repeat;
+  }
+  .R {
+    width: 241px;
+    min-height: 760px;
+    float: left;
+
+    i.i {
+      background-color: $R-i-bg;
+    }
+    .sublevel {
+      padding-left: 73px;
+      width: 245px;
+      height: 80px;
+      background: $JT_default repeat-y top left;
+    }
+    .first {
+      background: $JT_T no-repeat bottom left;
+    }
+    .last {
+      background: $JT_B no-repeat left top;
+    }
+    .sinple {
+      background: $JT_sin no-repeat left bottom;
+    }
+  }
+}
+.tips-modal {
+  padding: 30px 100px;
+}
+
+.priority-high,tr.priority-high>td{
+  color:$priority-high-color !important; /*#FF6600*/
+}
+.priority-middle,tr.priority-middle>td{
+  color:$priority-middle-color !important;               /*#FF6600*/
+}
+.priority-low,tr.priority-low>td{
+  color:$priority-low-color !important;   /*#009933*/
+}
+.spam-tip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.position-a {
+   position: absolute;
+ }
+.position-r {
+  position: relative;
+}
+.red {
+  color: red;
+}
+.red2 {
+  color: red;
+  &:hover
+  {
+    color: red;
+  }
+}
+.yellow {
+  color: $color-yellow;
+}
+.nowrap{
+  white-space: nowrap;
+}
+.block-center{
+  margin: 0 auto;
+}
+
+.background-red{
+  background-color: #F00 !important;
+}
+
+.hotel-room-datepicker{
+  td:nth-child(6),td:nth-child(7){
+    .btn{
+      background-color: #ffb44f;
+      &:focus,&.btn-info{
+        background-color: #c68833;
+      }
+    }
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+.positive-number{
+  color:green;
+}
+.minus-number{
+  color: red;
+}
+
+
+/* iframe */
+.iframe_tab {
+  background-color: $iframe-tab-bg;
+  width: 100%;
+  height: 50px;
+  padding: 9px 0 10px 0;
+  /*border-top: 1px solid $iframe-tab-border;*/
+  a{
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .ng-scope{
+    margin-right: 10px;
+    .ng-pristine{
+      color: $iframe-tab-color;
+      line-height: 30px;
+      display:inline-block;
+      background-color: $iframe-tab-link-bg;
+      padding: 0 10px;
+      float: left;
+
+    }
+    span.tab_close{
+      color: $iframe-tab-color;
+      display:inline-block;
+      line-height: 30px;
+      padding: 0 5px;
+      background-color: $iframe-tab-link-bg;
+      float: left;
+    }
+    &:hover,
+    &.active{
+      .ng-pristine, span.tab_close {
+        color: $iframe-tab-active-link-color;
+        background-color: $iframe-tab-active-link-bg;
+      }
+    }
+  }
+  .btn-primary {
+    padding: 5px 9px;
+  }
+  .btn-add {
+    color: $iframe-tab-active-link-color;
+    background-color: $iframe-tab-active-link-bg;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 0 6px;
+    border: none;
+  }
+}
+
+.iframePanels,
+.iframePanelWrapper,
+.iframePanelWrapper iframe {
+  width: 100%;
+}
+
+.pagination-select{
+  //margin: 10px 0px;
+  font-size: 12px;
+  color:#ffffff;
+
+  .pagination {
+    background-color: $pagination-bg;
+  }
+}
+
+.fa-check-green{
+  color:$fa-check-green-color !important;
+  font-size:16px !important;
+}
+
+.select-td {
+  .btn-default{
+    color: $input-color;
+    background-color: $input-bg;
+  }
+  ul.dropdown-menu{
+    background-color: $input-bg;
+    li{
+      background-color: $input-bg;
+      a{
+        i.glyphicon{
+          top:0;
+        }
+      }
+    }
+  }
+}
+
+.input-group-addon{
+  a{
+    color: #000;
+  }
+}

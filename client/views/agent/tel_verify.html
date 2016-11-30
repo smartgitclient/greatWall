@@ -1,0 +1,138 @@
+<div class="page page-services pop-dotal">
+    <div class="panel panel-form-list" ng-hide="calllog">
+        <form name="form_detail_order">
+            <div class="panel-heading">驗證密碼</div>
+            <div class="panel-content" style="padding-top: 0;">
+                <div class="text-center">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <thead>
+                        <tr>
+                            <td>操作</td>
+                            <td>驗證狀態</td>
+                            <td>結果</td>
+                            <td>驗證密碼狀態</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="no-padding" width="320">
+                            <select name=""  class="form-control" ng-model="operationMode.id" style="
+                            float:left;width:200px;height:32px;margin-left:30px" >
+                              <option value="">請選擇</option>
+                              <option value="verify">驗證密碼</option>
+                              <option value="modify">修改驗證密碼</option>
+                              <option value="init">初始化驗證密碼</option>
+                              <!--<option value="random">隨機密碼</option>-->
+                            </select>
+                            <button class="btn  btn-table btn-information" style="float:left"
+                             data-ng-click="Send(operationMode.id)" type="button" ng-disabled="isDisabledVerify || ivr_failed_time>3">發送</button>
+                            </td>
+                            <td>
+                                <span class="red" ng-show="isDisabledVerify">{{CustomerOperation}}</span>
+                                <span ng-show=" true === result">成功</span>
+                                <span ng-show=" false === result">失敗</span>
+                            </td>
+                            <td>
+                                <i ng-show=" false === result" class="glyphicon glyphicon-remove color-primary"></i>
+                                <i ng-show=" true === result" class="glyphicon glyphicon-ok color-success"></i>
+                            </td>
+                          <td colspan=2 ng-show="jypasswordset==true">已設置</td>
+                          <td colspan=2 ng-show="jypasswordset==false">未設置</td>
+                        </tr>
+                        <tr>
+                          <td  colspan="4" >
+                            <ul>
+                              <li style="float:left;list-style-type: none">密碼錯誤次數　</li>
+                              <li style="float:left;list-style-type: none" ng-repeat="passwordError in passwordError track by $index">
+                                <i class="glyphicon glyphicon-remove color-primary"></i>
+                              </li>
+                            </ul>
+
+
+                          </td>
+                        </tr>
+                       <tr data-ng-show="ivr_failed_time>3">
+                          <td class="red" colspan="4" >電話功能已被鎖，請到柜臺解鎖！</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-heading">驗證記錄</div>
+            <div class="panel-content" style="padding-top: 0; position: relative;">
+
+                    <div class="panel-content consumption_record table-dynamic"  style="
+                     padding: 0" >
+                        <table class="table table-bordered table-striped table-detail-01">
+                            <thead>
+                            <tr>
+                                <td>廳館</td>
+                                <td>通話日期</td>
+                                <td>電話</td>
+                                <td>結果</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="record in records">
+                                <td>{{ record.hall_name }}</td>
+                                <td>{{ record.create_time | limitTo:16 }}</td>
+                                <td>{{ record.area_code }} {{ record.telephone_number }}</td>
+                                <td>
+                                    <i class="glyphicon glyphicon-remove color-primary" ng-show="'1'== record.status"></i>
+                                    <i class="glyphicon glyphicon-ok color-success"ng-show="'0'== record.status"></i>
+                                </td>
+                            </tr>
+                            <tr ng-show="!records.length">
+                                <td colspan="4">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+              <footer class="table-footer">
+                <div class="text-right pagination-container">
+                  <pagination class="pagination-sm"
+                              page="records_page.page"
+                              total-items="records_page.total_items"
+                              on-select-page="records_search(page)"
+                              max-size = "records_page.max_size"
+                              items-per-page = "records_page.items_per_page"
+                              data-ng-hide="records_page.total_items <= records_page.items_per_page"
+                    >
+
+                  </pagination>
+
+
+                </div>
+              </footer>
+            </div>
+            <!--<div class="panel-content" style="padding-top: 0;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-bordered" width="50%">
+                            <tr>
+                                <td>操作密碼</td>
+                                <td><input type="password" class="form-control" name="pin_code"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
+            <div class="panel-footer text-center">
+                <!--<button class="btn btn-confirm margin-right-15" data-ng-click="save()" data-ng-disabled="isDisabled"  type="button">保存</button>-->
+                <button class="btn btn-cancel" data-ng-click="cancel()" type="button">關閉</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="panel panel-form-list" ng-show="calllog">
+        <form name="form_detail_order">
+            <div class="panel-heading">該號碼已被對方掛斷！</div>
+            <div class="panel-footer text-center">
+                <!--<button class="btn btn-confirm margin-right-15" data-ng-click="save()" data-ng-disabled="isDisabled"  type="button">保存</button>-->
+                <button class="btn btn-cancel" data-ng-click="cancel()" type="button">關閉窗口</button>
+            </div>
+        </form>
+
+    </div>
+</div>

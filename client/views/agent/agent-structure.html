@@ -1,0 +1,51 @@
+<div class="page page-grid" data-ng-controller="agentStructureCtrl">
+<div class="panel">
+    <div class="panel-heading">
+        <div id="text-sear02" class="form-group has-success has-feedback col-md-2">
+            <input class="form-control ng-pristine ng-valid" placeholder ="{{structure}}" type="text" data-input-uppercase placeholder="" data-ng-model="agent_code">
+            <span class="fa fa-search form-control-feedback"></span>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <!--button class="btn btn-info btn-information margin-right-15" ng-click="submit()">導出Excel</button-->
+    </div>
+    <div class="panel-content" style="padding: 35px 10px 0;text-align: left">
+        <div class="structure">
+            <div class="L" >
+                <div class="element parent" data-ng-show="agent.agent_code">
+                    <i class="i"></i>
+                    <p class="con">
+                        <span class="num">{{agent.agent_code}}</span>
+                        <span class="name">{{agent.agent_name}}</span>
+                    </p>
+                    <i class="arrows"></i>
+                </div>
+            </div>
+            <div class="M" data-ng-show="agent.agent_code && agent.type != '3'">
+                <!--ng-class="{true:'first'}[$index == 0];{true:'last'}[$last]">-->
+            </div>
+            <div style="cursor: pointer" class="R" data-ng-show="refagents.length == 1">
+                <div data-ng-repeat="refagent in refagents" data-ng-click="changAgentCode(refagent)" class="element sublevel sinple">
+                    <i class="i"></i>
+                    <p class="con">
+                        <span class="num">{{refagent.agent_code}}</span>
+                        <span class="name">{{refagent.agent_name}}</span>
+                        <i class="arrows"></i>
+                        <span class="has-sub" data-ng-show="refagent.type != '3'"></span>
+                    </p>
+                </div>
+            </div>
+            <div style="cursor: pointer" class="R" data-ng-show="refagents.length > 1">
+                <div data-ng-repeat="refagent in refagents" data-ng-click="changAgentCode(refagent)" class="element sublevel" ng-class="{'first':$first,'last':$last}">
+                    <i class="i"></i>
+                    <p class="con">
+                        <span class="num">{{refagent.agent_code}}</span>
+                        <span class="name">{{refagent.agent_name}}</span>
+                        <i class="arrows"></i>
+                        <span class="has-sub" data-ng-show="refagent.type != '3'"></span>
+                    </p>
+                </div>
+             </div>
+            </div>
+    </div>
+</div>
+</div>

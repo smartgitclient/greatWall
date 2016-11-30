@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h3>截月時間設定</h3>
+</div>
+<div class="modal-body">
+    <form  name="$parent.form_monthly" class="form-validation" server-validation="POST{{form_monthly_url}}">
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td class="text-right" width="150">計佣月份：</td>
+            <td width="380">
+                <span class="select-92" style="float:left" data-min-screen-width="120">
+                    <select data-ng-model="calculate_data.year" class="form-control"  name="year" ng-options="year as year for year in years">
+                    </select>
+                </span>
+                <span class="span-LH27 pull-left">&nbsp;&nbsp;年&nbsp;&nbsp;</span>
+                <span class="select-92" style="float:left" data-min-screen-width="120">
+                <select data-ng-model="calculate_data.month" class="form-control" name="year_month" ng-options="month as month for month in months">
+                </select>
+                    </span>
+                <span class="span-LH27 pull-left">&nbsp;&nbsp;月&nbsp;&nbsp;</span>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td class="text-right" width="145">操作密碼：</td>
+            <td width="350" class="text-left"><input class="form-control ng-pristine ng-valid" type="password" name="pin_code" ng-model="calculate_data.pin_code" style="width: 238px;" data-enter-key="add()" /></td>
+        </tr>
+    </table><br/><br/>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-information margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">確認</button>
+        <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+    </form>
+</div>
+</div>

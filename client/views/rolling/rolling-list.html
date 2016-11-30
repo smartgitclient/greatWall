@@ -1,0 +1,179 @@
+<div class="page page-grid" data-ng-controller="rollingListCtrl">
+<div class="panel panel-default">
+<div class="panel_l col-md-12">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>轉碼明細</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td class="text-right" width="150" >廳館：</td>
+                                <td width="150" data-ng-show="user.isAllHall()">
+                                    <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                        <option value = "">請選擇廳館</option>
+                                    </select>
+                                </td>
+                                <td width="150" data-ng-hide="user.isAllHall()">
+                                    {{user.hall.hall_name}}
+                                </td>
+                                <td width="150" class="text-right">戶口編號：</td>
+                                <td width="150"><input type="text"
+                                                       data-ng-model="condition.agent_code"
+                                                       data-input-uppercase
+                                                       class="form-control">
+                                </td>
+                                <td width="150" class="text-right">戶口姓名：</td>
+                                <td width="150">{{agent_name}}</td>
+                                <td width="150" class="text-right">年月：</td>
+                                <td width="160">
+                                    <p class="input-group ui-datepicker">
+                                        <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.shiftMark.settlementMonth.year_month[0]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                    </p>
+                                </td>
+                                <td width="120" class="text-right">更數：</td>
+                                <td width="140" data-min-screen-width="165">
+                                    <select data-ng-model="condition.shiftMark.shift" class="form-control">
+                                        <option value="">請選擇更數</option>
+                                        <option value="{{shiftMarks.morning}}">{{shiftMarks.morning}}</option>
+                                        <option value="{{shiftMarks.afternoon}}">{{shiftMarks.afternoon}}</option>
+                                        <option value="{{shiftMarks.evening}}">{{shiftMarks.evening}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="50">
+                                <td width="120" class="text-right">戶組：</td>
+                                <td width="140" data-min-screen-width="165">
+                                    <input type="text"
+                                           data-ng-model="condition.agentGroup.agent_group_name"
+                                           data-input-uppercase
+                                           class="form-control">
+                                </td>
+                                <td width="150" class="text-right">轉碼卡：</td>
+                                <td width="150"><input type="text"
+                                                       data-ng-model="condition.card_name"
+                                                       data-input-uppercase
+                                                       class="form-control">
+                                </td>
+                                <td class="text-right">日期範圍：</td>
+                                <td colspan="4" width="380">
+                                     <table>
+                                        <tr>
+                                            <td>
+                                                <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                                    <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shiftMark.shift_date[0]" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                            <td width="60" align="center">~&nbsp;&nbsp;&nbsp;</td>
+                                            <td>
+                                                <p class="input-group ui-datepicker pull-left" style="width:160px;">
+                                                    <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.shiftMark.shift_date[1]" is-open="" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                     </table>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table><br/><br/>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail table-dynamic">
+                <div class="panel-heading">
+                    <button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingWater" report-btn>&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    <button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingRecord" report-btn>導出EXCEL</button>
+                </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>所屬廳館</td>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>轉碼卡</td>
+                        <td>轉碼金額(萬)</td>
+                        <td>本月合計(萬)</td>
+                        <td>日期</td>
+                        <td>更數</td>
+                        <td>轉碼時間</td>
+                        <td>操作機器</td>
+                        <td width="250">備註</td>
+                        <td>經手人</td>
+                        <!--<td check-permissions="rollingDetailView">操作</td>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="rollingRecord in rollingRecords" data-selected-rows>
+                        <td>{{rollingRecord.hall_name}}</td>
+                        <td>{{rollingRecord.agent_code}}</td>
+                        <td>{{rollingRecord.agent_name}}</td>
+                        <td>{{rollingRecord.card_name}}</td>
+                        <td>{{rollingRecord.rolling|parseTenThousand2}}</td>
+                        <td>{{rollingRecord.thismonth_rolling|parseTenThousand2}}</td>
+                        <td>{{rollingRecord.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                        <td>{{rollingRecord.shift}}</td>
+                        <td>{{rollingRecord.roll_time|getDate1}}</td>
+                        <td>{{rollingRecord.machine_name}}</td>
+                        <td class="text-left">
+                            <span class="col-md-9">{{rollingRecord.remark}}</span>
+                            <span class="col-md-3" ><!--check-permissions="depositCardRecordRemarkUpdate"-->
+                                <button class="btn btn-information btn-table margin-right-5" ng-click="editRemark(rollingRecord)">修改</button>
+                            </span>
+                        </td>
+                        <td>{{rollingRecord.user_name}}</td>
+                        <!--<td class="no-padding" check-permissions="rollingDetailView">-->
+                            <!--<button class="btn btn-information margin-right-5 btn-table" data-ng-click="rollingRecordDetail(rollingRecord.id,rollingRecord.agent_info_id,'detail')" check-permissions="rollingDetailView">詳細</button>-->
+                            <!--<button class="btn btn-info btn-information btn-table" data-ng-click="rollingRecordDetail(rollingRecord.id,rollingRecord.agent_info_id,'edit')">修改</button>-->
+                        <!--</td>-->
+                    </tr>
+                    <tr data-ng-show="rollingRecords.length == 0">
+                        <td colspan="13">暫無符合條件的記錄</td>
+                    </tr>
+                    <tr>
+                        <td colspan="11"></td>
+                        <td colspan="2">合計：{{rolling_record_total.total|parseTenThousand}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-show="rollingRecords.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

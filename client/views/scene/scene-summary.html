@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h3>即時匯總:</h3>
+</div>
+<div class="modal-body" style="padding-top: 0;">
+    <div class="row">
+        <div class=" col-md-12">
+            <table class="table table-bordered table-check" style="padding-top: 0;">
+                <thead>
+                    <tr>
+                        <td colspan="10">本館轉碼數</td>
+                        <td colspan="10">{{summary_data.self_rolling_amount}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">外館轉碼數</td>
+                        <td colspan="10">{{summary_data.out_rolling_amount}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">單日上下數</td>
+                        <td colspan="10">{{summary_data.day_loss_win_amount_}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">本月上下數</td>
+                        <td colspan="10">{{summary_data.month_loss_win_amount}}</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-inf btn-confirm margin-right-15" ng-click="close()">關閉</button>
+            </div>
+         </div>
+
+    </div>
+</div>

@@ -1,0 +1,394 @@
+﻿<div class="page page-grid" data-ng-controller="rollingManagerCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>即時轉碼</strong></div>
+                        <div class="panel-content">
+                            <form name="form_rolling" class="ng-valid ng-dirty form-validation"  server-validation="POST{{rolling_url}}">
+                                <div class="row">
+                                <div class="col-md-6">
+                                <table>
+                                    <tr height="50">
+                                        <td  width="120" class="text-right">場次編號：</td>
+                                        <td>
+                                            <span data-ng-show="isAddColorFlag">{{new_rolling.scene_no}}</span>
+                                            <select data-ng-model="new_rolling.scene_id"
+                                                    name="rolling_id"
+                                                    data-ng-required="enableClientValidation"
+                                                    data-ng-show="!isAddColorFlag"
+                                                    class="form-control"
+                                                    data-ng-change="scene_change()"
+                                                    ng-options="h.id as h.main_scene_no for h in scenes">
+                                                <option value="">請選擇場次</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-right">轉碼卡：</td>
+                                        <td>
+                                            <!--data-ng-disabled="new_rolling.rolling_type==2 || new_rolling.rolling_type==3"-->
+                                            <input type="text"
+                                                   data-ng-model="rolling_record.guest_name"
+                                                   data-ng-required="enableClientValidation"
+                                                   name="guest_name"
+                                                   class="form-control input-01 width-83 ">
+                                        </td>
+                                    </tr>
+                                    <tr height="50" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'"><!--ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'"-->
+                                        <td  width="120" class="text-right">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="text-right">籌碼：</td>
+                                        <td>
+                                            <span ng-hide="new_rolling.rolling_type==1">{{chipsTypes.items[rolling_record.chips_type]}}</span>
+                                            <select name="chips_type"
+                                                    ng-show="new_rolling.rolling_type==1"
+                                                    data-ng-required="enableClientValidation"
+                                                    data-ng-model="rolling_record.chips_type"
+                                                    data-ng-options="t.id as t.name for t in chipsTypes.data"
+                                                    class="form-control">
+                                                <option value="">請選擇籌碼</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">戶口編號：</td>
+                                        <td width="200">
+                                            {{new_rolling.agent_code}}
+                                            <button class="btn btn-info btn-information btn-table margin-right-5"
+                                                    data-ng-show="new_rolling.agent_code && new_rolling.rolling_type==1"
+                                                    style="margin-left:20px;"
+                                                    ng-click="agent_edit()">更改</button>
+                                        </td>
+                                        <td width="150" class="text-right">戶口名稱：</td>
+                                        <td width="200">{{new_rolling.agent_name}}</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td class="text-right">轉碼數：</td>
+                                        <td><!-- data-input-float-->
+                                            <input type="text"
+                                                id="rolling_amount_id"
+                                                enter-key="submit()"
+                                                data-ng-model="rolling_record.amount"
+                                                data-ng-required="enableClientValidation"
+                                                name="amount"
+                                                data-ng-disabled="new_rolling.rolling_type==1 || new_rolling.rolling_type==2"
+                                                class="form-control input-01  width-83 ">萬
+                                        </td>
+                                        <td class="text-right">轉碼類型：</td>
+                                        <td>{{rollingTypes[new_rolling.rolling_type]}}</td>
+                                    </tr>
+                                    <!--<tr height="50">-->
+                                        <!--<td class="text-right">資金類型：</td>-->
+                                        <!--<td>-->
+                                        <!--{{loanTypes[new_rolling.loanType]}}-->
+                                        <!--</td>-->
+                                        <!--<td class="text-right" data-ng-show="scenes.length>0">場次編號：</td>-->
+                                        <!--<td data-ng-show="scenes.length>0">-->
+                                            <!--<select data-ng-model="rolling_record.scene_id"-->
+                                                    <!--name="scene_id"-->
+                                                    <!--data-ng-required="enableClientValidation"-->
+                                                    <!--class="form-control">-->
+                                                <!--<option value="">請選擇場次編號</option>-->
+                                                <!--<option data-ng-repeat="scene in scenes" value="{{scene.id}}">{{scene.scene_no}}+{{scene.guest_name}}</option>-->
+                                            <!--</select>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                    <tr height="50">
+                                        <td class="text-right">備註：</td>
+                                        <td colspan="3"><textarea id="remark" name="remark" class="form-control textarea-table01 ng-pristine ng-valid" data-ng-model="rolling_record.remark" rows="4"></textarea></td>
+                                    </tr>
+                                    <!--<tr height="50">-->
+                                        <!--<td class="text-right">是否開場：</td>-->
+                                        <!--<td>-->
+                                            <!--<input type="checkbox"-->
+                                                   <!--data-ng-model="rolling_record.open_scene"-->
+                                                   <!--ng-true-value = "1"-->
+                                                   <!--ng-false-value = "0"-->
+                                                   <!--ng-checked="true"-->
+                                                   <!--name="open_scene"/>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                    <tr height="50">
+                                        <td class="text-right">操作密碼：</td>
+                                        <td><input type="password"
+                                                   data-ng-model="rolling_record.pin_code"
+                                                   name="pin_code"
+                                                   class="form-control"
+                                                   enter-key="submit()"
+                                                   data-ng-disabled="is_locked">
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" data-ng-disabled="isLockedFlag" ng-click="agent_locked(true)">鎖定</button>
+                                            <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                                        </td>
+                                        <td style="color: red;">
+                                            <span color="red">{{new_rolling.username}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <perfect-scrollbar class="animate-fade-up"
+                                                       style=" position: relative; height:220px;overflow-y: hidden;"
+                                                       suppress-scroll-x="true"
+                                                       wheel-propagation="true"
+                                                       wheel-speed="220">
+                                    <div class="panel-content consumption_record" style="min-height: 220px; padding:0 10px 5px 0;">
+                                        <table class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td width="150" colspan="2">轉碼數</td>
+                                            <td>本金類型</td>
+                                            <td width="120"></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="addRolling in addRollings track by $index" data-selected-rows>
+                                            <td width="30">
+                                                <input type="checkbox" data-ng-model="addRolling.as_capital" name="as_capital">
+                                            </td>
+                                            <td width="120" data-ng-show="addRolling.show_type">
+                                                <input type="text"
+                                                       data-ng-model="addRolling.used_amount"
+                                                       data-ng-required="enableClientValidation"
+                                                       name="used_amount"
+                                                       ng-keyup="rolling_amount_sum()"
+                                                       class="form-control input-01 width-83">萬
+                                            </td>
+                                            <td>{{loanTypes[addRolling.fund_type]}}</td>
+                                            <td>
+                                                <button class="btn btn-info btn-information btn-table" ng-click="removeAddRollings(addRolling.source_funds_id,$index)">-</button>
+                                            </td>
+                                        </tr>
+                                        <tr data-ng-repeat = "addRolling_h in addRollings_history">
+                                            <td width="30">-</td>
+                                            <td>{{addRolling_h.used_amount|parseTenThousand}}</td>
+                                            <td>{{loanTypes[addRolling_h.fund_type]}}</td>
+                                            <td>--</td>
+                                        </tr>
+                                        <tr data-ng-show="addRollings.length == 0 && addRollings_history.length==0">
+                                            <td colspan="4">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </perfect-scrollbar>
+                                <div class="panel-footer" style="padding: 0px 0 10px 0px;" >
+                                    <button class="btn btn-information btn-table full-left"
+                                            data-ng-disabled="!new_rolling.agent_info_id || new_rolling.rolling_type==3"
+                                            data-ng-hide="new_rolling.rolling_type==3"
+                                            ng-click="rolling_card()">轉碼卡</button>
+                                </div>
+                                <table class="table table-bordered table-striped  table-detail-01">
+                                    <tr>
+                                        <td width="95" class="nowarp">批額備註：</td>
+                                        <td colspan="3" class="text-left" ng-bind-html="new_rolling.remark|nl2br"></td>
+                                    </tr>
+                                </table>
+                                </div>
+                                </div>
+                                <br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information btn-table" data-ng-show="is_print==1" style="float:left; margin-left: 100px;" ng-click="isPrint(0)">開啟印表機</button>
+                                    <button class="btn btn-info btn-cancel btn-table" data-ng-show="is_print==0" style="float:left; margin-left: 100px;" ng-click="isPrint(1)">關閉印表機</button>
+
+                                    <button class="btn btn-confirm margin-right-15" data-ng-disabled="!new_rolling.agent_info_id" ng-click="submit()" >轉碼</button>
+                                    <button class="btn btn-cancel margin-right-15" data-ng-click="reset()">重置</button>
+                                    <button class="btn btn-confirm" data-ng-disabled="!rolling_record.rolling_id" ng-click="departure()">離場</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="panel-footer"></div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉碼流水</strong>
+                            <button class="btn btn-information pull-right" ng-click="printScene()" data-ng-disabled="disable_print_scene">列印本場</button>
+                            <button class="btn btn-information pull-right" ng-click="printRolling()" data-ng-disabled="disable_print_rolling">列印選中</button>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>戶口編號</td>
+                                    <td>戶口名稱</td>
+                                    <td>轉碼數(萬)</td>
+                                    <td>本場轉碼數(萬)</td>
+                                    <!--<td>轉碼類型</td>-->
+                                    <td>更數</td>
+                                    <td width="180">轉碼時間</td>
+                                    <td>經手人</td>
+                                    <td width="200">備註</td>
+                                    <!--<td>操作</td>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="rollingRecord in rollingRecords track by $index" data-selected-rows ng-click="selectRolling(rollingRecord)">
+                                    <td>{{rollingRecord.agent_code}}</td>
+                                    <td>{{rollingRecord.agent_name}}</td>
+                                    <td>{{rollingRecord.rolling|parseTenThousand2}}</td>
+                                    <td>{{rollingRecord.scene_rolling|parseTenThousand2}}</td>
+                                    <!--<td>{{rollingTypes[rollingRecord.rolling_type]}}</td>-->
+                                    <td>{{rollingRecord.shift}}</td>
+                                    <td>{{rollingRecord.roll_time |getDate1}}</td>
+                                    <td>{{rollingRecord.user_name}}</td>
+                                    <td>{{rollingRecord.remark}}</td>
+                                    <!--<td>-->
+                                    <!--<a  class="btn btn-info btn-information btn-table" ng-click="Revoke(rollingRecord,$index)">撤銷</a>-->
+                                    <!--</td>-->
+                                </tr>
+
+                                <tr data-ng-show="rollingRecords.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination_record.page"
+                                                total-items="pagination_record.total_items"
+                                                on-select-page="select_record(page)"
+                                                max-size = "pagination_record.max_size"
+                                                items-per-page = "pagination_record.items_per_page"
+                                                data-ng-show="rollingRecords.length > 0 && pagination_record.total_items > pagination_record.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination_record" select-page="select_record"></paginationselect>
+                                </div>
+                            </footer>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-list-detail col-md-4" style="padding-left: 0px;">
+            <div class="panel-heading">
+                <strong class="pull-left">在場客戶</strong>
+                <button class="btn btn-confirm pull-left" check-permissions="rollingStart" ng-click="specialScene()">開場</button>
+                <div id="text-sear02" class="form-group has-success has-feedback col-md-2 pull-right">
+                    <input data-ng-model="agent_keyword" class="form-control" placeholder="戶口編號" data-input-uppercase="agent_keyword" type="text">
+                    <span class="fa fa-search form-control-feedback" ng-click="select_scene()" style="cursor: pointer;"></span>
+                </div>
+            </div>
+            <div class="panel-content table-dynamic">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td data-td-sort data-td-sort-up="agent_code ASC,main_scene_no ASC" data-td-sort-down="agent_code DESC,main_scene_no ASC" data-td-sort-select="select_scene" data-td-sort-pagination="pagination_scene">戶口編碼</td>
+                        <td>戶口名稱</td>
+                        <td>轉碼卡</td>
+                        <td data-td-sort data-td-sort-up="main_scene_no ASC,agent_code ASC" data-td-sort-down="main_scene_no DESC,agent_code ASC" data-td-sort-select="select_scene" data-td-sort-pagination="pagination_scene">場次編號</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="agent in mainScenes" data-selected-rows>
+                        <td>{{agent.agent_code}}</td>
+                        <td>{{agent.agent_name}}</td>
+                        <td>{{agent.guest_name}}</td>
+                        <td>{{agent.main_scene_no}}</td>
+                        <td>
+                            <button data-ng-hide="is_confirm"
+                                    class="btn btn-info btn-information btn-table"
+                                    ng-click="settingCode(agent)" set-focus="rolling_amount_id">選擇</button>
+                            <!--<i data-ng-hide="is_confirm" class="fa fa-plus-circle cursor-pointer" data-ng-click="settingCode(agent)"></i>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" data-ng-show="mainScenes.length==0">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_scene.page"
+                                    total-items="pagination_scene.total_items"
+                                    on-select-page="select_scene(page)"
+                                    max-size = "pagination_scene.max_size"
+                                    items-per-page = "pagination_scene.items_per_page"
+                                    data-ng-show="pagination_scene.total_items > pagination_scene.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_scene" select-page="select_scene"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>客戶最近借貸、存取款信息</strong>
+                    <button class="btn btn-info btn-information pull-right" ng-click="amountRolling()">現金/現金碼</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <td>戶口編號</td>
+                            <td>戶名</td>
+                            <td>時間</td>
+                            <td>金額(萬)</td>
+                            <td>餘額(萬)</td>
+                            <td>類型</td>
+                            <td>業務單號</td>
+                            <td>經手人</td>
+                            <td check-permissions="rollingStart,rollingAddCapital,rollingDeleteCash">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="recentlyLoanDeposit in recentlyLoanDeposits track by $index" data-ng-hide="recentlyLoanDeposit.checked || recentlyLoanDeposit.add_checked" data-selected-rows>
+                            <td>{{recentlyLoanDeposit.agent_code}}</td>
+                            <td>{{recentlyLoanDeposit.agent_name}}</td>
+                            <td>{{recentlyLoanDeposit.ld_time |date:"yyyy-MM-dd HH:mm"}}</td>
+                            <td>{{recentlyLoanDeposit.amount | parseTenThousand2}}</td>
+                            <td>{{recentlyLoanDeposit.settlement_amount|parseTenThousand2}}</td>
+                            <td>{{loanTypes[recentlyLoanDeposit.ld_type]}}</td>
+                            <td>{{recentlyLoanDeposit.ld_type==4 || recentlyLoanDeposit.ld_type==9 ? recentlyLoanDeposit.remark : recentlyLoanDeposit.seqnumber}}</td>
+                            <td>{{recentlyLoanDeposit.user_name}}</td>
+                            <td width="200" class="no-padding" style="text-align: left;" check-permissions="rollingStart,rollingAddCapital,rollingDeleteCash">
+                                <!--data-ng-hide="recentlyLoanDeposit.checked"-->
+                                <button class="btn btn-info btn-information btn-table margin-right-5"
+                                        style="margin-left: 20px;"
+                                        check-permissions="rollingStart"
+                                        ng-click="openScene(recentlyLoanDeposit, 1)">開場</button>
+
+                                <button class="btn btn-info btn-information btn-table margin-right-5"
+                                        check-permissions="rollingAddCapital"
+                                        ng-click="openSceneColor(recentlyLoanDeposit, 2)">加彩</button>
+
+                                <!--data-ng-show="recentlyLoanDeposit.ld_type==2 || recentlyLoanDeposit.ld_type==7"&&(recentlyLoanDeposit.amount!=recentlyLoanDeposit.settlement_amount)-->
+                                <button class="btn btn-info btn-confirm btn-table"
+                                        check-permissions="rollingDeleteCash"
+                                        data-ng-hide="(recentlyLoanDeposit.ld_type!=2 && recentlyLoanDeposit.ld_type!=7)&&(recentlyLoanDeposit.amount!=recentlyLoanDeposit.settlement_amount)"
+                                        ng-click="removeLoan(recentlyLoanDeposit)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="recentlyLoanDeposits.length == 0">
+                            <td colspan="11">暫無符合條件的記錄</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</div>

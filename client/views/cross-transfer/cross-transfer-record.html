@@ -1,0 +1,121 @@
+<div class="page page-services ng-scope" data-ng-controller="crossTransferRecordCtrls">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>飛數查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="126"><span class="span-formlist">所在廰：</span></td>
+                        <td width="209">
+                            <ui-select ng-model="condition.send_hall">
+                            <ui-select-match placeholder="請選擇目標廳">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        </td>
+                        <td width="50">&nbsp;</td>
+                        <td width="120"><span class="span-formlist">年   月：</span></td>
+                        <td width="209"><input type="text" data-ng-model="condition.borrower" class="form-control"></td>
+                        <td width="50">&nbsp;</td>
+                        <td width="126"><span class="span-formlist">戶口編號：</span></td>
+                        <td width="209"><!-- Split button -->
+                            <input type="text" data-ng-model="condition.receive_agent_code" class="form-control">
+                        </td>
+                        <td width="100">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100"><span class="span-formlist">開始日期：</span></td>
+                        <td width="209">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.created_start_time" is-open="startopened" atepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="50">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">結束日期：</span></td>
+                        <td width="209">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="condition.created_end_time" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" />
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </td>
+                        <td width="50">&nbsp;</td>
+                        <td width="100"><span class="span-formlist">處理狀態：</span></td>
+                        <td>
+                            <ui-select ng-model="condition.status">
+                                <ui-select-match placeholder="請選擇處理狀態">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="status in ['待處理','已確認','已拒絕']">
+                                    <div ng-bind-html="status"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-12">
+        <div class="panel-heading"><strong>飛數記錄</strong></div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-click">
+            <thead>
+            <tr>
+                <td>處理狀態</td>
+                <td>飛出廳</td>
+                <td>飛出客戶</td>
+                <td>飛入廳</td>
+                <td>飛入客戶</td>
+                <td>金額（萬）</td>
+                <td>日期</td>
+                <td>創建時間</td>
+                <td>操作時間</td>
+                <td>經手人</td>
+                <td>確認人</td>
+                <td>備註</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="cross in cross_transfers" data-selected-rows>
+                <td>{{cross.status}}</td>
+                <td>{{cross.hall}}</td>
+                <td>{{cross.send_agent_code}}{{cross.send_agent_name}}</td>
+                <td>{{cross.receive_hall}}</td>
+                <td>{{cross.receive_agent_code}}{{cross.receive_agent_name}}</td>
+                <td>{{cross.amount|parseTenThousand2}}</td>
+                <td>{{cross.date}}</td>
+                <td>{{cross.created}}</td>
+                <td>{{cross.updated}}</td>
+                <td>{{cross.brokerage}}</td>
+                <td>{{cross.confirmor}}</td>
+                <td>{{cross.remark}}</td>
+                <td><button class="btn btn-info btn-information btn-table" data-ng-click="detail($index)">詳細</button></td>
+            </tr>
+            <tr data-ng-show="all_cross_transfers.length == 0">
+                <td colspan="13">暫無符合條件的記錄</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="current_page"
+                            total-items="all_cross_transfers.length"
+                            on-select-page="select(page)"
+                            data-ng-show="all_cross_transfers.length != 0"></pagination>
+            </div>
+        </footer>
+    </div>
+</div>

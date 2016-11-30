@@ -1,0 +1,198 @@
+<div class="page page-grid" data-ng-controller="commissionCommonRuleSettingCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-3">
+            <div class="panel_r">
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <strong>規則列表</strong>
+                        <button class="btn btn-info btn-information pull-right" ng-click="addRule()" check-permissions="commissionCommonRuleSettingCreate">新增規則</button>
+                    </div>
+                    <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <tr>
+                                    <td>規則名稱</td>
+                                    <td>本金類型</td>
+                                    <td check-permissions="commissionCommonRuleSettingView,commissionCommonRuleSettingUpdate,commissionCommonRuleSettingDelete">操作</td>
+                                </tr>
+                                <tr data-ng-repeat="commissions_rules in commissions_rules" data-selected-rows>
+                                    <td>{{commissions_rules.rule_name}}</td>
+                                    <td>{{commissions_rules.capital_type}}</td>
+                                    <td class="no-padding" check-permissions="commissionCommonRuleSettingView,commissionCommonRuleSettingUpdate,commissionCommonRuleSettingDelete">
+                                        <button class="btn btn-information btn-table margin-right-5" ng-click="update(commissions_rules.id,false)" check-permissions="commissionCommonRuleSettingView">详细</button>
+                                        <button class="btn btn-information btn-table margin-right-5" ng-click="update(commissions_rules.id,true)" check-permissions="commissionCommonRuleSettingUpdate">修改</button>
+                                        <button class="btn btn-information btn-table" ng-click="delete(commissions_rules.id)" check-permissions="commissionCommonRuleSettingDelete">刪除</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="commissions_rules.length == 0">
+                                    <td colspan="3">暫無符合條件的記錄</td>
+                                </tr>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                    page="pagination_setting.page"
+                                    total-items="pagination_setting.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination_setting.max_size"
+                                    items-per-page = "pagination_setting.items_per_page"
+                                    data-ng-hide="pagination_setting.total_items <= pagination_setting.items_per_page"></pagination>
+                                </div>
+                            </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_l col-md-9">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>公共設定</strong></div>
+                        <div class="panel-content">
+                            <form name="form_commission" class="form-validation" server-validation="{{sub_post}}{{commissions_rule_url}}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table>
+                                            <tbody>
+                                            <tr height="50">
+                                                <td width="120" class="text-right">規則名稱：</td>
+                                                <td width="150"><input  type="text" data-input-uppercase name="rule_name" ng-model="commissions.rule_name" data-ng-required="enableClientValidation" data-ng-disabled="update_diable" class="form-control input-01 ng-pristine ng-valid"></td>
+                                                <td width="135" class="text-right">本金類型：</td>
+                                                <td width="150">
+                                                    <select name="capital_type_id" data-ng-model="commissions.capital_type_id" data-ng-required="enableClientValidation"  class="form-control" data-ng-options="ct.id as ct.capital_name for ct in capitaltypes" >
+                                                        <option value="">請選擇本金類型</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr height="50">
+                                                <td class="text-right">佣金總額：</td>
+                                                <td>{{commission_total()}}</td>
+                                                <td class="text-right">積分總額：</td>
+                                                <td>{{integral_total()}}</td>
+                                            </tr>
+                                            <tr height="50">
+                                                <td class="text-right">現金回收比例：</td>
+                                                <td>{{recycle_rate_total()}}</td>
+                                                <td class="text-right">積分有效期：</td>
+                                                <td>
+                                                    <select style="width:135px" data-min-screen-width="125" name="commissionRuleCommon_integral_expire" data-ng-model="commissions.commissionRuleCommon.integral_expire" data-ng-required="enableClientValidation" data-ng-options="m.val as m.key for m in months" class="form-control pull-left input-92" >
+                                                        <option value="">請選擇有效期</option>
+                                                    </select>
+                                                    <span class="pull-right" style="padding-left: 5px;padding: 5px 0 0;">月</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <td width="120" data-min-screen-width="80">用戶類型</td>
+                                                <td data-min-screen-width="80">分派佣金額</td>
+                                                <td data-min-screen-width="80">分派積分額</td>
+                                                <td data-min-screen-width="80">現金回收比例</td>
+                                                <td data-min-screen-width="100">津貼回收戶口</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-ng-repeat="commissionRuleCommonSub in commissions.commissionRuleCommon.commissionRuleCommonSubs">
+                                                <td>{{userType[$index]}}</td>
+                                                <td>
+                                                    <input data-min-screen-width="80" data-dynamic-name ="commissionRuleCommon_commissionRuleCommonSubs_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleCommonSub.commission_should">
+                                                </td>
+                                                <td><input data-min-screen-width="80"  data-dynamic-name ="commissionRuleCommon_commissionRuleCommonSubs_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleCommonSub.integral_should"></td>
+                                                <td>
+                                                    <input data-min-screen-width="80" data-dynamic-name ="commissionRuleCommon_commissionRuleCommonSubs_{{$index}}_recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleCommonSub.recycle_rate">
+                                                </td>
+                                                <td>
+                                                    <input data-min-screen-width="70" data-input-uppercase data-dynamic-name ="commissionRuleCommon_commissionRuleCommonSubs_{{$index}}_integral_recycle_agent_id" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleCommonSub.integral_recycle_agent_code" >
+                                                    <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addCommissions()"></i>
+                                                    <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeCommissions($index)"></i>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <td width="80">特別收益戶口</td>
+                                                <td data-min-screen-width="75">分派佣金額</td>
+                                                <td data-min-screen-width="75">分派積分額</td>
+                                                <td data-min-screen-width="75">現金回收比例</td>
+                                                <td data-min-screen-width="100">津貼回收戶口</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-ng-repeat="compAgentRule in commissions.commissionRuleCommon.compAgentRules">
+                                                <td>
+                                                    <input data-min-screen-width="80" data-input-uppercase data-dynamic-name ="commissionRuleCommon_compAgentRules_{{$index}}_agent_info_id" placeholder="{{userType[$index]}}" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.agent_code">
+                                                </td>
+                                                <td>
+                                                    <input data-min-screen-width="75" data-dynamic-name ="commissionRuleCommon_compAgentRules_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.commission_should">
+
+                                                </td>
+                                                <td><input data-min-screen-width="75" data-dynamic-name ="commissionRuleCommon_compAgentRules_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.integral_should"></td>
+                                                <td>
+                                                    <input data-min-screen-width="75" data-dynamic-name ="commissionRuleCommon_compAgentRules_{{$index}}_recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.recycle_rate">
+                                                </td>
+                                                <td>
+                                                    <input data-min-screen-width="75" data-input-uppercase data-dynamic-name ="commissionRuleCommon_compAgentRules_{{$index}}_integral_recycle_agent_id" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.integral_recycle_agent_code" >
+                                                    <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addAgentCommissions()"></i>
+                                                    <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeAgentCommissions($index)"></i>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6" style="float: right;">
+                                        <div class="panel panel-list-detail">
+                                            <div class="panel-heading">
+                                                <button class="btn btn-information pull-right" ng-click="resetCommission()" >重 置</button>
+                                                <button class="btn btn-information margin-right-15 pull-right" ng-click="bindCommission()" data-ng-disabled="disabled_bind">綁 定</button>
+                                            </div>
+                                            <div class="panel-content">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <td width="150" data-min-screen-width="80"><input type="checkbox" name="hall_check_alls" data-ng-model="hall_check_alls.hall_check_all1" data-ng-change="hall_check_all1()">全選</td>
+                                                        <td>廳館</td>
+                                                        <td width="150" data-min-screen-width="80"><input type="checkbox" name="hall_check_alls" data-ng-model="hall_check_alls.hall_check_all2" data-ng-change="hall_check_all2()">全選</td>
+                                                        <td>廳館</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr data-ng-repeat="hall in halls">
+                                                            <td><input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="hall[0].selected" data-ng-change="check_sms_notice_type_id(h)"></td>
+                                                            <td><span data-ng-click="showCommission(hall[0].hall_name,hall[0].id)" style="cursor: pointer">{{hall[0].hall_name}} &nbsp;<i data-ng-show="hall_old_ids.indexOf(hall[0].id) >= 0" class="fa fa-exclamation"></i></span></td>
+                                                            <td><span data-ng-show="hall.length == 2"><input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="hall[1].selected" data-ng-change="check_sms_notice_type_id(h)"></span></td>
+                                                            <td><span data-ng-click="showCommission(hall[1].hall_name,hall[1].id)" style="cursor: pointer">{{hall[1].hall_name}} &nbsp;<i data-ng-show="hall_old_ids.indexOf(hall[1].id) >= 0" class="fa fa-exclamation"></i></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table class="table table-bordered table-striped" data-ng-show="(user.checkPermissions('commissionCommonRuleSettingCreate') || (user.checkPermissions('commissionCommonRuleSettingUpdate') && commissions.id)) && show_btn">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>操作密碼：</td>
+                                                        <td>
+                                                            <input data-ng-required="enableClientValidation" name = "pin_code" class="form-control input-01 ng-pristine ng-valid" type="password" ng-model="commissions.pin_code" data-enter-key="add()">
+                                                        </td>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-information margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit" data-ng-show="(user.checkPermissions('commissionCommonRuleSettingCreate') || (user.checkPermissions('commissionCommonRuleSettingUpdate') && commissions.id)) && show_btn">提交</button>
+                                    <button class="btn btn-cancel" data-ng-click="reset()" data-ng-show="(user.checkPermissions('commissionCommonRuleSettingCreate') || (user.checkPermissions('commissionCommonRuleSettingUpdate') && commissions.id)) && show_btn">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

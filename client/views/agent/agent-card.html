@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <h3 style="font-size: 20px">
+        <strong>存卡記錄</strong>
+        <span style="position: relative;float: right;top: 8px;font-size: 18px;">存卡總數:{{consumption_total|parseTenThousand}}</span>
+    </h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="col-md-5">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>廳館</td>
+                        <td width="50">名稱</td>
+                        <td>存卡餘額(萬)</td>
+                        <td>已凍結（飛數）(萬)</td>
+                        <td>存卡凍結(萬)</td>
+                        <td>可用餘額(萬)</td>
+                        <td width="50">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="deposit_card in deposit_cards" data-selected-rows><!--data-ng-show="deposit_card.usable_amount != 0" -->
+                        <td>{{deposit_card.hall_name}}</td>
+                        <td>{{deposit_card.card_name}}</td>
+                        <td>{{deposit_card.deposit_amount|parseTenThousand2}}</td>
+                        <td>{{deposit_card.frozen_amount|parseTenThousand2}}</td>
+                        <td>{{deposit_card.frozen_deposit_amount|parseTenThousand2}}</td>
+                        <td>
+                            <span data-ng-show="deposit_card.usable_amount>= 0" >{{deposit_card.usable_amount|parseTenThousand2}}</span>
+                            <span data-ng-show="deposit_card.usable_amount < 0" style="color:red;">{{deposit_card.usable_amount|plusMinus|parseTenThousand2}}</span>
+                        </td>
+                        <td><button class="btn btn-information btn-table" data-ng-click="cardDetail(deposit_card)" style="padding:6px 10px ">詳細</button></td>
+                    </tr>
+                    <tr data-ng-show="deposit_cards.length == 0">
+                        <td colspan="7">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_card.page"
+                                    total-items="pagination_card.total_items"
+                                    on-select-page="select_card(page)"
+                                    max-size = "pagination_card.max_size"
+                                    items-per-page = "pagination_card.items_per_page"
+                                    data-ng-hide="pagination_card.total_items <= pagination_card.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_card" select-page="select_card"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+            <div class="col-md-7">
+                <!--<perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >-->
+                <!--<div class="panel-content consumption_record"  style="min-height: 100px; width: 1000px;">-->
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td width="95">廳館</td>
+                        <td width="50">名稱</td>
+                        <td width="140">時間</td>
+                        <td width="50">類型</td>
+                        <td width="100">金額(萬)</td>
+                        <td width="100">結餘(萬)</td>
+                        <td width="65">交易人</td>
+                        <td width="65">經手人</td>
+                        <td>備註</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="deposit_card_record in pagination_card_records" data-selected-rows>
+                        <td>{{deposit_card_record.hall_name}}</td>
+                        <td>{{current_card.card_name}}</td>
+                        <td>{{deposit_card_record.transaction_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{depositCardRecordTypes[deposit_card_record.transaction_type]}}</td>
+                        <td>
+                            <span data-ng-show="deposit_card_record.transaction_amount >= 0" >{{deposit_card_record.transaction_amount|parseTenThousand2}}</span>
+                            <span data-ng-show="deposit_card_record.transaction_amount < 0" class="minus-number">{{deposit_card_record.transaction_amount|parseTenThousand2|plusMinus}}</span>
+                            <!--<span data-ng-show="card_status.indexOf(deposit_card_record.transaction_type)>= 0" style="color:red;font-size:14px;font-weight:bold;">{{deposit_card_record.transaction_amount|plusMinus|parseTenThousand}}</span>-->
+                            <!--<span data-ng-show="card_status.indexOf(deposit_card_record.transaction_type) < 0" style="font-size:14px;font-weight:bold;">{{deposit_card_record.transaction_amount|plusMinus|parseTenThousand}}</span>-->
+                       </td>
+                        <td>
+                            <span data-ng-show="deposit_card_record.deposit_amount>= 0">{{deposit_card_record.deposit_amount|parseTenThousand2}}</span>
+                            <span data-ng-show="deposit_card_record.deposit_amount < 0" class="minus-number">{{deposit_card_record.deposit_amount|plusMinus|parseTenThousand2}}</span>
+                        </td>
+                        <td>{{deposit_card_record.agent_contact_name}}</td>
+                        <td>{{deposit_card_record.user_name}}</td>
+                        <td class="text-left">{{deposit_card_record.remark}}</td>
+                    </tr>
+                    <tr data-ng-show="pagination_card_records.length == 0">
+                        <td colspan="9">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                    <!--</div>-->
+                <!--</perfect-scrollbar>-->
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination_card_record.page"
+                                    total-items="pagination_card_record.total_items"
+                                    on-select-page="select_card_record(page)"
+                                    max-size = "pagination_card_record.max_size"
+                                    items-per-page = "pagination_card_record.items_per_page"
+                                    data-ng-hide="pagination_card_record.total_items <= pagination_card_record.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination_card_record" select-page="select_card_record"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-info btn-confirm" data-ng-click="print()">列印</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="remove()">關閉</button>
+        </div>
+    </form>
+</div>

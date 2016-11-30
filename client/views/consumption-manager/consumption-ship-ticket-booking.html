@@ -1,0 +1,179 @@
+<div class="col-md-4">
+<div class="panel panel-form-list">
+    <div class="panel-content">
+        <table>
+            <tbody>
+            <tr height="50">
+                <td class="text-right">消費單號：</td>
+                <td class="text-left" width="160">&nbsp;</td>
+                <td class="text-right" width="100">&nbsp;</td>
+                <td class="text-left" width="160">&nbsp;</td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">預訂單號：</td>
+                <td class="text-left"><input type="text" data-ng-model="condition_ship.buy_chips_no" class="form-control"></td>
+                <td class="text-right">所屬廳館：</td>
+                <td class="text-left">
+                    <ui-select ng-model="condition.hall">
+                        <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="hall in halls">
+                            <div ng-bind-html="hall"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">戶口編號：</td>
+                <td class="text-left"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                <td class="text-right">戶口姓名：</td>
+                <td class="text-left">李三</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="BGcolor-626571" width="100%">
+            <tbody>
+            <tr height="50">
+                <td class="text-right span-LH27 padding-LR3">行程</td>
+                <td>
+                    <div class="pull-left">
+                        <ui-select class="select-80" ng-model="condition.hall">
+                            <ui-select-match placeholder="澳門">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="pull-left span-LH27 padding-LR3">至</div>
+                    <div class="pull-left">
+                        <ui-select class="select-92" ng-model="condition.hall">
+                            <ui-select-match placeholder="香港">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="pull-left span-LH27 padding-LR3">艙位</div>
+                    <div class="pull-left">
+                        <ui-select class="select-80" ng-model="condition.hall">
+                            <ui-select-match placeholder="經濟艙">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="hall in halls">
+                                <div ng-bind-html="hall"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="pull-left span-LH27 padding-LR3">數量</div>
+                    <div class="pull-left">
+                        <div class="input-group ui-spinner" data-ui-spinner>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-spin="down">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </span>
+                            <input type="text" class="spinner-input form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                            &nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="pull-left"><button class="btn  btn-confirm btn-table" data-ng-click="update()">添加</button></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <table width="100%">
+            <tbody>
+            <tr height="50">
+                <td>澳門   -   香港九龍</td>
+                <td>經濟位</td>
+                <td>3張</td>
+                <td class="text-right">成本價：</td>
+                <td>300</td>
+                <td class="text-right">賣出價：</td>
+                <td>600</td>
+                <td class="text-right"><button class="btn btn-inf firm btn-table" data-ng-click="update()">刪除</button></td>
+            </tr>
+            <tr height="50">
+                <td>澳門   -   深圳機場[福永]</td>
+                <td>貴賓廂</td>
+                <td>3張</td>
+                <td class="text-right">成本價：</td>
+                <td>300</td>
+                <td class="text-right">賣出價：</td>
+                <td>600</td>
+                <td class="text-right"><button class="btn btn-inf btn-co n-table" data-ng-click="update()">刪除</button></td>
+            </tr>
+            <tr height="50">
+                <td>澳門   -   深圳機場[福永]</td>
+                <td>貴賓廂</td>
+                <td>3張</td>
+                <td class="text-right">成本價：</td>
+                <td>300</td>
+                <td class="text-right">賣出價：</td>
+                <td>600</td>
+                <td class="text-right"><button class="btn btn-inf btn-confirm b " data-ng-click="update()">刪除</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="BGcolor-626571" width="100%">
+            <tbody>
+            <tr height="50">
+                <td class="text-right" width="100">付款方式：</td>
+                <td class="text-left" width="160">
+                    <ui-select ng-model="condition.hall">
+                        <ui-select-match placeholder="請選擇廳館">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="hall in halls">
+                            <div ng-bind-html="hall"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <td class="text-right" width="100">&nbsp;</td>
+                <td class="text-left">&nbsp;</td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">成本總數：</td>
+                <td class="text-left">5000</td>
+                <td class="text-right">實收總數：</td>
+                <td class="text-left">6000</td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">收益：</td>
+                <td class="text-left">1000</td>
+                <td class="text-right">&nbsp;</td>
+                <td class="text-left">&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr height="50">
+                <td class="text-right" width="100">訂票人：</td>
+                <td class="text-left" width="160"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+                <td class="text-right" width="100">電話：</td>
+                <td class="text-left"><input type="text" data-ng-model="condition.buy_chips_no" class="form-control"></td>
+            </tr>
+            <tr>
+                <td valign="top" class="text-right">
+                    備註：
+                    <button class="btn  btn-information btn-table btn-remark">常用</button>
+                </td>
+                <td colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="commission_calculate.remark" name=""></textarea></td>
+            </tr>
+            <tr height="50">
+                <td class="text-right">操作密碼：</td>
+                <td colspan="3" class="text-left"><input type="text" data-ng-model="commission_calculate.pwd" class="form-control input-140" data-enter-key="update()"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-inf btn-confirm margin-r  data-ng-click="update()">提 交</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="check('消費轉移')">取 消</button>
+        </div>
+    </div>
+</div>
+</div>
+

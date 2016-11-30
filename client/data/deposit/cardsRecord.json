@@ -1,0 +1,5 @@
+[
+    {"hall":"永利鉅星","agent_code":"FA230","name":"张三1","type":"存M","amount":"200","balance":"50","available_balance":"100","frozen_fund":"100","created":"2014-07-28","duty_number":"早更","brokerage":"李四1","dealer":"趙毅1","remark":""},
+    {"hall":"永利鉅星","agent_code":"FA231","name":"张三2","type":"存M","amount":"300","balance":"50","available_balance":"100","frozen_fund":"100","created":"2014-07-27","duty_number":"早更","brokerage":"李四2","dealer":"趙毅2","remark":""},
+    {"hall":"永利鉅星","agent_code":"FA232","name":"张三3","type":"存M","amount":"400","balance":"20","available_balance":"100","frozen_fund":"100","created":"2014-07-26","duty_number":"晚更","brokerage":"李四3","dealer":"趙毅2","remark":""}
+]

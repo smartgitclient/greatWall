@@ -1,0 +1,426 @@
+<header class="clearfix" ng-controller="headerCtrl">
+    <!-- Logo -->
+    <div class="logo">
+        <div class="head_username">
+            <a href="#/">
+                <!-- <span class="logo-icon glyphicon glyphicon-fire"></span> -->
+            <span><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="images/g1.png" alt="">
+                    <span class="hidden-xs">
+                        <span>{{user.name}}</span>
+                    </span>
+            </a></span>
+            </a>
+        </div>
+        <div class="head_usrthandle">
+            <a href="#">{{user.department.name}}</a>&nbsp;|&nbsp;<a href="javascript:;" ng-click="logout()">退出</a>
+            <!--<a href="#">編輯</a>&nbsp;|&nbsp;-->
+        </div>
+    </div>
+
+    <!-- needs to be put after logo to make it working-->
+    <div class="menu-button" toggle-off-canvas>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+
+    <div class="top-nav">
+        <ul class="nav-left list-unstyled">
+<!--             <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-columns"></i></a>
+                <ul class="dropdown-menu dropdown-dark with-arrow">
+                    <li> <a href="javascript:;"><span data-i18n="Boxed Layout"></span></a> </li>
+                    <li> <a href="javascript:;"><span data-i18n="Full Width Layout"></span></a> </li>
+                    <li> <a href="javascript:;"><span data-i18n="Collapsed Menu"></span></a> </li>
+                    <li> <a href="javascript:;"><span data-i18n="Horizontal Menu"></span></a> </li>
+                    <li> <a href="javascript:;"><span data-i18n="Vertical Menu"></span></a> </li>
+                </ul>
+            </li> -->
+            <li class="sys_name">
+                智博賬房管理系統
+            </li>
+            <li class="dropdown text-normal nav-profile">
+                <ul class="dropdown-menu dropdown-dark with-arrow">
+                    <li>
+                        <a href="#/pages/profile">
+                            <i class="fa fa-user"></i>
+                            <span data-i18n="My Profile"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/tasks">
+                            <i class="fa fa-check fa-check-green"></i>
+                            <span data-i18n="My Tasks"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/pages/lock-screen">
+                            <i class="fa fa-lock"></i>
+                            <span data-i18n="Lock"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/common/signin">
+                            <i class="fa fa-sign-out"></i>
+                            <span data-i18n="Log Out"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+<!--             <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="fa fa-magic nav-icon"></span>
+                </a>
+                <ul class="dropdown-menu pull-right color-switch" data-ui-color-switch>
+                    <li><a href="javascript:;" class="color-option color-some_color" data-style="some_color"></a></li>
+                </ul>
+            </li> -->
+
+        </ul>
+        <div class="head_sear" style="width:580px" data-ng-controller="agentSearchCtrl">
+            <!-- Single button -->
+            <div id="com-name" class="btn-group" dropdown>
+                <button type="button" class="btn btn-danger">&nbsp;{{user.hall.hall_name}}</button>
+                <button type="button" class="btn btn-primary " data-ng-click="show_hall()">
+                <span class="caret"></span>
+            </button>
+            <hall-menu expander-menu="menu" active-function="selectHall">{{user.hall.hall_name}}</hall-menu>
+            </div>
+            <div id="text-sear1" style="float: left" class="form-group has-success has-feedback">
+                <p class="input-group ui-datepicker pull-left" style="width: 125px">
+                    <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" ng-readonly="true"  style="height:39px" />
+                        <span class="input-group-btn input-time-btn">
+                        <button type="button" class="btn btn-default btn-datepicker btn-green" style="margin-left: 0px"><i class="glyphicon glyphicon-calendar" style="color:#fff"></i></button>
+                        </span>
+                </p>
+            </div>
+            <div id="text-sear" class="form-group has-success has-feedback" >
+                <input  type="text" data-input-uppercase class="form-control" id="inputSuccess" data-enter-key="search()" data-ng-click="$('test11').click()" placeholder="請輸入戶口編號" data-ng-model="keyword" >
+                <span  class="fa fa-search form-control-feedback cursor-pointer" data-ng-click="search()"></span>
+                <!--<div data-ng-show="agent_data.length > 0" class="btn-group" dropdown style="width: 229px">-->
+                    <!--<button type="button" class="num btn" style="width: 140px">{{agent_name}}</button>-->
+                    <!--<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">-->
+                        <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                    <!--<ul class="dropdown-menu" role="menu">-->
+                        <!--<li data-ng-repeat="agent in agent_data"><a href="#/agent/agent-detail/{{agent.id}}"data-ng-click="redirectUpdate(agent.agent_code,agent.agent_name)">{{agent.agent_code}}&nbsp;&nbsp;{{agent.agent_name}}</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<span  data-ng-show="agent_data.length <= 0" class="fa fa-search form-control-feedback cursor-pointer" data-ng-click="searchAgents()"></span>-->
+                <!--<span  data-ng-show="agent_data.length > 0" class="fa fa-pencil-square-o form-control-feedback cursor-pointer" data-ng-click="writeAgents()"></span>-->
+            </div>
+        </div>
+        <ul class="nav-right pull-right list-unstyled" data-ng-hide="false">
+            <li class="dropdown" >
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown" >
+                    <i class="fa fa-eye"></i>
+                </a>
+                <div class="dropdown-menu" style="padding: 0;">
+                <ul class="style">
+                    <li><a href="javascript://">更換外觀</a></li>
+                    <li><a href="javascript://" ng-click="changeTheme('main')"><span class="black"></span><font>深色</font></a></li>
+                    <li><a href="javascript://" ng-click="changeTheme('main_white')"><span class="white"></span><font>淺色</font></a></li>
+                    <li><a href="javascript://" ng-click="changeTheme('main_green')"><span class="green"></span><font>綠色</font></a></li>
+                    <li><a href="javascript://" ng-click="changeTheme('main_blue')"><span class="blue"></span><font>藍色</font></a></li>
+                </ul>
+                </div>
+            </li>
+            <li class="dropdown"ng-hide="true">
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown">
+                    <i class="fa fa-comment-o"></i>
+                    <span class="badge badge-info">2</span>
+                </a>
+                <div class="dropdown-menu pull-right with-arrow panel panel-default">
+                    <div class="panel-heading">
+                        You have 2 messages.
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-info"><i class="fa fa-comment-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Jane sent you a message</span>
+                                    <span class="text-muted">3 hours ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-comment-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Lynda sent you a mail</span>
+                                    <span class="text-muted">9 hours ago</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="panel-footer">
+                        <a href="javascript:;">Show all messages.</a>
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown" ng-hide="true">
+                <a href="javascript:;" class="dropdown-toggle bg-warning" data-toggle="dropdown">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge badge-info">3</span>
+                </a>
+                <div class="dropdown-menu pull-right with-arrow panel panel-default">
+                    <div class="panel-heading">
+                        You have 3 mails.
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-warning"><i class="fa fa-envelope-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Lisa sent you a mail</span>
+                                    <span class="text-muted block">2min ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-info"><i class="fa fa-envelope-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Jane sent you a mail</span>
+                                    <span class="text-muted">3 hours ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript:;" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-success"><i class="fa fa-envelope-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Lynda sent you a mail</span>
+                                    <span class="text-muted">9 hours ago</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="panel-footer">
+                        <a href="javascript:;">Show all mails.</a>
+                    </div>
+                </div>
+            </li>
+            <!--系統設置-->
+            <li class="dropdown" ng-hide="true">
+                <a href="javascript:;" class="dropdown-toggle bg-success" data-toggle="dropdown">
+                    <i class="fa fa-cog nav-icon"></i>
+                    <!--<span class="badge badge-info">3</span>-->
+                </a>
+                <div class="dropdown-menu pull-right with-arrow panel panel-default">
+                    <!--<div class="panel-heading">-->
+                        <!--You have 3 notifications.-->
+                    <!--</div>-->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="#/system-set/sms-notification" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-success"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">短信通知事項</span>
+                                    <!--<span class="text-muted block">2min ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/account-authorization" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-info"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">賬戶授權事項</span>
+                                    <!--<span class="text-muted">3 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/capital-type-manager" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">本金類型管理</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/capital-type-create" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">新增本金類型</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/hall-manager" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">廳館管理</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/commission-limit" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">佣金限制</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/funds-type-manager" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">資金類型</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/integral-type-binding" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">積分類型綁定</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#/system-set/integral-type-manager" class="media">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">積分類型管理</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--<div class="panel-footer">-->
+                        <!--<a href="javascript:;">Show all notifications.</a>-->
+                    <!--</div>-->
+                </div>
+            </li>
+            <li class="dropdown" data-ng-hide="true">
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown">
+                    <i class="fa fa-eye" title="選擇皮膚"></i>
+                </a>
+                <div class="dropdown-menu pull-right with-arrow panel panel-default">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript://" class="media" ng-click="changeTheme('main_white')">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm" style="background-color: #fff"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">白色皮膚</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="javascript://" class="media" ng-click="changeTheme('main')">
+                                <span class="pull-left media-icon">
+                                    <span class="square-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">深藍色皮膚</span>
+                                    <!--<span class="text-muted">9 hours ago</span>-->
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </li>
+            <li class="dropdown">
+                <a href="javascript:;" ng-click="getTotal()" class="dropdown-toggle bg-orange mes-summary" data-toggle="dropdown">
+                    <i class="fa fa-bars"></i>
+                    <span class="badge badge-info">即時匯總</span>
+                </a>
+                <div class="dropdown-menu pull-right with-arrow panel panel-default">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            轉碼總額：<span ng-show="'' !== hall_total.thismonth_rolling ">{{ hall_total.thismonth_rolling | parseTenThousand }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            貨款總額：<span ng-show="'' !== hall_total.loan_total ">{{ hall_total.loan_total | parseTenThousand }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            存卡總額：<span ng-show="'' !== hall_total.depositcard_total ">{{ hall_total.depositcard_total | parseTenThousand }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            存單總額：<span ng-show="'' !== hall_total.depositticket_total ">{{ hall_total.depositticket_total | parseTenThousand }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            飛數總額：<span ng-show="'' !== hall_total.cross_total ">{{ hall_total.cross_total | parseTenThousand }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown">
+                <i class="fa fa-minus" title="最小化"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown">
+                <i class="fa fa-times" title="关闭"></i>
+                </a>
+            </li>
+            <!--
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle bg-orange" data-toggle="dropdown">
+                <i class="fa fa-sign-out"></i>
+                </a>
+            </li>
+            -->
+        </ul>
+
+        <ul class="nav-right pull-right list-unstyled" style="position: absolute; right: 0px; bottom: 0px; font-weight: bold; color: #eeeeee;">
+            <li style="padding: 0 10px;"><a href="javascript:;" data-ng-click="getVersion()" style="display: inline; height: 30px; outline:none; color: #eeeeee; text-decoration:underline">{{version}}</a></li>
+        </ul>
+        <!--<ul ng-controller="testCtrls">-->
+            <!--<li>-->
+                <!--<i class="fa fa-minus"></i>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<i class="fa fa-sign-out"></i>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<i class="fa fa-times" id="fa-minus"></i>-->
+            <!--</li>-->
+        <!--</ul>-->
+
+    </div>
+
+</header>

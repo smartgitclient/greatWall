@@ -1,0 +1,157 @@
+<div class="page page-services ng-scope" data-ng-controller="smsRecordCtrl">
+    <div class="panel panel-form-list col-md-10">
+        <div class="panel-heading"><strong>短信查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table style="margin: 0 auto;">
+                    <tr height="50">
+
+                        <td width="100" class="text-right">廳館：</td>
+                        <td width="150" style="padding:0px;">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+
+                        <td width="140" class="text-right">戶口編號：</td>
+                        <td width="140">
+                            <input name="agent_code" type="text" data-ng-model="condition.agent_code" data-input-uppercase class="form-control">
+                        </td>
+                        <td width="140" class="text-right">發送號碼：</td>
+                        <td width="320">
+                            <p class="col-md-5" style="padding:0px;">
+                                <select data-ng-model="condition.sms_area" class="form-control" data-ng-options="ac.area_code as ac.area_code for ac in areacodes" >
+                                    <option value="">請選擇區號</option>
+                                </select>
+                            </p>
+                            <p class="col-md-6">
+                                <input name="sms_tel" type="text" data-ng-model="condition.sms_tel" class="form-control">
+                            </p>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100" class="text-right">發送狀態：</td>
+                        <td>
+                            <select data-ng-model="condition.status" class="form-control">
+                                <option value = "">請選擇狀態</option>
+                                <option value = "{{sendSmsStatus.sending}}">{{sendSmsStatus.items[1]}}</option>
+                                <option value = "{{sendSmsStatus.sending_n}}">{{sendSmsStatus.items[2]}}</option>
+                                <option value = "{{sendSmsStatus.sending_y}}">{{sendSmsStatus.items[3]}}</option>
+                                <option value = "{{sendSmsStatus.sent}}">{{sendSmsStatus.items[4]}}</option>
+                            </select>
+                        </td>
+
+                        <td width="140" class="text-right">序列ID：</td>
+                        <td>
+                            <input name="sms_tel" type="text" data-ng-model="condition.sequence_id" class="form-control">
+                        </td>
+
+                        <td width="140" class="text-right">類型：</td>
+                        <td>
+                            <select data-ng-model="condition.type" style="width: 180px;" class="form-control" data-ng-options="am.id as am.name for am in sendSmsType.data">
+                                <option value="">請選擇模組</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100" class="text-right">提交時間：</td>
+                        <td  colspan='3'>
+                            <p class="input-group ui-datepicker col-md-5 pull-left" style="padding:0px;">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.create_time[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <p class="pull-left col-md-1" style="padding:0px;">~</p>
+                            <p class="input-group ui-datepicker col-md-5 pull-left" style="padding:0px;">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.create_time[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td class="text-right" >年月：</td>
+                        <td>
+                            <table class="table-inner">
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" data-dynamic-name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                    <!--<button class="btn btn-inf btn-cancel" data-tms-page>test</button>-->
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-10">
+        <!--<div class="panel-heading"><button class="btn btn-info btn-information pull-right" ng-click="search()">導出Excel</button></div>-->
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td width="150">操作</td>
+                    <td width="100">廳館</td>
+                    <td width="100">戶口編號</td>
+                    <td width="120">姓名</td>
+                    <td width="160">短信號碼</td>
+                    <td width="150">提交時間</td>
+                    <td width="100">類型</td>
+                    <td width="250">發送內容</td>
+                    <td width="70">序號ID</td>
+                    <td width="100">發送狀態</td>
+                    <td width="80">經手人</td>
+                    <td width="80">操作機器</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="smsRecord in smsRecords" data-selected-rows>
+                    <td>
+                        <button class="btn btn-information btn-table margin-right-5" ng-click="detailSms(smsRecord)">詳細</button>
+                        <button class="btn btn-information btn-table margin-right-5" ng-click="sendSms(smsRecord)" check-permissions="smsSendCreate">重發</button>
+                    </td>
+                    <td>{{smsRecord.hall_name}}</td>
+                    <td>{{smsRecord.agent_code}}</td>
+                    <td>{{smsRecord.agent_name}}</td>
+                    <td>{{smsRecord.sms_area}}-{{smsRecord.sms_tel}}</td>
+                    <td>{{smsRecord.create_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>{{sendSmsType.items[smsRecord.type]}}</td>
+                    <td>{{smsRecord.content|content}}</td>
+                    <td>{{smsRecord.sequence_id}}</td>
+                    <td>{{sendSmsStatus.items[smsRecord.status]}}</td>
+                    <td>{{smsRecord.user_name}}</td>
+                    <td>{{smsRecord.machine_name}}</td>
+                </tr>
+                <tr data-ng-show="smsRecords.length == 0">
+                    <td colspan="14">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

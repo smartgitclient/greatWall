@@ -1,0 +1,185 @@
+<div class="page page-services ng-scope" data-ng-controller="loanCreateResultCtrl">
+<div class="panel panel-form-list col-md-7">
+    <div class="panel-heading">
+        <strong class="pull-left">貸款結果</strong>
+    </div>
+    <div class="panel-content">
+        <div class="row">
+            <div class="col-md-7">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="93" class="text-right">貸款日期：</td>
+                        <td>{{loan.loan_time}}</td>
+                        <td width="93" class="text-right" data-ng-hide="is_show">業務單號：</td>
+                        <td data-ng-hide="is_show">{{loan.loan_seqnumber}}</td>
+                        <td data-ng-show="is_show" colspan="2">&nbsp;</td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="text-right">戶口編號：</td>
+                        <td>{{loan.agent_code}}</td>
+                        <td class="text-right">中文姓名：</td>
+                        <td>{{loan.agent_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">資金金額：</td>
+                        <td>{{loan.loan_amount|parseTenThousand}} </td>
+                        <td class="text-right">特別碼：</td>
+                        <td>{{loan.is_special==0 ? "普通貸款" : "工作碼"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">廳館：</td>
+                        <td>{{loan.hall_name}}</td>
+                        <td class="text-right">戶口類型：</td>
+                        <td>{{loan.agent_type}}</td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td class="text-right">貸款人姓名：</td>-->
+                        <!--<td>{{loan.borrower}}</td>-->
+                        <!--<td colspan="2"></td>-->
+                        <!--<td class="text-right">貸款人電話:</td>-->
+                        <!--<td>{{loan.borrower_tel}}</td>-->
+                    <!--</tr>-->
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="110" class="text-right">貸款人姓名：</td>
+                        <td align="left">{{loan.borrower}}</td>
+                    </tr>
+                    <tr data-ng-repeat="_supervisor in loan.loanSupervisors">
+                        <td width="93" class="text-right">批核人：</td>
+                        <td align="left">{{_supervisor.supervisor}}</td>
+                        <!--<td width="93" class="text-right">批核人電話：</td>-->
+                        <!--<td>{{_supervisor.supervisor_tel}}</td>-->
+                    </tr>
+                    <tr>
+                        <td class="text-right">備註：</td>
+                        <td style="vertical-align: middle;" colspan="3">{{loan.remark}} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">批額備註：</td>
+                        <td>{{loan.quotaRemarks}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td width="186" data-ng-hide="is_show">貸款單號</td>
+                <td>貸款類型</td>
+                <td>貸款金額</td>
+                <td>天期</td>
+                <td>息率</td>
+                <td>特别期限</td>
+                <td>特别息率</td>
+                <td>罰息天數</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="marker in loan.markers">
+                <td data-ng-hide="is_show">{{marker.marker_seqnumber}}</td>
+                <td>{{loan.is_special==0 ? marker.funds_type : "工作碼"}}</td>
+                <td>{{marker.marker_amount|parseTenThousand}} </td>
+                <td>{{marker.term}}</td>
+                <td>{{marker.expired_rate|parseTenThousand2}}</td>
+                <td>{{marker.special_term}}</td>
+                <td>{{marker.special_rate|parseTenThousand2}}</td>
+                <td>{{marker.expired_add_days}}</td>
+                <td>
+                    <button class="btn btn-info btn-information" ng-click="markerDetail(marker.id)">詳細</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>戶口編號</td>
+                <td>資金類型</td>
+                <td>天期</td>
+                <td>息率</td>
+                <td>特別期限</td>
+                <td>特別息率</td>
+                <!--<td>過期天數</td>-->
+                <!--<td>過期手續費</td>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr  data-ng-repeat="markerTerm in markerTerms">
+                <td>{{markerTerm.agent_code}}</td>
+                <td>{{markerTerm.funds_type}}</td>
+                <td>{{markerTerm.term}}</td>
+                <td>{{markerTerm.expired_rate|parseTenThousand2}}</td>
+                <td>{{markerTerm.special_term}}</td>
+                <td>{{markerTerm.special_rate|parseTenThousand2}}</td>
+                <!--<td>{{markerTerm.expired_days}}</td>-->
+                <!--<td>{{}}</td>-->
+            </tr>
+            <tr data-ng-show="markerTerms.length == 0">
+                <td colspan="11">暫無符合條件的記錄</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row text-center">
+            <button class="btn btn-info btn-information" ng-click="rolling(loan.loan_seqnumber)">即時轉碼</button>
+        </div>
+    </div>
+</div>
+
+<!--<div class="panel panel-form-list col-md-5">-->
+    <!--<div class="panel-heading">-->
+        <!--<strong class="pull-left">發送SMS</strong>-->
+
+        <!--<button class="btn btn-info btn-confirm pull-right" ng-click="goto_list()">返回貸款列表</button>-->
+        <!--<button class="btn btn-info btn-confirm pull-right" ng-click="isReadonly = ! isReadonly" style="margin-right: 20px;">列 印</button>-->
+    <!--</div>-->
+    <!--<div class="panel-content">-->
+        <!--<table class="table table-bordered table-striped table-detail-01">-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--<td>通知聯絡人：</td>-->
+                <!--<td>-->
+                    <!--<table class="table table-bordered table-striped table-02">-->
+                        <!--<tr>-->
+                            <!--<td width="40">1</td>-->
+                            <!--<td width="302">張菲菲 / +853 6688686</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>2</td>-->
+                            <!--<td>王毅 / +853 6688686</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>3</td>-->
+                            <!--<td>李麗 / +853 6688686</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+                <!--<td>短信內容</td>-->
+                <!--<td>-->
+                    <!--<div class="text-left"> <button class="btn btn-info btn-confirm" ng-click="editSms(smsContent)">編輯</button></div>-->
+                    <!--<br>-->
+                    <!--<div class="" style="width: 100%; background-color: #797979; height: 140px; color: #333333;">-->
+                        <!--{{sms}}-->
+                    <!--</div>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+        <!--<div class="text-center"> <button class="btn btn-info btn-confirm" ng-click="isReadonly = ! isReadonly">發送SMS</button></div>-->
+    <!--</div>-->
+
+<!--</div>-->
+</div>

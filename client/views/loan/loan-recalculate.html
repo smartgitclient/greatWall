@@ -1,0 +1,93 @@
+<div class="page page-services ng-scope" data-ng-controller="loanRecalculateResultCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>貸款重算</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td width="120" class="text-right">戶口編號：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.agent_code" class="form-control"></td>
+                        <td width="120" class="text-right">貸款人：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.agent_name" class="form-control"></td>
+                        <td width="120" class="text-right">業務單號：</td>
+                        <td width="140"><input type="text" data-ng-model="condition.loan_seqnumber" class="form-control"></td>
+                        <td width="120" class="text-right">變更動作：</td>
+                        <td width="140">
+                            <ui-select ng-model="condition.change_status">
+                                <ui-select-match placeholder="請選擇變更動作">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="c in changes">
+                                    <div ng-bind-html="c"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td width="120" class="text-right">是否重算：</td>
+                        <td width="140">
+                            <ui-select ng-model="condition.is_rerun">
+                                <ui-select-match placeholder="請選擇是否重算">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="isr in is_reruns">
+                                    <div ng-bind-html="isr"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class="row" style="text-align: right;">
+                <button class="btn btn-info btn-confirm" ng-click="all_reruns()">全部重新計算</button>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <td>業務單編號</td>
+            <td>戶口編號</td>
+            <td>貸款人</td>
+            <td>貸款金額（萬）</td>
+            <td>廳館</td>
+            <td>貸款日期</td>
+            <td>經手人</td>
+            <td>變更動作</td>
+            <td>是否重算</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="lr in loanRecalculates">
+            <td>{{lr.loan_seqnumber}}</td>
+            <td>{{lr.agent_code}}</td>
+            <td>{{lr.agent_name}}</td>
+            <td>{{lr.loan_amount|parseTenThousand2}}</td>
+            <td>{{lr.hall}}</td>
+            <td>{{lr.created}}</td>
+            <td>{{lr.brokerage}}</td>
+            <td>{{lr.change_status}}</td>
+            <td>{{lr.is_rerun}}</td>
+            <td>
+                <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail(lr.loan_id)">詳細</button>
+            </td>
+        </tr>
+        <tr data-ng-show="loanRecalculates.length == 0">
+            <td colspan="10">暫無符合條件的記錄</td>
+        </tr>
+        </tbody>
+    </table>
+    <footer class="table-footer">
+        <div class="row">
+            <div class="col-md-12 text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="current_page"
+                            total-items="loanRecalculates.length"
+                            on-select-page="select(page)"
+                            data-ng-show="loanRecalculates.length != 0"></pagination>
+            </div>
+        </div>
+    </footer>
+</div>

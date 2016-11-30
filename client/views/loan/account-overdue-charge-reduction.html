@@ -1,0 +1,67 @@
+<div class="page page-services ng-scope" data-ng-controller="loanListCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>減免修改</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="100" align="right">貸款單號：</td>
+                                        <td align="left" width="150">
+                                            {{overdue_charge_reduction.loan_seqnumber}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100" align="right">尚欠手續費（萬）：</td>
+                                        <td align="left" width="150">
+                                            {{overdue_charge_reduction.charge_relief_amount}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100" align="right">減免手續費（萬）：</td>
+                                        <td align="left" width="150">
+                                            <input type="text" data-ng-model="overdue_charge_reduction.reduction" class="form-control">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100" align="right">剩餘應收手續費（萬）：</td>
+                                        <td align="left" width="150">
+                                            {{amount | number}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="width: 93">備註：</td>
+                                        <td align="left" colspan="2">
+                                            <textarea id="" class="form-control textarea-table01 input-92 ng-pristine ng-valid" rows="4" data-ng-model="overdue_charge_reduction.content" name=""></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">操作密碼：</td>
+                                        <td align="left" width="150">
+                                            <input type="text" data-ng-model="overdue_charge_reduction.operator" class="form-control" data-enter-key="add()">
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-confirm" data-ng-click="add()">提交</button>
+                        <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

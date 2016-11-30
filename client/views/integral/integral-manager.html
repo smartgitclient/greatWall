@@ -1,0 +1,128 @@
+<div class="page page-services ng-scope" data-ng-controller="integralManagerCtrl">
+    <div class="panel panel-form-list  col-md-12">
+        <div class="panel-heading"><strong>積分管理</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="150" ><span class="span-formlist">廳館：</span></td>
+                        <td width="200" data-ng-show="user.isAllHall()">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="200" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td width="200" align="right"><span class="span-formlist">戶口編號：</span></td>
+                        <td width="200"><input type="text" data-input-uppercase data-ng-model="condition.agentInfo.agent_code" class="form-control"></td>
+                        <td width="200" align="right"><span class="span-formlist">戶主姓名：</span></td>
+                        <td width="200">{{agent_name}}</td>
+						<td width="200" align="right"><span class="span-formlist">轉碼卡：</span></td>
+                        <td width="200"> <input type="text" data-input-uppercase data-ng-model="condition.commissionCard.card_name" class="form-control"></td>
+                       
+                        <td width="200" align="right">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+					 <td width="200" align="right"><span class="span-formlist">積分類型：</span></td>
+                        <td width="200">
+                            <select class="form-control" data-ng-model="condition.integral_type_id" ng-options="it.id as it.integral_name for it in integralTypes">
+                                <option value = "">請選擇類型</option>
+                            </select>
+                        </td>
+                        <td class="text-right" width="150" ><span class="span-formlist">月結月：</span></td>
+                        <td width="200">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.settlement_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="200" align="right"><span class="span-formlist">過期月：</span></td>
+                        <td width="200">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.expired_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        
+                        <td width="200" align="right"><span class="span-formlist">&nbsp;</span></td>
+                        <td width="200">&nbsp;</td>
+                        <td width="200" align="right">&nbsp;</td>
+                    </tr>
+
+                </table><br/><br/>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+    <div class=" col-md-12">
+        <div class="panel panel-list-detail col-md-12">
+            <div class="panel-heading">
+                <!--button class="btn btn-information pull-right" >導出EXCEL</button-->
+                <button class="btn btn-confirm margin-right-15 pull-right" check-permissions="integralSendSMS" data-ng-click="sendSMS()">發送SMS</button>
+            </div>
+            <div class="panel-content">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>戶口編號</td>
+                        <td>戶口名稱</td>
+                        <td>轉碼卡</td>
+                        <td>積分類型</td>
+                        <td>廳館</td>
+                        <td>積分額</td>
+                        <td>已消費積分</td>
+                        <td>可用積分</td>
+                        <td>月结月</td>
+                        <td>過期月</td>
+                        <td check-permissions="integralSetting,integralTransfer">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="integral in integrals" data-selected-rows>
+                        <td>{{integral.agent_code}}</td>
+                        <td>{{integral.agent_name}}</td>
+                        <td>{{integral.commission_card}}</td>
+                        <td>{{integral.integral_type}}</td>
+                        <td>{{integral.hall_name}}</td>
+                        <td>{{integral.integral_amount|parseDollar:true}}</td>
+                        <td>{{integral.used_integral|parseDollar:true}}</td>
+                        <td>{{integral.usable_integral|parseDollar:true}}</td>
+                        <td>{{integral.settlement_month|parseDate:"yyyy-MM"}}</td>
+                        <td>{{integral.expired_month|parseDate:"yyyy-MM"}}{{integral.expired_month?"":"永久有效"}}</td>
+                        <!--<td>{{integral.}}</td>-->
+                        <td check-permissions="integralSetting,integralTransfer">
+                            <button class="btn btn-confirm btn-table" check-permissions="integralSetting" data-ng-click="integral_setting(integral)">設定</button>
+                            <button class="btn btn-confirm btn-table" check-permissions="integralTransfer" data-ng-click="integral_transfer(integral)" >轉移</button>
+                        </td>
+                    </tr>
+                    <tr data-ng-show="integrals.length == 0">
+                        <td colspan="11">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-show="loans.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>

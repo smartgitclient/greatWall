@@ -1,0 +1,116 @@
+<div class="page page-grid" data-ng-controller="userInfoCreateCtrl">
+    <div class="col-md-8">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>用戶資料</strong></div>
+        <div class="panel-content">
+            <div class="row text-center">
+                <form name="form_authitem_create" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{authitem_create_url}}">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td width="120" align="right">登錄名稱：</td>
+                            <td align="left" width="200"><input type="text"
+                                                                data-ng-required="enableClientValidation"
+                                                                data-ng-model="record_create.username"
+                                                                name="username"
+                                                                data-input-lowercase
+                                                                class="form-control"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="right">姓名：</td>
+                            <td align="left"><input type="text"
+                                                    data-ng-required="enableClientValidation"
+                                                    data-ng-model="record_create.name"
+                                                    name="name"
+                                                    class="form-control"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="right">員工編號：</td>
+                            <td align="left"><input type="text"
+                                                    data-ng-required="enableClientValidation"
+                                                    name="user_no"
+                                                    data-ng-model="record_create.user_no"
+                                                    class="form-control"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="right">部門：</td>
+                            <td align="left">
+                                <select data-ng-required="enableClientValidation"
+                                        name = "department_id"
+                                        data-ng-model="record_create.department_id"
+                                        class="form-control"
+                                        data-ng-options="dm.id as dm.department for dm in departMents" >
+                                    <option value="">請選擇部門</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped table-detail-01" data-ng-show="!record_create.id">
+                        <tr>
+                            <td align="right" style="width: 120px">登錄密碼：</td>
+                            <td align="left">
+                                <input type="password"
+                                       data-ng-required="enableClientValidation"
+                                       name="new_password"
+                                       class="form-control"
+                                       ng-model="record_create.new_password"/>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="right" width="120">操作密碼：</td>
+                            <td align="left" width="200">
+                                <input type="password"
+                                       data-ng-required="enableClientValidation"
+                                       name="new_pin_code"
+                                       class="form-control"
+                                       ng-model="record_create.new_pin_code"/>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading" style="text-align: left;">
+                            <strong>綁定職位</strong>
+                            <label>
+                                <input type="checkbox" name="checked_all_flag" data-ng-model="checked_all_flag" data-ng-change="checked_all()"/>&nbsp;全部
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-striped table-detail-01">
+                            <tr data-ng-repeat="authitem_c in authitem_content">
+                                <td align="left" data-ng-repeat="authitem in authitem_c">
+                                    <label>
+                                        <span><input type="checkbox" data-ng-model="authitem.checked"/></span>
+                                        <span>&nbsp;{{authitem.description}}</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="authitem_content.length == 0">
+                                <td colspan="5">暫無符合條件的記錄</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td align="right" width="120">操作密碼：</td>
+                        <td align="left" width="200">
+                            <input type="password" name="pin_code" class="form-control" ng-model="record_create.pin_code" data-enter-key="submit()" />
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+                </form>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm margin-right-15" data-ng-click="submit()" data-ng-disabled="disabled_submit">提交</button>
+            <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </div>
+        <div class="panel-footer"></div>
+    </div>
+
+</div>
+</div>

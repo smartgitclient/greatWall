@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h3>版本說明</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped table-detail-01">
+                <tbody>
+                <tr>
+                    <td width="100">更新內容：</td>
+                    <td class="text-left">
+                        <perfect-scrollbar class="animate-fade-up"
+                                           style=" position: relative; height:500px;overflow-y: hidden;"
+                                           suppress-scroll-x="true"
+                                           wheel-propagation="true"
+                                           wheel-speed="5">
+                            <div class="panel-content consumption_record" style="min-height: 500px; padding:0 10px 5px 0;">
+                                <div ng-bind-html="version_content|nl2br"></div>
+                            </div>
+                        </perfect-scrollbar>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" data-ng-disabled="disabled_submit" ng-click="close()">關 閉</button>
+    </div>
+</div>

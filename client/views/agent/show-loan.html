@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <h3>未還貸款</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; min-width: 1600px;">
+                      <table class="table table-bordered table-hover table-striped table-detail-01 ">
+                    <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>廳館</td>
+                            <!--<td>業務單號</td>-->
+                            <td>貸款單號</td>
+                            <td>戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>貸款人</td>
+                            <td>貸款金額(萬)</td>
+                            <td>貸款餘額(萬)</td>
+                            <td>貸款日期</td>
+                            <td>戶口類型</td>
+                            <td>線頭類型</td>
+                            <td>主線頭類型</td>
+                            <td>利息類型</td>
+                            <td>息率</td>
+                            <td>天期</td>
+                            <td>貸款天數</td>
+                            <td>過期天數</td>
+                            <td width="150">備註</td>
+                            <td>經手人</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="loan in unRepayments" data-selected-rows>
+                        <td>{{loan.show_format}}</td>
+                        <td>{{loan.hall_name}}</td>
+                        <!--<td>{{loan.loan_seqnumber}}</td>-->
+                        <td>{{loan.marker_seqnumber}}</td>
+                        <td>{{loan.agent_code}}</td>
+                        <td>{{loan.agent_name}}</td>
+                        <td>{{loan.borrower}}</td>
+                        <td>{{loan.marker_amount|parseTenThousand2}}</td>
+                        <td>{{loan.settlement_amount|parseTenThousand2}}</td>
+                        <td>{{loan.loan_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                        <td>{{loan.funds_type_remark}}</td>
+                        <td>{{loan.group_funds_type_remark}}</td>
+                        <td>{{loan.main_group_funds_type_remark}}</td>
+                        <td>{{loan.interest_type}}</td>
+                        <td>{{loan.expired_rate}}</td>
+                        <td>{{loan.term}}</td>
+                        <td>{{loan.loan_days}}</td>
+                        <td>{{loan.expired_days}}</td>
+                        <td width="150">{{loan.remark}}</td>
+                        <td>{{loan.user_name}}</td>
+                    </tr>
+                        <tr data-ng-show="unRepayments.length == 0">
+                            <td colspan="19">暫無符合條件的記錄</td>
+                        </tr>
+                    </tbody>
+                </table>
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                </div>
+            </footer>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" ng-click="close()">關 閉</button>
+    </div>
+</div>

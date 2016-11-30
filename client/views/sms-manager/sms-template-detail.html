@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h3>常用短信模板詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="120">部門：</td>
+                    <td width="100" class="text-left">{{smstemplate.department_name}}</td>
+                    <td width="120">模板名：</td>
+                    <td class="text-left">{{smstemplate.template_name}}</td>
+                </tr>
+                <tr>
+                    <td>模板內容：</td>
+                    <td class="text-left" colspan="3" ng-bind-html="smstemplate.content|nl2br"></td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+    </form>
+<div class="row text-center"><br/>
+    <button class="btn btn-information" ng-click="cancel()">關 閉</button>
+</div>
+</div>

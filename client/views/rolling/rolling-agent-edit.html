@@ -1,0 +1,52 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" ng-click="cancel()">×</button>-->
+                    <h4 class="modal-title" id="myModalLabel">
+                        <h3>更改轉碼戶口</h3>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="$parent.form_deposit" class="ng-valid ng-dirty form-validation" server-validation="POST{{deposit_url}}">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <!--<tr>-->
+                                        <!--<td width="150" align="right">場次編碼：</td>-->
+                                        <!--<td align="left">{{agent_record.scene_no}}</td>-->
+                                    <!--</tr>-->
+                                    <tr>
+                                        <td width="150" align="right">默認轉碼戶口：</td>
+                                        <td align="left">{{agent_record.agent_code}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="150" align="right">更改轉碼戶口：</td>
+                                        <td align="left"><input type="text"
+                                                                data-input-uppercase
+                                                                ng-model="agent_record.transfer_agent_code"
+                                                                data-ng-required="enableClientValidation"
+                                                                name="transfer_agent_code"
+                                                                class="form-control input-02"></td>
+                                    </tr>
+                                </table>
+                            <!--<table class="table table-bordered table-striped table-detail-01">-->
+                                <!--<tr>-->
+                                    <!--<td align="right">操作密碼：</td>-->
+                                    <!--<td align="left"><input type="password" name="pin_code" ng-model="amount_rolling_record.pin_code" class="form-control input-01"></td>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-confirm" data-ng-disabled="isDesabled" ng-click="submit()">提交</button>
+                        <button class="btn btn-inf btn-cancel" ng-click="cancel()">取消</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

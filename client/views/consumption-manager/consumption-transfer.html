@@ -1,0 +1,177 @@
+<div class="page page-grid" data-ng-controller="consumptionTransferCtrl">
+<div class="panel panel-default">
+<div class="col-md-4" >
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>轉出戶口</strong>
+            </div>
+            <div class="panel-content">
+                <form name="form_consumption_ransfer" class="form-validation">
+                    <table>
+                        <tr height="50">
+                            <td width="80" data-min-screen-width="70" class="text-right">戶口編號：</td>
+                            <td data-min-screen-width="130"><input data-input-uppercase data-ng-required="enableClientValidation" name="out_agent_id" type="text" data-ng-model="condition.agent_code" data-ng-disabled="disabled_update" class="form-control"></td>
+                            <td width="120" class="text-right">戶口姓名：</td>
+                            <td data-min-screen-width="110">{{out_agent_name}}</td>
+                        </tr>
+                        <tr height="50">
+                            <td  class="text-right">消費類型：</td>
+                            <td>
+                                <select name="consumption_type_id" class="form-control" data-ng-model="condition.consumption_type_id" data-ng-options="n.id as n.consumption_type for n in consumptionTypes">
+                                    <option value="">請選擇消費類型</option>
+                                </select>
+                            </td>
+                            <td width="120" class="text-right">年月：</td>
+                            <td>
+                                <p class="input-group ui-datepicker">
+                                    <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                </p>
+                            </td>
+                        </tr>
+                    </table><br/><br/>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="search()">查詢</button>
+                        <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>轉入戶口</strong>
+            </div>
+            <div class="panel-content">
+                <form name="form_transfer" class="form-validation" server-validation="POST{{transfer_url}}">
+                    <table>
+                        <tr height="50">
+                            <td width="80" data-min-screen-width="70" class="text-right">戶口編號：</td>
+                            <td data-min-screen-width="130" width="135"><input data-input-uppercase data-ng-required="enableClientValidation" name="in_agent_id" type="text" data-ng-model="new_consumption_transfer.in_agent_code" data-ng-disabled="disabled_update" class="form-control"></td>
+                            <td width="120" data-min-screen-width="75" class="text-right">戶口姓名：</td>
+                            <td width="120" data-min-screen-width="110">{{consumption_transfer_agent_name}}</td>
+                        </tr>
+                        <tr height="50">
+                        <td valign="top" class="text-right">備註：</td>
+                        <td colspan="3">
+                            <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="consumption_transfer.remark" name="remark"></textarea>
+                        </td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">操作密碼：</td>
+                            <td><input type="password" name = "pin_code" data-ng-model="consumption_transfer.pin_code" class="form-control" data-enter-key="add(true)"></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table><br/><br/>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="isDesabled">提交</button>
+                        <button class="btn btn-cancel" ng-click="cancel()" data-ng-disabled="isDesabled">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>消費記錄</strong></div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content table-dynamic">
+                    <perfect-scrollbar class="animate-fade-up consumption_record " style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 3300px;">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td width="50" min-screen-width="100">
+                                        <input type="checkbox" data-ng-model="check1.all2" data-ng-click = "check_all2()" name="selected">
+                                    </td>
+                                    <!--<td>消費單號</td>-->
+                                    <td data-td-sort data-td-sort-up="book_no ASC" data-td-sort-down="book_no DESC" data-td-sort-select="search" data-td-sort-pagination="page">預訂單號</td>
+                                    <td>廳館</td>
+                                    <td data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="search" data-td-sort-pagination="page">戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>客人姓名</td>
+                                    <td>房間號碼</td>
+                                    <td>消費類型</td>
+                                    <td width="300">消費內容</td>
+                                    <td>成本</td>
+                                    <td>實收</td>
+                                    <td>收益</td>
+                                    <td>應付消費</td>
+                                    <td>房間消費</td>
+                                    <td>付款方式</td>
+                                    <td width="1000">備註</td>
+                                    <td>入住日期</td>
+                                    <td>退房日期</td>
+                                    <td>新增時間</td>
+                                    <td>年月</td>
+                                    <td data-td-sort data-td-sort-up="shift_date ASC" data-td-sort-down="shift_date DESC" data-td-sort-select="search" data-td-sort-pagination="page">結算日期</td>
+                                    <td>更數</td>
+                                    <td>狀態</td>
+                                    <td>經手人</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="consumption in consumptions" data-selected-rows>
+                                    <td align="left" style="padding-left: 15px;">
+                                        <input type="checkbox" data-ng-click="check_one(consumption)" name="selected" data-ng-model="consumption.selected" />
+                                    </td>
+                                    <!--<td>{{ consumption.consumption_no }}</td>-->
+                                    <td>{{ consumption.book_no }}</td>
+                                    <td>{{ consumption.hall_name }}</td>
+                                    <td>{{ consumption.agent_code }}</td>
+                                    <td>{{ consumption.agent_contact_name}}</td>
+                                    <td>{{ consumption.trader }}</td>
+                                    <td>{{ consumption.room_no }}</td>
+                                    <td>{{ consumption.consumption_type }}</td>
+                                    <td>{{ consumption.consumption_content }}</td>
+                                    <td>{{ consumption.cost_total | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{ consumption.sell_total | parseTenThousandToYuan | parseYuan }}</td>
+                                    <td>{{ consumption.profit | parseTenThousandToYuan | parseYuan  }}</td>
+                                    <td>{{ consumption.should_pay | parseTenThousandToYuan | parseYuan  }}</td>
+                                    <td>{{ consumption.room_pay | parseTenThousandToYuan | parseYuan  }}</td>
+                                    <td>{{ consumption.pay_type_name }}</td>
+                                    <td align="left">{{ consumption.remark }}</td>
+                                    <td>{{ consumption.checkin_datetime | limitTo : 11}}</td>
+                                    <td>{{ consumption.checkout_datetime | limitTo : 11}}</td>
+                                    <td>{{ consumption.book_time | limitTo : 16}}</td>
+                                    <td>{{consumption.year_month| limitTo : 7}}</td>
+                                    <td>{{ consumption.shift_date | limitTo : 11 }}</td>
+                                    <td>{{ consumption.shift }}</td>
+                                    <td>{{ bookingState_items[consumption.status] }}</td>
+                                    <td>{{ consumption.user_name }}</td>
+                                    <!--td>{{ bookingState_items[consumption.status] }}</td-->
+                                </tr>
+                                <tr data-ng-show="consumptions.length == 0">
+                                    <td colspan="30">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                         </div>
+                    </perfect-scrollbar>
+                    <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

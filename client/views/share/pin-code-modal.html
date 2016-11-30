@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h3>驗證操作密碼</h3>
+</div>
+<div class="modal-body">
+    <form>
+    <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td>請輸入操作密碼：</td>
+            <td >
+                <input class="form-control input-01" type="password" data-ng-model="pin_code" data-enter-key="confirm(pin_code)">
+            </td>
+        </tr>
+        <tr data-ng-show="is_second_pin_code">
+            <td>請輸入二次授權操作密碼：</td>
+            <td >
+                <input class="form-control input-01" type="password" data-ng-model="second_pin_code" data-enter-key="confirm(pin_code,second_pin_code)">
+            </td>
+        </tr>
+    </table>
+    <br><br><br>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-confirm margin-right-15" ng-click="confirm(pin_code,second_pin_code)" data-ng-disabled="!allowSubmit">確認</button>
+        <button class="btn btn-cancel" data-ng-click="cancel()">取消</button>
+    </div>
+    </form>
+</div>
+</div>

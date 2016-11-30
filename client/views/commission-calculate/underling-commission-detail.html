@@ -1,0 +1,45 @@
+<div class="modal-header" style="height: 65px">
+    <h3 style="float: left;margin-top:15px">{{underlingCommissions[0].agent_code}}&nbsp;{{title}}</h3>
+    <strong>
+        <button class="btn btn-information pull-right" data-ng-disabled="isDesabled" style="margin: 15px 0 0 10px" report-params="excel_condition" channel-type="{{channel_type}}" report-btn >導出EXCEL</button>
+        <button class="btn btn-information pull-right" data-ng-disabled="isDesabled" data-ng-click="print_r()" style="margin: 15px 0 0 10px">列印</button>
+    </strong>
+</div>
+<div class="modal-body">
+    <form name="form_search">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <thead>
+                    <tr>
+                        <td>廳館</td>
+                        <td>下線編號</td>
+                        <td>下線名稱</td>
+                        <td>轉碼卡</td>
+                        <td width="120">轉碼總額(萬)</td>
+                        <td>佣金收益</td>
+                        <td>津貼收益</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="underlingCommission in underlingCommissions">
+                            <td width="100">{{underlingCommission.hall_name}}</td>
+                            <td width="100">{{underlingCommission.child_agent_code}}</td>
+                            <td width="100">{{underlingCommission.child}}</td>
+                            <td width="100">{{underlingCommission.commission_card}}</td>
+                            <td width="100">{{underlingCommission.rolling_amount|parseTenThousand2}}</td>
+                            <td width="100">{{underlingCommission.commission_amount|parseDollar:true}}</td>
+                            <td width="100">{{underlingCommission.allowance_amount|parseDollar:true}}</td>
+                        </tr>
+                        <tr data-ng-show="underlingCommissions.length == 0">
+                            <td colspan="7">暫無符合條件的記錄</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" ng-click="closed()">關 閉</button>
+    </div>
+</div>

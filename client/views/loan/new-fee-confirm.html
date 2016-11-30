@@ -1,0 +1,296 @@
+<div class="panel-form-list">
+<div class="modal-header" style="padding:15px 15px 0">
+    <h4 class="modal-title" id="myModalLabel">
+        <h3>手續費詳細</h3>
+    </h4>
+</div>
+    <div class="modal-body" style="padding: 0">
+        <!-- -->
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel_l col-md-3">-->
+                <!--<div style="width:320px;padding:15px 5px 0">-->
+                <!--<div class="pull-left"><span class="pull-left"><h4 style="color:#000">結算日期：</h4></span></div>-->
+                <!--<div class="pull-right">-->
+                <!--<p class="input-group ui-datepicker pull-left" style="width:210px">-->
+
+                <!--&lt;!&ndash;<input type="text" class="form-control" name="date" datepicker-popup datepicker-mode="day" ng-model="end_date" style="width: 100px" />&ndash;&gt;-->
+                <!--<input type="text" size="10" data-ng-disabled="true" data-ng-required="enableClientValidation"  name="end_date" class="form-control" ng-model="calcaulate.end_date" data-autoclose="1" placeholder="Date" bs-datepicker>-->
+                <!--<span class="input-group-btn">-->
+                <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                <!--</span>-->
+                <!--<input type="text" size="8" data-ng-disabled="true" class="form-control" data-ng-required="enableClientValidation"  name="end_date" ng-model="calcaulate.end_date" data-autoclose="1" placeholder="Time" useNative = "true" bs-timepicker>-->
+                <!--</p>-->
+                <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="panel_r col-md-9">-->
+                <!--&lt;!&ndash; 抵押記錄 start&ndash;&gt;-->
+                <!--<div class="panel-content consumption_record" style="padding:0 20px 0 20px;border:none" >-->
+                    <!--<div class="panel-heading">-->
+                        <!--抵押記錄-->
+                    <!--</div>-->
+                    <!--<table class="table table-bordered table-striped">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<td>貸款單號</td>-->
+                            <!--<td>貸款金額(萬)</td>-->
+                            <!--<td>貸款時間</td>-->
+                            <!--<td>抵押時間</td>-->
+                            <!--<td>抵押方</td>-->
+                            <!--<td>抵押金額(萬)</td>-->
+                            <!--<td>未回抵押金額</td>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tr ng-repeat="mortgage_record in mortgage_records" data-selected-rows>-->
+                            <!--<td class="no-padding" check-permissions="mortgageRecordReturnM">-->
+                            <!--<td>{{ mortgage_record.marker.marker_seqnumber}}</td>-->
+                            <!--<td>{{ mortgage_record.marker.marker_amount|parseTenThousand2}}</td>-->
+                            <!--<td>{{ mortgage_record.marker.loan_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>-->
+                            <!--<td>{{ mortgage_record.mortgage.mortgage_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>-->
+                            <!--<td>{{ mortgage_record.mortgage.agent_code }}</td>-->
+                            <!--<td>{{ mortgage_record.mortgage_amount|parseTenThousand2}}</td>-->
+                            <!--<td>{{ mortgage_record.settlement_amount }}</td>-->
+                        <!--</tr>-->
+                        <!--<tr data-ng-show="mortgage_records.length == 0">-->
+                            <!--<td colspan="9">-->
+                                <!--暫無抵押記錄-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; 上一次截息&ndash;&gt;-->
+                <!--<div class="panel-content consumption_record" style="padding:0 20px 0 20px;border:none">-->
+                    <!--<div class="panel-heading">-->
+                        <!--截息-->
+                    <!--</div>-->
+                    <!--<table class="table table-bordered table-striped">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<td>貸款單號</td>-->
+                            <!--<td>貸款金額(萬)</td>-->
+                            <!--<td>計息金額</td>-->
+                            <!--<td>計息天數</td>-->
+                            <!--<td>截息日期</td>-->
+                            <!--<td>息率</td>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tr ng-repeat="monthly_record in monthly_records" data-selected-rows data-ng-show="monthly_record.fee_type ==2">-->
+                            <!--<td>{{monthly_record.marker_seqnumber}}</td>-->
+                            <!--<td>{{ monthly_record.marker_amount | number}}</td>-->
+                            <!--<td>{{ monthly_record.calc_amount | number}}</td>-->
+                            <!--<td>{{monthly_record.days}}</td>-->
+                            <!--<td>{{ monthly_record.end_date | parseDate:'yyyy-MM-dd HH:mm'}}</td>-->
+                            <!--<td>{{monthly_record.rate|parseTenThousand2 | number}}</td>-->
+                        <!--</tr>-->
+                        <!--<tr data-ng-show="monthly_records.length == 0"  >-->
+                            <!--<td colspan="9"> 暫無截息記錄 </td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; 上一次截息 end&ndash;&gt;-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<form name="$parent.form_calcaulate" class="ng-valid ng-dirty form-validation" server-validation="POST{{calcaulate_url}}" >-->
+        <!--&lt;!&ndash; 貸款設置start&ndash;&gt;-->
+        <!--<div class="panel-content consumption_record" style="padding:0 20px 0 20px;border:none">-->
+            <!--<table class="table table-bordered table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td width="150">戶口編號</td>-->
+                    <!--<td data-min-screen-width="80">貸款類型</td>-->
+                    <!--<td data-min-screen-width="75">天期</td>-->
+                    <!--<td data-min-screen-width="75">息率</td>-->
+                    <!--<td data-min-screen-width="75">特別期限</td>-->
+                    <!--<td data-min-screen-width="75">特別息率</td>-->
+                    <!--<td data-min-screen-width="75">罰息天數</td>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tr data-ng-repeat="markerTermFee in markerTermFees">-->
+                    <!--<td>{{markerTermFee.agent_code}}</td>-->
+                    <!--<td>{{markerTermFee.funds_type}}-->
+                        <!--&lt;!&ndash;ng-options="h.funds_type as h.funds_name for h in fundsTypes"&ndash;&gt;-->
+                        <!--&lt;!&ndash;<select data-ng-model="markerTermFee.funds_type"&ndash;&gt;-->
+                                <!--&lt;!&ndash;data-ng-required="enableClientValidation"&ndash;&gt;-->
+                                <!--&lt;!&ndash;data-dynamic-name="markerTermFees_{{$index}}_funds_type"&ndash;&gt;-->
+                                <!--&lt;!&ndash;class="form-control"&ndash;&gt;-->
+                                <!--&lt;!&ndash;data-ng-change="quota_change(markerTerm)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option value="">請選擇資金類型</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option data-ng-repeat="h in fundsTypes"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;ng-selected ="h.funds_type==markerTerm.funds_type"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;data-ng-show="markerTerm.agent_info_id==h.agent_info_id"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;value="{{h.funds_type}}">{{h.funds_name}}</option>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<input data-ng-model="markerTermFee.term" type="text"-->
+                               <!--data-dynamic-name="subs_{{$index}}_term"-->
+                               <!--data-ng-required="enableClientValidation"-->
+                               <!--class="form-control">-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<input data-ng-model="markerTermFee.expired_rate" type="text"-->
+                               <!--data-ng-required="enableClientValidation"-->
+                               <!--data-dynamic-name="subs_{{$index}}_expired_rate"-->
+                               <!--class="form-control">-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<input data-ng-model="markerTermFee.special_term" type="text"-->
+                               <!--data-ng-required="enableClientValidation"-->
+                               <!--data-dynamic-name="subs_{{$index}}_special_term"-->
+                               <!--class="form-control">-->
+                    <!--</td>-->
+                    <!--<td width="100">-->
+                        <!--<input data-ng-model="markerTermFee.special_rate" type="text"-->
+                               <!--data-ng-required="enableClientValidation"-->
+                               <!--data-dynamic-name="subs_{{$index}}_special_rate"-->
+                               <!--class="form-control">-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--&lt;!&ndash;<input data-ng-model="markerTermFee.expired_add_days" type="text"&ndash;&gt;-->
+                               <!--&lt;!&ndash;data-ng-required="enableClientValidation"&ndash;&gt;-->
+                               <!--&lt;!&ndash;data-dynamic-name="subs_{{$index}}_expired_add_days"&ndash;&gt;-->
+                               <!--&lt;!&ndash;class="form-control">&ndash;&gt;-->
+                        <!--{{markerTermFee.expired_add_days}}-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td data-ng-hide="markerTermFees.length>0" colspan="9">-->
+                        <!--暫無貸款單-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; 貸款設置end&ndash;&gt;-->
+
+        <!--<table class="table table-bordered table-striped table-detail-01" style="margin-top: 10px;">-->
+            <!--<tr>-->
+                <!--<td class="text-left" width="120"> <button class="btn btn-confirm" ng-click="reset_calcaulate()" data-ng-disabled="calcaulate_btn">重新計算</button></td>-->
+            <!--</tr>-->
+        <!--</table>-->
+        <!--</form>-->
+        <form name="$parent.form_confirm" class="ng-valid ng-dirty form-validation" server-validation="POST{{confirm_url}}"  style="padding:25px">
+        <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+            <div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;padding:0">
+                <table class="table table-bordered table-striped" style="margin-bottom:0 ">
+                    <thead>
+                    <tr>
+                        <td width="100">入數月份</td>
+                        <td width="100">廳館</td>
+                        <td width="100">貸款戶口</td>
+                        <td width="100">姓名</td>
+                        <td width="100">貸款人</td>
+                        <td width="100">貸款單號</td>
+                        <td width="100">貸款時間</td>
+                        <td width="100">貸款類型</td>
+                        <td width="100">類型</td>
+                        <td width="100">計息金額(萬)</td>
+                        <td width="100">開始計手續費</td>
+                        <td width="100">貸款天數</td>
+                        <td width="150">結算日期</td>
+                        <td width="100">免收天期</td>
+                        <td width="100">罰息天數</td>
+                        <td width="100">計息天數</td>
+                        <td width="100">息率</td>
+                        <td width="115">原本手續費(元)</td>
+                        <td width="100">扣除上線</td>
+                        <td width="115">應收手續費(元)</td>
+                        <td width="100">減免總額</td>
+                        <td width="100">本次減免金額</td><!--data-ng-show="type == 2" -->
+                        <td width="100">尚欠手續費</td>
+                        <td width="100">還息戶口</td>
+                        <td width="100">收益戶口</td>
+                        <td width="100">線頭</td>
+                        <td width="100">狀態</td>
+                        <!--<td width="200">備註</td>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="marker in markerExpiredFees" data-selected-rows>
+                        <td width="100">{{marker.year_month | parseDate:'yyyy-MM'}}</td>
+                        <td width="100">{{marker.hall_name}}</td>
+                        <td width="100">{{marker.loan_agent_code}}</td>
+                        <td width="100">{{marker.loan_agent_name}}</td>
+                        <td width="100">{{marker.borrower}}</td>
+                        <td width="100">{{marker.marker_seqNumber}}</td>
+                        <td width="100">{{ marker.loan_date | parseDate:'yyyy-MM-dd' }}</td>
+                        <td width="100">{{ marker.loantype }}</td>
+                        <td width="100">{{ feeTypes[marker.fee_type] }}</td>
+                        <td width="100">{{ marker.calc_amount | number}}</td>
+                        <td width="100">{{ marker.expired_date | parseDate:'yyyy-MM-dd'  }}</td>
+                        <td width="100">{{marker.loan_total_days}}</td>
+                        <td width="100">{{ marker.end_date |parseDate:'yyyy-MM-dd HH：mm'}}</td>
+                        <td width="100">{{ marker.term}}
+                            <!--<span data-ng-show="type != 1">{{ marker.term_c}}</span>-->
+                            <!--<input data-ng-show="type == 1" data-ng-disabled="marker.status != 1" type="text" class="form-control input-01"-->
+                                   <!--data-ng-required="enableClientValidation"-->
+                                   <!--name="subs_{{$index}}_term"-->
+                                   <!--style="width: 80px"-->
+                                   <!--data-ng-model="marker.term_c" style="width: 125px">-->
+                        </td>
+                        <td>{{marker.expired_add_days}}</td>
+                        <td width="100">{{marker.days}}</td>
+                        <td width="100">{{marker.rate|parseTenThousand2}}&nbsp;<span data-ng-show="marker.rate">%</span></td>
+                        <td width="100">{{marker.original_fee | parseTenThousandToYuan | number}}</td>
+                        <td width="100">{{marker.deduction_fee | parseTenThousandToYuan | number}}</td>
+                        <td width="100">{{marker.fee | parseTenThousandToYuan | number}}</td>
+                        <!--<td width="100">{{(marker.reduction_amount+confirm.subs[$index].reduce_amount) | parseTenThousandToYuan | number}}</td>-->
+                        <td width="100">{{marker.reduction_amount | parseTenThousandToYuan | number}}</td>
+
+                        <td width="100" ><!--data-ng-show="type == 2" -->
+                            <input data-input-uppercase type="text" class="form-control input-01"
+                                    data-ng-required="enableClientValidation"
+                                    data-dynamic-name="expiredFeeSubs_{{$index}}_reduction_amount"
+                                    style="width: 80px"
+                                    data-ng-disabled="marker.status == 3"
+                                    data-ng-model="marker.reduction_amount_new">
+                        </td>
+                        <td width="100">{{marker.settlement_amount | parseTenThousandToYuan | number}}</td>
+                        <td width="100">
+                            <!--{{ marker.out_agent_code }}-->
+                            <input data-ng-disabled="marker.status == 3" data-input-uppercase type="text" class="form-control input-01"
+                                   data-ng-required="enableClientValidation"
+                                   data-dynamic-name="expiredFeeSubs_{{$index}}_in_agent_id"
+                                   style="width: 80px"
+                                   data-ng-model="marker.out_agent_code">
+                        </td>
+                        <td width="100">
+                            <!--<span data-ng-show="type != 1">{{ marker.in_agent_code }}</span>-->
+                            <input data-ng-disabled="marker.status == 3" data-input-uppercase type="text" class="form-control input-01"
+                                   data-ng-required="enableClientValidation"
+                                   name="expiredFeeSubs_{{$index}}_in_agent_id"
+                                   style="width: 80px"
+                                   data-ng-model="marker.in_agent_code">
+                        </td>
+                        <td width="100">{{ marker.top_agent_code }}</td>
+                        <td width="100">{{markerStatus[marker.status]}}</td>
+                        <!--<td >-->
+                            <!--<input type="text" class="form-control input-01"-->
+                                   <!--data-ng-required="enableClientValidation"-->
+                                   <!--name="remark"-->
+                                   <!--data-ng-model="marker.remark">-->
+                        <!--</td>-->
+                    </tr>
+                    <tr data-ng-show="markerExpiredFees.length == 0">
+                        <td colspan="32">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </perfect-scrollbar>
+        <table class="table table-bordered table-striped table-detail-01">
+        <tr>
+            <td class="text-right" width="120">操作密碼：</td>
+            <td class="text-left" colspan="3">
+                <input type="password" ng-model="confirm.pin_code" name="pin_code" class="form-control input-180" data-enter-key="submit()">
+                <span class="pull-right">尚欠手續費總額：{{markerExpiredFees | settlementAmount |parseTenThousandToYuan| number}}</span>
+            </td>
+        </tr>
+    </table>
+            <div class="modal-footer">
+                <button class="btn btn-confirm" ng-click="submit()" data-ng-disabled="submit_desabled">确定{{title}}</button>
+                <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+            </div>
+        </form>
+    </div>
+</div>

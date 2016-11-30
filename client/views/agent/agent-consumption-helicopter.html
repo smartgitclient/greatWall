@@ -1,0 +1,84 @@
+<div class="panel_l col-md-12">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-list-detail">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; width: 3000px;">
+                        <table class="table table-bordered table-striped table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <td>預訂單號</td>
+                                <td>所屬廳館</td>
+                                <td>戶口編號</td>
+                                <td>戶口姓名</td>
+                                <td>訂票人</td>
+                                <td>行程</td>
+                                <td>時間</td>
+                                <td>数量</td>
+                                <td>成本</td>
+                                <td>實收</td>
+                                <td>收益</td>
+                                <td>應付消費</td>
+                                <td>付款方式</td>
+                                <td>新增時間</td>
+                                <td width="1000">備註</td>
+                                <td>年月</td>
+                                <td>結算日期</td>
+                                <td>更數</td>
+                                <td>狀態</td>
+                                <td>經手人</td>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr data-ng-repeat="helicopterBooking in helicopterBookings" data-selected-rows>
+                                <td>{{helicopterBooking.consumption.book_no}}</td>
+                                <td>{{helicopterBooking.consumption.hall_name}}</td>
+                                <td>{{helicopterBooking.consumption.agent_code}}</td>
+                                <td>{{helicopterBooking.consumption.agent_name}}</td>
+                                <td>{{helicopterBooking.consumption.trader}}</td>
+                                <td>{{helicopterBooking.consumption.consumption_content}}</td>
+                                <td>{{helicopterBooking.setout_time | limitTo:-8 | limitTo: 5}}</td>
+                                <td>{{helicopterBooking.count}}</td>
+                                <td>{{helicopterBooking.consumption.cost_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{helicopterBooking.consumption.sell_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{helicopterBooking.consumption.profit | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{helicopterBooking.consumption.should_pay | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{helicopterBooking.consumption.pay_type}}</td>
+                                <td>{{helicopterBooking.consumption.book_time | limitTo : 16}}</td>
+                                <td align="left">{{helicopterBooking.consumption.remark}}</td>
+                                <td>{{helicopterBooking.consumption.year_month | limitTo : 7 }}</td>
+                                <td>{{helicopterBooking.consumption.shift_date | limitTo : 11 }}</td>
+                                <td>{{helicopterBooking.consumption.shift}}</td>
+
+                                <td>{{ bookingState_items[helicopterBooking.consumption.status] }}</td>
+                                <td>{{ helicopterBooking.consumption.user_name }}</td>
+
+                            </tr>
+                            <tr data-ng-show="!helicopterBookings.length">
+                                <td colspan="20">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="helicopter_page.page"
+                                    total-items="helicopter_page.total_items"
+                                    on-select-page="helicopter_search(page)"
+                                    max-size = "helicopter_page.max_size"
+                                    items-per-page = "helicopter_page.items_per_page"
+                                    data-ng-hide="helicopter_page.total_items <= helicopter_page.items_per_page"></pagination>
+
+                        <paginationselect pageCtrl="helicopter_page" select-page="helicopter_search"></paginationselect>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+</div>

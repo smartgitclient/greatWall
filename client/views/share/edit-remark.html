@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3>{{title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_commission" class="ng-valid ng-dirty form-validation" server-validation="PUT{{commission_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td width="100">備註：</td>
+                        <td>
+                            <textarea name="remark"
+                                      class="form-control textarea-table01 ng-pristine ng-valid"
+                                      data-ng-model="record_create.remark"
+                                      rows="4"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100">操作密碼：</td>
+                        <td>
+                            <input name="pin_code" type="password" data-ng-model="record_create.pin_code" class="form-control" data-enter-key="edit()">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" data-ng-disabled="disabled_submit" ng-click="edit()">修 改</button>
+        <button class="btn btn-information" data-ng-disabled="disabled_submit" ng-click="close()">關 閉</button>
+    </div>
+</div>

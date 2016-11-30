@@ -1,0 +1,71 @@
+.ui-spinner {
+    max-width: 200px;
+    .input-group-btn.btn-group-vertical {
+        > .btn {
+            height: 17px;
+            margin: 0;
+            padding: 0 6px;
+            text-align: center;
+            &:first-child {
+                border-radius: 0 $border-radius-base 0 0 !important;
+            }
+            &:last-child {
+                border-radius: 0 0 $border-radius-base 0;
+            }
+            i {
+                display: block;
+                margin-top: -2px;
+            }
+        }
+    }
+  &.spinner-table01 {
+    .form-control {
+      height: 26px;
+      background-color: #CCC;
+      border-color: #797979;
+    }
+    .input-group-btn.btn-group-vertical {
+      > .btn {
+        background-color: #CCC;
+        width: 20px;
+        height: 13px;
+        border-color: #797979;
+        .fa {
+          color: #000;
+        }
+      }
+    }
+  }
+}
+.ui-spinner {
+  height: 27px;
+  display: block;
+  .input-group-btn {
+    vertical-align: top;
+    height: 27px;
+    width: 24px;
+    float: left;
+    .btn-primary {
+      padding: 4px 7px;
+      border-color: $table-border-color;
+      background-color: #999900;
+    }
+    .btn-default {
+      padding: 4px 7px;
+      border-color: $table-border-color;
+      background-color: #CCCCCC;
+      color: #000000;
+    }
+  }
+  .spinner-input {
+    float: left;
+    width: 33px;
+    height: 27px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    padding: 3px;
+    text-align: center;
+    border-color: $table-border-color;
+  }
+}

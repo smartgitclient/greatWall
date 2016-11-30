@@ -1,0 +1,125 @@
+<div class="page page-grid" data-ng-controller="shiftRecordMonthCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <strong>截大數查詢</strong>
+                            <button class="btn btn-info btn-confirm pull-right" ng-click="addDaShu()" check-permissions="settlementMonthCreate">截大數</button>
+                        </div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="180" class="text-right"><span class="span-formlist">所在廰：</span></td>
+                                        <td width="209" data-min-screen-width="150" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="209" data-min-screen-width="80" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+										<td width="160" class="text-right">年月：</td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.settlementMonth.year_month[0]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="180" class="text-right"><span class="span-formlist">開始時間：</span></td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.settlement_date[0]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="180" class="text-right"><span class="span-formlist">結束時間：</span></td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.settlement_date[1]" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>截大數記錄</strong>
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>所在廳</td>
+                                    <td>年份</td>
+                                    <td>月份</td>
+                                    <td>日期</td>
+                                    <td>本月買碼數(萬)</td>
+                                    <td>本月轉碼數(萬)</td>
+                                    <td>本月餘碼數(萬)</td>
+                                    <td>截大数時間</td>
+                                    <td>經手人</td>
+                                    <!--<td width="225" check-permissions="settlementMonthDelete">操作</td>-->
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="shift_record in shift_records" data-selected-rows>
+                                    <td>{{shift_record.hall_name}}</td>
+                                    <td>{{shift_record.year}}</td>
+                                    <td>{{shift_record.month}}</td>
+                                    <td>{{shift_record.settlement_date|getDate:"yyyy-MM-dd"}}</td>
+                                    <td>{{shift_record.thismonth_buycode|parseTenThousand2}}</td>
+                                    <td>{{shift_record.thismonth_rolling|parseTenThousand2}}</td>
+                                    <td>{{shift_record.thismonth_depositspecialcode|parseTenThousand2}}</td>
+                                    <td>{{shift_record.shift_month_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                    <td>{{shift_record.user_name}}</td>
+                                    <!--<td class="no-padding" check-permissions="settlementMonthDelete">-->
+                                        <!--<button data-ng-show="shift_record.allow_settlement == 0 && $first" class="btn btn-confirm btn-table margin-right-5" data-ng-click="monthly()">月結</button>-->
+                                        <!--<button data-ng-show="shift_record.allow_delete == 1" class="btn btn-confirm btn-table margin-right-5" data-ng-click="jieGen()">截更</button>-->
+                                        <!--<button class="btn  btn-information btn-table margin-right-5" data-ng-click="detail(shift_record.id)">詳細</button>-->
+                                        <!--<button data-ng-show="shift_record.allow_delete == 1" class="btn btn-information btn-table margin-right-5" data-ng-click="delete(shift_record.id)" check-permissions="settlementMonthDelete">刪除</button></td>-->
+                                <!--</tr>-->
+                                <tr data-ng-show="shift_records.length == 0">
+                                    <td colspan="10">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

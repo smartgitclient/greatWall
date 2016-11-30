@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h3>愛好紙內容</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_hobby" class="ng-valid" server-validation="{{sub_post_put}}{{create_hobby_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>內容</td>
+                        <td width="120">愛好紙類型</td>
+                        <td width="120">經手人</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="agent_hobby in agent_hobbys">
+                        <td>{{agent_hobby.content}}</td>
+                        <td>{{agent_hobby.type}}</td>
+                        <td>{{agent_hobby.user_name}}</td>
+                    </tr>
+                    <tr data-ng-show="agent_hobbys.length == 0 ">
+                        <td colspan="3">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-confirm btn-table" data-ng-click="closeed()">關閉</button>
+        </div>
+    </form>
+</div>

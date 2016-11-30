@@ -1,0 +1,139 @@
+<div class="page page-grid" data-ng-controller="rollingTransferRecordCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>轉碼查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table class="block-center">
+                                    <tr height="50">
+                                        <td class="text-right" width="145" >廳館：</td>
+                                        <td width="140" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="140" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="150" class="text-right">戶口編號：</td>
+                                        <td width="229"><input type="text" data-input-uppercase data-ng-model="agent_code" class="form-control" data-ng-change="change_agent_code()"></td>
+                                        <td width="150" class="text-right">戶口姓名：</td>
+                                        <td width="140">{{agent_name}}</td>
+                                        <td width="150" class="text-right">轉碼流水號：</td>
+                                        <td width="229"><input type="text" data-ng-model="condition.rollingRecord.rolling_record_no" class="form-control"></td>
+                                    </tr>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">開始日期：</td>
+                                        <td width="229">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.roll_time[0]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="150" class="text-right">結束日期：</td>
+                                        <td width="229">
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.roll_time[1]" data-dynamic-name="year_month" />
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="150" class="text-right">轉碼卡：</td>
+                                        <td width="229">
+                                            <select data-ng-model="condition.receive_card_id" data-ng-options="card.id as card.card_name for card in commissionCards" class="form-control" >
+                                                <option value="">請選擇轉碼卡</option>
+                                            </select>
+                                        </td>
+                                        <td width="150" class="text-right">&nbsp;</td>
+                                        <td width="140">&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <strong>轉碼流水</strong>
+
+                            <button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+                            <button class="btn btn-info btn-confirm margin-right-15 pull-right" ng-click="rollingRecord()">轉移流量</button>
+                            <table class="pull-right">
+                                <tbody>
+                                <tr>
+                                    <td>總流量：</td>
+                                    <td>{{cardAmountTotal.total || 0}} 萬&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td>已勾選流量：</td>
+                                    <td width="100">{{rolling_check_alls? cardAmountTotal.total - check_card_amount_totals_false : check_card_amount_totals}} 萬</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td width="150"><input type="checkbox" name="rolling_check_alls" data-ng-model="rolling_check_alls" data-ng-change="rolling_check_all_fun()">全選</td>
+                                    <td>戶口編號</td>
+                                    <td>戶口姓名</td>
+                                    <td>轉碼流水號</td>
+                                    <td>轉碼金額</td>
+                                    <td>資金類型</td>
+                                    <td>更數</td>
+                                    <td>轉碼時間</td>
+                                    <!--td>授權人</td-->
+                                    <td width="260">備註</td>
+                                    <td>操作機器</td>
+                                </tr>
+                                </thead>
+                                <tr data-ng-repeat="rollingCardRecord in rollingCardRecords">
+                                    <td><input data-ng-required="enableClientValidation" type="checkbox" data-ng-model="rollingCardRecord.selected" data-ng-change="check_rolling(rollingCardRecord)"></td>
+                                    <td>{{rollingCardRecord.agent_code}}</td>
+                                    <td>{{rollingCardRecord.agent_name}}</td>
+                                    <td>{{rollingCardRecord.rolling_record_no}}</td>
+                                    <td>{{rollingCardRecord.amount}}</td>
+                                    <td>{{fundSourceTypes.items[rollingCardRecord.funds_source]}}</td>
+                                    <td>{{rollingCardRecord.shift}}</td>
+                                    <td>{{rollingCardRecord.roll_time}}</td>
+                                    <!--td>{{rollingCardRecord.contact_name}}</td-->
+                                    <td>{{rollingCardRecord.remark}}</td>
+                                    <td class="no-padding">{{rollingCardRecord.machine_name}}</td>
+                                </tr>
+                                <tr data-ng-show="rollingCardRecords.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

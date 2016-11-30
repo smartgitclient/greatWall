@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h3>存單詳細</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_ticket_remark" class="ng-valid" server-validation="PUT{{ticket_remark_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td width="120">存單編號：</td>
+                    <td>{{ticket.depositTicket_seqnumber}}</td>
+                    <td width="120">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="120">戶口編碼：</td>
+                    <td>{{ticket.agent_code}}</td>
+                    <td>戶口姓名：</td>
+                    <td>{{ticket.agent_name}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>存單類型：</td>
+                    <td>{{depositTicketTypes[ticket.depositTicket_type]}}</td>
+                    <td>狀態：</td>
+                    <td>
+                        <span data-ng-show="ticket.depositTicket_settlement == ticket.depositTicket_amount">未取</span>
+                        <span data-ng-show="ticket.depositTicket_settlement == '0'">已取</span>
+                        <span data-ng-show="ticket.depositTicket_settlement != ticket.depositTicket_amount && ticket.depositTicket_settlement !='0'">部分取款</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>存款交易人：</td>
+                    <td>{{ticket.agent_contact_name}}</td>
+                    <td>存單時間：</td>
+                    <td>{{ticket.depositTicket_time|parseDate:"yyyy-MM-dd"}}</td>
+                </tr>
+                <tr>
+                    <td>存單金額：</td>
+                    <td>{{ticket.depositTicket_amount|parseTenThousand}}</td>
+                    <td>存單餘額：</td>
+                    <td>{{ticket.depositTicket_settlement|parseTenThousand}}</td>
+                </tr>
+                <tr>
+                    <td>備註：</td>
+                    <td colspan="3" class="text-left">
+                        <textarea name="remark" id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="ticket_remark.remark" name=""></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>密碼：</td>
+                    <td colspan="3" class="text-left">
+                        <input type="password" name="pin_code" data-ng-model="ticket_remark.pin_code" class="form-control textarea-table01 ng-pristine ng-valid"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+
+            <div class="row text-center"><br/>
+                <button class="btn btn-confirm margin-right-15" data-ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" data-ng-disabled="disabled_submit">取消</button>
+            </div>
+    </form>
+</div>

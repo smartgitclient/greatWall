@@ -1,0 +1,390 @@
+<div class="page page-grid account_detail" data-ng-controller="agentDetailCtrl" style="padding-bottom: 50px;">
+<style type="text/css">
+    .scroll-show .ps-scrollbar-y-rail .ps-scrollbar-y { height:0px;display: none}
+</style>
+<my-open></my-open>
+<div class="panel panel-default agent_open" >
+<div class="panel panel-form-list col-md-8">
+<div class="panel-heading">
+    <ul class="shortcut_key">
+        <li check-permissions="commissionCommonRuleSettingView"><a href="#/rolling-card/rolling-card-agent-setting/{{agent.agent_code}}" shortcut-key="F1">碼佣設定</a></li>
+        <li check-permissions="loanRecoveryView"><a href="#/loan/loan-recovery/{{agent.agent_code}}" shortcut-key="F2">貸款追收</a> </li>
+        <li check-permissions="consumptionRecordView"><a href="#/consumption-manager/consumption-record/{{agent.agent_code}}" shortcut-key="F3">消費記錄</a> </li>
+        <li check-permissions="integralView"><a href="#/integral/integral-manager/{{agent.agent_code}}" shortcut-key="F4">積分管理</a> </li>
+        <li check-permissions="integralDueSendSMS"><a href="#/integral/integral-sms/{{agent.agent_code}}" shortcut-key="F5">積分提醒</a> </li>
+        <li check-permissions="loanQuotaSettingView"><a href="#/loan/quota-setting/{{agent.agent_code}}" shortcut-key="F7">批額設定</a> </li>
+        <li check-permissions="markerExpiredFeeManageView"><a href="#/loan/overdue-charge/{{agent.agent_code}}" shortcut-key="F6">未還利息</a> </li>
+        <li check-permissions="commissionRecordReleaseView"><a href="#/commission-calculate/commissionRecord/{{agent.agent_code}}" shortcut-key="F7">出佣單</a> </li>
+    </ul>
+</div>
+<div class="panel_l panel-content panel-agent col-md-12">
+    <div class="panel-heading">
+        <strong> <span class="grid_title"> 戶口信息</span></strong>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td width="100" align="right">戶口編號：</td>
+                <td align="left" data-min-screen-width="80">{{agent.agent_code}}</td>
+                <td width="100" align="right">戶組：</td>
+                <td align="left" data-min-screen-width="80">{{agent_group.agent_group_name}}</td>
+                <td width="120" align="right">戶口類型：</td>
+                <td align="left" width="250" data-min-screen-width="80">{{agentTypes[agent.type]}}</td>
+                <td width="100" align="right">介紹人：</td>
+                <td align="left" data-min-screen-width="80"> {{agent.introducer_agent_code}}&nbsp;&nbsp;{{agent.introducer}}</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td align="right">姓名：</td>
+                <td align="left">{{agent.agentMaster.agent_contact_name}}</td>
+                <td align="right">語言：</td>
+                <td align="left">{{agent.agentMaster.language_type}}</td>
+                <td align="right">聯絡人：</td>
+                <td align="left">{{companyContact}}
+                <span data-ng-show="agent.compContact.phoneNumbers.length > 0">
+                    <i popover-placement="top" tooltip-html-unsafe="{{agent.compContact.phoneNumbers | contactPhone}}" class="fa fa-plus-circle cursor-pointer"></i>
+                </span>
+                </td>
+                <td align="right">&nbsp;</td>
+                <td align="left"><button class="btn btn-info btn-confirm btn-table" ng-click="show_certificate()">戶主照片</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <div class="panel panel-agent panel-list-detail col-md-6">
+                <div class="panel-heading">
+                    <strong> <span class="grid_title">備註信息</span></strong>
+                    <button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="addRemark('',agent.agent_code)">新增備註</button>
+                </div>
+                <perfect-scrollbar id="content"  class="animate-fade-up col-md-6" ng-class="{true:'scroll-show'}[agent_remarks.length <4]" style="left:0;top:50px;height:245px;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+                    <div class="panel-content" style="min-height:250px">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <td width="140" data-min-screen-width="80">記錄時間</td>
+                                <td>內容</td>
+                                <td width="100" data-min-screen-width="80">經手人</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="agent_remark in agent_remarks" data-selected-rows>
+                                <td>{{agent_remark.create_time|parseDate:"yyyy-MM-dd"}}</td>
+                                <td class="text-left">{{agent_remark.content}}</td>
+                                <td>{{agent_remark.user_name}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+            <div class="panel panel-agent panel-list-detail col-md-6" style="height: 330px;">
+                <div class="panel-heading">
+                    <strong> <span class="grid_title">批額備註</span></strong>
+                </div>
+                <div class="panel-content">
+                    <p class="no-margin" ng-show="agent.quotaRemarks.length > 0" ng-bind-html="agent.quotaRemarks[0].content|nl2br"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--order 紙列表-->
+<div class="panel panel-agent panel-list-detail col-md-12" style="height: 250px;padding:0;">
+    <div class="col-md-8" style="padding:0;">
+        <div class="panel-heading">
+            <strong> <span class="grid_title">Order紙</span></strong>
+            <button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="addOrder('',agent.agent_code,agent_group.agent_group_name)" check-permissions="agentOrderCreate">新增Order紙</button>
+        </div>
+        <perfect-scrollbar id="content"  class="animate-fade-up" ng-class="{true:'scroll-show'}[agent_orders.length <3]" style="left:0;top:50px;height:202px;overflow-y: hidden;" wheel-propagation="true" wheel-speed="50">
+            <div class="panel-content" style="height: 205px">
+                <table class="table table-bordered table-striped table-hover" width="341">
+            <thead>
+            <tr>
+                <td>內容</td>
+                <td width="180" data-min-screen-width="80">有效時間</td>
+                <td width="120" data-min-screen-width="80">經手人</td>
+                <td width="150" data-min-screen-width="100" check-permissions="agentOrderView,agentOrderUpdate">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="agent_order in agent_orders" data-selected-rows class="ng-class:agent_order.priority==1?'priority-high':(agent_order.priority==2?'priority-middle':'priority-low')">
+                <td class="text-left">{{agent_order.order_content}}</td>
+                <td>
+                    <span data-ng-show="agent_order.end_time">{{agent_order.end_time|parseDate:"yyyy-MM-dd HH:mm"}}</span>
+                    <span data-ng-show="!agent_order.end_time">長期有效</span>
+                </td>
+                <td>{{agent_order.user_name}}</td>
+                <td check-permissions="agentOrderView,agentOrderUpdate">
+                    <button class="btn btn-information btn-table" ng-click="detail_message(agent_order.id)" check-permissions="agentOrderView">詳細</button>
+                    <button class="btn btn-information btn-table" ng-click="addOrder(agent_order.id,agent.agent_code)" check-permissions="agentOrderUpdate">修改</button>
+                </td>
+            </tr>
+            <tr data-ng-show="agent_orders.length == 0 ">
+                <td colspan="4">暫無符合條件的記錄</td>
+            </tr>
+            </tbody>
+            </tbody>
+        </table>
+            </div>
+    </perfect-scrollbar>
+    </div>
+    <div class="panel-list-detail col-md-4">
+        <div class="panel-heading">
+            <strong> <span class="grid_title">積分/佣金</span></strong>
+            <button class="btn btn-confirm btn-table pull-right" data-ng-click="addIntegralDetail()">詳細</button>
+        </div>
+        <perfect-scrollbar id="content"  class="animate-fade-up" style="left:8px;right:8px;top:50px;height:202px;overflow-y: hidden;" wheel-propagation="true" wheel-speed="50">
+            <div class="panel-content" style="min-height:250px">
+             <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>類型</td>
+                    <td>上月餘津</td>
+                    <td>剩餘津貼</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="general_integral in agent_integral.general_integrals" data-selected-rows>
+                    <td>{{general_integral.integral_name}}：</td>
+                    <td>{{general_integral.lastmonth_allowance|parseDollar:true}}</td>
+                    <td>{{general_integral.thismonth_allowance|parseDollar:true}}</td>
+                </tr>
+                <tr data-ng-show="agent_integral.commission_total != null">
+                    <td>可用佣金：</td>
+                    <td colspan="2">{{agent_integral.commission_total|parseDollar:true}}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </perfect-scrollbar>
+    </div>
+</div>
+
+<!--授權人信息-->
+<div class="panel_l  panel-agent col-md-12" style="padding: 0;height:238px;">
+    <div class="panel-heading">
+        <strong> <span class="grid_title">授權人信息</span></strong>
+        <button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="addHobbies()">新增愛好紙</button>
+    </div>
+    <perfect-scrollbar id="content"  class="animate-fade-up"  ng-class="{true:'scroll-show'}[agent_privileges.length < 4]" style="left:0;top:50px;height:178px; overflow: hidden;" wheel-propagation="true" wheel-speed="50">
+        <div class="panel-content" style="min-width: 1125px;min-height:180px">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>授權人</td>
+                    <td data-ng-repeat="contact_privilege in contact_privileges">{{contact_privilege.privilege_name}}</td>
+                    <td width="180">聯絡電話</td>
+                    <td width="250">備註</td>
+                    <td width="120">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="agent_privilege in agent_privileges" data-selected-rows>
+                    <td>
+                        <i data-ng-show="agent_privilege.agentContact.idcardImages.length > 0" style="cursor: pointer" class="fa fa-user" ng-click ="show_contacter_certificate(agent_privilege)"></i>
+                        {{agent_privilege.agent_contact_name}}</td>
+                    <td data-ng-repeat="contact_privilege in contact_privileges">
+                        <i class="fa fa-check fa-check-green" data-ng-repeat="ref_agent_contact_privilege in agent_privilege.refAgentContactPrivileges" data-ng-show="contact_privilege.privilege_name == ref_agent_contact_privilege.privilege_name"></i>
+                    </td>
+                    <td>{{agent_privilege.refTelAgentNoticeTypes[0].agentContactTel.area_code}}&nbsp;{{agent_privilege.refTelAgentNoticeTypes[0].agentContactTel.telephone_number}}
+                        <i data-ng-show ="agent_privilege.refTelAgentNoticeTypes.length > 1" popover-placement="top" tooltip-html-unsafe="{{agent_privilege.refTelAgentNoticeTypes | tell}}" class="fa fa-plus-circle cursor-pointer"></i>
+                    </td>
+                    <td class="text-left">{{agent_privilege.remark}}</td>
+                    <td class="no-padding">
+                        <!--<button class="btn btn-info btn-information btn-table" ng-click="managerPassword(agent_privilege.id,'refAgentContactType')">密碼</button>-->
+                        <button class="btn btn-info btn-information btn-table" ng-click="detail(agent_privilege.agent_contact_id)">詳細</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </perfect-scrollbar>
+</div>
+</div>
+<div class="panel panel-form-list col-md-4">
+    <div class="panel-heading" style="height: 75px">
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-hover cursor-pointer table-none" style="margin-bottom: 0">
+        <thead>
+        <tr>
+            <td width="95">戶口編號</td>
+            <td>批額上限</td>
+            <td>內館簽額</td>
+            <td>外館簽額</td>
+            <td>總簽額</td>
+            <td>可用簽額</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="agentQuota in all_agentQuotas" data-ng-click="showLoan(agentQuota)" data-selected-rows>
+            <td>
+                {{agentQuota.agent_code}}&nbsp;&nbsp;<!--data-ng-show="agentQuota.is_share == '1'"-->
+                <button data-ng-show="agentQuota.is_share == '1'" class="btn btn-information btn-table" ng-click="commonQuota(agentQuota.agent_info_id)">共用</button>
+            </td>
+            <td>{{agentQuota.upper_limit|parseTenThousand}}</td>
+            <td>{{agentQuota.used_quota_inside|parseTenThousand}}</td>
+            <td>{{agentQuota.used_quota_outside|parseTenThousand}}</td>
+            <td>
+                <span data-ng-show="agentQuota.type == '3'">{{agentQuota.agent_used_quota|parseTenThousand}}</span>
+                <!--<span data-ng-show="agentQuota.type == '3' && agentQuota.is_special_underling =='1'">{{agentQuota.group_used_quota|parseTenThousand}}</span>-->
+                <span data-ng-show="agentQuota.type != '3'">{{agentQuota.group_used_quota|parseTenThousand}}</span>
+            </td>
+            <td>
+                <span data-ng-show="agentQuota.type == '3'">{{(agentQuota.upper_limit - agentQuota.agent_used_quota)|parseTenThousand}}</span>
+                <!--<span data-ng-show="agentQuota.type == '3' && agentQuota.is_special_underling =='1'">{{(agentQuota.upper_limit - agentQuota.group_used_quota)|parseTenThousand}}</span>-->
+                <span data-ng-show="agentQuota.type != '3'"> {{(agentQuota.upper_limit - agentQuota.group_used_quota)|parseTenThousand}}</span>
+            </td>
+        </tr>
+        <!--<tr data-ng-click="overdueCharge(agent.agent_code)">-->
+            <!--<td>未還利息總額：</td>-->
+            <!--<td colspan="5">{{all_agentQuotas[all_agentQuotas.length-1].un_pay_fee|parseTenThousand}}</td>-->
+        <!--</tr>-->
+        </tbody>
+    </table>
+    <table class="table table-bordered table-hover cursor-pointer">
+        <tbody>
+        <tr data-ng-click="overdueCharge(agent.agent_code)">
+            <td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未還利息總額：&nbsp;&nbsp;&nbsp;{{all_agentQuotas[all_agentQuotas.length-1].un_pay_fee|parseTenThousand}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="panel panel-agent panel-list-detail col-md-12" style="padding: 0;height:230px;">
+        <div class="panel-heading">
+            <strong> <span class="grid_title">戶主聯絡資料</span></strong>
+            <!--<button class="btn btn-info btn-confirm btn-table pull-right" data-ng-click="managerPassword(agent.id,'agent')">密碼管理</button>-->
+        </div>
+        <perfect-scrollbar id="content"  class="animate-fade-up" ng-class="{true:'scroll-show'}[refTelAgentMasterNoticeType.length <4]" style="left:0;top:50px;height:162px;overflow-y: hidden;" wheel-propagation="true" wheel-speed="50">
+            <div class="panel-content" style="min-height:165px">
+                <table class="table table-bordered table-striped table-hover" width="341">
+                    <thead>
+                    <tr>
+                        <!--<td data-min-screen-width="80">通知類型</td>-->
+                        <td width="200" data-min-screen-width="80">電話</td>
+                        <td data-min-screen-width="150">備註</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="contact in refTelAgentMasterNoticeType" data-selected-rows>
+                        <!--<td>{{notice_types[contact.notice_type]}}</td>-->
+                        <td>{{contact.agentContactTel.area_code}}&nbsp;{{contact.agentContactTel.telephone_number}}</td>
+                        <td class="text-left">{{contact.agentContactTel.remark}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </perfect-scrollbar>
+    </div>
+    <div class="panel panel-agent panel-list-detail col-md-12" style="padding: 0">
+        <tabs id="img_content" class="nav-tabs-mix pull-right passport" buttons="[{text:'列印',function:'print_img'}]">
+            <pane data-ng-repeat="c_image in certificate_images" title="證件{{$index+1}}" alt="{{c_image.image}}">
+                <a class="btn btn-confirm btn-table pull-right" style="margin: -40px 0;" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(c_image.image);">列印</a>
+                  <span class="passport_bg"  style="float: right; border: none;">
+                       <span class="passed" data-ng-show="agent.agentMaster.agentContactIdcards[$index].expire_date && agent.agentMaster.agentContactIdcards[$index].expire_date < now_data"><img src="images/sign.png"></span>
+                        <a data-ng-show="c_image.image != ''" href="{{c_image.image}}" download><img   ng-src="{{c_image.image}}"/></a>
+                        <span data-ng-show="c_image.image == ''" class="img_alt" >證件照片</span>
+                  </span>
+            </pane>
+        </tabs>
+    </div>
+    <div class="panel panel-list-detail col-md-12" style="padding: 0">
+        <div class="panel-heading">
+            <strong> <span class="grid_title">客戶信息</span></strong>
+            <div class="has-feedback col-md-2 pull-right text-sear02">
+                <input type="text" data-ng-model="agent_keyword" placeholder="請輸入姓名或電話" class="form-control">
+                <span class="fa fa-search form-control-feedback"></span>
+            </div>
+        </div>
+        <tabs class="nav-tabs-mix" buttons="[{text:'新增助手',function:'addContact'}]">
+            <pane title="助手">
+                <div>
+                    <table class="table table-bordered table-striped table-hover" width="341">
+                        <thead>
+                        <tr>
+                            <td data-min-screen-width="80">姓名</td>
+                            <td data-min-screen-width="80">電話</td>
+                            <!--<td width="120" data-min-screen-width="80">備註</td>-->
+                            <td data-min-screen-width="80" check-permissions="agentContactView">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="contacter in agent_assistants" data-selected-rows>
+                            <td>
+                                <i data-ng-show="contacter.idcardImages.length > 0" style="cursor: pointer" class="fa fa-user" ng-click ="show_contacter_image(contacter)"></i>
+                                {{contacter.agent_contact_name}}</td>
+                            <td>
+                                {{contacter.agentContactTels[0].area_code}}&nbsp;&nbsp;{{contacter.agentContactTels[0].telephone_number}}
+                                <i popover-placement="top" data-ng-show="contacter.agentContactTels.length > 1" tooltip-html-unsafe="{{contacter.agentContactTels | contactPhone}}" class="fa fa-plus-circle cursor-pointer"></i>
+                            </td>
+                            <!--<td class="text-left">{{contacter.remark}}</td>-->
+                            <td class="no-padding"><button class="btn btn-info btn-information btn-table" ng-click="detail(contacter.id)" check-permissions="agentContactView">詳細</button></td>
+                        </tr>
+                        <tr data-ng-show="agent_assistants.length == 0">
+                            <td colspan="10">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </pane>
+            <pane title="客人">
+                <div>
+                    <table class="table table-bordered table-striped table-hover" width="341">
+                        <thead>
+                        <tr>
+                            <td data-min-screen-width="80">姓名</td>
+                            <td data-min-screen-width="80">電話</td>
+                            <td data-min-screen-width="80" check-permissions="agentGuestView">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="agentGuest in agentGuests" data-selected-rows>
+                            <td>
+                                <i data-ng-show="agentGuest.idcardImages.length > 0" style="cursor: pointer" class="fa fa-user" ng-click ="show_guest_image(agentGuest)"></i>
+                                {{agentGuest.agent_guest_name}}</td>
+                            <td>
+                                {{agentGuest.agentGuestTels[0].area_code}}&nbsp;&nbsp;{{agentGuest.agentGuestTels[0].telephone_number}}
+                                <i popover-placement="top" data-ng-show="agentGuest.agentGuestTels.length > 0" tooltip-html-unsafe="{{agentGuest.agentGuestTels | contactPhone}}" class="fa fa-plus-circle cursor-pointer"></i>
+                            </td>
+                            <td class="no-padding"><button class="btn btn-information btn-table" ng-click="detail_guest(agentGuest.id)" check-permissions="agentGuestView">詳細</button></td>
+                        </tr>
+                        <tr data-ng-show="!agentGuests.length">
+                            <td colspan="3">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination_guest.page"
+                                        total-items="pagination_guest.total_items"
+                                        on-select-page="select_guest(page)"
+                                        max-size = "pagination_guest.max_size"
+                                        items-per-page = "pagination_guest.items_per_page"
+                                        data-ng-hide="pagination_guest.total_items <= pagination_guest.items_per_page"></pagination>
+                        </div>
+                    </footer>
+                </div>
+            </pane>
+        </tabs>
+    </div>
+    <div style="clear:both;"></div>
+    </div>
+
+</div>
+<div class="clear"></div>
+</div>
+</div>

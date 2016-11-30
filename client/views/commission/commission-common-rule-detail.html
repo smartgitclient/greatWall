@@ -1,0 +1,187 @@
+<div class="page page-services ng-scope" >
+    <div class="row">
+        <div class="col-md-12 pop-dotal">
+            <div class="panel panel-form-list" style="margin-bottom: 0px;padding: 20px 15px 15px 0px">
+                <form name="$parent.form_commission" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{commissions_rule_url}}">
+                <div class="panel-content" style="padding-bottom: 0px;">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tbody>
+                        <tr>
+                            <td width="120" class="text-right">所在廳：</td>
+                            <td data-min-screen-width="200">{{hall_name}}</td>
+                            <td width="120" class="text-right" data-min-screen-width="165">規則名稱：</td>
+                            <td data-min-screen-width="200">{{commission_detail.rule_name}}</td>
+                            <td width="120" class="text-right">本金類型：</td>
+                            <td data-min-screen-width="200">{{capitaltype.capital_name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-list-detail">
+                                <div class="panel-heading" style="padding: 0;">新設定</div>
+                                <div class="panel-content">
+                                    <table>
+                                        <tbody>
+                                        <tr height="50">
+                                            <td class="text-right">佣金總額：</td>
+                                            <td width="100">{{commission_total()}}</td>
+                                            <td class="text-right">積分總額：</td>
+                                            <td>{{integral_total()}}</td>
+                                        </tr>
+                                        <tr height="50">
+                                            <td class="text-right">現金回收比例：</td>
+                                            <td>{{recycle_rate_total()}}</td>
+                                            <td class="text-right">積分有效期：</td>
+                                            <td>
+                                                <select style="width:135px;" data-dynamic-name="commissionRuleHalls_{{num}}_integral_expire" data-ng-required="enableClientValidation" data-ng-model="commission_detail.commissionRuleCommon.integral_expire" data-ng-options="m.val as m.key for m in months" class="form-control pull-left" >
+                                                    <option value="">請選擇有效期</option>
+                                                </select>
+                                                <span class="pull-right" style="padding-left: 5px;padding: 5px 0 0;">月</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>用戶類型</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                            <td>現金回收比例</td>
+                                            <td>津貼回收戶口</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="commissionRuleHallSub in commission_detail.commissionRuleCommon.commissionRuleCommonSubs">
+                                            <td>{{userType[$index]}}</td>
+                                            <td><input data-dynamic-name ="commissionRuleHalls_{{num}}_commissionRuleHallSubs_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.commission_should"></td>
+                                            <td><input data-dynamic-name ="commissionRuleHalls_{{num}}_commissionRuleHallSubs_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.integral_should"></td>
+                                            <td>
+                                                <input data-dynamic-name ="commissionRuleHalls_{{num}}_commissionRuleHallSubs_{{$index}}_recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.recycle_rate">
+                                            </td>
+                                            <td>
+                                                <input data-input-uppercase data-dynamic-name ="commissionRuleHalls_{{num}}_commissionRuleHallSubs_{{$index}}_integral_recycle_agent_id" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.integral_recycle_agent_code" >
+                                                <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addCommissions()"></i>
+                                                <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeCommissions($index)"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="120">特別收益戶口</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                            <td>現金回收比例</td>
+                                            <td>津貼回收戶口</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="compAgentRule in commission_detail.commissionRuleCommon.compAgentRules">
+                                            <td>
+                                                <input data-input-uppercase data-dynamic-name ="commissionRuleHalls_{{num}}_compAgentRuleHalls_{{$index}}_agent_info_id" placeholder="{{userType[$index]}}" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.agent_code">
+                                            </td>
+                                            <td>
+                                                <input data-dynamic-name ="commissionRuleHalls_{{num}}_compAgentRuleHalls_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.commission_should">
+
+                                            </td>
+                                            <td><input data-dynamic-name ="commissionRuleHalls_{{num}}_compAgentRuleHalls_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.integral_should"></td>
+                                            <td>
+                                                <input data-dynamic-name ="commissionRuleHalls_{{num}}_compAgentRuleHalls_{{$index}}_recycle_rate" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.recycle_rate">
+                                            </td>
+                                            <td>
+                                                <input data-input-uppercase data-dynamic-name ="commissionRuleHalls_{{num}}_compAgentRuleHalls_{{$index}}_integral_recycle_agent_id" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.integral_recycle_agent_code" >
+                                                <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addAgentCommissions()"></i>
+                                                <i data-ng-show="$index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeAgentCommissions($index)"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="float: right;">
+                            <div class="panel panel-list-detail">
+                                <div class="panel-heading" style="padding: 0;">原設定</div>
+                                <div class="panel-content">
+                                    <table>
+                                        <tbody>
+                                        <tr height="50">
+                                            <td class="text-right">佣金總額：</td>
+                                            <td width="100">{{commission_update.commissionRuleCommon.commission_total}}</td>
+                                            <td class="text-right">積分總額：</td>
+                                            <td>{{commission_update.commissionRuleCommon.integral_total}}</td>
+                                        </tr>
+                                        <tr height="50">
+                                            <td class="text-right">現金回收比例：</td>
+                                            <td>{{commission_update.commissionRuleCommon.recycle_rate_total}}</td>
+                                            <td class="text-right">積分有效期：</td>
+                                            <td>{{commission_update.commissionRuleCommon.integral_expire != '-1'?commission_update.commissionRuleCommon.integral_expire:'永久'}} <span data-ng-show="commission_update.commissionRuleCommon.integral_expire > 0">&nbsp;月</span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>用戶類型</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                            <td>現金回收比例</td>
+                                            <td>津贴回收户口</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="commissionRuleHallSub_update in commission_update.commissionRuleCommon.commissionRuleCommonSubs">
+                                            <td>{{userType[$index]}}</td>
+                                            <td>{{commissionRuleHallSub_update.commission_should}}</td>
+                                            <td>{{commissionRuleHallSub_update.integral_should}}</td>
+                                            <td>{{commissionRuleHallSub_update.recycle_rate}}</td>
+                                            <td>{{commissionRuleHallSub_update.integral_recycle_agent_code}}</td>
+                                        </tr>
+                                        <tr data-ng-show="commission_update.commissionRuleCommon.commissionRuleCommonSubs.length == 0">
+                                            <td colspan="5">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td width="120">特別收益戶口</td>
+                                            <td>分派佣金額</td>
+                                            <td>分派積分額</td>
+                                            <td>積分回收比例</td>
+                                            <td>津贴回收户口</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="compAgentRule_update in commission_update.commissionRuleCommon.compAgentRules">
+                                            <td>{{compAgentRule_update.agent_code}}</td>
+                                            <td>{{compAgentRule_update.commission_should}}</td>
+                                            <td>{{compAgentRule_update.integral_should}}</td>
+                                            <td>{{compAgentRule_update.recycle_rate}}</td>
+                                            <td>{{compAgentRule_update.integral_recycle_agent_code}}</td>
+                                        </tr>
+                                        <tr data-ng-show="commission_update.commissionRuleCommon.compAgentRules.length == 0">
+                                            <td colspan="5">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-information margin-right-15" ng-click="update()" data-ng-disabled="disabled_submit" >確定</button>
+                        <button class="btn btn-cancel" data-ng-click="return()">關閉</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h3>積分/佣金 詳細</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <form name="form_search">
+                <table >
+                    <tr data-ng-repeat="overdue_integral in agent_integral.overdue_integrals">
+                        <td>
+                            <table class="table table-bordered table-striped">
+                                <tr>{{overdue_integral.integral_name}}到期日<br/></tr>
+                                <tr>
+                                    <td width="150" data-ng-repeat="integral_data in overdue_integral.integral_datas">
+                                        <span data-ng-show="integral_data.year == 0 && integral_data.month == 0">永久</span>
+                                        <span data-ng-show="integral_data.year != 0 && integral_data.year != 0" >{{integral_data.year}}年{{integral_data.month}}月</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-ng-repeat="integral_data in overdue_integral.integral_datas">{{integral_data.integral|parseDollar:true}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td valign="top" colspan="6"  height="35">可用佣金：{{agent_integral.commission_total|parseDollar:true}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <td width="200">當月佣金</td>
+                                    <td width="200">消費總數</td>
+                                    <td width="200">未出佣金</td>
+                                </tr>
+                                <tr>
+                                    <td>{{agent_integral.thismonth_commission|parseDollar:true}}</td>
+                                    <td>{{agent_integral.negative_consumption|parseDollar:true}}</td>
+                                    <td>{{agent_integral.notout_commission|parseDollar:true}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;">
+        <button class="btn btn-inf btn-cancel" data-ng-click="closed()">關閉</button>
+    </div>
+</div>

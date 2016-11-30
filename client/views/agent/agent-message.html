@@ -1,0 +1,96 @@
+<div class="page page-services ng-scope" >
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>短信通知</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td align="right" width="200">聯絡人：</td>
+                                        <td align="left">
+                                            <ui-select ng-model="messages.agent_selected">
+                                                <ui-select-match placeholder="">{{messages.agent_selected.contact_name}}</ui-select-match>
+                                                <ui-select-choices repeat="ct in contacts1">
+                                                    <div ng-bind-html="ct.contact_name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">通知電話：</td>
+                                        <td align="left">
+
+                                            <ui-select ng-model="messages.phone_number">
+                                                <ui-select-match placeholder="請選擇通知電話">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="phone in messages.agent_selected.contact_phones">
+                                                    <div ng-bind-html="phone"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">隱藏發送：</td>
+                                        <td align="left">
+                                            <i class="fa {{send_status}}" style="color:#dddd1b;font-size:16px;cursor: pointer" data-ng-click="sendStatus()"></i>
+                                            <input class="form-control input-01 ng-pristine ng-valid" type="hidden" ng-model="messages.status">
+                                        </td>
+
+                                    </tr>
+                                    <!--<tr>-->
+                                        <!--<td align="right">聯絡人類型：</td>-->
+                                        <!--<td align="left">-->
+                                            <!--<ui-select ng-model="binding_agent.contacts_type" ng-change="showBinging()">-->
+                                            <!--<ui-select-match placeholder="請選擇授權事項">{{$select.selected}}</ui-select-match>-->
+                                            <!--<ui-select-choices repeat="contacts_type in ['助手','客人','授權人'];">-->
+                                            <!--<div ng-bind-html="contacts_type"></div>-->
+                                            <!--</ui-select-choices>-->
+                                            <!--</ui-select>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>通知事項</strong></div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_search">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td align="center"><checkbox  ng-model="chek.all" data-ng-click="check('all',-1)">全部</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_0" data-ng-click="check('貸款',0)">貸款</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_1" data-ng-click="check('存卡',1)">存卡</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_2" data-ng-click="check('存單',2)">存單</checkbox></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center"><checkbox  ng-model="chek.check_3" data-ng-click="check('飛數',3)">飛數</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_4" data-ng-click="check('轉賬',4)">轉賬</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_5" data-ng-click="check('消費',5)">消費</checkbox></td>
+                                        <td align="center"><checkbox  ng-model="chek.check_6" data-ng-click="check('出佣',6)">出佣</checkbox></td>
+                                    </tr>
+
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-info btn-confirm" ng-click="addMessage()">提交</button>
+        </div>
+    </div>
+</div>

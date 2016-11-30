@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h3>轉移流量</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_add_transfer" class="form-validation" server-validation="{{sub_post_put}}{{rollingTransfer_url}}">
+        <div class="row">
+            <div class=" col-md-12">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td class="text-right">所在廳：</td>
+                        <td >{{hall_name}}</td>
+                        <td class="text-right">戶口編號：</td>
+                        <td >{{agent_code}}</td>
+                        <td class="text-right">戶口姓名：</td>
+                        <td >{{agent_name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tbody>
+                    <tr>
+                        <td>轉出卡：</td>
+                        <td >{{card.card_name}}</td>
+                        <td>轉出流量：</td>
+                        <td >{{check_card_amount_totals}}</td>
+                    </tr>
+                    <tr>
+                        <td>轉入戶口：</td>
+                        <td ><input type="text" data-input-uppercase name="in_agent_id" data-ng-model="model_con.receive_agent_code" class="form-control"></td>
+                        <td>轉入卡：</td>
+                        <td >
+                            <select data-ng-model="rollingRecord.in_comm_card_id" name="in_comm_card_id" data-ng-options="card.id as card.card_name for card in commissionCards" class="form-control" >
+                                <option value="">請選擇轉入卡</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>備註：</td>
+                        <td colspan="3">
+                            <textarea name="remark" maxLength="20" data-ng-model="rollingRecord.remark" rows="4" class="form-control textarea-table01" id="remark"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>操作密碼</td>
+                        <td><input type="password" name="pin_code" data-ng-model="rollingRecord.pin_code" class="form-control" data-enter-key="submit()"></td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="">
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-info btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="submit()">提交</button>
+                <button class="btn btn-inf btn-cancel" data-ng-click="reset()">取消</button>
+            </div>
+        </div>
+    </form>
+</div>

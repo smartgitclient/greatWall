@@ -1,0 +1,271 @@
+<div ng-class='{"col-md-12":popupWindow==true,"col-md-4":popupWindow==false}'  check-permissions="consumptionCreate">
+<div class="panel panel-form-list">
+    <div class="panel-content">
+        <div class="panel-heading" ng-show="popupWindow">
+          <strong class="pull-left">直升機修改</strong>
+        </div>
+        <form name="$parent.form_helicopter" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{helicopter_url}}">
+            <table>
+                <tbody>
+                <tr height="50">
+                    <td class="text-right"  width="90" min-screen-width="80">預訂單號：</td>
+                    <td class="text-left" width="150" min-screen-width="150">
+                        <input type="text" name="consumption_book_no" data-ng-model="helicopterBooking.consumption.book_no" class="form-control" data-input-uppercase></td>
+                    <td class="text-right" width="90" min-screen-width="80">所屬廳館：</td>
+                    <td class="text-left" width="160" min-screen-width="135">
+                        <span data-ng-show="'PUT'==sub_post_put">{{ agent_about.hall_name }}</span>
+                        <span data-ng-show="'POST'==sub_post_put">{{ user.hall.hall_name}}</span>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">戶口編號：</td>
+                    <td class="text-left">
+                        <span data-ng-show="'PUT'==sub_post_put && !COPY_BOOKING_helicopter">{{ agent_about.agent_code }}</span>
+                        <input data-ng-show="'POST'==sub_post_put || COPY_BOOKING_helicopter" input-uppercase type="text" name="agent_info_id" data-ng-model="agent_about.agent_code" class="form-control"></td>
+                    <td class="text-right">戶口姓名：</td>
+                    <td class="text-left">{{agent_about.agent_name}}</td>
+                </tr>
+                <tr height="50">
+                  <td class="text-right">年月：</td>
+                  <td class="text-left">
+                    <p class="input-group ui-datepicker">
+                      <input type="text" class="form-control input-92" name="consumption_year_month" datepicker-popup datepicker-mode="month" ng-model="helicopterBooking.consumption.year_month"  date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="COPY_BOOKING_helicopter"/>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                    </p>
+                  </td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">結算日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" name="consumption_shift_date" datepicker-popup="{{format}}" ng-model="helicopterBooking.consumption.shift_date"  date-disabled="disabled(date, mode)" close-text="Close"  ng-disabled="COPY_BOOKING_helicopter" />
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+                        </p>
+                    </td>
+                    <td class="text-right">更數：</td>
+                    <td class="text-left">
+                        <select name="consumption_shift" class="form-control" data-ng-model="helicopterBooking.consumption.shift"   ng-disabled="COPY_BOOKING_helicopter" >
+                            <option value="">請選擇更數</option>
+                            <option value="早更">{{shiftLists.morning}}</option>
+                            <option value="中更">{{shiftLists.afternoon}}</option>
+                            <option value="晚更">{{shiftLists.evening}}</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="BGcolor-626571" width="100%">
+                <tbody>
+                <tr height="50">
+                    <td width="100" class="text-right" min-screen-width="120">行程：</td>
+                    <td class="text-left" colspan="3">
+                        <div  class="pull-left" style="width: 300px;" min-screen-width="250">
+                            <select name="from_place_id" class="form-control" data-ng-model="agent_about.trip_index"  ng-disabled="COPY_BOOKING_helicopter" >
+                                <option value="">請選擇行程</option>
+                                <option value="{{$index}}" ng-repeat="helicopterTrip in helicopterTrips">{{ helicopterTrip.from_place }} - {{ helicopterTrip.to_place }}</option>
+                            </select>
+                        </div>
+                        <!--div class="pull-left span-LH27">&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;</div>
+                        <div class="pull-left" style="width: 150px;">
+                            <select name="to_place_id" class="form-control" data-ng-model="helicopterBooking.to_place_id" data-ng-options="n.id as n.helicopter_city for n in helicopterCitys"  ng-disabled="COPY_BOOKING_helicopter">
+                                <option value="">目的地</option>
+                            </select>
+                        </div-->
+                    </td>
+                    <td width="20"></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right" width="100">時間：</td>
+                    <td class="text-left" width="160" min-screen-width="150">
+                        <select name="helicopter_trip_id" class="form-control" style="padding: 0" data-ng-model="helicopterBooking.helicopter_trip_id" ng-options="n.id as n.setout_time for n in trip_times "  ng-disabled="COPY_BOOKING_helicopter">
+                            <option value="">時間</option>
+                        </select>
+
+                        <!--<input class="form-control" type="text" name="helicopter_trip_id"
+                               data-ng-model="_supervisor.supervisor"
+                               list="supervisor_{{index}}"
+                               enter-key="confirm()"
+                               data-dynamic-name="supervisors_{{$index}}_supervisor"
+                               data-ng-show="supervisors.length>0"/>
+                        <datalist id="supervisor_{{index}}">
+                            <option data-ng-repeat="t in trip_times" value ="{{t.setout_time}}">
+                        </datalist>-->
+
+                    </td>
+                    <td class="text-right" width="100" min-screen-width="80">數量：</td>
+                    <td class="text-left" width="160" min-screen-width="100">
+                        <div class="input-group ui-spinner" data-ui-spinner  data-ng-model="helicopterBooking.count">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-spin="down"  ng-disabled="COPY_BOOKING_helicopter">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </span>
+                            <input type="text" data-min="1" class="spinner-input form-control" data-ng-model="helicopterBooking.count" name="count"  ng-disabled="COPY_BOOKING_helicopter">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" data-spin="up"  ng-disabled="COPY_BOOKING_helicopter">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                            &nbsp;&nbsp;
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">出發日期：</td>
+                    <td class="text-left">
+                        <p class="input-group ui-datepicker">
+                            <input type="text" class="form-control input-92" datepicker-popup="{{format}}" ng-model="helicopterBooking.setout_date" is-open="opened"  date-disabled="disabled(date, mode)" close-text="Close" name="setout_date"  ng-disabled="COPY_BOOKING_helicopter" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-datepicker" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <br>
+            <div style="position: relative;">
+                <perfect-scrollbar class="animate-fade-up" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div style="max-height: 200px;">
+                        <table width="100%">
+                            <tbody ng-repeat="consumptionHelicopterSub in helicopterBooking.consumptionHelicopterSubs">
+                            <tr height="50">
+                                <td class="text-right"  width="100">乘客姓名：</td>
+                                <td class="text-left" width="160"><input type="text" data-ng-model="consumptionHelicopterSub.passenger" data-dynamic-name="consumptionHelicopterSubs_{{ $index }}_passenger" class="form-control" list="helicopter_agent_list"  ng-disabled="COPY_BOOKING_helicopter" ng-change="ChangeRegister($index, consumptionHelicopterSub)"></td>
+                                <td class="text-right" width="100">證件類型：</td>
+                                <td class="text-left" width="160"><select data-dynamic-name="consumptionHelicopterSubs_{{ $index }}_idcard_type_id" class="form-control" data-ng-model="consumptionHelicopterSub.idcard_type_id"  ng-options="n.id as n.idcard_type_name for n in idCardtypes"  ng-disabled="COPY_BOOKING_helicopter">
+                                    <option value="">證件類型</option>
+
+                                </select></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right"  width="100">證件號碼：</td>
+                                <td class="text-left" width="160"><input type="text" data-ng-model="consumptionHelicopterSub.idcard_no" data-dynamic-name="consumptionHelicopterSubs_{{ $index }}_idcard_no" class="form-control"  ng-disabled="COPY_BOOKING_helicopter" list="helicopter_idcard_list"></td>
+                                <td class="text-right" width="100" min-screen-width="80">聯絡電話：</td>
+                                <td class="text-left" width="165">
+                                    <div class="pull-left" style="width: 57px;" min-screen-width="55">
+                                        <select class="form-control no-padding" data-ng-model="consumptionHelicopterSub.area_code_id" data-dynamic-name="consumptionHelicopterSubs_{{$index}}_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_helicopter">
+                                            <option value="">區號</option>
+                                        </select>
+                                    </div>
+                                    <div class="pull-left" style="width: 102px;" min-screen-width="73">
+                                        <input type="text" data-ng-model="consumptionHelicopterSub.telephone_number" data-dynamic-name="consumptionHelicopterSubs_{{ $index }}_telephone_number" class="form-control" ng-disabled="COPY_BOOKING_helicopter" list="helicopter_tel_list">
+                                    </div>
+                                </td>
+                                <td width="20" min-screen-width="2"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+                <table width="100%">
+                    <tbody>
+                    <tr height="50">
+                        <td class="text-right" width="100">訂票人：</td>
+                        <td class="text-left" width="160"><input type="text" data-ng-model="helicopterBooking.consumption.trader" name="consumption_trader" class="form-control"  ng-disabled="COPY_BOOKING_helicopter"></td>
+                        <td class="text-right" width="100" min-screen-width="80">電話：</td>
+                        <td class="text-left"  width="165">
+                            <div class="pull-left" style="width: 57px;" min-screen-width="55">
+                                <select class="form-control no-padding" data-ng-model="helicopterBooking.consumption.area_code_id" name="consumption_area_code_id" data-ng-options="n.id as n.area_code for n in areaCodes" data-ng-disabled="COPY_BOOKING_helicopter">
+                                    <option value="">區號</option>
+                                </select>
+                            </div>
+                            <div class="pull-left" style="width: 102px;" min-screen-width="75">
+                                <input type="text" data-ng-model="helicopterBooking.consumption.trader_tel" name="consumption_trader_tel" class="form-control" ng-disabled="COPY_BOOKING_helicopter" list="helicopter_tel_list">
+                            </div>
+
+                            </td>
+                    </tr>
+                    </tbody>
+                </table>
+            <br>
+            <table  class="BGcolor-626571">
+                <tbody>
+                <tr height="50">
+                    <td class="text-right" width="100" min-screen-width="100">成本單價：</td>
+                    <td class="text-left" min-screen-width="100"><input type="text" name="cost" data-ng-model="helicopterBooking.cost" class="form-control"  ng-disabled="COPY_BOOKING_helicopter"></td>
+                    <td class="text-right" width="110" min-screen-width="100">實收單價：</td>
+                    <td class="text-left" min-screen-width="100"><input type="text" name="sell" data-ng-model="helicopterBooking.sell" class="form-control"  ng-disabled="COPY_BOOKING_helicopter"></td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">成本總數：</td>
+                    <td class="text-left">{{helicopter_total.cost | parseYuan :false}}</td>
+                    <td class="text-right">實收總數：</td>
+                    <td class="text-left">{{helicopter_total.sell | parseYuan :false}}</td>
+                </tr>
+                <tr height="50">
+                    <td class="text-right">收益：</td>
+                    <td class="text-left" colspan="3">{{helicopter_total.profit | parseYuan :false}}</td>
+                    <td width="20"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table width="100%">
+                <tr height="50">
+                    <td class="text-right" width="100" min-screen-width="100">應付消費：</td>
+                    <td class="text-left" width="160" min-screen-width="100"><input type="text" name="consumption_should_pay" data-ng-model="helicopterBooking.consumption.should_pay" class="form-control"></td>
+                    <td class="text-right" min-screen-width="100">付款方式：</td>
+                    <td class="text-left" min-screen-width="100">
+                        <select name="consumption_pay_type_id" class="form-control" data-ng-required="enableClientValidation" data-ng-model="helicopterBooking.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types"  ng-disabled="COPY_BOOKING_helicopter">
+                            <option value="">請選擇付款方式</option>
+                        </select>
+                    </td>
+                    <td width="20"></td>
+                </tr>
+                <tr>
+                    <td valign="top" class="text-right">
+                        備註：<br>
+                        <button class="btn btn-information btn-table margin-right-5" phrasebooktis="helicopter" insertmodel="helicopterBooking_consumption_remark" type="button" >常用</button>
+                    </td>
+                    <td colspan="3">
+                      <div class="text-right">
+                        <button class="btn btn-information btn-table text-right"type="button" ng-click="creatremark()">生成備註</button>
+                      </div>
+                      <textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="helicopterBooking.consumption.remark" name="helicopterBooking_consumption_remark"></textarea></td>
+                </tr>
+                <!--<tr height="50">
+                    <td class="text-right">操作密碼：</td>
+                    <td class="text-left"><input type="password" data-ng-model="helicopterBooking.pin_code" class="form-control input-140" name="pin_code" data-enter-key="add()" data-ng-disabled="is_locked"></td>
+                    <td>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" ng-click="agent_locked(true)">鎖定</button>
+                        <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                    </td>
+                    <td ><span class="red">{{ agent_about.username }}</span></td>
+                </tr>-->
+                </tbody>
+            </table>
+            <table ng-show="popupWindow">
+              <tr height="50">
+                <td class="text-right" width="100">操作密碼：</td>
+                <td class="text-left " width="160"><input type="password" name="pin_code" data-ng-model="helicopterBooking.pin_code" class="form-control" data-enter-key="add()"></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn  btn-confirm margin-right-15" ng-show="'PUT' != sub_post_put && (user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED')" data-ng-disabled="isDisabled" data-ng-click="add(true)" type="button">提交并發送短訊</button>
+                <button class="btn  btn-confirm margin-right-15" data-ng-disabled="isDisabled" data-ng-click="add()" type="button">提 交</button>
+                <button class="btn btn-inf btn-cancel" data-ng-click="cancel()" type="button">取 消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<datalist id="helicopter_tel_list">
+    <option ng-repeat="tel_list in helicopter_tel_list" value="{{ tel_list.telephone_number }}">
+</datalist>
+<datalist id="helicopter_agent_list">
+    <option ng-repeat="agent_list in helicopter_agent_list" value="{{ agent_list.agent_guest_name }}">
+</datalist>
+<datalist id="helicopter_idcard_list">
+    <option ng-repeat="idcard_list in helicopter_idcard_list" value="{{ idcard_list.idcard_number }}">
+</datalist>
+</div>

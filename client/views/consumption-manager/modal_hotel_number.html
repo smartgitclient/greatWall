@@ -1,0 +1,29 @@
+<div class="page">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading"><strong>房間號碼</strong></div>
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td align="right">房間號碼：</td>
+                                        <td align="left">
+                                            <input class="form-control input-01 ng-pristine " name = "number" type="text" ng-model="hotel.number">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-confirm" data-ng-disabled="isDisabled" ng-click="add()">提交</button>
+                <button class="btn btn-cancel" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </form>
+</div>

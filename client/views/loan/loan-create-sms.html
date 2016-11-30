@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h3>{{title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_loan_sms" class="ng-valid" server-validation="POST{{ticket_remark_url}}">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-4" style="text-align: right"><label>戶口編號：</label></div>
+            <div class="col-md-4">{{sms.agent_code}}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-4" style="text-align: right"><label>戶口名稱：</label></div>
+            <div class="col-md-4">{{sms.agent_name}}</div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <td>戶口編號</td>
+                    <td>姓名</td>
+                    <td>電話</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="phone in sms.phoneNumber">
+                    <td>{{phone.agentCode}}</td>
+                    <td>{{phone.agentContactName}}</td>
+                    <td>{{phone.areaCode}} {{phone.telNum}}</td>
+                </tr>
+                <tr data-ng-show = "sms.phoneNumber.length == 0">
+                    <td colspan="3">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12" id="send-sms-loan">
+                    <label style="float: left;font-size: 16px;line-height: 30px">內容</label>
+                    <!--<p class="text-right"><button class="btn btn-info btn-information btn-table" data-ng-click="edit()">編輯</button></p>-->
+                    <textarea data-ng-required="enableClientValidation"
+                              name="content"
+                              class="form-control textarea-table01 ng-pristine ng-valid"
+                              rows="8"
+                              data-ng-model="sms.content">
+                    </textarea>
+                </div>
+                <br/>
+                <!--storm.xu start-->
+                <div class="col-md-12" style="padding:20px 0 0;" >
+                    <label style="float: left;line-height: 30px">語言選擇：</label>
+                    <a   ng-click="changeAt(sms.content,true)" ng-class="{true: 'active', false: 'inactive'}[isActive]" style="display: inline-block;line-height: 30px;cursor: pointer;float: left;font-size: 18px;width: 30px;
+                        height: 30px;text-align: center;margin-right: 8px;">繁</a>
+                    <a ng-click="changeAt(sms.content,false)"  ng-class="{true: 'active', false: 'inactive'}[isActive1]" style="display: inline-block;line-height: 30px;cursor: pointer;float: left;font-size: 18px;width: 30px;
+                         height: 30px;text-align: center;">简</a>
+                </div>
+                <!--storm.xu end-->
+                <div class="col-md-12" style="padding:15px 0 0;">
+                    <label style="float: left;line-height: 30px">操作密碼：</label>
+                    <input style="width:250px" type="password" name="pin_code" data-ng-model="send_sms.pin_code" class="form-control textarea-table01 ng-pristine ng-valid" data-enter-key="sendSms()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-confirm margin-right-5" data-ng-click="sendSms()" data-ng-disabled="disabled_submit">發送</button>
+        <button class="btn btn-cancel margin-right-5" data-ng-click="close()">取消發送</button>
+    </div>
+    </form>
+</div>
+<style>
+    a.active{
+        background-color: #65A34D;color: white;border: #65A34D solid 1px;
+    }
+    a.inactive{
+        border: #ccc solid 1px;
+    }
+</style>

@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h3>截大數</h3>
+</div>
+<div class="modal-body">
+    <!--<form name="$parent.form_create_remark" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_remark_url}}">-->
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered table-striped table-detail-01" ng-hide="user.hall.id=='1AE7283167B57D1DE050A8C098155859'">
+                        <tr>
+                            <td width="100" align="right">年月：</td>
+                            <td align="left" width="150">{{shift_record.year_month|parseDate:"yyyy-MM"}}</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">日期：</td>
+                            <td align="left" width="150">{{shift_record.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">本月買碼數：</td>
+                            <td align="left" width="150">{{shift_record.thismonth_buycode|parseTenThousand}}</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">本月轉碼數：</td>
+                            <td align="left" width="150">{{shift_record.thismonth_rolling|parseTenThousand}}</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">本月餘碼數：</td>
+                            <td align="left" width="150">{{shift_record.thismonth_depositspecialcode|parseTenThousand}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">操作密碼：</td>
+                            <td align="left" width="150">
+                                <input type="password" name="pin_code" data-ng-model="shift_records.pin_code" class="form-control" data-enter-key="jieDaShu()">
+                            </td>
+                        </tr>
+                    </table>
+
+                <table class="table table-bordered table-striped table-detail-01" ng-show="user.hall.id=='1AE7283167B57D1DE050A8C098155859'">
+                    <tr>
+                        <td width="100" align="right">年月：</td>
+                        <td align="left" width="150" colspan="3">{{shift_record.year_month|parseDate:"yyyy-MM"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">日期：</td>
+                        <td align="left" width="150" colspan="3">{{shift_record.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">本月買碼A數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_buycode_a|parseTenThousand}}</td>
+                        <td width="100" align="right">本月買碼B數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_buycode_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">本月轉碼A數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_rolling_a|parseTenThousand}}</td>
+                        <td width="100" align="right">本月轉碼B數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_rolling_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">本月餘碼A數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_depositspecialcode_a|parseTenThousand}}</td>
+                        <td width="100" align="right">本月餘碼B數：</td>
+                        <td align="left" width="150">{{shift_record.thismonth_depositspecialcode_b|parseTenThousand}}</td>
+                    </tr>
+                    <tr>
+                        <td align="right">操作密碼：</td>
+                        <td align="left" width="150" colspan="3">
+                            <input type="password" name="pin_code"  data-ng-model="shift_records.pin_code" class="form-control" style="width:150px;" data-enter-key="jieDaShu()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="jieDaShu()" data-ng-disabled="disabled_submit">截大數</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">取消</button>
+        </div>
+    <!--</form>-->
+</div>

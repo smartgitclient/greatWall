@@ -1,0 +1,44 @@
+<div class="page page-services ng-scope">
+<div class="row">
+<div class="col-md-12">
+<div class="panel panel-form-list">
+    <div class="panel-heading"><strong>存卡授權</strong></div>
+    <div class="panel-content">
+        <div class="row">
+            <div class="col-md-12">
+                <form name="form_search">
+                <table class="table table-bordered table-striped table-detail-01">
+                    <tr>
+                        <td width="100" align="right">授權戶口：</td>
+                        <td align="left">
+                               {{cross_transfer.receive_agent_code}}
+                        </td>
+                        <td width="100" align="right">授權電話：</td>
+                        <td align="left" width="250">
+                            <ui-select ng-model="cross_transfer.phone_number">
+                                <ui-select-match placeholder="請選擇授權電話">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="phone in phone_numbers">
+                                    <div ng-bind-html="phone"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+        <div class="panel-heading" data-ng-show="show" style="color:red"><strong>授權成功</strong></div>
+        <div class="row" ng-show ="showCross" style="text-align: center;">
+            <button class="btn btn-info btn-confirm" ng-click="authorization()">電話授權</button>
+            <button class="btn btn-inf btn-cancel" ng-click="cancel()">取消</button>
+        </div>
+        <div class="row" style="text-align: center;"  ng-show ="closeCross">
+            <button class="btn btn-info btn-cancel" ng-click="remove()">關閉</button>
+        </div>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
+</div>
+</div>
+</div>

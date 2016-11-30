@@ -1,0 +1,103 @@
+<div class="page page-services ng-scope" data-ng-controller="ConsumptionSetTravalCtrls">
+    <div class="panel panel-form-list  col-md-9" check-permissions="consumptionSettingCreate,consumptionSettingUpdate">
+        <div class="panel-heading">
+            <strong>新增酒店/旅行社</strong>
+            <button class="btn btn-inf btn-confirm pull-right" data-ng-click="cancle_update()" check-permissions="consumptionSettingCreate">新增酒店/旅行社</button>
+        </div>
+        <div class="panel-content">
+            <form name="form_travel"  class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{form_url}}">
+                <table>
+                    <tr height="50">
+                        <td width="126" class="text-right">類型：</td>
+                        <td width="209">
+                            <select class="form-control" data-ng-model="travel.hotel_travel_type" name="hotel_travel_type" data-ng-options="k as v for (k, v) in hotelTravelType_items" data-ng-change="changeType()">
+                                <option value="">請選擇類型</option>
+                            </select>
+                        </td>
+                        <td width="126" class="text-right">供應商：</td>
+                        <td width="209" data-ng-hide="1 == travel.hotel_travel_type">
+                            <input type="text" data-ng-model="travel.name" name="name"  class="form-control">
+                        </td>
+                        <td  width="209" data-ng-show="1 == travel.hotel_travel_type">
+                            <select name="hall_id" class="form-control" data-ng-model="travel.hall_id" data-ng-options="n.id as n.hall_name for n in halls " data-ng-change="changeHall()">
+                                <option value="">請選擇廳館</option>
+                            </select>
+                        </td>
+
+                        <td width="126" class="text-right" data-ng-show="1 == travel.hotel_travel_type">酒店：</td>
+                        <td width="209" data-ng-show="1 == travel.hotel_travel_type" class="select-td">
+                            <select class="form-control" multiple bs-select data-ng-model="travel.refHotelTravelHotels" name="refHotelTravelHotels" data-ng-options="n.id as n.hotel_name for n in hotels" placeholder="請選擇" max-length-html="个選擇">
+                                <option value="">請選擇</option>
+                            </select>
+                        </td>
+                        <td width="126" class="text-right">操作密碼：</td>
+                        <td width="209"><input type="password" data-ng-model="travel.pin_code" name="pin_code"  class="form-control" data-enter-key="submit()"></td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="submit()">提交</button>
+                    <button class="btn btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-9">
+        <div class="panel-heading">
+            <table class="pull-right" style="font-size: 14px;">
+                <tbody>
+                <tr>
+                    <td class="text-right" width="80">供應商：</td>
+                    <td class="text-right">
+                        <div id="text-sear02" class="form-group has-success has-feedback col-md-2">
+                            <input id="inputSuccess2" class="form-control ng-pristine ng-valid" type="text" placeholder="" data-ng-model="condition.name">
+                            <span class="fa fa-search form-control-feedback" ng-click="search()"></span>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr>
+                    <td width="15%">類型</td>
+                    <td>供應商</td>
+                    <td width="55%">酒店</td>
+                    <td  check-permissions="consumptionSettingUpdate,consumptionSettingDelete">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="travel_type in travel_types" data-selected-rows>
+                    <td>{{ hotelTravelType_items[travel_type.hotel_travel_type] }}</td>
+                    <td>{{travel_type.name}}</td>
+                    <td>
+                        <span ng-repeat="hotel in travel_type.refHotelTravelHotels">{{ hotel.hotel_name }}<samp ng-hide="$index +1 == travel_type.refHotelTravelHotels.length">, </samp></span>
+                    </td>
+                    <td class="no-padding" check-permissions="consumptionSettingUpdate,consumptionSettingDelete">
+                        <button check-permissions="consumptionSettingUpdate" class="btn btn-information btn-table margin-right-5" data-ng-click="update(travel_type.id)">修改</button>
+                        <button check-permissions="consumptionSettingDelete" class="btn btn-information btn-table"  data-ng-click="delete(travel_type.id)">刪除</button>
+                    </td>
+                </tr>
+                <tr data-ng-show="travel_types.length == 0">
+                    <td colspan="5">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="page.page"
+                            total-items="page.total_items"
+                            on-select-page="search(page)"
+                            max-size = "page.max_size"
+                            items-per-page = "page.items_per_page"
+                            data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                <paginationselect pageCtrl="page" select-page="search"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

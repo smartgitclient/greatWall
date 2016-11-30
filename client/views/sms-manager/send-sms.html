@@ -1,0 +1,364 @@
+<div class="page page-grid" data-ng-controller="sendSmsCtrl">
+    <div class="panel panel-default">
+        <!--<div class="panel panel-form-list col-md-2"></div>-->
+        <div class="panel panel-form-list col-md-7">
+            <!--<div class="panel-content">-->
+            <form name="form_send_sms" class="ng-valid ng-dirty form-validation" server-validation="POST{{send_sms_url}}">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr height="50">
+                        <td width="200" class="text-right">信息類型：</td>
+                        <td colspan="4" class="text-left">
+                            <dl class="dl-horizontal">
+                                <dd>
+                                    <label class="ui-radio" style="width: 120px;"><input data-ng-model="record_create.sms_type"
+                                                                   name="sms_type"
+                                                                   type="radio"
+                                                                   value="1"
+                                                                   data-ng-checked="true"
+                                                                   data-ng-change="cancel()">
+                                        <span>普通短信</span></label>
+                                    <!--data-ng-change="smsType_change()"-->
+                                    <label class="ui-radio" style="width: 120px;"><input data-ng-model="record_create.sms_type"
+                                                                   name="sms_type"
+                                                                   type="radio"
+                                                                   value="2"
+                                                                   data-ng-change="cancel()">
+                                        <span>指定戶組</span></label>
+                                    <!--<label class="ui-radio" style="width: 120px;"><input data-ng-model="record.scene_status"-->
+                                                                   <!--name="scene_status"-->
+                                                                   <!--type="radio"-->
+                                                                   <!--value="0"-->
+                                                                   <!--data-ng-change="shiftSceneType()"-->
+                                                                   <!--checked>-->
+                                        <!--<span>本廳全部</span></label>-->
+                                </dd>
+                            </dl>
+                        </td>
+                    </tr>
+                    <tr data-ng-hide="record_create.sms_type==2">
+                        <td width="200" class="text-right">優先度：</td>
+                        <td colspan="4" class="text-left">
+                            <dl class="dl-horizontal">
+                                <dd>
+                                    <label class="ui-radio" style="width: 120px;"><input data-ng-model="record_create.priority"
+                                                                   name="priority"
+                                                                   type="radio"
+                                                                   value="1">
+                                        <span>高</span></label>
+                                    <label class="ui-radio" style="width: 120px;"><input data-ng-model="record_create.priority"
+                                                                   name="priority"
+                                                                   type="radio"
+                                                                   value="3"
+                                                                   data-ng-checked="true">
+                                        <span>低</span></label>
+                                </dd>
+                            </dl>
+                        </td>
+                    </tr>
+                    <!--普通發送-->
+                    <tr height="130">
+                        <td class="text-right">通知人：</td>
+                        <td colspan="4">
+                            <div class="panel col-md-12">
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-left">
+                                             <span class="col-md-3" data-ng-show="record_create.sms_type==1">
+                                                 <select data-ng-required="enableClientValidation"
+                                                         data-ng-model="new_record.search_type"
+                                                         style="margin:5px 0;"
+                                                         name="search_type"
+                                                         data-ng-change="change_search_type()"
+                                                         class="form-control">
+                                                     <option value="agent">戶口名稱</option>
+                                                     <option value="group">群組名稱</option>
+                                                 </select>
+                                            </span>
+                                             <span class="col-md-6 text-left">
+                                                 <div id="text-sear02"  style="margin: 5px 0;" class="has-feedback">
+                                                     <input class="form-control"
+                                                            type="text"
+                                                            data-ng-model="new_record.keyword"
+                                                            name="keyword"
+                                                            enter-key="search_list()"
+                                                            input-uppercase
+                                                            placeholder="{{placeholder}}">
+                                                     <span class="fa fa-search form-control-feedback" ng-click="search_list()" style="cursor:pointer"></span>
+                                                 </div>
+                                            </span>
+                                            <span class="col-md-3 text-right" data-ng-show="record_create.sms_type==1">
+                                                <button ng-click="write_num()" class="btn btn-info btn-information btn-table">輸入號碼</button>
+                                           </span>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!--搜索結果項-->
+                                <!--<table class="table table-bordered"  data-ng-show="new_record.search_type=='agent' && !isWriteFlag">-->
+                                    <!--<thead>-->
+                                    <!--<tr>-->
+                                        <!--<td width="100">戶口編號</td>-->
+                                        <!--<td width="80">姓名</td>-->
+                                        <!--<td>短信號碼</td>-->
+                                        <!--<td width="50">&nbsp;</td>-->
+                                    <!--</tr>-->
+                                    <!--</thead>-->
+                                    <!--<tbody>-->
+
+                                    <!--<tr data-ng-repeat="tel_record in tel_records"  data-ng-show="tel_records.length>0 && !tel_record.isHidden" >-->
+                                        <!--<td>{{tel_record.agent_code}}</td>-->
+                                        <!--<td>{{tel_record.agent_name}}</td>-->
+                                        <!--<td>{{tel_record.telephone_number}}</td>-->
+                                        <!--<td>-->
+                                            <!--<button ng-click="addTel($index)" class="btn btn-info btn-information btn-table">+</button>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr data-ng-hide="tel_records.length>0">-->
+                                        <!--<td colspan="4">暫無數據</td>-->
+                                    <!--</tr>-->
+                                <!--</tbody>-->
+                                <!--</table>-->
+
+                                <!--手動輸入-->
+                                <table class="table table-bordered"  data-ng-show="isWriteFlag">
+                                    <thead>
+                                    <tr>
+                                        <td width="100">戶口編號</td>
+                                        <td width="80">姓名</td>
+                                        <td>短信號碼</td>
+                                        <td width="50">&nbsp;</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                              <span class="col-md-5">
+                                                 <select data-ng-required="enableClientValidation"
+                                                         data-ng-model="tel_record.area_code_id"
+                                                         name="area_code_id"
+                                                         class="form-control"
+                                                         data-ng-change="areaCode_change()"
+                                                         ng-options="h.id as h.area_code for h in areaCodes">
+                                                 </select>
+                                            </span>
+                                            <span class="col-md-7">
+                                                <input data-ng-required="enableClientValidation"
+                                                       name="telephone_number"
+                                                       type="text"
+                                                       data-ng-model="tel_record.telephone_number"
+                                                       class="form-control">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button ng-click="addTel(0)" class="btn btn-info btn-information btn-table">+</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <perfect-scrollbar class="animate-fade-up"
+                                                   data-ng-show="new_record.search_type=='group' && !isWriteFlag"
+                                                   style=" position: relative; height:160px;overflow-y: hidden;"
+                                                   suppress-scroll-x="true"
+                                                   refresh-on-change="sms_groups.length"
+                                                   wheel-propagation="true"
+                                                   wheel-speed="5">
+                                    <div class="panel-content consumption_record" style="min-height: 160px; padding:0 10px 5px 0;">
+                                        <table class="table table-bordered">
+                                            <!--<thead>-->
+                                            <!--<tr>-->
+                                                <!--<td>群組名稱</td>-->
+                                                <!--<td width="50">&nbsp;</td>-->
+                                            <!--</tr>-->
+                                            <!--</thead>-->
+                                            <tbody>
+                                            <tr data-ng-repeat="sms_group in sms_groups" data-ng-hide="sms_group.is_selected">
+                                                <td>{{sms_group.sms_group_name}}</td>
+                                                <td>
+                                                    <button ng-click="group_selected(sms_group,'group')" class="btn btn-info btn-information btn-table">選擇</button>
+                                                </td>
+                                            </tr>
+                                            <tr data-ng-show="sms_groups.length == 0">
+                                                <td colspan="3">暫無符合條件的記錄</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </perfect-scrollbar>
+
+                                <!--搜索結果項-->
+                                <perfect-scrollbar class="animate-fade-up"
+                                                   data-ng-show="new_record.search_type=='agent_group'"
+                                                   style=" position: relative; height:205px;overflow-y: hidden;"
+                                                   suppress-scroll-x="true"
+                                                   refresh-on-change="sms_groups.length"
+                                                   wheel-propagation="true"
+                                                   wheel-speed="5">
+                                    <div class="panel-content consumption_record" style="min-height: 205px; padding:5px 10px 5px 10px;">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <td>戶組名稱</td>
+                                                <td>戶組股東</td>
+                                                <td width="50">&nbsp;</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-ng-repeat="agent_group in agent_groups" data-ng-hide="agent_group.is_selected">
+                                                <td>{{agent_group.agent_group_name}}</td>
+                                                <td>{{agent_group.owner_name}}</td>
+                                                <td>
+                                                    <button ng-click="group_selected(agent_group,'agent')" class="btn btn-info btn-information btn-table">選擇</button>
+                                                </td>
+                                            </tr>
+                                            <tr data-ng-show="agent_groups.length == 0">
+                                                <td colspan="3">暫無符合條件的記錄</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </perfect-scrollbar><br/>
+
+
+                                <tabset class="ui-tab">
+                                    <tab heading="所有電話">
+                                        <div class="panel panel-list-detail">
+                                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; height:250px; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                                                <div class="panel-content consumption_record"  style="min-height: 100px;">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <td width="100">戶口編號</td>
+                                                            <td width="80">姓名</td>
+                                                            <td>短信號碼</td>
+                                                            <td width="50">&nbsp;</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr data-ng-repeat="tel in tel_content">
+                                                            <td>{{tel.agent_code}}</td>
+                                                            <td>{{tel.agent_name}}</td>
+                                                            <td>{{tel.isSystemFlag ? tel.telephone_number : tel.area_code +"-"+tel.telephone_number}}</td>
+                                                            <td width="50" data-ng-hide="isDetailFlag">
+                                                                <button ng-click="removeTel(tel,$index)" class="btn btn-info btn-information btn-table">-</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr data-ng-show="tel_content.length==0">
+                                                            <td colspan="4">暫無電話</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </perfect-scrollbar>
+                                        </div>
+                                    </tab>
+                                    <tab heading="所選群組" data-ng-show="record_create.sms_type==1">
+                                        <div class="panel panel-list-detail">
+                                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; height:250px; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50">
+                                                <div class="panel-content consumption_record"  style="min-height: 100px;">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                        <tr data-ng-repeat="selected_record in selected_group_content">
+                                                            <td width="50">
+                                                                <li class="fa fa-check fa-check-green"></li>
+                                                            </td>
+                                                            <td>{{selected_record.sms_group_name}}</td>
+                                                            <td width="50">
+                                                                <button ng-click="cancel_selected(selected_record,$index)" data-ng-disabled="isSelectDisabled" class="btn btn-confirm btn-table">取消</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr data-ng-show="selected_group_content.length == 0">
+                                                            <td colspan="3">暫無選中的群組</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </perfect-scrollbar>
+                                        </div>
+                                    </tab>
+                                    <tab heading="所選戶組" data-ng-show="record_create.sms_type==2">
+                                        <div class="panel panel-list-detail">
+                                            <perfect-scrollbar class="animate-fade-up" style=" position: relative; height:175px;overflow-y: hidden;" suppress-scroll-x="true" refresh-on-change="sms_groups.length" wheel-propagation="true" wheel-speed="5">
+                                                <div class="panel-content consumption_record" style="min-height: 175px; padding:5px 10px 0 10px;">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                        <tr data-ng-repeat="selected_record in selected_group_content">
+                                                            <td width="50">
+                                                                <li class="fa fa-check fa-check-green"></li>
+                                                            </td>
+                                                            <td>{{selected_record.agent_group_name}}</td>
+                                                            <td width="50">
+                                                                <button ng-click="cancel_selected(selected_record,$index)" data-ng-disabled="isSelectDisabled" class="btn btn-confirm btn-table">取消</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr data-ng-show="selected_group_content.length == 0">
+                                                            <td colspan="3">暫無選中的戶組</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </perfect-scrollbar>
+                                        </div>
+                                    </tab>
+                                </tabset>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <tr height="150">
+                        <td class="text-right">短信內容：<br>
+                            <button class="btn btn-information btn-table margin-right-5" data-ng-click="smsTemplateOpen()" type="button" >常用</button>
+                        </td>
+                        <td colspan="4">
+                            <!--<p class="text-right"><button class="btn btn-info btn-information btn-table" data-ng-click="edit()">編輯</button></p>-->
+                            <textarea id="remark"
+                                      data-ng-required="enableClientValidation"
+                                      name="content"
+                                      class="form-control textarea-table01 ng-pristine ng-valid"
+                                      rows="6"
+                                      data-ng-model="record_create.content">
+                            </textarea>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right">操作密碼：</td>
+                        <td width="250">
+                            <span class="col-md-8">
+                                 <input name="pin_code" type="password"
+                                        style="width: 150px;"
+                                        data-ng-model="record_create.pin_code"
+                                        data-ng-disabled="is_locked"
+                                        class="form-control" data-enter-key="submit()">
+                            </span>
+                           <span class="col-md-2">
+                                <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" data-ng-disabled="isLockedFlag" ng-click="agent_locked(true)">鎖定</button>
+                                <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                           </span>
+                        </td>
+                        <td class="class-left" style="color: red; min-width: 80px;">
+                                 <span color="red">{{username}}</span>
+                        </td>
+                        <td width="400">
+                            <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="submit()" data-ng-show="user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED'" check-permissions="smsSendCreate">發送SMS</button>
+                            <button class="btn btn-info btn-information" data-ng-click="cancel()">取消</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+
+                <!--<div class="row" style="text-align: center;">-->
+                    <!--<button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="submit()">發送SMS</button>-->
+                    <!--<button class="btn btn-info btn-information" data-ng-click="cancel()">取消</button>-->
+                <!--</div>-->
+                <!--<div class="clear"></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>

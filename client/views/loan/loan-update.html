@@ -1,0 +1,316 @@
+<div class="page page-services ng-scope" data-ng-controller="loanUpdateCtrl">
+<div class="col-md-11">
+<div class="panel panel-form-list">
+    <div class="panel-heading"><strong>{{title}}</strong></div>
+    <div class="panel-content">
+        <div class="row">
+            <div class="col-md-6">
+                <form name="form_loan" class="ng-valid ng-dirty form-validation" server-validation="{{sub_method}}{{loan_url}}">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td width="110" align="right">業務單號：</td>
+                            <td align="left">{{loan.loan_seqnumber}}</td>
+                            <td width="110" align="right">
+                                <i class="fa ng-class:{true: 'fa-lock', false: 'fa-unlock'}[is_lock]; cursor-pointer" data-ng-click="lockCreated()"></i>貸款時間：
+                            </td>
+                            <td align="left">
+                                <div class="form-inline input-group ui-datepicker">
+                                    <div class="form-group">
+                                        <input size="9" data-ng-disabled="is_lock" class="form-control input-01"
+                                               ng-model="loan.loan_time"
+                                               data-ng-required="enableClientValidation"
+                                               name="loan_time"
+                                               style="width:95px;"
+                                               bs-datepicker type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <div class="form-group">
+                                        <input size="6" data-ng-disabled="is_lock" class="form-control input-01"
+                                               data-ng-required="enableClientValidation"
+                                               name="loan_time"
+                                               ng-model="loan.loan_time"
+                                               style="width:75px;"
+                                               bs-timepicker type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                </div>
+                        </tr>
+                        <tr>
+                            <td align="right">戶口編號：</td>
+                            <td align="left">{{loan.agent_code}} </td>
+                            <td align="right" width="95">中文姓名：</td>
+                            <td align="left">{{loan.agent_name}}</td>
+                        </tr>
+                        <tr>
+                            <td width="95" align="right">特別碼：</td>
+                            <td align="left">
+                                <span data-ng-show="loan.hall_type!=3">{{type_name}}</span>
+                                <select data-ng-model="loan.type"
+                                        name="type"
+                                        data-ng-required="enableClientValidation"
+                                        class="form-control"
+                                        data-ng-disabled="isDesabled"
+                                        data-ng-change="specialCode_change()"
+                                        data-ng-show="loan.hall_type==3"
+                                        ng-options="h.id as h.name for h in specialCodeTypes">
+                                </select>
+                            </td>
+                            <td align="right">戶口類型：</td>
+                            <td align="left">{{agent_type}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">貸款人姓名：</td>
+                            <td align="left">
+                                <!--{{loan.borrower}}-->
+                                <select data-ng-model="loan_record.agent_contact_id"
+                                        name="borrower"
+                                        data-ng-required="enableClientValidation"
+                                        class="form-control"
+                                        data-ng-change="contactName_select()"
+                                        ng-options="h.agent_contact_id as h.agent_contact_name for h in borrowers">
+                                    <option value = "">請選擇貸款人</option>
+                                </select>
+                            </td>
+                            <td align="right">貸款餘額：</td>
+                            <td align="left">
+                                <input type="text"
+                                       ng-model="loan.settlement_amount"
+                                       name="settlement_amount"
+                                       data-ng-required="enableClientValidation"
+                                       data-ng-disabled="is_confirm"
+                                       required class="form-control input-01 width-83">&nbsp;萬
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td align="right">貸款人姓名：</td>-->
+                            <!--<td align="left">{{loan.borrower}}-->
+                                <!--<select data-ng-model="borrower_id"-->
+                                        <!--name="borrower"-->
+                                        <!--data-ng-required="enableClientValidation"-->
+                                        <!--class="form-control"-->
+                                        <!--data-ng-disabled="is_confirm"-->
+                                        <!--ng-options="h.agent_contact_id as h.agent_contact_name for h in borrowers">-->
+                                    <!--<option value = "">請選擇貸款人</option>-->
+                                <!--</select>-->
+                            <!--</td>-->
+                            <!--<td align="right">貸款人電話：</td>-->
+                            <!--<td align="left">{{loan.borrower_tel}}-->
+                                <!--<select data-ng-model="loan.borrower_tel"-->
+                                        <!--name="borrower_tel"-->
+                                        <!--data-ng-required="enableClientValidation"-->
+                                        <!--class="form-control"-->
+                                        <!--data-ng-disabled="is_confirm"-->
+                                        <!--ng-options="h.telephone_number as h.telephone_number for h in borrowers_phoneNumbers.phoneNumbers">-->
+                                    <!--<option value = "">請選擇貸款人電話</option>-->
+                                <!--</select>-->
+                            </td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered table-striped table-detail-01">
+
+                    <tr data-ng-repeat="_supervisor in loan.loanSupervisors">
+                        <td align="right" width="93">批核人：</td>
+                        <td align="left">{{_supervisor.supervisor}}</td>
+                        <!--<td align="right"style="width: 93px">批核人電話：</td>-->
+                        <!--<td align="left">{{_supervisor.supervisor_tel}} </td>-->
+                    </tr>
+                    <tr>
+                        <td width="95" align="right">備註：</td>
+                        <td>
+                            <textarea data-ng-model="loan_record.remark" class="form-control textarea-table01 ng-pristine ng-valid" rows="2"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-striped  table-detail-01">
+                    <tr>
+                        <td width="95" class="nowarp">批額備註：</td>
+                        <td class="text-left" ng-bind-html="quotaRemarks|nl2br"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <!--<div class="row col-md-12 color-warning" data-ng-show="have_overdue_loan">-->
+            <!--該戶口存在過期貸款【詳細】-->
+        <!--</div>-->
+        <!--<div class="row" style="text-align: center;">-->
+            <!--<button class="btn btn-confirm margin-right-15" ng-click="confirm()" data-ng-disabled="isDisabled">下一步</button>-->
+            <!--<button class="btn btn-cancel" ng-click="reset()" data-ng-disabled="is_confirm" data-ng-disabled="isDisabled">重置</button>-->
+        <!--</div>-->
+    </div>
+    <!--<div class="panel-footer">-->
+    <!--</div>-->
+</div>
+<div class="panel panel-form-list">
+    <div class="panel-content">
+        <div class="row">
+            <div class="col-md-6">
+               <table class="table table-bordered table-striped">
+                    <tr>
+                        <td>貸款類型</td>
+                        <td>貸款余额(萬)</td>
+                        <td>天期</td>
+                        <td>息率</td>
+                        <td>特別期限</td>
+                        <td>特別息率</td>
+                        <td>罰息天數</td>
+                        <td data-ng-hide="loan.is_special==1">&nbsp;</td>
+                    </tr>
+
+                    <tr data-ng-repeat="marker in loan_record.markers">
+                        <td>{{marker.funds_type}}</td>
+                        <td>{{marker.settlement_amount|parseTenThousand2}}</td>
+                        <td>{{marker.term}}</td>
+                        <td>{{marker.expired_rate|parseTenThousand2}}</td>
+                        <td>{{marker.special_term}}</td>
+                        <td>{{marker.special_rate|parseTenThousand2}}</td>
+                        <td>{{marker.expired_add_days}}</td>
+                        <td data-ng-hide="loan.is_special==1">
+                            <button  ng-show="$index == 0" class="btn btn-info btn-confirm btn-table" ng-click="add_marker()">+</button>
+                            <button  ng-show="$index > 0 && !marker.id" class="btn btn-info btn-confirm btn-table" ng-click="remove_marker(marker,$index)">-</button>
+                            <button ng-click="marker_detail(marker,$index)" class="btn btn-info btn-confirm btn-table">詳細</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  colspan="8" data-ng-hide="loan_record.markers.length>0">
+                            暫無貸款單
+                        </td>
+                    </tr>
+                </table>
+                <div  class="col-md-6">
+                    <table class="table table-bordered table-striped table-detail-01" >
+                        <tr>
+                            <td width="110" align="right">操作密碼</td>
+                            <td>
+                                <input data-ng-model="loan_record.pin_code" type="password" class="form-control" data-enter-key="submit()">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form name="marker_term_form" class="ng-valid ng-dirty form-validation" server-validation="PUT{{marker_term_url}}">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td width="100">貸款餘額</td>
+                            <td width="180" colspan="2"><input type="text"
+                                                   data-ng-model="layer_marker.settlement_amount"
+                                                   data-ng-required="enableClientValidation"
+                                                   data-dynamic-name="markers_{{marker_index}}_settlement_amount"
+                                                   ng-keyup="sumAmount(layer_marker)"
+                                                   class="form-control input-01 width-83">&nbsp;萬</td>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td width="65">戶口編號</td>
+                            <td>貸款備註</td>
+                            <td data-min-screen-width="80">貸款類型</td>
+                            <td data-min-screen-width="75">天期</td>
+                            <td data-min-screen-width="75">息率</td>
+                            <td data-min-screen-width="75">特別期限</td>
+                            <td data-min-screen-width="75">特別息率</td>
+                            <td data-min-screen-width="75">罰息天數</td>
+                            <td data-min-screen-width="75">利息類型</td>
+                        </tr>
+
+                        <tr data-ng-repeat="markerTerm in layer_marker.markerTerms">
+                            <td width="100">{{markerTerm.agent_code}}</td>
+                            <td>
+                                <input data-ng-model="markerTerm.funds_type_remark"
+                                       data-input-uppercase
+                                       type="text"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_funds_type_remark"
+                                       data-ng-required="enableClientValidation"
+                                       class="form-control">
+                            </td>
+                            <td width="80">
+                                <!--ng-options="h.funds_type as h.funds_name for h in fundsTypes"-->
+                                <!--<select data-ng-model="markerTerm.funds_type"-->
+                                        <!--data-ng-required="enableClientValidation"-->
+                                        <!--data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_funds_type"-->
+                                        <!--class="form-control"-->
+                                        <!--data-ng-change="quota_change(markerTerm)">-->
+                                    <!--<option value="">請選擇資金類型</option>-->
+                                    <!--<option data-ng-repeat="h in fundsTypes"-->
+                                            <!--ng-selected ="h.funds_type==markerTerm.funds_type"-->
+                                            <!--data-ng-show="markerTerm.agent_info_id==h.agent_info_id"-->
+                                            <!--value="{{h.funds_type}}">{{h.funds_name}}</option>-->
+                                <!--</select>-->
+                                <select data-ng-model="markerTerm.funds_type"
+                                        data-ng-required="enableClientValidation"
+                                        data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_funds_type"
+                                        class="form-control"
+                                        data-ng-change="quota_change(markerTerm)">
+                                    <option value="">請選擇資金類型</option>
+                                    <option data-ng-repeat="h in fundsTypes"
+                                            ng-selected ="h.funds_type==markerTerm.funds_type"
+                                            value="{{h.funds_type}}">{{h.funds_name}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input data-ng-model="markerTerm.term" type="text"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_term"
+                                       data-ng-required="enableClientValidation"
+                                       class="form-control">
+                            </td>
+                            <td>
+                                <input data-ng-model="markerTerm.expired_rate" type="text"
+                                       data-ng-required="enableClientValidation"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_expired_rate"
+                                       class="form-control">
+                            </td>
+                            <td>
+                                <input data-ng-model="markerTerm.special_term" type="text"
+                                       data-ng-required="enableClientValidation"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_special_term"
+                                       class="form-control">
+                            </td>
+                            <td width="100">
+                                <input data-ng-model="markerTerm.special_rate" type="text"
+                                       data-ng-required="enableClientValidation"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_special_rate"
+                                       class="form-control">
+                            </td>
+                            <td>
+                                <input data-ng-model="markerTerm.expired_add_days" type="text"
+                                       data-ng-required="enableClientValidation"
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_expired_add_days"
+                                       class="form-control">
+                            </td>
+                            <td>
+                                <input data-ng-model="markerTerm.interest_type" type="text"
+                                       data-input-uppercase
+                                       data-dynamic-name="markers_{{marker_index}}_terms_{{$index}}_interest_type"
+                                       data-ng-required="enableClientValidation"
+                                       class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  colspan="9" data-ng-hide="layer_marker.markerTerms.length>0">
+                                暫無貸款單
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-confirm margin-right-15" data-ng-disabled="confirmIsDisabled" ng-click="submit()">確認</button>
+            <button class="btn btn-cancel" data-ng-disabled="confirmIsDisabled" ng-click="return()">取消</button>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>
+</div>
+
+</div>

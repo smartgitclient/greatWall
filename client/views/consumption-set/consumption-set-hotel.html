@@ -1,0 +1,76 @@
+<div class="page page-services ng-scope" data-ng-controller="consumptionSetHotelCtrls">
+    <div class="panel panel-form-list  col-md-9" check-permissions="consumptionSettingCreate,consumptionSettingUpdate">
+        <div class="panel-heading">
+            <strong>新增酒店</strong>
+            <button class="btn btn-inf btn-confirm pull-right" check-permissions="consumptionSettingCreate" data-ng-click="cancle_update()">新增酒店</button>
+        </div>
+        <div class="panel-content">
+            <form name="form_hotel"  class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{form_url}}">
+                <table>
+                    <tr height="50">
+                        <td width="126" class="text-right">酒店名稱：</td>
+                        <td width="209"><input type="text" name="hotel_name" data-ng-model="hotel.hotel_name"  class="form-control"></td>
+                        <td width="126" class="text-right">操作密碼：</td>
+                        <td width="209"><input type="password" data-ng-model="hotel.pin_code" name="pin_code"  class="form-control" data-enter-key="submit()"></td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-confirm margin-right-15" data-ng-disabled="isDisabled" ng-click="submit()">提交</button>
+                    <button class="btn btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-9">
+        <div class="panel-heading">
+            <table class="pull-right" style="font-size: 14px;">
+                <tbody>
+                <tr>
+                    <td class="text-right" width="80">酒店：</td>
+                    <td class="text-right">
+                        <div id="text-sear02" class="form-group has-success has-feedback col-md-2">
+                            <input id="inputSuccess2" class="form-control ng-pristine ng-valid" type="text" placeholder="" data-ng-model="condition.hotel_name" name="hotel_name">
+                            <span class="fa fa-search form-control-feedback" ng-click="search()"></span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr>
+                    <td>酒店名稱</td>
+                    <td width="336"  check-permissions="consumptionSettingUpdate,consumptionSettingDelete">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="hotel in hotels" data-selected-rows>
+                        <td>{{ hotel.hotel_name }}</td>
+                        <td class="no-padding"  check-permissions="consumptionSettingUpdate,consumptionSettingDelete">
+                            <button check-permissions="consumptionSettingUpdate" class="btn btn-information btn-table margin-right-5" ng-click="update(hotel.id )">修改</button>
+                            <button check-permissions="consumptionSettingDelete" class="btn  btn-information btn-table" ng-click="delete(hotel.id)">刪除</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="!hotels.length">
+                        <td colspan="3">暫無符合條件的記錄</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="page.page"
+                            total-items="page.total_items"
+                            on-select-page="search(page)"
+                            max-size = "page.max_size"
+                            items-per-page = "page.items_per_page"
+                            data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                <paginationselect pageCtrl="page" select-page="search"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

@@ -1,0 +1,263 @@
+<div  class="agent-total" data-ng-class="bottom">
+    <p class="tab-header">
+        <a href  ng-click="showOpen(0)" ng-class="{active:show_first}">消費/存卡/未出佣/轉碼數</a>
+        <a href  ng-click="showOpen(1)" ng-class="{active:show_two}">場面數記錄</a>
+    </p>
+    <div class="tab-content">
+       <div ng-show="show_first">
+       <perfect-scrollbar id="content"  class="animate-fade-up col-md-6" style="left:0;top:48px;padding:0;height:93%;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+           <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr>
+                    <td>所屬廳</td>
+                    <td>剩餘積分</td>
+                    <td>消費總額</td>
+                    <td>存卡總額</td>
+                    <td>未出佣金</td>
+                    <td>轉碼總額</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>集團</td>
+                    <td>25000</td>
+                    <td data-ng-click="consumption()">27861</td>
+                    <td data-ng-click="memory_card()">11717.7348萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">107萬</td>
+                </tr>
+                <tr>
+                    <td>永利鉅星</td>
+                    <td>1000</td>
+                    <td data-ng-click="consumption()">2230</td>
+                    <td data-ng-click="memory_card()">11717.7348萬</td>
+                    <td>0萬</td>
+                    <td data-ng-click="transcoding()">100萬</td>
+                </tr>
+                <tr>
+                    <td>MGM鉅星</td>
+                    <td>2000</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td>0萬</td>
+                    <td data-ng-click="transcoding()">7萬</td>
+                </tr>
+                <tr>
+                    <td>銀河鉅星</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">25631</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                    <td>0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>新濠天地</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td>0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td >金沙城</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td>0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>金沙城</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>新葡京鉅星</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>威尼斯人</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>四季</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td> 凱旋門21F</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>永利2</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>新濠天地（太陽城</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>新葡京（太陽城）</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>金沙城（太陽城）</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>永利3（太陽城）</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                <tr>
+                    <td>蘭桂坊（太陽城）</td>
+                    <td>0</td>
+                    <td data-ng-click="consumption()">0</td>
+                    <td data-ng-click="memory_card()">0萬</td>
+                    <td >0萬</td>
+                    <td data-ng-click="transcoding()">0萬</td>
+                </tr>
+                </tbody>
+            </table>
+           </div>
+           </perfect-scrollbar>
+       </div>
+        <div ng-show="show_two">
+            <perfect-scrollbar id="content"  class="animate-fade-up col-md-6" style="left:0;top:48px;padding:0;height:93%;overflow-y: hidden;" suppress-scroll-x="true" wheel-propagation="true" wheel-speed="50">
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped table-hover table-click">
+                <thead>
+                <tr >
+                    <td>所屬廳館</td>
+                    <td>客戶名稱</td>
+                    <td>入場本金（萬）</td>
+                    <td>離場本金（萬）</td>
+                    <td>日期</td>
+                    <td>開場時間</td>
+                    <td>離場時間</td>
+                    <td>轉碼數</td>
+                    <td>上下數（萬）</td>
+                    <td>經手人</td>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-click="sceneRecord()">
+                    <td>永利鉅星</td>
+                    <td>陳明</td>
+                    <td>250現</td>
+                    <td>提 300現</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:05:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>500</td>
+                    <td>50</td>
+                    <td>麥文</td>
+                </tr>
+                <tr data-ng-click="sceneRecord()">
+                    <td>永利鉅星</td>
+                    <td>李洪</td>
+                    <td>100M</td>
+                    <td>贖 80M</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:40:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>100</td>
+                    <td>-20</td>
+                    <td>麥文</td>
+                </tr>
+                <tr data-ng-click="sceneRecord()">
+                    <td>永利鉅星</td>
+                    <td>張力</td>
+                    <td>150 現</td>
+                    <td>存 210</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:40:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>200</td>
+                    <td>60</td>
+                    <td>麥文</td>
+                </tr>
+                <tr data-ng-click="sceneRecord()">
+                    <td>永利鉅星</td>
+                    <td>王峰</td>
+                    <td>80M+20M(道具)</td>
+                    <td>贖80M+20M(道具)+提20現</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:40:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>150</td>
+                    <td>20</td>
+                    <td>麥文</td>
+                </tr>
+                </tbody>
+                <tr data-ng-click="sceneRecord()">
+                    <td>MGM鉅星</td>
+                    <td>李芳</td>
+                    <td>100現</td>
+                    <td>提 60</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:40:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>100</td>
+                    <td>-40</td>
+                    <td>麥文</td>
+                </tr>
+                <tr data-ng-click="sceneRecord()">
+                    <td>MGM鉅星</td>
+                    <td>趙成</td>
+                    <td>60M</td>
+                    <td>贖 60M+提20現</td>
+                    <td>2014-08-20</td>
+                    <td>2014-08-20 14:40:13</td>
+                    <td>2014-08-20 14:08:13</td>
+                    <td>60</td>
+                    <td>20</td>
+                    <td>麥文</td>
+                </tr>
+            </table>
+
+                </div>
+            </perfect-scrollbar>
+        </div>
+
+    </div>
+</div>

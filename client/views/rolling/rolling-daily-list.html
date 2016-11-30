@@ -1,0 +1,110 @@
+<div class="page page-grid"  data-ng-controller="rollingDailyListCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <!--<strong>轉碼卡匯總數</strong>-->
+                        </div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+									  <td width="150" class="text-right">戶口編號：</td>
+                                        <td width="200"><input type="text"
+                                                               data-ng-model="condition.agent_code"
+                                                               data-input-uppercase="condition.agent_code"
+                                                               class="form-control"></td>
+                                        <td width="150" class="text-right">戶口姓名：</td>
+                                        <td width="130">{{agent_name}}</td>
+                                        <td width="150" class="text-right">年月：</td>
+                                        <td width="200">
+                                            <p class="input-group ui-datepicker pull-left">
+                                                <input type="text" class="form-control" datepicker-mode="month" datepicker-popup ng-model="condition.settlement_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                        <td width="150" class="text-right">日期：</td>
+                                        <td width="200">
+                                            <p class="input-group ui-datepicker pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.shift_date" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                      
+                                       <!--<td>&nbsp;</td>-->
+                                        <!--<td>&nbsp;</td>-->
+                                    </tr>
+                                    <!--<tr>-->
+                                        <!--<td width="150" class="text-right">戶口編號：</td>-->
+                                        <!--<td width="200"><input type="text"-->
+                                                               <!--data-ng-model="condition.agent_code"-->
+                                                               <!--data-input-uppercase="condition.agent_code"-->
+                                                               <!--class="form-control"></td>-->
+                                        <!--<td width="150" class="text-right">戶口姓名：</td>-->
+                                        <!--<td width="200">{{agent_name}}</td>-->
+                                    <!--</tr>-->
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <!--class="animate-fade-up"-->
+                    <div class="panel panel-list-detail">
+
+                        <div class="panel-heading">
+                            <button class="btn btn-information pull-right" ng-click="redirectSMS()" check-permissions="rollingDailySendSMS" data-ng-show="user.hall.hall_type != 3 || user.hall.id == '03A667A339366225E0539715A8C018ED'">&nbsp;&nbsp;&nbsp;發送SMS&nbsp;&nbsp;&nbsp;</button>
+                            <button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingDaily" report-btn >導出EXCEL</button>
+                        </div>
+                        <!--<perfect-scrollbar style="position: relative; height:750px; "-->
+                                       <!--suppress-scroll-x="false"-->
+                                       <!--suppress-scroll-y="true"-->
+                                       <!--refresh-on-change="getRollingRecords.length"-->
+                                       <!--wheel-propagation="true"-->
+                                       <!--wheel-speed="50">-->
+                            <!--<div class="panel-content"  style="min-height: 100px;  width: 2200px;">-->
+                        <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; height:750px; overflow: hidden;" suppress-scroll-x="false" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                            <div class="panel-content consumption_record"  style="min-height: 100px; width: 100%;">
+                              <table class="table table-bordered table-striped table-hover table-click">
+                            <thead>
+                            <tr>
+                                <td width="100">戶口編號</td>
+                                <td>中文名</td>
+                                <td data-ng-repeat="hall in halls" >{{hall.hall_name}}</td>
+                                <td width="140">本日轉碼總額(萬)</td>
+                                <td width="140">本月轉碼總額(萬)</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="getRollingRecord in getRollingRecords" ng-click="selectSendSMS(getRollingRecord)" data-selected-rows>
+                                <td>{{getRollingRecord.agent_code}}</td>
+                                <td>{{getRollingRecord.agent_contact_name}}</td>
+                                <td data-ng-repeat="hall in halls">{{getRollingRecord['hall'+$index]=="" || getRollingRecord['hall'+$index]==0 ? "--" : getRollingRecord['hall'+$index]}}</td>
+                                <td>{{getRollingRecord.rolling==""|| getRollingRecord.rolling==0 ? "--" : getRollingRecord.rolling|parseTenThousand2}}</td>
+                                <td>{{getRollingRecord.month_rolling==""|| getRollingRecord.month_rolling==0 ? "--" : getRollingRecord.month_rolling|parseTenThousand2}}</td>
+                            </tr>
+                            <tr data-ng-show="getRollingRecords.length == 0">
+                                <td colspan="{{halls.length+5}}">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                            </div>
+                    </perfect-scrollbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

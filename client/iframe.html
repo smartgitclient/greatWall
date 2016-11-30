@@ -1,0 +1,161 @@
+<!doctype html>
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+    <title>Megstar</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!--link rel="stylesheet" href="styles/main.css" -->
+    <link rel="stylesheet" href="styles/main.css" default-theme="main_white" id="theme_css_link">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/angular-perfect-scrollbar/src/perfect-scrollbar.min.css">
+    <style type="text/css">
+
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width: 6px !important;
+            height: 6px;
+        }
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 3px;
+            background-color: rgba(0,0,0,0);
+        }
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background: rgba(0,0,0,0.2);
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body data-ng-app="app.iframe" id="app" data-custom-background data-off-canvas-nav id="iframe">
+<div ng-controller="iframePanelCtrl" >
+  <div class="callreminder" style="width:260px;" ng-show="IVRoperation">
+    <div class="topbar">
+      <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" ng-click="close()">
+        <i class="fa fa-times"></i>
+      </a>
+    </div>
+    <perfect-scrollbar class="scrollbar" style="
+    width:260px;height: 270px;" wheel-propagation="true" suppress-scroll-x="true" wheel-speed="30">
+
+        <table style="
+        width:100%">
+          <tr ng-repeat="callList in CallList track by $index" >
+            <td width="50" style="text-align: center">
+                <span>
+ <!--                    <img src="images/agent/{{icon123}}" alt="" style="width:25px" ng-mouseover="phoneicon(1,$index,)" ng-mouseleave="phoneicon(0,$index)">-->
+                     <img src="images/agent/in.png" alt="" style="width:25px" ng-show="callList.type=='in'">
+                     <img src="images/agent/out.png" alt="" style="width:25px" ng-show="callList.type=='out'">
+                </span>
+<!--                <i class="glyphicon glyphicon-earphone" " style="cursor: pointer"></i>-->
+            </td>
+            <td>{{callList.phone_number}}</td>
+            <td><button class="btn btn-info btn-confirm btn-table"style="padding:5px,8px" data-ng-click="transfer($index,callList.call_id,callList.phone_number,callList.type)">轉接</button></td>
+          </tr>
+        </table>
+
+    </perfect-scrollbar>
+  </div>
+  <div  class="iframePanels" id="iframePanels" style="height: 100%;">
+    <div class="iframePanelWrapperScroll" id="iframePanelWrapperScroll" style="height: 100%; overflow-x: auto; overflow-y: hidden">
+      <div style="width: 100%;" class="iframePanelWrapper" id="iframePanelWrapper" style="height: 100%">
+        <iframe ng-src="{{ iframePanel.url }}" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" name="iframepage" ng-repeat="iframePanel in iframePanels" id="iframe{{$index}}" ng-show="$index == show_index" ></iframe>
+      </div>
+    </div>
+    <div class="iframe_tab" ng-show="defaultTitle != iframePanels[0].title">
+      <div class="pull-left" ng-class="{active: $index == show_index}" ng-repeat="iframePanel in iframePanels">
+        <a href="javascript:void(0)" ng-click="show($index)" data-ng-model="iframePanel.title" >{{ iframePanel.title }}</a>
+        <span class="tab_close" ng-click="remove($index)" ng-show="iframePanels.length > 1">X</span>
+      </div>
+      <div class="pull-left" ng-class="{active: $index == show_index}">
+        <button type="button" ng-click="addPanel()"  data-ng-disabled="isDisabled" class="btn btn-add">+</button>
+      </div>
+      <div class="pull-right callreminderBtn" ng-class="" >
+        <button type="button" ng-click="callreminder()"  class="btn btn-add " ng-show="IVRoperation">
+          <i class="glyphicon glyphicon-earphone"></i>電話提醒
+        </button>
+      </div>
+      <div class="pull-right">
+        <button type="button" ng-click="top()"  data-ng-disabled="isDisabled" class="btn btn-primary">TOP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- build:js scripts/vendor.js -->
+<script src="scripts/vendors/socket.io-1.3.4.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/underscore/underscore-min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-socket-io/socket.js"></script>
+<!-- endbuild -->
+
+<script src="scripts/ui.js"></script>
+
+<!-- build:js scripts/config.js -->
+<script src="scripts/shared/config.js"></script>
+<script src="scripts/shared/config-local.js"></script>
+<!-- endbuild -->
+
+
+<!-- build:js scripts/app_iframe.js -->
+<script src="scripts/vendors/deployJava.js"></script>
+<script src="scripts/vendors/qzPrinter.js"></script>
+<script src="scripts/Iframe/config.js"></script>
+<script src="scripts/Iframe/controllers.js"></script>
+<script src="scripts/Iframe/services.js"></script>
+
+<script src="scripts/Agent/AgentServices.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-perfect-scrollbar/src/perfect-scrollbar.with-mousewheel.min.js" ></script>
+<script src="bower_components/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js" ></script>
+<script src="scripts/shared/Services.js"></script>
+<script src="scripts/UI/ui-directive.js"></script>
+<!-- endbuild -->
+
+<script src="scripts/app_iframe.js"></script>
+<script type="text/javascript" language="javascript">
+
+    if(typeof require === 'function')
+    {
+        var gui = require('nw.gui');
+        $(function() {
+            var nw = gui.Window.get();
+            nw.show();
+            if(process.platform === 'win32' && parseFloat(require('os').release(), 10) > 6.1) {
+                nw.setMaximumSize(screen.availWidth + 15, screen.availHeight + 15);
+            }
+            else
+            {
+                nw.setMaximumSize(0, screen.availHeight + 15);
+            }
+            gui.App.clearCache()
+
+        })
+    }
+    resize()
+    function resize(){
+        $("iframe").height(window.innerHeight-50);
+        $("#iframePanelWrapper").height(window.innerHeight-50);
+    }
+    function resize_reset(){
+
+        $("iframe").height(window.innerHeight);
+        $("#iframePanelWrapper").height(window.innerHeight);
+    }
+    window.onresize = resize;
+
+</script>
+</body>
+</html>

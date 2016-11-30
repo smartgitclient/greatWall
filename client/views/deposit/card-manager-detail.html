@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h3>存卡業務</h3>
+</div>
+<div class="modal-body">
+<form name="form_search">
+<div class="row">
+    <div class="col-md-12">
+<table class="table table-bordered table-striped table-detail-01">
+    <tr>
+        <td width="100" align="right">戶口編號：</td>
+        <td align="left">
+            {{deposit_card.agent_code}}
+        </td>
+        <td width="120" align="right">戶口姓名：</td>
+        <td align="left">{{deposit_card.agent_name}}</td>
+    </tr>
+    <tr>
+        <td width="100" align="right">存卡：</td>
+        <td align="left">
+            {{deposit_card.card_name}}
+        </td>
+        <td width="100" align="right">交易人：</td>
+        <td align="left">{{deposit_card.agent_contact_name}}</td>
+    </tr>
+    <tr>
+        <td width="100" align="right">存取類型：</td>
+        <td align="left">
+            {{depositCardTypes.items[deposit_card.transaction_type]}}
+        </td>
+        <td align="right">金額：</td>
+        <td align="left">
+            {{deposit_card.transaction_amount|parseTenThousand}}
+        </td>
+    </tr>
+    <tr data-ng-show="deposit_card.transaction_type == depositCardTypes.transfer">
+        <td align="right">轉入户口：</td>
+        <td align="left">
+            {{receive_card.agent_code}}
+        </td>
+        <td align="right">轉入户口姓名：</td>
+        <td align="left">{{receive_card.agent_name}}</td>
+    </tr>
+    <tr data-ng-show="deposit_card.transaction_type == depositCardTypes.transfer">
+        <td align="right">轉入存卡：</td>
+        <td align="left">
+            {{receive_card.card_name}}
+        </td>
+        <td align="right">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+    </tr>
+    </table>
+<table class="table table-bordered table-striped table-detail-01">
+<tr>
+<td align="right" style="width: 93px">備註：</td>
+<td align="left" colspan="3">
+        {{deposit_card.remark}}
+</td>
+</tr>
+</table>
+</div>
+</div>
+</form>
+<div class="row" style="text-align: center;" >
+    <button class="btn btn-info btn-confirm" ng-click="cancel()">列印</button>
+    <!--<button class="btn btn-inf btn-cancel" ng-click="cancel()">發送SMS</button>-->
+</div>
+
+</div>

@@ -1,0 +1,84 @@
+<div class="panel_l col-md-12">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-list-detail">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; width: 2500px;">
+                        <table class="table table-bordered table-striped table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <td>預訂單號</td>
+                                <td>所屬廳館</td>
+                                <td>戶口編號</td>
+                                <td>戶口姓名</td>
+                                <td>訂票人</td>
+                                <!--<td>供應商</td>-->
+                                <td>車輛類型</td>
+                                <td>租車日期</td>
+                                <td>租車時間</td>
+                                <td>成本</td>
+                                <td>實收</td>
+                                <td>收益</td>
+                                <td>應付消費</td>
+                                <td>付款方式</td>
+                                <td>新增時間</td>
+                                <td width="1000">備註</td>
+
+                                <td>年月</td>
+                                <td>結算日期</td>
+                                <td>更數</td>
+                                <td>狀態</td>
+                                <td>經手人</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="carBooking in carBookings" data-selected-rows>
+                                <td>{{carBooking.consumption.book_no}}</td>
+                                <td>{{carBooking.consumption.hall_name}}</td>
+                                <td>{{carBooking.consumption.agent_code}}</td>
+                                <td>{{carBooking.consumption.agent_name}}</td>
+                                <td>{{carBooking.consumption.trader}}</td>
+                                <!--<td>{{carBooking.hotel_travel_name}}</td>-->
+                                <td>{{carBooking.car_type}}</td>
+                                <td>{{carBooking.departure_date | parseDate: ture}}</td>
+                                <td>{{carBooking.departure_time | limitTo : -8  }}</td>
+                                <td>{{carBooking.consumption.cost_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{carBooking.consumption.sell_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{carBooking.consumption.profit | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{carBooking.consumption.should_pay | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{carBooking.consumption.pay_type}}</td>
+                                <td>{{carBooking.consumption.book_time | limitTo : 16}}</td>
+                                <td align="left">{{carBooking.consumption.remark}}</td>
+
+                                <td>{{carBooking.consumption.year_month | limitTo : 7 }}</td>
+                                <td>{{carBooking.consumption.shift_date | limitTo : 11 }}</td>
+                                <td>{{carBooking.consumption.shift}}</td>
+                                <td>{{ bookingState_items[carBooking.consumption.status] }}</td>
+                                <td>{{ carBooking.consumption.user_name }}</td>
+
+                            </tr>
+                            <tr data-ng-show="carBookings.length == 0">
+                                <td colspan="21">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="car_page.page"
+                                    total-items="car_page.total_items"
+                                    on-select-page="car_search(page)"
+                                    max-size = "car_page.max_size"
+                                    items-per-page = "car_page.items_per_page"
+                                    data-ng-hide="car_page.total_items <= car_page.items_per_page"></pagination>
+                        <paginationselect pageCtrl="car_page" select-page="car_search"></paginationselect>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+</div>

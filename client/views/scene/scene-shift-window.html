@@ -1,0 +1,42 @@
+<div class="page page-services ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-form-list">
+                <div class="panel-heading">截更</div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form name="$parent.form_shift">
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="130" class="text-right">日期：</td>
+                                        <td class="text-left" width="150">{{sceneShiftAmount.date}}</td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="130" class="text-right">本日上下數：</td>
+                                        <td class="text-left" width="150">{{sceneShiftAmount.daySettlement|parseTenThousand2}}</td>
+                                        <td width="130" class="text-right">本月上下數：</td>
+                                        <td class="text-left" width="150">{{sceneShiftAmount.monthSettlement|parseTenThousand2}}</td>
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered table-striped table-detail-01">
+                                    <tr>
+                                        <td width="115" class="text-right">操作密碼：</td>
+                                        <td align="left">
+                                            <input type="password" name="pin_code" ng-model="record.pin_code" class="form-control input-01" style="width:150px" data-enter-key="submit()"></td>
+                                    </tr>
+                                </table>
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-confirm margin-right-5" data-ng-disabled="isDesabled" ng-click="submit()">確認截更</button>
+                        <button class="btn btn-info btn-cancel" ng-click="close()">取消</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

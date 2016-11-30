@@ -1,0 +1,288 @@
+<div class="page page-grid" data-ng-controller="consumptionRecordCtrl">
+<div class="panel panel-default">
+    <div class="panel_l col-md-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="panel panel-form-list">
+                    <div class="panel-heading"></div>
+                    <div class="panel-content">
+                        <form name="form_search">
+                            <table>
+                                <tr height="50">
+								 <td class="text-right"  width="150">廳館：</td>
+                                    <td width="150">
+                                        <select style="width:200px;"  data-ng-show="user.isAllHall()" data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                            <option value = "">請選擇廳館</option>
+                                        </select>
+                                        <span  data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</span>
+                                    </td>
+
+                                    <td width="100" min-screen-width="120" class="text-right">戶口編號：</td>
+                                    <td width="150"><input style="width:200px;" type="text" input-uppercase name="agent_code" data-ng-model="condition.agent_code" class="form-control"></td>
+
+                                    <td width="100" min-screen-width="120" class="text-right">戶口姓名：</td>
+                                    <td width="150">{{ condition.agentMaster.agent_contact_name }}</td>
+									<td width="100" class="text-right">戶組：</td>
+                                    <td width="150"><input type="text" input-uppercase name="agent_code" data-ng-model="condition.agent_group_name" class="form-control"></td>
+                                    <td width="100" min-screen-width="120" class="text-right">客人姓名：</td>
+                                    <td width="150"><input type="text" name="trader" data-ng-model="condition.trader" class="form-control"></td>
+                                </tr>
+                                <tr height="50">
+                                    <td width="150" class="text-right">房間號碼：</td>
+                                    <td><input type="text" style="width:200px;" data-ng-model="condition.room_no" name="room_no" class="form-control"></td>
+									 <td class="text-right">住房日期：</td>
+                                    <td width="300">
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.checkin_datetime"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       placeholder="入住日期"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                        <span class="pull-left">&nbsp;~&nbsp;</span>
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.checkout_datetime"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       placeholder="退房日期"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+									 <td class="text-right">預訂單號：</td>
+                                    <td><input type="text" data-ng-model="condition.book_no" name="book_no" class="form-control" data-input-uppercase></td>
+									 <td class="text-right">付款方式：</td>
+                                    <td>
+                                        <select name="pay_type_id" class="form-control" data-ng-model="condition.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types">
+                                            <option value="">請選擇付款方式</option>
+                                        </select>
+                                    </td>
+                                    <td class="text-right">消費類型：</td>
+                                    <td>
+                                        <select name="consumption_type_id" class="form-control" data-ng-model="condition.consumption_type_id" data-ng-options="n.id as n.consumption_type for n in consumptionTypes">
+                                            <option value="">請選擇消費類型</option>
+                                        </select>
+                                    </td>
+                                   
+                                </tr>
+                                <tr height="50">
+
+                                    <td class="text-right">新增時間：</td>
+                                    <td width="350">
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.book_time[0]"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                        <span class="pull-left">&nbsp;~&nbsp;</span>
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.book_time[1]"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                   <td class="text-right">指定日期：</td>
+                                    <td>
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.shift_date[0]"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                        <span class="pull-left">&nbsp;~&nbsp;</span>
+                                        <div class=" pull-left form-inline input-group ui-datepicker">
+                                            <div class="form-group">
+                                                <input size="9" class="form-control input-01"
+                                                       ng-model="condition.shift_date[1]"
+                                                       data-ng-required="enableClientValidation"
+                                                       style="width:120px;"
+                                                       bs-datepicker type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                   <td class="text-right">年月：</td>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                    <td align="right"><span class="span-formlist">備註：</span></td>
+                                    <td width="150"><input type="text" class="form-control" data-ng-model="condition.remark"> </td>
+                                </tr>
+
+                                <tr height="50">
+
+                                </tr>
+
+                            </table>
+                            <br>
+                            <div class="row" style="text-align: center;">
+                                <button class="btn  btn-information margin-right-15" ng-click="search()">查詢</button>
+                                <button class="btn  btn-cancel" data-ng-click="reset()">重置</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+
+                    </div>
+                </div>
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                        <!--<button class="btn  btn-information margin-right-15 pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                        <button class="btn  btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="ConsumptionRecord" report-btn>導出EXCEL</button>
+                    </div>
+
+                  <!--ch-->
+                    <div class="gridStyle" ui-grid="gridOptions1" ui-grid-pagination ui-grid-resize-columns ui-grid-pinning ui-grid-auto-resize ui-grid-selection data-ng-show="1 == search_type_submit" ></div><!--data-ng-show="1 == search_type_submit"-->
+
+
+                  <div class="gridStyle" ui-grid="gridOptions2" ui-grid-pagination ui-grid-resize-columns ui-grid-pinning ui-grid-auto-resize ui-grid-selection data-ng-show="0 == search_type_submit">
+
+                  </div>
+                  <div>消費記錄數：{{ consumption_total.count }},&nbsp;&nbsp;消費總額：{{ consumption_total.total | parseTenThousandToYuan | parseYuan }}</div>
+
+                  <!--<div class="panel-content" style="position: relative" data-ng-show="0 == search_type_submit">
+                    <perfect-scrollbar class="animate-fade-up consumption_record " style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                      <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 3300px;">
+
+                        <table class="table table-bordered table-striped table-hover">
+                          <thead>
+                          <tr>
+                            <td width="150" min-screen-width="100">操作</td>
+                            <!--<td>消費單號</td>-->
+                            <!--<td data-td-sort data-td-sort-up="book_no ASC" data-td-sort-down="book_no DESC" data-td-sort-select="search" data-td-sort-pagination="page">預訂單號</td>
+                            <td>廳館</td>
+                            <td data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="search" data-td-sort-pagination="page">戶口編號</td>
+                            <td>戶口姓名</td>
+                            <td>客人姓名</td>
+                            <td>房間號碼</td>
+                            <td>消費類型</td>
+                            <td width="300">消費內容</td>
+                            <td>成本</td>
+                            <td>實收</td>
+                            <td>收益</td>
+                            <td>應付消費</td>
+                            <td>房間消費</td>
+                            <td>付款方式</td>
+                            <td width="1000">備註</td>
+                            <td>入住日期</td>
+                            <td>退房日期</td>
+                            <td>新增時間</td>
+                            <td>年月</td>
+                            <td data-td-sort data-td-sort-up="shift_date ASC" data-td-sort-down="shift_date DESC" data-td-sort-select="search" data-td-sort-pagination="page">結算日期</td>
+                            <td>更數</td>
+                            <td>狀態</td>
+                            <td>經手人</td>
+
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr ng-repeat="consumption in consumptions" data-selected-rows>
+                            <td align="left" style="padding-left: 15px;">
+                              <button class="btn  btn-information btn-table margin-right-5"
+                                      ng-show='bookingState_items[consumption.status]=="已結算"'
+                                      data-ng-click="detail(consumption.consumption_type_id, consumption.id)">详d细</button>
+                              <button class="btn  btn-information btn-table margin-right-5"
+                                      ng-show='bookingState_items[consumption.status]!="已結算"'
+                                      data-ng-click="update(consumption.consumption_type_id, consumption.id)"
+                                      check-permissions="consumptionRecordUpdate">修改</button>
+                              <button data-ng-show="0 == consumption.status" class="btn  btn-information btn-table"
+                                      data-ng-click="delete(consumption.id)" check-permissions="consumptionRecordDelete">删除</button>
+                            </td>
+                            <!--<td>{{ consumption.consumption_no }}</td>-->
+                            <!--<td>{{ consumption.book_no }}</td>
+                            <td>{{ consumption.hall_name }}</td>
+                            <td>{{ consumption.agent_code }}</td>
+                            <td>{{ consumption.agent_contact_name}}</td>
+                            <td>{{ consumption.trader }}</td>
+                            <td>{{ consumption.room_no }}</td>
+                            <td>{{ consumption.consumption_type }}</td>
+                            <td>{{ consumption.consumption_content }}</td>
+                            <td>{{ consumption.cost_total | parseTenThousandToYuan | parseYuan }}</td>
+                            <td>{{ consumption.sell_total | parseTenThousandToYuan | parseYuan }}</td>
+                            <td>{{ consumption.profit | parseTenThousandToYuan | parseYuan  }}</td>
+                            <td>{{ consumption.should_pay | parseTenThousandToYuan | parseYuan  }}</td>
+                            <td>{{ consumption.room_pay | parseTenThousandToYuan | parseYuan  }}</td>
+                            <td>{{ consumption.pay_type_name }}</td>
+                            <td align="left">{{ consumption.remark }}</td>
+                            <td>{{ consumption.checkin_datetime | limitTo : 11}}</td>
+                            <td>{{ consumption.checkout_datetime | limitTo : 11}}</td>
+                            <td>{{ consumption.book_time | limitTo : 16}}</td>
+                            <td>{{consumption.year_month| limitTo : 7}}</td>
+                            <td>{{ consumption.shift_date | limitTo : 11 }}</td>
+                            <td>{{ consumption.shift }}</td>
+                            <td>{{ bookingState_items[consumption.status] }}</td>
+                            <td>{{ consumption.user_name }}</td>
+                            <!--td>{{ bookingState_items[consumption.status] }}</td-->
+                         <!-- </tr>
+                          <tr data-ng-show="consumptions.length == 0">
+                            <td colspan="30">暫無符合條件的記錄</td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="30" class="text-left">消費記錄數：{{ consumption_total.count }},&nbsp;&nbsp;消費總額：{{ consumption_total.total | parseTenThousandToYuan | parseYuan }}</td>
+                          </tr>
+                          </tfoot>
+                        </table>
+
+                      </div>
+                    </perfect-scrollbar>
+                    <footer class="table-footer">
+                      <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="page.page"
+                                    total-items="page.total_items"
+                                    on-select-page="search(page)"
+                                    max-size = "page.max_size"
+                                    items-per-page = "page.items_per_page"
+                                    data-ng-hide="page.total_items <= page.items_per_page"></pagination>
+                        <paginationselect pageCtrl="page" select-page="search"></paginationselect>
+                      </div>
+                    </footer>
+                  </div>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>

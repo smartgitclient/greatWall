@@ -1,0 +1,107 @@
+<div class="page page-grid" data-ng-controller="workstationCtrl">
+<div class="panel panel-default">
+<div class="col-md-5" check-permissions="workstationCreate">
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <div class="panel-heading">
+                <strong>操作機器</strong>
+                <button class="btn btn-confirm pull-right" data-ng-click="addWorkstation()">新增机器</button>
+            </div>
+            <div class="panel-content">
+                <form name="form_workstation_create" class="ng-valid ng-dirty form-validation" server-validation="POST{{workstation_url}}">
+                    <table>
+                        <tr height="50">
+                            <td width="120" class="text-right">廳會名稱：</td>
+                            <td width="180">
+                                <select data-ng-model="workstation.hall_id" class="form-control" name="hall_id" ng-options="h.id as h.hall_name for h in halls">
+                                    <option value = "">請選擇廳會</option>
+                                </select>
+                            </td>
+                            <td width="120" class="text-right">操作機器：</td>
+                            <td width="180">
+                                <input data-ng-required="enableClientValidation" name="pc_name" type="text" data-ng-model="workstation.pc_name" class="form-control">
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">MAC地址：</td>
+                            <td>
+                                <input data-input-uppercase data-ng-required="enableClientValidation" name="mac" type="text" data-ng-model="workstation.mac" class="form-control">
+                            </td>
+                            <td class="text-right">分機號：</td>
+                            <td> <input data-ng-required="enableClientValidation" name="landline_id" type="text" data-ng-model="workstation.landline_id" class="form-control"></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">操作密碼：</td>
+                            <td><input name="pin_code" type="password" data-ng-model="workstation.pin_code" class="form-control" data-enter-key="add()"></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <br><br><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-confirm margin-right-15" ng-click="add()" data-ng-disabled="disabled_submit">提交</button>
+                        <button class="btn btn-cancel" ng-click="reset()" >重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="panel_l col-md-7">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="form-group has-success has-feedback col-md-2 text-sear02">
+                <input class="form-control" type="text" data-input-uppercase placeholder="請輸入MAC地址" data-ng-model="condition.mac">
+                <span class="fa fa-search form-control-feedback" data-ng-click="search()" style="cursor:pointer;"></span>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td width="150">廳會名稱</td>
+                            <td>操作機器</td>
+                            <td>MAC地址</td>
+                            <td>分機號</td>
+                            <td width="150" check-permissions="workstationDelete,workstationUpdate">操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="workstation in workstations">
+                            <td>{{workstation.hall_name}}</td>
+                            <td>{{workstation.pc_name}}</td>
+                            <td>{{workstation.mac}}</td>
+                            <td>{{workstation.landline_id}}</td>
+                            <td check-permissions="workstationDelete,workstationUpdate">
+                                <button class="btn btn-information btn-table" check-permissions="workstationUpdate" ng-click="update(workstation)">修改</button>
+                                <button class="btn btn-information btn-table" check-permissions="workstationDelete" ng-click="delete(workstation.id)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="workstations.length == 0">
+                            <td colspan="5">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="pagination.page"
+                                        total-items="pagination.total_items"
+                                        on-select-page="select(page)"
+                                        max-size = "pagination.max_size"
+                                        items-per-page = "pagination.items_per_page"
+                                        data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                            <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

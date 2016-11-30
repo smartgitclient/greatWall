@@ -1,0 +1,69 @@
+<div class="page page-grid" data-ng-controller="keyboardManagerCtrl">
+<div class="panel panel-default">
+<div class="col-md-6">
+    <div class="panel_r">
+        <div class="panel panel-form-list">
+            <!--<div class="panel-heading">-->
+                <!--<strong>佣金份數</strong>-->
+            <!--</div>-->
+            <div class="panel-content">
+                <form name="form_keyboard" class="ng-valid ng-dirty form-validation" server-validation="{{form_method}}{{form_url}}">
+                <tabset class="ui-tab">
+                    <tab data-ng-show="departMents.length>0"
+                         data-ng-repeat="departMent in departMents track by $index"
+                         heading="{{departMent.department}}"
+                         ng-click="keyboard_select(departMent.id)">
+
+                         <div class="panel-content">
+
+                                 <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <!--<td>快捷鍵</td>-->
+                                        <td width="250">模組</td>
+                                        <td width="150">頁面名稱</td>
+                                        <td width="100" check-permissions="shortCutsUpdate,shortCutsCreate,shortCutsDelete">操作</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="keyboard in keyboards">
+                                        <!--<td>{{keyboard.shortcuts}}</td>-->
+                                        <td>
+                                            <span data-ng-show="!keyboard.updated">{{keyboard.group}}</span>
+                                            <select data-ng-show="keyboard.updated" class="form-control" name="link" data-ng-model="keyboard.link" name="link" data-ng-change="changeLink(keyboard)">
+                                                <option value="">請選擇模組</option>
+                                                <optgroup label="{{ select[0][1] }}" ng-repeat="select in select_arr ">
+                                                    <option value="{{ option[0] }}" ng-repeat="option in select" ng-if="!$first" ng-selected="option[0] == keyboard.link" >{{ option[1] }}</option>
+                                                </optgroup>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <span data-ng-show="!keyboard.updated">{{keyboard.btn_name}}</span>
+                                            <input type="text" data-ng-show="keyboard.updated" data-ng-model="keyboard.btn_name" dynamic-name="btn_name" class="form-control" >
+                                        </td>
+                                        <td check-permissions="shortCutsUpdate,shortCutsCreate,shortCutsDelete">
+                                            <button data-ng-show="!keyboard.updated" class="btn btn-information btn-table margin-right-5" check-permissions="shortCutsUpdate,shortCutsCreate" data-ng-click="update(keyboard)">編輯</button>
+                                            <button data-ng-show="keyboard.updated" class="btn btn-information btn-table margin-right-5" check-permissions="shortCutsDelete" data-ng-click="save(keyboard)">保存</button>
+                                            <button data-ng-show="keyboard.id" class="btn btn-cancel btn-table" ng-click="delete(keyboard)">刪除</button>
+                                            <button data-ng-show="keyboard.updated" check-permissions="shortCutsUpdate,shortCutsCreate" class="btn btn-cancel btn-table" ng-click="cancel(keyboard)">取消</button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-show="keyboards.length == 0">
+                                        <td colspan="4">暫無符合條件的記錄</td>
+                                    </tr>
+                                    </tbody>
+                                 </table>
+
+                         </div>
+                    </tab>
+                </tabset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</div>
+</div>

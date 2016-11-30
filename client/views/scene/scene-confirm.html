@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <h3>截數詳細:</h3>
+</div>
+<div class="modal-body" style="padding-top: 0;">
+    <div class="row">
+        <div class=" col-md-12">
+            <table  class="table table-bordered table-striped table-detail-01"style="padding-top: 0;">
+                <thead>
+                    <tr>
+                        <td width="150" class="text-right">所在廳：</td>
+                        <td colspan="10" class="align-left">{{shift_data.hall_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">本月上下數（萬）：</td>
+                        <td colspan="10" class="align-left">
+                            <input type="text"
+                                   ng-model="shift_data.month_settlement"
+                                   name="month_settlement"
+                                   data-ng-required="enableClientValidation"
+                                   class="form-control input-01">
+                            </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">本日上下數（萬）：</td>
+                        <td colspan="10" class="align-left">
+                            <input type="text"
+                                   ng-model="shift_data.day_settlement"
+                                   name="day_settlement"
+                                   data-ng-required="enableClientValidation"
+                                   class="form-control input-01">
+                            </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">截更時間：</td>
+                        <td colspan="10" class="align-left">
+                            <p class="input-group ui-datepicker">
+                                <input type="text" class="form-control" datepicker-popup ng-model="shift_data.date"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+
+            <br>
+            <div class="row" style="text-align: center;">
+                <button class="btn btn-info btn-confirm margin-right-15" ng-click="confirm()">確認</button>
+                <button class="btn btn-inf btn-cancel" ng-click="close()">取消</button>
+            </div>
+         </div>
+
+    </div>
+</div>

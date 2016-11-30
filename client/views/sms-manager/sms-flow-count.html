@@ -1,0 +1,91 @@
+<div class="page page-services ng-scope" data-ng-controller="smsFlowCountCtrl">
+    <div class="panel panel-form-list col-md-9">
+        <div class="panel-heading"><strong>短信查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table style="margin: 0 auto;">
+                    <tr height="50">
+
+                        <td width="126" class="text-right">廳館：</td>
+                        <td width="209">
+                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                        </td>
+                        <td width="120" class="text-right">部門：</td>
+                        <td width="209">
+                            <select data-ng-model="condition.department_id" class="form-control" data-ng-options="dm.id as dm.department for dm in departMents" >
+                                <option value = "">請選擇部门</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr height="50">
+                        <td width="100" class="text-right">年月：</td>
+                        <td width="209" colspan="3">
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.date[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month"  ng-model="condition.date[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-list-detail col-md-9">
+        <!--<div class="panel-heading"><button class="btn btn-info btn-information pull-right" ng-click="search()">導出Excel</button></div>-->
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>月份</td>
+                    <td>發送總數</td>
+                    <td>發送失敗</td>
+                    <td>澳門本地</td>
+                    <td>香港地區</td>
+                    <td>大陸地區</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="smsFlowCount in smsFlowCounts" data-selected-rows>
+                    <td>{{smsFlowCount.year_month}}</td>
+                    <td>{{smsFlowCount.total}}</td>
+                    <td>{{smsFlowCount.failed}}</td>
+                    <td>{{smsFlowCount.macau}}</td>
+                    <td>{{smsFlowCount.hk}}</td>
+                    <td>{{smsFlowCount.china}}</td>
+                </tr>
+                <tr data-ng-show="smsFlowCounts.length == 0">
+                    <td colspan="6">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination"
+                            page="pagination.page"
+                            total-items="pagination.total_items"
+                            on-select-page="select(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+            </div>
+        </footer>
+    </div>
+</div>

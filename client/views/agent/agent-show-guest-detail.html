@@ -1,0 +1,116 @@
+<!--<div class="modal-header">-->
+    <!--<h3 style="font-size: 20px"><strong>聯絡人詳細</strong></h3>-->
+<!--</div>-->
+<div class="modal-body">
+    <div class="panel_l col-md-7">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="panel panel-list-detail" style="padding-left: 0px;">
+                    <div class="panel-heading">
+                        <strong class="pull-left">基本資料</strong>
+                    </div>
+                    <div class="panel-content">
+                        <table class="table table-bordered table-striped">
+
+                            <tr>
+                                <td width="120" class="text-right">戶口編號：</td>
+                                <td width="150">{{guest_detail.agent_code}}</td>
+                                <td width="120" class="text-right">姓名：</td>
+                                <td width="150">{{guest_detail.agent_guest_name}}</td>
+                                <td width="120" class="text-right">性別：</td>
+                                <td min-screen-width="70">{{guest_detail.gender|gender}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">出生日期：</td>
+                                <td>{{guest_detail.birthdate|parseDate:"yyyy-MM-dd"}}</td>
+                                <td class="text-right">語言：</td>
+                                <td>{{guest_detail.language_type}}</td>
+                                <td class="text-right">國籍：</td>
+                                <td>{{guest_detail.nationality_name}}</td>
+                            </tr>
+                            <tr data-ng-repeat="idcard in guest_detail.idCards">
+                                <td class="text-right">證件類型：</td>
+                                <td>{{idcard.idcard_type_name}}</td>
+                                <td class="text-right">證件號碼：</td>
+                                <td>{{idcard.idcard_number}}</td>
+                                <td class="text-right">證件有效期：</td>
+                                <td>{{idcard.expired_date|parseDate:"yyyy-MM-dd"}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-list-detail" style="padding-left: 0px;">
+                    <div class="panel-heading">
+                        <strong class="pull-left">聯絡資料</strong>
+                    </div>
+                    <div class="panel-content">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <td width="200">通知類型</td>
+                                <td width="200">地區</td>
+                                <td width="200">號碼</td>
+                                <!--<td>備註</td>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="contact in guest_detail.guestTels">
+                                <td>{{notice_types[contact.notice_type]}}</td>
+                                <td>{{contact.area_code}}</td>
+                                <td>{{contact.telephone_number}}</td>
+                                <!--<td>{{contact.remark}}</td>-->
+                            </tr>
+                            <tr data-ng-show="!guest_detail.guestTels.length">
+                                <td colspan="4">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel_r">
+            <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+                <div class="panel-heading">
+                    <strong>證件</strong>
+                    <!--<a class="btn btn-confirm btn-table pull-right" target="_blank" href="print-image.html?url={{guest_detail.guestImages[0].show_image_path}}">列印</a>-->
+                    <a class="btn btn-confirm btn-table pull-right" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(guest_detail.guestImages[0].show_image_path);">列印</a>
+                </div>
+                <div class="panel-content">
+                    <div class="passport">
+                        <span class="passport_bg">
+                            <span class="passed" data-ng-show="guest_detail.idCards[0].expired_date && guest_detail.idCards[0].expired_date<now_data"><img src="images/sign.png"></span>
+                            <img data-ng-show="guest_detail.guestImages[0].show_image_path" ng-src="{{guest_detail.guestImages[0].show_image_path}}"/>
+                            <span data-ng-show="!guest_detail.guestImages[0].show_image_path" style="line-height: 280px">證件照片</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel_r">
+            <div class="panel panel-list-detail" style="width:516px;" data-min-screen-width="390">
+                <div class="panel-heading">
+                    <strong class="pull-left">證件</strong>
+                    <!--<a class="btn btn-confirm btn-table pull-right" target="_blank" href="print-image.html?url={{guest_detail.guestImages[1].show_image_path}}">列印</a>-->
+                    <a class="btn btn-confirm btn-table pull-right" ng-disabled="print_agent_image_submit" ng-click="print_agent_image(guest_detail.guestImages[1].show_image_path);">列印</a>
+                </div>
+                <div class="panel-content">
+                    <div class="passport">
+                    <span class="passport_bg">
+                        <span class="passed" data-ng-show="guest_detail.idCards[1].expired_date && guest_detail.idCards[1].expired_date<now_data"><img src="images/sign.png"></span>
+                            <img data-ng-show="guest_detail.guestImages[1].show_image_path" ng-src="{{guest_detail.guestImages[1].show_image_path}}"/>
+                            <span data-ng-show="!guest_detail.guestImages[1].show_image_path" style="line-height: 280px">證件照片</span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="row" style="text-align: center;padding: 0 0 20px;">
+    <button class="btn btn-information btn-table margin-right-15" check-permissions="agentGuestUpdate" ng-click="updateGuest()">修改客人資料</button>
+    <button class="btn btn-confirm btn-table margin-right-15" data-ng-click="goToGuest()" >客人列表</button>
+</div>

@@ -1,0 +1,157 @@
+<div class="page page-grid" data-ng-controller="oldMarkerRecordCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <strong>貸款流水</strong>
+                        </div>
+                        <div class="panel-content">
+                            <form name="form_searchSceneRecord">
+                                <table>
+                                    <tr height="50">
+                                        <td width="150" class="text-right">所在廰：</td>
+                                        <td width="209">
+                                            <select data-ng-model="condition.hall_name" class="form-control" ng-options="h.hall_name as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="120" class="text-right">戶口編號：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.agent_code" data-input-uppercase class="form-control"></td>
+                                        <td width="120" class="text-right">中文名：</td>
+                                        <td width="100">{{agent_name}}</td>
+                                        <td width="60" class="text-right">單號：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.seqnumber" data-input-uppercase class="form-control"></td>
+                                    </tr>
+                                    <tr height="50">
+                                        <!--<td width="150" class="text-right">年  月：</td>
+                                        <td style="padding-top: 7px;">
+                                            <table class="table-inner">
+                                                <tr>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker">
+                                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month "/>
+                                                            <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>-->
+                                        <td width="150" class="text-right">日期范围：</td>
+                                        <td width="350" colspan="3">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.loan_time[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.loan_time[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" type="button" report-params="excel_condition" channel-type="OldLoanStreamReport" report-btn >導出EXCEL</button>
+                        </div>
+                        <div class="panel-content">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width: 2300px;">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td>所在廳</td>
+                                            <td>單編號</td>
+                                            <td>貸款類型</td>
+                                            <td>戶口</td>
+                                            <td>姓名</td>
+                                            <td>貸款人</td>
+                                            <td>借戶口</td>
+                                            <td>交易類型</td>
+                                            <td>金額(萬)</td>
+                                            <td>餘額(萬)</td>
+                                            <td>貸款總額(萬)</td>
+                                            <td>主線頭總額(萬)</td>
+                                            <td width="250">備註</td>
+                                            <td>日期</td>
+                                            <td>更數</td>
+                                            <td>貸款時間</td>
+                                            <td>交易時間</td>
+                                            <td>經手人</td>
+                                            <td>登錄用戶</td>
+                                            <td>操作機器</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="marker in markers" data-selected-rows>
+                                            <td>{{marker.hall_name}}</td>
+                                            <td>{{marker.seqnumber}}</td>
+                                            <td>{{marker.loan_type}}</td>
+                                            <td>{{marker.agent_code}}</td>
+                                            <td>{{marker.agent_name}}</td>
+                                            <td>{{marker.borrower}}</td>
+                                            <td>{{marker.borrower_agent_code}}</td>
+                                            <td>{{marker.transaction_type}}</td>
+                                            <td>{{marker.amount}}</td>
+                                            <td>{{marker.settlement_amount}}</td>
+                                            <td>{{marker.used_quota}}</td>
+                                            <!--<td>{{marker.used_quota_group}}</td>-->
+                                            <td>{{marker.used_quota_top}}</td>
+                                            <td>{{marker.remark}}</td>
+                                            <td>{{marker.transaction_date | parseDate:"yyyy-MM-dd"}}</td>
+                                            <td>{{marker.shift}}</td>
+                                            <td>{{marker.loan_time | parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{marker.transaction_time | parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{marker.handling}}</td>
+                                            <td>{{marker.login_account}}</td>
+                                            <td>{{marker.operation_machine}}</td>
+                                        </tr>
+                                        <tr ng-show="markers.length == 0">
+                                            <td colspan="20">暫無符合條件的記錄</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="pagination.page"
+                                                    total-items="pagination.total_items"
+                                                    on-select-page="select(page)"
+                                                    max-size = "pagination.max_size"
+                                                    items-per-page = "pagination.items_per_page"
+                                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,406 @@
+<div class="page page-grid" data-ng-controller="screeningShiftListCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list col-md-8">
+                        <div class="panel-heading"><strong>場次查詢</strong></div>
+                        <div class="panel-content col-md-12">
+                             <form name="form_search">
+                                    <table>
+                                        <tr height="50">
+                                            <td width="120" data-min-screen-width="100" class="text-right">廳館：</td>
+                                            <td width="160" data-min-screen-width="150" data-ng-show="user.isAllHall()">
+                                                <select data-ng-model="condition.sceneRecord.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                    <option value = "">請選擇廳館</option>
+                                                </select>
+                                            </td>
+                                            <td width="160" data-min-screen-width="150"  data-ng-hide="user.isAllHall()">
+                                                {{user.hall.hall_name}}
+                                            </td>
+                                            <td width="120" data-min-screen-width="100" class="text-right">戶口編號：</td>
+                                            <td width="160" data-min-screen-width="150"><input type="text" data-ng-model="condition.sceneRecord.agent_code" data-input-uppercase class="form-control"></td>
+                                            <td width="120" data-min-screen-width="100" class="text-right">中文名：</td>
+                                            <td width="160" data-min-screen-width="150">{{agent_name}}</td>
+                                            <td width="120" data-min-screen-width="100" class="text-right">戶組：</td>
+                                            <td width="160" data-min-screen-width="150"><input type="text" data-ng-model="condition.sceneRecord.agentGroup.agent_group_name" data-input-uppercase class="form-control"></td>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                        <tr height="50">
+                                            <td class="text-right">年  月：</td>
+                                            <td>
+                                                <table class="table-inner">
+                                                    <tr>
+                                                        <td>
+                                                            <p class="input-group ui-datepicker">
+                                                                <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.shiftMark.year_month" data-dynamic-name="year_month"/>
+                                                            <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td align="right">指定日期：</td>
+                                            <td >
+                                                <p class="input-group ui-datepicker pull-left">
+                                                    <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.shiftMark.shift_date"/>
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                                </p>
+                                            </td>
+                                            <td class="text-right">日期：</td>
+                                            <td width="420" data-min-screen-width="320">
+                                                <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                    <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.shiftMark.only_shift_date[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                </p>
+                                                <p class="pull-left  col-md-1">~</p>
+                                                <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.shiftMark.only_shift_date[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                </p>
+                                            </td>
+                                            <td class="text-right">場次狀態：</td>
+                                            <td width="200">
+                                                <select data-ng-model="condition.status" class="form-control">
+                                                    <option value="">請選擇場次狀態</option>
+                                                    <option value="1">{{SceneRecordShiftStatus[1]}}</option>
+                                                    <option value="0">{{SceneRecordShiftStatus[0]}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table><br><br>
+                                    <div class="row" style="text-align: center;">
+                                        <button class="btn btn-info btn-confirm margin-right-15" data-ng-click="search()">查詢</button>
+                                        <button class="btn btn-info btn-cancel margin-right-15" data-ng-click="reset()" >重置</button>
+                                        <!--<button class="btn btn-info btn-cancel margin-right-15"  data-ng-click="print()">列印</button>-->
+                                        <!--<button class="btn btn-inf btn-cancel">導出Excel</button>-->
+                                    </div>
+                                </form>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+
+                    <div class="panel panel-form-list col-md-4">
+                        <div class="panel-heading"><strong>待入場</strong></div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>戶口編號</td>
+                                    <td>姓名</td>
+                                    <td>入場時間</td>
+                                    <!--<td>狀態</td>-->
+                                    <td check-permissions="sceneRecordUpdate">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="ascene in accountScenes">
+                                    <td>{{ascene.agent_code}}</td>
+                                    <td>{{ascene.agent_name}}</td>
+                                    <td>{{ascene.in_time| parseDate: 'yyyy-MM-dd HH:mm'}}</td>
+                                    <!--<td>{{sceneStatus.items[ascene.scene_status]}}</td>-->
+                                    <td check-permissions="sceneRecordUpdate">
+                                        <button class="btn btn-info btn-confirm btn-table" ng-click="addScene(ascene.id)">入場</button>
+                                        <button class="btn btn-information btn-table margin-right-5" data-ng-click="removeAscene(ascene.id)">刪除</button>
+                                    </td>
+
+                                </tr>
+                                <tr data-ng-show="accountScenes.length == 0">
+                                    <td colspan="5">暫無符合條件的記錄</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="account_pagination.total_items"
+                                                    on-select-page="accountScene(page)"
+                                                    max-size = "account_pagination.max_size"
+                                                    items-per-page = "account_pagination.items_per_page"
+                                                    data-ng-hide="account_pagination.total_items <= account_pagination.items_per_page"></pagination>
+                                        <!--<paginationselect pageCtrl="pagination" select-page="scene_search" ></paginationselect>-->
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                        <!--<div class="panel-footer"></div>-->
+                    </div>
+
+                    <div class="panel panel-list-detail col-md-12">
+                        <div class="panel-heading">
+                            <div class="pull-left" >
+                                <table>
+                                    <tr>
+                                        <td colspan="16" align="right" style="font-weight: bold;">
+                                            上數：<span style="color:blue">{{sceneRecordsTotal.up_amount}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            下數：<span class="minus-number">{{sceneRecordsTotal.down_amount}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            公司上下數： <span data-ng-show="sceneRecordsTotal.loss_win_amount>=0" style="color:blue">{{sceneRecordsTotal.loss_win_amount|parseTenThousand}}</span>
+                                                        <span data-ng-show="sceneRecordsTotal.loss_win_amount<0" class="minus-number">{{sceneRecordsTotal.loss_win_amount|parseTenThousand}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            未離場：{{sceneRecordsTotal.in_scene}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            離場：{{sceneRecordsTotal.out_scene}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            總場數：{{sceneRecordsTotal.scene_amount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!--<button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="SceneCountRecord" report-btn>&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <button class="btn btn-information pull-right" report-params="excel_condition" channel-type="SceneCountRecord" report-btn>導出EXCEL</button>
+                            <button class="btn btn-information margin-right-15 pull-right" check-permissions="sceneCreateStart" data-ng-click="sceneOpen()">場面開場</button>
+                            <!--<button class="btn btn-info btn-confirm margin-right-15 pull-right" ng-click="summary()">即時匯總</button>-->
+                            <!--<button class="btn btn-info btn-confirm margin-right-15 pull-right" data-ng-click="sendSMS()">發送SMS</button>-->
+                        </div>
+
+                        <div class="panel-content table-dynamic">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record" style="
+
+                               max-height: 452px; width: 2350px;">
+                                  <div class="headfixed" style="height:40px;overflow: hidden;width: 2350px">
+                                    <table class="table table-bordered table-striped table-hover" width="100%">
+                                      <thead>
+                                      <!--<tr>-->
+                                      <!--<td width="150">操作</td>-->
+                                      <!--<td>廳會</td>-->
+                                      <!--<td width="100">日期</td>-->
+                                      <!--<td width="80"  data-td-sort data-td-sort-up="status ASC" data-td-sort-down="status DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">狀態</td>-->
+                                      <!--<td width="120" data-td-sort data-td-sort-up="sceneRecord.agent_code ASC" data-td-sort-down="sceneRecord.agent_code DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">-->
+                                      <!--戶口編號</td>-->
+                                      <!--<td width="150">户口姓名</td>-->
+                                      <!--<td width="150" data-min-screen-width="90">客戶姓名</td>-->
+                                      <!--<td width="200">入場本金(萬)</td>-->
+                                      <!--<td width="200">離場本金(萬)</td>-->
+                                      <!--<td data-min-screen-width="100">上下數(萬)</td>-->
+                                      <!--<td data-min-screen-width="100">轉碼數(萬)</td>-->
+                                      <!--<td width="150" data-td-sort data-td-sort-up="start_time ASC" data-td-sort-down="start_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">開場時間</td>-->
+                                      <!--<td width="150" data-td-sort data-td-sort-up="end_time ASC" data-td-sort-down="end_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">離場時間</td>-->
+                                      <!--<td width="300">備註</td>-->
+                                      <!--<td data-td-sort data-td-sort-up="sceneRecord.scene_no ASC" data-td-sort-down="sceneRecord.scene_no DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">-->
+                                      <!--場次</td>-->
+                                      <!--<td>經手人</td>-->
+                                      <!--<td>操作機器</td>-->
+                                      <!--</tr>-->
+                                      <!--</thead>-->
+                                      <!--<tbody>-->
+                                      <!--<tr data-ng-repeat="sceneRecordShift in sceneRecordShifts" data-selected-rows>-->
+                                      <!--<td>-->
+                                      <!--<button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="sceneDetail(sceneRecordShift.scene_record_id,sceneRecordShift.main_scene_id)">詳細</button>-->
+                                      <!--<button class="btn btn-info btn-confirm btn-table margin-right-5" data-ng-click="removeScene(sceneRecordShift.scene_record_id)">刪除</button>-->
+                                      <!--</td>-->
+                                      <!--<td>{{sceneRecordShift.hall_name}}</td>-->
+                                      <!--<td>{{sceneRecordShift.shift_date}}</td>-->
+                                      <!--<td>-->
+                                      <!--<span data-ng-show="sceneRecordShift.status=='1'" class="positive-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>-->
+                                      <!--<span data-ng-show="sceneRecordShift.status=='0'" class="minus-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>-->
+                                      <!--</td>-->
+                                      <!--<td> <a href="#/agent/agent-scene-detail/{{sceneRecordShift.agent_info_id}}">{{sceneRecordShift.agent_code}}</a></td>-->
+                                      <!--<td>{{sceneRecordShift.agent_name}}</td>-->
+                                      <!--<td>{{sceneRecordShift.guest_name}}</td>-->
+                                      <!--<td><span data-ng-show="sceneRecordShift.sceneRecordShifts.length>1"><{{sceneRecordShift.sceneRecordShifts[sceneRecordShift.sceneRecordShifts.length-1].in_capital_scene}}></span>{{sceneRecordShift.in_capital_scene}}</td>-->
+                                      <!--&lt;!&ndash;inScene(sceneRecordShift.inCapitals&ndash;&gt;-->
+                                      <!--<td>-->
+                                      <!--<sapn data-ng-show="sceneRecordShift.status == 0">{{sceneRecordShift.out_capital_scene}}</sapn>-->
+                                      <!--<sapn data-ng-show="sceneRecordShift.status == 1 && sceneRecordShift.inOutCapitals">-->
+                                      <!--<span data-ng-repeat="inOutCapital in sceneRecordShift.inOutCapitals" data-ng-show="inOutCapital.amount != 0">-->
+                                      <!--{{inOutCapital.o_word}}{{inOutCapital.amount}}{{inOutCapital.funds_type}}-->
+                                      <!--<span data-ng-show="($index+1) != sceneRecordShift.inOutCapitals.length">+</span>-->
+                                      <!--</span>-->
+                                      <!--</sapn>-->
+                                      <!--</td>-->
+                                      <!--&lt;!&ndash;outScene(sceneRecordShift.outCapitals)&ndash;&gt;-->
+                                      <!--<td>-->
+                                      <!--<span data-ng-show="sceneRecordShift.loss_win_amount>0" class="positive-number">{{"+"+parseSceneFormat(sceneRecordShift.loss_win_amount)}}</span>-->
+                                      <!--<span data-ng-hide="sceneRecordShift.loss_win_amount>0" class="minus-number">{{parseSceneFormat(sceneRecordShift.loss_win_amount)}}</span>-->
+                                      <!--</td>-->
+                                      <!--<td >{{parseSceneFormat(sceneRecordShift.rolling_total)}}</td>-->
+                                      <!--<td>{{sceneRecordShift.start_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>-->
+                                      <!--<td>{{sceneRecordShift.end_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>-->
+                                      <!--<td class="text-left">{{sceneRecordShift.remark}}</td>-->
+                                      <!--<td>{{sceneRecordShift.scene_no}}</td>-->
+                                      <!--<td>{{sceneRecordShift.user_name}}</td>-->
+                                      <!--<td>{{sceneRecordShift.machine_name}}</td>-->
+                                      <!--</tr>-->
+                                      <!--<tr data-ng-show="sceneRecordShifts.length == 0">-->
+                                      <!--<td colspan="17">暫無符合條件的記錄</td>-->
+                                      <!--</tr>-->
+                                      <!--</tbody>-->
+                                      <tr>
+                                        <td width="150">操作</td>
+                                        <td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">廳會</td>
+                                        <td width="80"  data-td-sort data-td-sort-up="status ASC" data-td-sort-down="status DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">狀態</td>
+                                        <td width="120" data-td-sort data-td-sort-up="sceneRecord.agent_code ASC" data-td-sort-down="sceneRecord.agent_code DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">
+                                          戶口編號</td>
+                                        <td width="150">户口姓名</td>
+                                        <td width="150" data-min-screen-width="90">客戶姓名</td>
+                                        <td width="200">入場本金(萬)</td>
+                                        <td width="200">離場本金(萬)</td>
+                                        <td data-min-screen-width="100" width="100">上下數(萬)</td>
+                                        <td width="300">常用選項</td>
+                                        <td data-min-screen-width="100" width="100">轉碼數(萬)</td>
+                                        <td width="150" data-td-sort data-td-sort-up="start_time ASC" data-td-sort-down="start_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">開場時間</td>
+                                        <td width="150" data-td-sort data-td-sort-up="end_time ASC" data-td-sort-down="end_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">離場時間</td>
+                                        <td width="300">備註</td>
+                                        <td width="100">日期</td>
+                                        <!--<td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'" data-td-sort data-td-sort-up="sceneRecord.scene_no ASC" data-td-sort-down="sceneRecord.scene_no DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">-->
+                                        <!--場次</td>-->
+                                        <td>經手人</td>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr data-ng-repeat="sceneRecordShift in sceneRecordShifts" data-selected-rows>
+                                        <td>
+                                          <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="sceneDetail(sceneRecordShift.scene_record_id,sceneRecordShift.main_scene_id,sceneRecordShift.shift_mark_id)">詳細</button>
+                                          <button class="btn btn-info btn-confirm btn-table margin-right-5" data-ng-click="removeScene(sceneRecordShift.scene_record_id)">刪除</button>
+                                        </td>
+                                        <td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">{{sceneRecordShift.hall_name}}</td>
+                                        <td>
+                                          <span data-ng-show="sceneRecordShift.status=='1'" class="positive-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>
+                                          <span data-ng-show="sceneRecordShift.status=='0'" class="minus-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>
+                                        </td>
+                                        <td> <a href="#/agent/agent-scene-detail/{{sceneRecordShift.agent_info_id}}"><span class="a-hover">{{sceneRecordShift.agent_code}}</span></a></td>
+                                        <td>{{sceneRecordShift.agent_name}}</td>
+                                        <td>{{sceneRecordShift.guest_name}}</td>
+                                        <td><span data-ng-show="sceneRecordShift.up_in_capital_scene"><{{sceneRecordShift.up_in_capital_scene}}></span>{{sceneRecordShift.in_capital_scene}}</td>
+                                        <!--inScene(sceneRecordShift.inCapitals-->
+                                        <td>
+                                          <sapn data-ng-show="sceneRecordShift.status == 0">{{sceneRecordShift.out_capital_scene}}</sapn>
+                                          <sapn data-ng-show="sceneRecordShift.status == 1 && sceneRecordShift.inOutCapitals">
+                                            <span data-ng-repeat="inOutCapital in sceneRecordShift.inOutCapitals" data-ng-show="inOutCapital.amount != 0">
+                                                {{inOutCapital.o_word}}{{inOutCapital.amount|parseTenThousand2}}{{inOutCapital.funds_type}}
+                                                <span data-ng-show="($index+1) != sceneRecordShift.inOutCapitals.length">+</span>
+                                            </span>
+                                          </sapn>
+                                        </td>
+                                        <!--outScene(sceneRecordShift.outCapitals)-->
+                                        <td>
+                                          <span data-ng-show="sceneRecordShift.loss_win_amount>0" style="color:blue">{{"+"+parseSceneFormat(sceneRecordShift.loss_win_amount)|parseTenThousand2}}</span>
+                                          <span data-ng-hide="sceneRecordShift.loss_win_amount>0" class="minus-number">{{parseSceneFormat(sceneRecordShift.loss_win_amount)|parseTenThousand2}}</span>
+                                        </td>
+                                        <td>
+                                            {{sceneRecordShift.main_scene.come_guest_type}}{{sceneRecordShift.main_scene.common_currency_id}}{{sceneRecordShift.main_scene.manila_percent}}{{sceneRecordShift.gap}}{{sceneRecordShift.gap}}
+                                        </td>
+                                        <td >{{parseSceneFormat(sceneRecordShift.rolling_total)}}</td>
+                                        <td>{{sceneRecordShift.start_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                        <td>{{sceneRecordShift.end_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                        <td class="text-left">{{sceneRecordShift.remark}}</td>
+                                        <td>{{sceneRecordShift.shift_date}}</td>
+                                        <!--<td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">{{sceneRecordShift.scene_no}}</td>-->
+                                        <td>{{sceneRecordShift.user_name}}</td>
+                                      </tr>
+                                      <tr data-ng-show="sceneRecordShifts.length == 0">
+                                        <td colspan="17">暫無符合條件的記錄</td>
+                                      </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                    <table class="table table-bordered table-striped table-hover" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <td width="150">操作</td>
+                                            <td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">廳會</td>
+                                            <td width="80"  data-td-sort data-td-sort-up="status ASC" data-td-sort-down="status DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">狀態</td>
+                                            <td width="120" data-td-sort data-td-sort-up="sceneRecord.agent_code ASC" data-td-sort-down="sceneRecord.agent_code DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">戶口編號</td>
+                                            <td width="150">户口姓名</td>
+                                            <td width="150" data-min-screen-width="90">客戶姓名</td>
+                                            <td width="200">入場本金(萬)</td>
+                                            <td width="200">離場本金(萬)</td>
+                                            <td data-min-screen-width="100" width="100">上下數(萬)</td>
+                                            <td width="300">常用選項</td>
+                                            <td data-min-screen-width="100" width="100">轉碼數(萬)</td>
+                                            <td width="150" data-td-sort data-td-sort-up="start_time ASC" data-td-sort-down="start_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">開場時間</td>
+                                            <td width="150" data-td-sort data-td-sort-up="end_time ASC" data-td-sort-down="end_time DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">離場時間</td>
+                                            <td width="300">備註</td>
+                                            <td width="100">日期</td>
+                                            <!--<td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'" data-td-sort data-td-sort-up="sceneRecord.scene_no ASC" data-td-sort-down="sceneRecord.scene_no DESC" data-td-sort-select="scene_search" data-td-sort-pagination="pagination">-->
+                                            <!--場次</td>-->
+                                            <td>經手人</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="sceneRecordShift in sceneRecordShifts" data-selected-rows>
+                                            <td>
+                                                <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="sceneDetail(sceneRecordShift.scene_record_id,sceneRecordShift.main_scene_id,sceneRecordShift.shift_mark_id)">詳細</button>
+                                                <button class="btn btn-info btn-confirm btn-table margin-right-5" data-ng-click="removeScene(sceneRecordShift.scene_record_id)">刪除</button>
+                                            </td>
+                                            <td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">{{sceneRecordShift.hall_name}}</td>
+                                            <td>
+                                                <span data-ng-show="sceneRecordShift.status=='1'" class="positive-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>
+                                                <span data-ng-show="sceneRecordShift.status=='0'" class="minus-number">{{SceneRecordShiftStatus[sceneRecordShift.status]}}</span>
+                                            </td>
+                                            <td> <a href="#/agent/agent-scene-detail/{{sceneRecordShift.agent_info_id}}"><span class="a-hover">{{sceneRecordShift.agent_code}}</span></a></td>
+                                            <td>{{sceneRecordShift.agent_name}}</td>
+                                            <td>{{sceneRecordShift.guest_name}}</td>
+                                            <td>
+                                                <span data-ng-show="sceneRecordShift.up_in_capital_scene"><{{sceneRecordShift.up_in_capital_scene}}></span>{{sceneRecordShift.in_capital_scene}}
+                                            </td>
+                                            <!--inScene(sceneRecordShift.inCapitals-->
+                                            <td>
+                                                <sapn data-ng-show="sceneRecordShift.status == 0">{{sceneRecordShift.out_capital_scene}}</sapn>
+                                                <sapn data-ng-show="sceneRecordShift.status == 1 && sceneRecordShift.inOutCapitals">
+                                                    <span data-ng-repeat="inOutCapital in sceneRecordShift.inOutCapitals" data-ng-show="inOutCapital.amount != 0">
+                                                        {{inOutCapital.o_word}}{{inOutCapital.amount|parseTenThousand2}}{{inOutCapital.funds_type}}
+                                                        <span data-ng-show="($index+1) != sceneRecordShift.inOutCapitals.length">+</span>
+                                                    </span>
+                                                </sapn>
+                                            </td>
+                                            <!--outScene(sceneRecordShift.outCapitals)-->
+                                            <td>
+                                                <span data-ng-show="sceneRecordShift.loss_win_amount>0" style="color:blue">+{{(sceneRecordShift.loss_win_amount)|parseTenThousand2}}</span>
+                                                <span data-ng-hide="sceneRecordShift.loss_win_amount>0" class="minus-number">{{(sceneRecordShift.loss_win_amount)|parseTenThousand2}}</span>
+                                            </td>
+                                            <td>
+                                                {{sceneRecordShift.main_scene.come_guest_type ? sceneRecordShift.main_scene.come_guest_type+"，":""}}
+                                                {{sceneRecordShift.main_scene.common_currency_name ? sceneRecordShift.main_scene.common_currency_name+"，":""}}
+                                                {{sceneRecordShift.main_scene.manila_percent ? sceneRecordShift.main_scene.manila_percent+"%，":""}}
+                                                {{sceneRecordShift.scene_record.desk_no ? sceneRecordShift.scene_record.desk_no:""}}
+                                                {{sceneRecordShift.scene_record.gap ?"，":""}}
+                                                {{sceneRecordShift.scene_record.gap}}
+                                            </td>
+                                            <td >{{parseSceneFormat(sceneRecordShift.rolling_total)}}</td>
+                                            <td>{{sceneRecordShift.start_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{sceneRecordShift.end_time|parseDate : "yyyy-MM-dd HH:mm"}}</td>
+                                            <td class="text-left">{{sceneRecordShift.remark}}</td>
+                                            <td>{{sceneRecordShift.shift_date}}</td>
+                                            <!--<td ng-show="user.hall.id == '0493728BB89506C6E0539715A8C0267D'">{{sceneRecordShift.scene_no}}</td>-->
+                                            <td>{{sceneRecordShift.user_name}}</td>
+                                        </tr>
+                                        <tr data-ng-show="sceneRecordShifts.length == 0">
+                                            <td colspan="17">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                            </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="current_page"
+                                                    total-items="pagination.total_items"
+                                                    on-select-page="scene_search(page)"
+                                                    max-size = "pagination.max_size"
+                                                    items-per-page = "pagination.items_per_page"
+                                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination" select-page="scene_search" ></paginationselect>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h3>{{title}}消費詳細</h3>
+</div>
+<div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                    <div class="panel-content consumption_record"  style="min-height: 100px; width: 3300px;">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                    <tr>
+                        <td>預訂單號</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>戶口姓名</td>
+                        <td>客人姓名</td>
+                        <td>消費類型</td>
+                        <td width="200">消費內容</td>
+                        <td>成本</td>
+                        <td>實收</td>
+                        <td>收益</td>
+                        <td>應付消費</td>
+                        <td>付款方式</td>
+                        <td width="1000">備註</td>
+                        <td>新增時間</td>
+                        <td>更數</td>
+                        <td>結算日期</td>
+                        <td>狀態</td>
+                        <td>經手人</td>
+                    </tr>
+                    </thead>
+                            <tbody>
+                    <tr ng-repeat="consumption in consumptions">
+                        <td>{{consumption.book_no}}</td>
+                        <td>{{consumption.hall_name }}</td>
+                        <td>{{consumption.agent_code }}</td>
+                        <td>{{consumption.agent_name }}</td>
+                        <td>{{consumption.trader }}</td>
+                        <td>{{consumption.consumption_type }}</td>
+                        <td>{{consumption.consumption_content }}</td>
+                        <td>{{consumption.cost_total|parseDollar:true}}</td>
+                        <td>{{consumption.sell_total|parseDollar:true}}</td>
+                        <td>{{consumption.profit|parseDollar:true}}</td>
+                        <td>{{consumption.should_pay|parseDollar:true}}</td>
+                        <td>{{consumption.pay_type }}</td>
+                        <td align="left">{{consumption.remark}}</td>
+                        <td>{{consumption.book_time}}</td>
+                        <td>{{consumption.shift}}</td>
+                        <td>{{consumption.shift_date|parseDate:"yyyy-MM-dd"}}</td>
+                        <td>{{bookingState_items[consumption.status]}}</td>
+                        <td>{{consumption.user_name}}</td>
+                    </tr>
+                    <tr ng-show="!consumptions.length">
+                        <td colspan="19">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+                <footer class="table-footer">
+                    <div class="text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    page="pagination.page"
+                                    total-items="pagination.total_items"
+                                    on-select-page="select(page)"
+                                    max-size = "pagination.max_size"
+                                    items-per-page = "pagination.items_per_page"
+                                    data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+
+            <button class="btn btn-cancel" data-ng-click="close()">關閉</button>
+        </div>
+</div>

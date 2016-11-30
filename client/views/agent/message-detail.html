@@ -1,0 +1,47 @@
+<div class="page page-services ng-scope pop-dotal">
+    <div class="panel panel-form-list">
+        <div class="panel-heading">Order紙詳細</div>
+        <div class="panel-content">
+            <div class="row text-center">
+                <form name="form_detail_order">
+                    <table class="table table-bordered table-striped table-detail-01">
+                        <tr>
+                            <td align="right">對象類型：</td>
+                            <td align="left">{{orderTypes.items[order.is_group]}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">對象戶口：</td>
+                            <td align="left">{{order.ref_agent}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">有效日期：</td>
+                            <td align="left">
+                                {{order.start_time}}<span data-ng-show="order.start_time != '' && order.end_time != '' ">&nbsp;~&nbsp;</span>
+                                <span data-ng-show="order.end_time">{{order.end_time}}</span>
+                                <span data-ng-show="!order.end_time">長期有效</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">標題：</td>
+                            <td align="left">{{order.order_type_name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">優先級：</td>
+                            <td align="left">{{order_prioritys[order.priority]}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="width: 93px">內容：</td>
+                            <td align="left">{{order.order_content}}</td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="row" style="text-align: center;"><br/><br/>
+                <button class="btn btn-confirm margin-right-15" data-ng-click="closeed()">關閉</button>
+            </div>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+</div>

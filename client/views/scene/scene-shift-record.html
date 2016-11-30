@@ -1,0 +1,175 @@
+<div class="page page-grid" data-ng-controller="sceneShiftRecordCtrl">
+    <div class="panel panel-default">
+        <!--<div class="col-md-4">-->
+            <!--<div class="panel_r">-->
+                <!--<div class="panel panel-form-list">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<strong>場面截數</strong>-->
+                    <!--</div>-->
+                    <!--<div class="panel-content">-->
+                        <!--<form name="form_search"  ng-submit="submit()">-->
+                            <!--<table>-->
+                                <!--<tr height="50">-->
+                                    <!--<td width="100" class="text-right">所在廰：</td>-->
+                                    <!--<td width="100">{{shift_data.hall}}</td>-->
+                                    <!--<td width="100" class="text-right">年   月：</td>-->
+                                    <!--<td width="120">{{shift_data.year_month}}</td>-->
+                                <!--</tr>-->
+                                <!--<tr height="50">-->
+                                    <!--<td  class="text-right">日   期：</td>-->
+                                    <!--<td>{{shift_data.shift_date}}</td>-->
+                                    <!--<td class="text-right">本日上下數：</td>-->
+                                    <!--<td>{{shift_data.day_settlement}}</td>-->
+                                <!--</tr>-->
+                                <!--<tr height="50">-->
+                                    <!--<td class="text-right">本月上下數：</td>-->
+                                    <!--<td>{{shift_data.month_settlement}}</td>-->
+                                    <!--<td class="text-right">操作密碼：</td>-->
+                                    <!--<td> <input type="text" data-ng-model="shift_data.pwd" class="form-control"></td>-->
+                                <!--</tr>-->
+
+                            <!--</table>-->
+                            <!--<br><br><br>-->
+                            <!--<div class="row" style="text-align: center;">-->
+                                <!--<button class="btn btn-info btn-confirm margin-right-15" ng-click="shift()">截數</button>-->
+                                <!--&lt;!&ndash;<button class="btn btn-inf btn-cancel" data-ng-click="remove()">重置</button>&ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <div class="panel_l col-md-8">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading">
+                            <strong>截數查詢</strong>
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" check-permissions="sceneShiftNumberCreate" ng-click="cutOff()">截數</button>
+                        </div>
+
+                        <div class="panel-content">
+                            <form name="form_searchSceneRecord">
+                                <table>
+                                    <tr>
+                                        <td width="100" class="text-right">所在廰：</td>
+                                        <td width="209">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                 <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="100" class="text-right">開始日期：</td>
+                                        <td width="209"><!-- Split button -->
+
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup data-ng-model="condition.shift_date[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="100" class="text-right">結束日期：</td>
+                                        <td width="209"><!-- Split button -->
+
+                                            <p class="input-group ui-datepicker">
+                                                <input type="text" class="form-control" datepicker-popup data-ng-model="condition.shift_date[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td width="60">&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="select()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <!--<button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>-->
+                            <!--<button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="" report-btn>導出EXCEL</button>-->
+                        </div>
+                        <div class="panel-content">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <td>所在廳</td>
+                                    <td>本月上下數（萬）</td>
+                                    <td>本日上下數（萬）</td>
+                                    <!--<td>檯面上下數（萬）</td>-->
+                                    <!--<td>年份</td>-->
+                                    <!--<td>月份</td>-->
+                                    <td>日期</td>
+                                    <td check-permissions="sceneShiftNumberCreate,sceneShiftRecordShiftMark">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="sceneShiftRecord in sceneShiftRecords track by $index" data-selected-rows>
+                                    <td>{{sceneShiftRecord.hall_name}}</td>
+                                    <td>{{sceneShiftRecord.month_settlement|parseFloatKing}}</td>
+                                    <td>{{sceneShiftRecord.day_settlement|parseFloatKing}}</td>
+                                    <!--<td>{{sr.table_settlement}}</td>-->
+                                    <!--<td>{{sceneShiftRecord.year}}</td>-->
+                                    <!--<td>{{sceneShiftRecord.month}}</td>-->
+                                    <td>{{sceneShiftRecord.shift_date|parseDate:'yyyy-MM-dd'}}</td>
+                                    <td class="no-padding" check-permissions="sceneShiftNumberCreate,sceneShiftRecordShiftMark">
+                                        <!--<button class="btn btn-info btn-information btn-table margin-right-5"-->
+                                                <!--data-ng-show="sceneShiftRecord.status==1"-->
+                                                <!--check-permissions="sceneShiftRecordShiftMark"-->
+                                                <!--data-ng-click="shift()">截更</button>-->
+                                        <!--data-ng-show="sceneShiftRecord.status==0 || sceneShiftRecord.status==1"-->
+                                        <button class="btn btn-info btn-information btn-table margin-right-5"
+                                                check-permissions="sceneShiftNumberCreate"
+                                                data-ng-click="cutOff(sceneShiftRecord.id)">重新截數</button>
+                                    </td>
+                                </tr>
+                                <tr data-ng-show="sceneShiftRecords.length == 0">
+                                    <td colspan="11">暫無符合條件的記錄</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <!--<footer class="table-footer">-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-12 text-right pagination-container">-->
+                                        <!--<pagination class="pagination-sm"-->
+                                                    <!--page="current_page"-->
+                                                    <!--total-items="pagination.total_items"-->
+                                                    <!--on-select-page="select(page)"-->
+                                                    <!--data-ng-show="sceneShiftRecords.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>-->
+                                        <!--<paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</footer>-->
+
+
+                            <footer class="table-footer">
+                                <div class="text-right pagination-container">
+                                    <pagination class="pagination-sm"
+                                                page="pagination.page"
+                                                total-items="pagination.total_items"
+                                                on-select-page="select(page)"
+                                                max-size = "pagination.max_size"
+                                                items-per-page = "pagination.items_per_page"
+                                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

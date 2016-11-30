@@ -1,0 +1,179 @@
+<div class="panel_l col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="150" class="text-right" min-screen-width="120">所屬廳館：</td>
+                                <td width="160" min-screen-width="180">
+                                    <select data-ng-show="user.isAllHall()" name="hall_id" class="form-control" data-ng-model="condition_ship.hall_id"
+                                            data-ng-options="n.id as n.hall_name for n in halls ">
+                                        <option value="">請選擇廳館</option>
+                                    </select>
+                                    <span  data-ng-hide="user.isAllHall()">{{user.hall.hall_name}}</span>
+                                </td>
+                                <!--<td width="150" class="text-right">消費單號：</td>-->
+                                <!--<td width="160"><input type="text" name="consumption_no" data-ng-model="condition_ship.consumption.consumption_no" class="form-control"></td>-->
+
+                                <!--<td width="150" class="text-right" min-screen-width="120">預訂單號：</td>-->
+                                <!--<td width="160" min-screen-width="200"><input type="text" name="consumption_book_no" data-ng-model="condition_ship.consumption.book_no" class="form-control"></td>-->
+
+                                <td width="150" class="text-right">預訂單號：</td>
+                                <td width="160"><input type="text" name="consumption_book_no" data-ng-model="condition_ship.consumption.book_no" class="form-control" data-input-uppercase></td>
+                                <td width="160">&nbsp;</td>
+                                <td  class="text-right">&nbsp;</td>
+                                <td>&nbsp;</td>
+
+                            </tr>
+                            <tr height="50">
+
+                                <td width="150" class="text-right">戶口編號：</td>
+                                <td width="160"><input type="text" name="agent_code" data-input-uppercase data-ng-model="condition_ship.agentInfo.agent_code" class="form-control"></td>
+                                <td class="text-right">戶口姓名：</td>
+                                <td>{{ condition_ship.agentMaster.agent_contact_name  }}<!--input type="text" name="agent_contact_name" data-ng-model="condition_ship.agentMaster.agent_contact_name" class="form-control"--></td>
+                                <td width="160">&nbsp;</td>
+                                <td class="text-right">訂票人：</td>
+                                <td><input type="text" data-ng-model="condition_ship.consumption.trader" class="form-control"></td>
+
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">付款方式：</td>
+                                <td>
+                                    <select name="consumption_pay_type_id" class="form-control" data-ng-model="condition_ship.consumption.pay_type_id" data-ng-options="n.id as n.pay_type_name for n in pay_types">
+                                        <option value="">請選擇付款方式</option>
+                                    </select>
+                                </td>
+                                <td class="text-right">日期：</td>
+                                <td colspan="2">
+                                    <div class=" pull-left form-inline input-group ui-datepicker">
+                                        <div class="form-group">
+                                            <input size="9" class="form-control input-01"
+                                                   ng-model="condition_ship.consumption.shift_date[0]"
+                                                   data-ng-required="enableClientValidation"
+                                                   style="width:120px;"
+                                                   bs-datepicker type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <span class="pull-left">&nbsp;~&nbsp;</span>
+                                    <div class=" pull-left form-inline input-group ui-datepicker">
+                                        <div class="form-group">
+                                            <input size="9" class="form-control input-01"
+                                                   ng-model="condition_ship.consumption.shift_date[1]"
+                                                   data-ng-required="enableClientValidation"
+                                                   style="width:120px;"
+                                                   bs-datepicker type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td align="right">備註：</td>
+                                <td width="150"><input type="text" class="form-control" data-ng-model="condition_ship.consumption.remark"> </td>
+                            </tr>
+                        </table>
+
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn  btn-information margin-right-15" ng-click="ship_search()">查詢</button>
+                            <button class="btn  btn-cancel" data-ng-click="ship_search_reset()">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-content" style="position: relative">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content consumption_record table-dynamic"  style="min-height: 100px; width: 3000px;">
+                        <table class="table table-bordered table-striped table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <td width="210" min-screen-width="150">操作</td>
+                                <!--<td>消費單號</td>-->
+                                <td>預訂單號</td>
+                                <td>所屬廳館</td>
+                                <td data-td-sort data-td-sort-up="agentInfo.agent_code NUMASC" data-td-sort-down="agentInfo.agent_code NUMDESC" data-td-sort-select="ship_search" data-td-sort-pagination="ship_page">戶口編號</td>
+                                <td>戶口姓名</td>
+                                <td>訂票人</td>
+                                <td>成本</td>
+                                <td>實收</td>
+                                <td>收益</td>
+                                <td>應付消費</td>
+                                <td>付款方式</td>
+                                <td>新增時間</td>
+                                <td width="1000">備註</td>
+
+                                <td data-td-sort data-td-sort-up="consumption.shift_date ASC" data-td-sort-down="consumption.shift_date DESC" data-td-sort-select="ship_search" data-td-sort-pagination="ship_page">年月</td>
+                                <td data-td-sort data-td-sort-up="consumption.shift_date ASC" data-td-sort-down="consumption.shift_date DESC" data-td-sort-select="ship_search" data-td-sort-pagination="ship_page">結算日期</td>
+                                <td>更數</td>
+                                <td>狀態</td>
+                                <td>經手人</td>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="shipBooking in shipBookings" data-selected-rows>
+                                <td class="no-padding" align="left" style="padding-left: 15px;">
+                                    <button class="btn  btn-information btn-table margin-right-5" ui-sref=".consumption-ship-ticket-booking-detail({id: '{{ shipBooking.consumption_id}}'})" >詳細</button>
+                                    <button class="btn  btn-confirm btn-table" ui-sref=".consumption-ship-ticket-booking-copy({id: '{{ shipBooking.consumption_id}}'})" check-permissions="consumptionRecordCopy" >複製</button>
+                                    <button ng-show="!!shipBooking.consumption.allow_delete"
+                                            class="btn  btn-information btn-table"
+                                            check-permissions="consumptionRecordDelete"
+                                            data-ng-click="ship_booking_delete(shipBooking.id)">删除</button>
+                                </td>
+                                <!--<td>{{shipBooking.consumption.consumption_no}}</td>-->
+                                <td>{{shipBooking.consumption.book_no}}</td>
+                                <td>{{shipBooking.consumption.hall_name}}</td>
+                                <td>{{shipBooking.consumption.agent_code}}</td>
+                                <td>{{shipBooking.consumption.agent_name}}</td>
+                                <td>{{shipBooking.consumption.trader}}</td>
+                                <td>{{shipBooking.consumption.cost_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{shipBooking.consumption.sell_total | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{shipBooking.consumption.profit | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{shipBooking.consumption.should_pay | parseTenThousandToYuan :false | parseYuan : false}}</td>
+                                <td>{{shipBooking.consumption.pay_type}}</td>
+                                <td>{{shipBooking.consumption.book_time | limitTo : 16}}</td>
+                                <td align="left">{{shipBooking.consumption.remark}}</td>
+
+
+                                <td>{{shipBooking.consumption.year_month | limitTo : 7 }}</td>
+                                <td>{{shipBooking.consumption.shift_date | limitTo : 11 }}</td>
+                                <td>{{shipBooking.consumption.shift}}</td>
+                                <td>{{ bookingState_items[shipBooking.consumption.status] }}</td>
+                                <td>{{ shipBooking.consumption.user_name }}</td>
+
+
+                            </tr>
+                            <tr data-ng-show="!shipBookings.length">
+                                <td colspan="20">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </perfect-scrollbar>
+                    <footer class="table-footer">
+                        <div class="text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        page="ship_page.page"
+                                        total-items="ship_page.total_items"
+                                        on-select-page="ship_search(page)"
+                                        max-size = "ship_page.max_size"
+                                        items-per-page = "ship_page.items_per_page"
+                                        data-ng-hide="ship_page.total_items <= ship_page.items_per_page"></pagination>
+                            <paginationselect pageCtrl="ship_page" select-page="ship_search"></paginationselect>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

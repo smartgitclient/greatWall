@@ -1,0 +1,43 @@
+<div class="modal-header" style="height: 65px">
+    <h3 style="float: left;margin-top:15px">過期津貼回收</h3>
+    <strong>
+        <button class="btn btn-information pull-right" data-ng-disabled="isDesabled" all-show="true" style="margin: 15px 0 0 10px" report-params="excel_paras" channel-type="OverdueAllowanceRetrieveReport" report-btn >導出EXCEL</button>
+        <button class="btn btn-information pull-right" data-ng-disabled="isDesabled" data-ng-click="print_r()" style="margin: 15px 0 0 10px">列印</button>
+    </strong>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped table-detail-01">
+                <thead>
+                <tr>
+                    <td>廳名</td>
+                    <td>回收戶口</td>
+                    <td>中文名</td>
+                    <td>年月</td>
+                    <td>過期津貼</td>
+                    <td>過期戶口</td>
+                    <td>中文名</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="commissionRecord in allowanceRetrieveRecords" >
+                    <td>{{commissionRecord.hall_name}}</td>
+                    <td>{{commissionRecord.recycle_agent.recycle_agent_code}}</td>
+                    <td>{{commissionRecord.recycle_agent.recycle_agent_name}}</td>
+                    <td>{{commissionRecord.year_month|parseDate:'yyyy-MM'}}</td>
+                    <td>{{commissionRecord.allowanceRetrieve|parseDollar:true}}</td>
+                    <td>{{commissionRecord.expired_agent.expired_agent_code}}</td>
+                    <td>{{commissionRecord.expired_agent.expired_agent_name}}</td>
+                </tr>
+                <tr class="ng-hide" data-ng-show="allowanceRetrieveRecords.length == 0">
+                    <td colspan="7">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center"><br/>
+        <button class="btn btn-information" ng-click="closed()">關 閉</button>
+    </div>
+</div>

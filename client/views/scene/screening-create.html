@@ -1,0 +1,269 @@
+<div class="page page-grid" data-ng-controller="screeningCreateCtrl">
+<div class="panel panel-default">
+<div class="panel panel-list-detail col-md-4" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">在場客戶</strong>
+        <div id="text-sear02" class="form-group has-success has-feedback col-md-2 pull-right">
+            <input data-ng-model="agent_keyword" class="form-control" type="text" data-ng-model="agent_keyword" data-input-uppercase placeholder="戶口編號">
+            <span class="fa fa-search form-control-feedback" data-ng-click="search_keyword()" style="cursor: pointer;"></span>
+        </div>
+    </div>
+    <div class="panel-content table-dynamic">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td data-td-sort data-td-sort-up="agent_code ASC,main_scene_no ASC" data-td-sort-down="agent_code DESC,main_scene_no ASC" data-td-sort-select="search" data-td-sort-pagination="pagination" data-min-screen-width="80">戶口編碼</td>
+                <td>戶口名稱</td>
+                <td>部門</td>
+                <td data-td-sort data-td-sort-up="main_scene_no ASC,agent_code ASC" data-td-sort-down="main_scene_no DESC,agent_code ASC" data-td-sort-select="search" data-td-sort-pagination="pagination" data-min-screen-width="80">場次編號</td>
+                <td>轉碼卡</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="sceneAgent in sceneAgents">
+                <td>{{sceneAgent.agent_code}}</td>
+                <td>{{sceneAgent.agent_name}}</td>
+                <td>{{departmentTrans[sceneAgent.is_scene_open]}}</td>
+                <td>{{sceneAgent.main_scene_no}}</td>
+                <td>{{sceneAgent.guest_name}}</td>
+                <td class="no-padding">
+                    <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail(sceneAgent.id)">詳細</button>
+                    <button class="btn btn-info btn-confirm btn-table" data-ng-show="sceneAgent.is_scene_open==1" data-ng-click="delete_scene(sceneAgent)" check-permissions="sceneCreateDelete">删除</button>
+                </td>
+            </tr>
+            <td colspan="6" data-ng-show="sceneAgents.length==0">
+                暫無符合條件的記錄
+            </td>
+            </tbody>
+        </table>
+        <footer class="table-footer">
+            <div class="text-right pagination-container">
+                <pagination class="pagination-sm"
+                            page="current_page"
+                            total-items="pagination.total_items"
+                            on-select-page="search(page)"
+                            max-size = "pagination.max_size"
+                            items-per-page = "pagination.items_per_page"
+                            data-ng-show="sceneAgents.length > 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                <!--<paginationselect pageCtrl="pagination" select-page="search" ></paginationselect>-->
+            </div>
+        </footer>
+    </div>
+
+</div>
+<div class="col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list" check-permissions="sceneCreateStart">
+                <div class="panel-heading"><strong>新增場面</strong></div>
+                <div class="panel-content">
+                    <form name="form_screening_create" class="ng-valid ng-dirty form-validation" server-validation="POST{{screening_create_url}}">
+                        <table>
+                            <tr height="50">
+                                <td width="120" class="text-right">操作選擇：</td>
+                                <td colspan="5">
+                                    {{rollingTypes[record_create.type]}}
+                                    <!--<dl class="dl-horizontal">-->
+                                        <!--<dd>-->
+                                        <!--<label class="ui-radio">-->
+                                            <!--<input name="radio1" type="radio" value="1"-->
+                                                   <!--data-ng-model = "record_create.field_type"-->
+                                                   <!--ng-checked="record_create.field_type=='1'">-->
+                                            <!--<span>{{rollingTypes[1]}}</span></label>-->
+                                        <!--<label class="ui-radio">-->
+                                            <!--<input name="radio1" type="radio"-->
+                                                   <!--value="2"-->
+                                                   <!--data-ng-model = "record_create.field_type"-->
+                                                   <!--ng-checked="record_create.field_type=='2'">-->
+                                            <!--<span>{{rollingTypes[2]}}</span></label>-->
+                                        <!--</dd>-->
+                                    <!--</dl>-->
+                                <!--</td>-->
+                                <!--<td width="100" class="text-right">&nbsp;</td>-->
+                                <!--<td width="209">&nbsp;</td>-->
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">戶口編碼：</td>
+                                <td width="150"><input type="text"
+                                                       data-ng-model="new_record_create.agent_code"
+                                                       class="form-control"
+                                                       data-ng-required="enableClientValidation"
+                                                       data-input-uppercase
+                                                       data-ng-disabled="true"
+                                                       name="agent_info_id"></td>
+                                <td class="text-right" width="80">戶口名稱：</td>
+                                <td width="150"><input type="text" data-ng-model="new_record_create.agent_name" class="form-control" data-ng-disabled="true"></td>
+                                <td class="text-right" width="80">客戶姓名：</td>
+                                <td width="150"><input type="text"
+                                                       data-ng-model="record_create.guest_name"
+                                                       data-ng-required="enableClientValidation"
+                                                       name="guest_name"
+                                                       data-ng-disabled="record_create.type==2"
+                                                       class="form-control"></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">枱號：</td>
+                                <td>
+                                    <!--<select data-ng-model="record_create.desk_id"-->
+                                            <!--data-ng-required="enableClientValidation"-->
+                                            <!--name="desk_id"-->
+                                            <!--class="form-control"-->
+                                            <!--ng-options="h.id as h.layer+'區'+h.desk_no for h in desks">-->
+                                        <!--<option value = "">請選擇檯號</option>-->
+                                    <!--</select>-->
+                                    <input type="text"
+                                           data-ng-model="new_record_create.desk_no"
+                                           class="form-control"
+                                           data-ng-required="enableClientValidation"
+                                           data-ng-disabled="true"
+                                           name="desk_id">
+                                    <!--<input type="text"-->
+                                           <!--data-ng-model="new_record_create.desk_no"-->
+                                           <!--data-ng-required="enableClientValidation"-->
+                                           <!--name="desk_id"-->
+                                           <!--class="form-control ng-pristine ng-valid input-140">-->
+                                    <!--<button class="btn btn-inf btn-confirm btn-table" data-ng-click="secletDesk()">選擇</button>-->
+                                </td>
+                                <td>
+                                    <button class="btn btn-info btn-confirm btn-table" style="margin-left: 10px;" ng-click="showDesk()">選枱</button>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td class="text-right">場次：</td>
+                                <td>{{new_record_create.scene_no==undefined || new_record_create.scene_no=="" ? "暫未開場" : new_record_create.scene_no}}</td>
+                                <!--<td data-ng-show="new_record_create.source_type== 2 || new_record_create.source_type==7">-->
+                                    <!--<select data-ng-model="record_create.scene_id"-->
+                                            <!--data-ng-required="enableClientValidation"-->
+                                            <!--name="scene_id"-->
+                                            <!--class="form-control"-->
+                                            <!--ng-options="h.id as h.scene_no for h in scenes">-->
+                                        <!--<option value = "">請選擇場次</option>-->
+                                    <!--</select>-->
+                                <!--</td>-->
+                                <!--<td class="text-right">&nbsp;</td>-->
+
+                            </tr>
+                            <tr height="50" >
+                                <td class="text-right">入場本金：</td>
+                                <td><input type="text"
+                                           data-ng-model="record_create.amount"
+                                           data-ng-required="enableClientValidation"
+                                           name="amount"
+                                           class="form-control"></td>
+                                <td class="text-right">資金類型：</td>
+                                <td>{{fundSourceTypes[new_record_create.source_type]}}</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <!--<tr height="50">-->
+                                <!--<td class="text-right">特殊標識：</td>-->
+                                <!--<td>-->
+                                    <!--<checkbox data-ng-model="mark_type1" ng-click="refund('昇紅')">昇紅</checkbox>-->
+                                    <!--<checkbox data-ng-model="mark_type2" ng-click="refund('道具')">道具</checkbox>-->
+                                <!--</td>-->
+                                <!--<td class="text-right">-->
+                                    <!--&nbsp;-->
+                                    <!--標識金額：-->
+                                <!--</td>-->
+                                <!--<td>-->
+                                    <!--&nbsp;-->
+                                    <!--<input type="text" data-ng-model="record_create.mark_amount" class="form-control" data-ng-disabled="record_create.type == '現金'">-->
+                                <!--</td>-->
+                                <!--<td>&nbsp;</td>-->
+                                <!--<td>&nbsp;</td>-->
+                            <!--</tr>-->
+                            <tr height="50">
+                                <td width="100" class="text-right">備註：</td>
+                                <td width="209" colspan="3"><textarea name="remark" class="form-control textarea-table01 ng-pristine ng-valid" data-ng-model="record_create.remark" rows="4"></textarea></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">操作密碼：</td>
+                                <td><input type="password" name="pin_code" data-ng-model="record_create.pin_code" class="form-control" data-enter-key="submit()"></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-info btn-confirm margin-right-15" ng-click="submit()">新增</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>可用本金</strong>
+                    <button class="btn btn-info btn-confirm pull-right" ng-click="add_cash()" check-permissions="sceneCreateAddSelfCapital">新增本金</button>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>戶口編碼</td>
+                            <td>中文名</td>
+                            <td>金額（萬）</td>
+                            <td>資金類型</td>
+                            <!--<td>已入場（萬）</td>-->
+                            <!--<td>未入場（萬）</td>-->
+                            <!--<td>轉碼類型</td>-->
+                            <td>場次</td>
+                            <td>時間</td>
+                            <!--<td>授權人</td>-->
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="recentlyRolling in recentlyRollings">
+                            <td>{{recentlyRolling.agent_code}}</td>
+                            <td>{{recentlyRolling.agent_name}}</td>
+                            <td>{{recentlyRolling.amount}}</td>
+                            <td>{{fundSourceTypes[recentlyRolling.source_type]}}</td>
+                            <!--<td>{{recentlyRolling.used_amount}}</td>-->
+                            <!--<td>{{recentlyRolling.settlement_amount}}</td>-->
+                            <!--<td>{{recentlyRolling.rolling_type}}</td>-->
+                            <td>{{recentlyRolling.scene_no}}</td>
+                            <td>{{recentlyRolling.add_time|parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                            <!--<td>{{recentlyRolling.authorized}}</td>-->
+                            <td width="150" class="no-padding" style="text-align: left;">
+                                <button class="btn btn-info btn-information btn-table margin-right-5" style="margin-left: 22px;" ng-click="setAvailable(recentlyRolling)">使用</button>
+                                <button class="btn btn-info btn-confirm btn-table margin-right-5"
+                                        data-ng-show="recentlyRolling.is_scene_add=='1'"
+                                        ng-click="removeAvailable(recentlyRolling)">刪除</button>
+                            </td>
+                        </tr>
+                        <tr data-ng-show="recentlyRollings.length == 0">
+                            <td colspan="11">暫無符合條件的記錄</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="loan_current_page"
+                                            total-items="pagination_capital.total_items"
+                                            on-select-page="recentlyRolling_select(page)"
+                                            max-size = "pagination_capital.max_size"
+                                            items-per-page = "pagination_capital.items_per_page"
+                                            data-ng-hide="recentlyRollings.length == 0"></pagination>
+                                <paginationselect pageCtrl="pagination_capital" select-page="recentlyRolling_select" ></paginationselect>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>

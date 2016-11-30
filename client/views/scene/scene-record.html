@@ -1,0 +1,138 @@
+<div class="page page-services" data-ng-controller="sceneRecordCtrl">
+    <div class="panel panel-form-list">
+        <div class="panel-heading"><strong>場面數查詢</strong></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <div class="col-md-9 center-block pull-none">
+                    <table class="table-detail-01">
+                        <tr height="50">
+                            <td class="text-right" width="209">所在廰：</td>
+                            <td class="text-left" width="230">永利钜星</td>
+                            <td class="text-right" width="150">戶口編號：</td>
+                            <td class="text-left"><input class="form-control input-140 ng-pristine ng-valid" type="text" ng-model="condition.agent_code" /></td>
+                            <td class="text-right" width="150">中文姓名：</td>
+                            <td class="text-left"><input class="form-control input-140 ng-pristine ng-valid" type="text" ng-model="condition.full_name" /></td>
+                            <td class="text-right" width="150">線頭：</td>
+                            <td class="text-left"><input class="form-control input-140 ng-pristine ng-valid" type="text" ng-model="condition.thrum" /></td>
+                        </tr>
+                        <tr height="50">
+                            <td class="text-right">年   月：</td>
+                            <td  width="220">
+                                <p class="input-group ui-datepicker pull-left" style="width: 150px">
+                                    <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                            <td class="text-right">指定日期：</td>
+                            <td width="200">
+                                <p class="input-group ui-datepicker col-md-9">
+                                    <input type="text" class="form-control" datepicker-popup ng-model="condition.schedule_time"/>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                                </p>
+                            </td>
+                            <td class="text-right">狀態：</td>
+                            <td>
+                                <select data-ng-model="condition.status" class="form-control">
+                                    <option value="">請選擇狀態</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br><br><br>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-info btn-confirm margin-right-15" ng-click="search()">查詢</button>
+                        <button class="btn btn-info btn-cancel margin-right-15" ng-click="reset()">重置</button>
+                    </div>
+
+                </div>
+                <div class="clear"></div>
+            </form>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+    </div>
+
+    <div class="panel panel-list-detail">
+        <div class="panel-heading">
+            <strong>場面數記錄</strong>
+            <button class="btn btn-info btn-information pull-right" ng-click="search()">&nbsp;&nbsp;&nbsp;&nbsp;列印&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <!--<button class="btn btn-info btn-information margin-right-15 pull-right" ng-click="search()">導出EXCEL</button>-->
+            <button class="btn btn-info btn-confirm margin-right-15 pull-right" ng-click="summary()">即時匯總</button>
+        </div>
+        <div class="panel-content">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>場次</td>
+                    <td>日期</td>
+                    <td>狀態</td>
+                    <td>戶口編號</td>
+                    <td>中文姓名</td>
+                    <td>客人姓名</td>
+                    <td>入場本金(萬）</td>
+                    <td>離場本金(萬)</td>
+                    <td>上下數(萬)</td>
+                    <td>轉碼數(萬)</td>
+                    <td>開場時間</td>
+                    <td>離場時間</td>
+                    <td>經手人</td>
+                    <td>操作機器</td>
+                    <td width="200">備註</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="sr in sceneRecords">
+                    <td>{{sr.field_no}}</td>
+                    <td>{{sr.time}}</td>
+                    <td>{{sr.status}}</td>
+                    <td>{{sr.agent_code}}</td>
+                    <td>{{sr.agent_name}}</td>
+                    <td>{{sr.guest_name}}</td>
+                    <td>{{sr.show_in_capital}}</td>
+                    <td>{{sr.show_out_capital}}</td>
+                    <td>{{sr.loss_win_amount}}</td>
+                    <td>{{sr.in_capital}}</td>
+                    <td>{{sr.in_time}}</td>
+                    <td>{{sr.out_time}}</td>
+                    <td>{{sr.brokage}}</td>
+                    <td>{{sr.operation_machine}}</td>
+                    <td>{{sr.remark}}</td>
+                    <td><button class="btn btn-info btn-confirm btn-table" ng-click="detail(sr.agent_code)">詳細</button></td>
+                </tr>
+                <tr>
+                    <td colspan="16" align="right" style="padding: 35px 100px;">
+                        未離場：{{not_leaves()}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        已離場：{{leaves()}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        總場數：{{total_number()}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        上數：{{few_math()}}萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        下數：{{num_math()}}萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        公司上下數：{{num_math()-few_math()}}萬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    </td>
+                </tr>
+                <tr data-ng-show="all_sceneRecords.length == 0">
+                    <td colspan="16">暫無符合條件的記錄</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-12 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="current_page"
+                                total-items="all_sceneRecords.length"
+                                on-select-page="select(page)"
+                                data-ng-show="sceneRecords.length != 0"></pagination>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

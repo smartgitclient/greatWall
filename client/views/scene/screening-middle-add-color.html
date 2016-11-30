@@ -1,0 +1,245 @@
+<div class="page page-grid" data-ng-controller="rollingManagerCtrl">
+<div class="panel panel-default">
+<div class="panel panel-list-detail col-md-4" style="padding-left: 0px;">
+    <div class="panel-heading">
+        <strong class="pull-left">在場客戶</strong>
+        <div id="text-sear02" class="form-group has-success has-feedback col-md-2 pull-right">
+            <input data-ng-model="agent_keyword" class="form-control" type="text" placeholder="">
+            <span class="fa fa-search form-control-feedback"></span>
+        </div>
+    </div>
+    <div class="panel-content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>戶口編碼</td>
+                <td>中文名</td>
+                <td>場次狀態</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="c in customers track by $index" data-ng-hide="c.status=='未開場'">
+                <td>{{c.agent_code}}</td>
+                <td>{{c.full_name}}</td>
+                <td>{{c.status}}</td>
+                <td class="no-padding">
+                    <button class="btn btn-info btn-information btn-table margin-right-5" data-ng-click="detail()">詳細</button>
+                    <button class="btn btn-info btn-confirm btn-table">選擇</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-12 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                page="current_page"
+                                total-items="all_customers.length"
+                                on-select-page="select(page)"
+                                data-ng-show="customers.length != 0"></pagination>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</div>
+<div class="col-md-8">
+    <div class="panel">
+        <div class="panel-content">
+            <div class="panel panel-form-list">
+                <div class="panel-heading"><strong>新增場次/加彩</strong></div>
+                <div class="panel-content">
+                    <form name="form_search">
+                        <table>
+                            <tr height="50">
+                                <td width="120" class="text-right">操作選擇：</td>
+                                <td width="209">
+                                    <dl class="dl-horizontal">
+                                        <dd>
+                                            <label class="ui-radio"><input name="radio1" type="radio" value="option1" ><span>新增場次</span></label>
+                                            <label class="ui-radio"><input name="radio1" type="radio" value="option2" checked><span>中場加彩</span></label>
+                                        </dd>
+                                    </dl>
+                                </td>
+                                <td width="100" class="text-right">&nbsp;</td>
+                                <td width="209">&nbsp;</td>
+                                <td width="100" class="text-right">&nbsp;</td>
+                                <td width="209">&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">戶口編碼：</td>
+                                <td>
+                                    <table class="table-inner">
+                                        <tr>
+                                            <td>
+                                                <input type="text" data-ng-model="rolling_record.amount" class="form-control">
+                                            </td>
+                                            <td width="53"  data-ng-show="rolling_type=='中場轉碼'">
+                                                <checkbox data-ng-model="rolling_record.is_refund" ng-change="is_refund()">退碼</checkbox>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="text-right">中文姓名：</td>
+                                <td><input type="text" data-ng-model="rolling_record.fund_type" class="form-control" data-ng-disabled="true"></td>
+                                <td class="text-right">客戶姓名：</td>
+                                <td><input type="text" data-ng-model="rolling_record.fund_type" class="form-control" data-ng-disabled="true"></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">場次：</td>
+                                <td><input type="text" data-ng-model="rolling_record.fund_type" class="form-control" data-ng-disabled="true"></td>
+                                <td class="text-right">檯號：</td>
+                                <td data-ng-model="rolling_record.rolling_type">
+                                    <input type="text" data-ng-model="rolling_record.pwd" class="form-control ng-pristine ng-valid input-140" style="width: 160px;">
+                                    <button class="btn btn-inf btn-confirm btn-table" data-ng-click="reset()">選擇</button>
+                                </td>
+                                <td class="text-right">開場時間：</td>
+                                <td>2014/05/05 16:00</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">入場本金：</td>
+                                <td><input type="text" data-ng-model="rolling_record.amount" class="form-control"></td>
+                                <td class="text-right">本金類型：</td>
+                                <td>貸款</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">特殊標識：</td>
+                                <td>
+                                    <checkbox data-ng-model="rolling_record.is_refund" ng-change="is_refund()">工作碼</checkbox>
+                                    <checkbox data-ng-model="rolling_record.is_refund" ng-change="is_refund()">道具</checkbox>
+                                </td>
+                                <td class="text-right">標識金額：</td>
+                                <td><input type="text" data-ng-model="rolling_record.amount" class="form-control"></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr height="50">
+                                <td width="100" class="text-right">備註：</td>
+                                <td width="209" colspan="3"><textarea id="remark" class="form-control textarea-table01 ng-pristine ng-valid" data-ng-model="rolling_record.remark" rows="4"></textarea></td>
+                            </tr>
+                            <tr height="50">
+                                <td class="text-right">操作密碼：</td>
+                                <td><input type="text" data-ng-model="rolling_record.pwd" class="form-control" data-enter-key="submit()"></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br><br><br>
+                        <div class="row" style="text-align: center;">
+                            <button class="btn btn-info btn-confirm margin-right-15" ng-click="submit()">新增</button>
+                            <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+            <div class="panel panel-list-detail">
+                <div class="panel-heading">
+                    <strong>可用本金</strong>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td>戶口編碼</td>
+                            <td>中文名</td>
+                            <td>金額（萬）</td>
+                            <td>資金類型</td>
+                            <td>已入場（萬）</td>
+                            <td>未入場（萬）</td>
+                            <td>時間</td>
+                            <td>授權人</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>FA233</td>
+                            <td>王易</td>
+                            <td>50</td>
+                            <td>貸款</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>2014-06-03 14:05:13</td>
+                            <td>張三</td>
+                            <td class="no-padding"> <a  class="btn btn-info btn-information btn-table" ng-click="setLoan(l,$index)">使用</a></td>
+                        </tr>
+                        <tr>
+                            <td>FA233</td>
+                            <td>王易</td>
+                            <td>50</td>
+                            <td>貸款</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>2014-06-03 14:05:13</td>
+                            <td>張三</td>
+                            <td class="no-padding"> <a  class="btn btn-info btn-information btn-table" ng-click="setLoan(l,$index)">使用</a></td>
+                        </tr>
+                        <tr>
+                            <td>FA233</td>
+                            <td>王易</td>
+                            <td>50</td>
+                            <td>貸款</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>2014-06-03 14:05:13</td>
+                            <td>張三</td>
+                            <td class="no-padding"> <a  class="btn btn-info btn-information btn-table" ng-click="setLoan(l,$index)">使用</a></td>
+                        </tr>
+                        <tr>
+                            <td>FA233</td>
+                            <td>王易</td>
+                            <td>50</td>
+                            <td>貸款</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>2014-06-03 14:05:13</td>
+                            <td>張三</td>
+                            <td class="no-padding"> <a  class="btn btn-info btn-information btn-table" ng-click="setLoan(l,$index)">使用</a></td>
+                        </tr>
+                        <tr>
+                            <td>FA233</td>
+                            <td>王易</td>
+                            <td>50</td>
+                            <td>貸款</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>2014-06-03 14:05:13</td>
+                            <td>張三</td>
+                            <td class="no-padding"> <a  class="btn btn-info btn-information btn-table" ng-click="setLoan(l,$index)">使用</a></td>
+                        </tr>
+                        <tr data-ng-show="all_loans.length == 0">
+                            <td colspan="11">暫無符合條件的記錄</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="loan_current_page"
+                                            total-items="all_loans.length"
+                                            on-select-page="select(page)"
+                                            data-ng-show="loans.length != 0"></pagination>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>

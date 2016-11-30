@@ -1,0 +1,222 @@
+<div class="page page-services ng-scope" data-ng-controller="loanOperationRecordCtrl">
+    <div id="text-sear02" class="form-group has-success has-feedback col-md-12">
+        <!--<input id="inputSuccess2" class="form-control" type="text" placeholder="業務單精確查找">-->
+        <!--<span class="fa fa-search form-control-feedback"></span>-->
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-10">
+        <div class="panel panel-form-list panel-loan-record" data-ng-repeat="log in operationLogs">
+            <div class="panel-content">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>業務單編號</td>
+                        <td>廳館</td>
+                        <td>戶口編號</td>
+                        <td>貸款人</td>
+                        <td>貸款金額（萬）</td>
+                        <td>貸款日期</td>
+                        <td>經手人</td>
+                        <!--<td>狀態</td>-->
+                        <td>操作</td>
+                        <td>備註</td>
+                        <td>操作人</td>
+                        <td>操作時間</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{log.loan_seqnumber}}</td>
+                        <td>{{log.hall_name}}</td>
+                        <td>{{log.agent_code}}</td>
+                        <td>{{log.borrower}}</td>
+                        <td>{{log.loan_amount|parseTenThousand2}}</td>
+                        <td>{{log.create_time}}</td>
+                        <td>{{log.user_name}}</td>
+                        <!--<td>{{log.status}}</td>-->
+                        <td>{{operationTypes[log.operation]}}</td>
+                        <td>
+                            <i popover-placement="top" data-ng-hide="log.remark=='' || log.remark==null" tooltip-html-unsafe="{{log.remark | remark}}" class="fa fa-plus-circle cursor-pointer"></i>
+                        </td>
+                        <td>{{log.user_name}}</td>
+                        <td>{{log.update_time}}</td>
+                    </tr>
+                    <tr data-ng-show="log.length == 0">
+                        <td colspan="12">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>貸款單號</td>
+                        <td>貸款金額（萬）</td>
+                        <!--<td>貸款類型</td>-->
+                        <td>息率</td>
+                        <td>免息天期</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="marker in log.markerOperation">
+                        <td>{{marker.marker_seqnumber}}</td>
+                        <td>{{marker.marker_amount|parseTenThousand2}}</td>
+                        <!--<td>{{marker.funds_type}}</td>-->
+                        <td>{{marker.expired_rate|parseTenThousand2}}</td>
+                        <td>{{marker.term}}</td>
+                        <td>{{operationTypes[marker.operation]}}</td>
+                    </tr>
+                    <tr data-ng-show="log.markerOperation.length == 0">
+                        <td colspan="5">暫無符合條件的記錄</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-confirm margin-right-15" ng-click="return()">返回</button>
+        </div>
+
+        <!--<div class="panel panel-form-list panel-loan-record">-->
+            <!--<div class="panel-content">-->
+                <!--<table class="table table-bordered table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td>業務單編號</td>-->
+                        <!--<td>廳館</td>-->
+                        <!--<td>戶口編號</td>-->
+                        <!--<td>貸款人</td>-->
+                        <!--<td>貸款金額（萬）</td>-->
+                        <!--<td>貸款日期</td>-->
+                        <!--<td>經手人</td>-->
+                        <!--<td>狀態</td>-->
+                        <!--<td>操作</td>-->
+                        <!--<td>操作人</td>-->
+                        <!--<td>操作時間</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>S20140527001</td>-->
+                        <!--<td>永利鉅星</td>-->
+                        <!--<td>FA223</td>-->
+                        <!--<td>陳XX</td>-->
+                        <!--<td>500</td>-->
+                        <!--<td>2014-05-25 15:40:50</td>-->
+                        <!--<td>XXX</td>-->
+                        <!--<td>正常</td>-->
+                        <!--<td>新增</td>-->
+                        <!--<td>Jake</td>-->
+                        <!--<td>2014-05-25 15:40:50</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<table class="table table-bordered table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td>貸款單號</td>-->
+                        <!--<td>貸款金額（萬）</td>-->
+                        <!--<td>貸款類型</td>-->
+                        <!--<td>息率</td>-->
+                        <!--<td>免息天期</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>M20140712001</td>-->
+                        <!--<td>200</td>-->
+                        <!--<td>M</td>-->
+                        <!--<td>0.1</td>-->
+                        <!--<td>15</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="panel panel-form-list panel-loan-record">-->
+            <!--<div class="panel-content">-->
+                <!--<table class="table table-bordered table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td>業務單編號</td>-->
+                        <!--<td>廳館</td>-->
+                        <!--<td>戶口編號</td>-->
+                        <!--<td>貸款人</td>-->
+                        <!--<td>貸款金額（萬）</td>-->
+                        <!--<td>貸款日期</td>-->
+                        <!--<td>經手人</td>-->
+                        <!--<td>狀態</td>-->
+                        <!--<td>操作</td>-->
+                        <!--<td>操作人</td>-->
+                        <!--<td>操作時間</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>S20140527001</td>-->
+                        <!--<td>永利鉅星</td>-->
+                        <!--<td>FA223</td>-->
+                        <!--<td>陳XX</td>-->
+                        <!--<td>500</td>-->
+                        <!--<td>2014-05-25 15:40:50</td>-->
+                        <!--<td>XXX</td>-->
+                        <!--<td>正常</td>-->
+                        <!--<td>新增</td>-->
+                        <!--<td>Jake</td>-->
+                        <!--<td>2014-05-25 15:40:50</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<table class="table table-bordered table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td>貸款單號</td>-->
+                        <!--<td>貸款金額（萬）</td>-->
+                        <!--<td>貸款類型</td>-->
+                        <!--<td>息率</td>-->
+                        <!--<td>免息天期</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>M20140712001</td>-->
+                        <!--<td>200</td>-->
+                        <!--<td>M</td>-->
+                        <!--<td>0.1</td>-->
+                        <!--<td>15</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>&nbsp;</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>

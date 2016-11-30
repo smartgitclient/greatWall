@@ -1,0 +1,316 @@
+<div class="page page-grid" data-ng-controller="shiftRecordDailyCtrl">
+    <div class="panel panel-default">
+        <div class="panel_l col-md-7">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>日結查詢</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td class="text-right" width="140" >廳館：</td>
+                                        <td width="150" data-ng-show="user.isAllHall()">
+                                            <select data-ng-model="condition.hall_id" class="form-control" ng-options="h.id as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="150" data-ng-hide="user.isAllHall()">
+                                            {{user.hall.hall_name}}
+                                        </td>
+                                        <td width="150" class="text-right"><span class="span-formlist">日    期：</span></td>
+                                        <td width="209">
+                                            <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup ng-model="condition.shift_date[0]"/>
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            </p>
+                                        </td>
+                                        <td width="150" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'" class="text-right"><span class="span-formlist">篩    選：</span></td>
+                                        <td width="209" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                            <!--<checkbox data-ng-model="condition.ring">集團數</checkbox>-->
+                                            <input type="checkbox" data-ng-model="condition.ring" /> 集團數
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br><br><br>
+                                <div class="row" style="text-align: center;">
+                                    <!--<button class="btn btn-information margin-right-15" ng-click="search()" data-ng-disabled="!hall_show">查詢</button>-->
+                                    <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-cancel margin-right-15" data-ng-click="reset()">重置</button>
+                                    <button class="btn btn-information margin-right-15" report-params="excel_condition" channel-type="ShiftMarkDayRecord" report-btn>導出EXCEL</button>
+                                    <button class="btn btn-information" data-ng-click="PDFShiftMarkDayRecord()" data-ng-disabled="isDisabled">列印</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-form-list  col-md-12 panel-shift" data-ng-show="hall_show">
+                        <div class="panel-heading"><strong>數據明細</strong></div>
+                        <div class="panel-content" style="margin-bottom: 10px;">
+                            <form name="form_search">
+                                <table class="table-shift" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                    <tr>
+                                        <td data-min-screen-width="100" width="120">上日餘特碼：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastday_depositspecialcode|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">上月餘特碼：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastmonth_depositspecialcode|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">檯面銀頭：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.incase_amount|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">外借銀頭：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.borrow_amount|parseTenThousand}}</td>
+                                    </tr>
+                                </table>
+                                <table class="table-shift" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                    <tr>
+                                        <td data-min-screen-width="100" width="120">上日餘特碼A：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastday_depositspecialcode_a|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">上日餘特碼B：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastday_depositspecialcode_b|parseTenThousand}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-min-screen-width="100" width="120">上月餘特碼A：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastmonth_depositspecialcode_a|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">上月餘特碼B：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.lastmonth_depositspecialcode_b|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">檯面銀頭：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.incase_amount|parseTenThousand}}</td>
+                                        <td data-min-screen-width="100" width="120">外借銀頭：</td>
+                                        <td data-min-screen-width="80" width="120">{{shift_record.borrow_amount|parseTenThousand}}</td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="panel-content" style="margin-bottom: 10px;">
+                            <form name="form_search" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                <div class="col-md-4">
+                                    <div class="table-title02"><strong>本日明細</strong></div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">本日買碼數：</td>
+                                            <td>{{shift_record.thisday_buycode|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-min-screen-width="100">本日轉碼數：</td>
+                                            <td>{{shift_record.thisday_rolling|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="table-title02">
+                                        <strong>本月明細</strong>
+                                    </div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">本月買碼數：</td>
+                                            <td>{{shift_record.thismonth_buycode|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本月轉碼數：</td>
+                                            <td>{{shift_record.thismonth_rolling|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="table-title02">
+                                        <strong>匯總明細</strong>
+                                    </div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">存單總數：</td>
+                                            <td>{{shift_record.depositticket_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>存卡總數：</td>
+                                            <td>{{shift_record.depositcard_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>貸款總數：</td>
+                                            <td>{{shift_record.loan_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>飛數總數：</td>
+                                            <td>{{shift_record.transfer_total|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </form>
+                            <form name="form_search" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                <div class="col-md-4">
+                                    <div class="table-title02"><strong>本日明細</strong></div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">本日買碼數A：</td>
+                                            <td>{{shift_record.thisday_buycode_a|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-min-screen-width="100">本日轉碼數A：</td>
+                                            <td>{{shift_record.thisday_rolling_a|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-min-screen-width="100">本日買碼數B：</td>
+                                            <td>{{shift_record.thisday_buycode_b|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-min-screen-width="100">本日轉碼數B：</td>
+                                            <td>{{shift_record.thisday_rolling_b|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="table-title02">
+                                        <strong>本月明細</strong>
+                                    </div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">本月買碼數A：</td>
+                                            <td>{{shift_record.thismonth_buycode_a|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本月轉碼數A：</td>
+                                            <td>{{shift_record.thismonth_rolling_a|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-min-screen-width="100">本月買碼數B：</td>
+                                            <td>{{shift_record.thismonth_buycode_b|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本月轉碼數B：</td>
+                                            <td>{{shift_record.thismonth_rolling_b|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="table-title02">
+                                        <strong>匯總明細</strong>
+                                    </div>
+                                    <table class="table table-bordered table-striped table-detail-01">
+                                        <tr>
+                                            <td data-min-screen-width="100">存單總數：</td>
+                                            <td>{{shift_record.depositticket_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>存卡總數：</td>
+                                            <td>{{shift_record.depositcard_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>貸款總數：</td>
+                                            <td>{{shift_record.loan_total|parseTenThousand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>飛數總數：</td>
+                                            <td>{{shift_record.transfer_total|parseTenThousand}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </form>
+                        </div>
+                        <div class="panel-content" style="margin-bottom: 10px;">
+                            <table class="table-shift" ng-hide="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                <tr>
+                                    <td data-min-screen-width="140">本日餘特碼：</td>
+                                    <td width="160">{{shift_record.shift_depositspecialcode|parseTenThousand}}</td>
+                                    <td data-min-screen-width="140">存碼櫃餘現金：</td>
+                                    <td width="160">{{shift_record.depositbox_depositcash|parseTenThousand}}</td>
+                                    <td data-min-screen-width="140">存碼櫃總數：</td>
+                                    <td width="160">{{shift_record.depositbox_total|parseTenThousand}}</td>
+                                </tr>
+                                <tr>
+                                    <td>本日餘現碼：</td>
+                                    <td width="160">{{shift_record.shift_depositcashcode|parseTenThousand}}</td>
+                                    <td>存碼櫃餘現碼：</td>
+                                    <td width="160">{{shift_record.depositbox_cashcode|parseTenThousand}}</td>
+                                    <td>&nbsp;</td>
+                                    <td width="160">&nbsp;</td>
+                                </tr>
+                            </table>
+
+                            <table class="table-shift" ng-show="user.hall.id == '1AE7283167B57D1DE050A8C098155859'">
+                                <tr>
+                                    <td data-min-screen-width="140">本日餘特碼A：</td>
+                                    <td width="160">{{shift_record.shift_depositspecialcode_a|parseTenThousand}}</td>
+                                    <td data-min-screen-width="140">存碼櫃餘現金：</td>
+                                    <td width="160">{{shift_record.depositbox_depositcash|parseTenThousand}}</td>
+                                    <td data-min-screen-width="140">存碼櫃總數：</td>
+                                    <td width="160">{{shift_record.depositbox_total|parseTenThousand}}</td>
+                                </tr>
+                                <tr>
+                                    <td>本日餘特碼B：</td>
+                                    <td width="160">{{shift_record.shift_depositspecialcode_b|parseTenThousand}}</td>
+                                    <td>存碼櫃餘現碼A：</td>
+                                    <td width="160">{{shift_record.depositbox_cashcode_a|parseTenThousand}}</td>
+                                    <td>&nbsp;</td>
+                                    <td width="160">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>本日餘現碼A：</td>
+                                    <td width="160">{{shift_record.shift_depositcashcode_a|parseTenThousand}}</td>
+                                    <td>存碼櫃餘現碼B：</td>
+                                    <td width="160">{{shift_record.depositbox_cashcode_b|parseTenThousand}}</td>
+                                    <td>&nbsp;</td>
+                                    <td width="160">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>本日餘現碼B：</td>
+                                    <td width="160">{{shift_record.shift_depositcashcode_b|parseTenThousand}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5" data-ng-show="hall_show && set_tlement_date.ring == false">
+            <div class="panel_r">
+                <div class="panel panel-list-detail">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-content">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <td>戶口</td>
+                                <td>姓名</td>
+                                <td>早更(萬)</td>
+                                <td>中更(萬)</td>
+                                <td>晚更(萬)</td>
+                                <td>本日轉碼數(萬)</td>
+                                <td>本月轉碼數(萬)</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="set_tlement_date in set_tlement_dates" data-selected-rows>
+                                <td>{{set_tlement_date.agent_code}}</td>
+                                <td>{{set_tlement_date.agent_name}}</td>
+                                <td>{{set_tlement_date.early_rolling|parseTenThousand2}}</td>
+                                <td>{{set_tlement_date.mid_rolling|parseTenThousand2}}</td>
+                                <td>{{set_tlement_date.evening_rolling|parseTenThousand2}}</td>
+                                <td>{{set_tlement_date.day_rolling|parseTenThousand2}}</td>
+                                <td>{{set_tlement_date.month_rolling|parseTenThousand2}}</td>
+                            </tr>
+                            <tr data-ng-show="set_tlement_dates.length == 0">
+                                <td colspan="7">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <footer class="table-footer">
+                            <div class="text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            page="pagination.page"
+                                            total-items="pagination.total_items"
+                                            on-select-page="select(page)"
+                                            max-size = "pagination.max_size"
+                                            items-per-page = "pagination.items_per_page"
+                                            data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                                <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,167 @@
+<div class="page page-services ng-scope pop-dotal">
+<div class="panel panel-form-list">
+    <div class="panel-heading">{{title}}</div>
+    <div class="panel-content">
+        <div class="row text-center">
+            <form name="$parent.form_create_order" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post_put}}{{create_order_url}}">
+            <table class="table table-bordered table-striped table-detail-01">
+                <tr>
+                    <td width="100" align="right">對象類型：</td>
+                    <td align="left">
+                        <input ng-disabled="updateDate"  type="radio" name="order_type" value="{{orderTypes.group}}" ng-model="order.is_group" data-ng-change="agent_group_type()" >戶組&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input ng-disabled="updateDate" type="radio" name="order_type" value="{{orderTypes.agent}}" ng-model="order.is_group" data-ng-change="agent_group_type()" >戶口
+                    </td>
+                </tr>
+                <tr data-ng-show="!agent_group_show">
+                    <td width="100" align="right">戶組：</td>
+                    <td align="left">
+                        <input data-ng-disabled="true" data-input-uppercase data-ng-required="enableClientValidation" name = "refOrderGroups_0_agent_group_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" data-ng-model="order.agent_group">
+                    </td>
+                </tr>
+                <tr data-ng-show="!agent_group_show">
+                    <td width="100" align="right">股東姓名：</td>
+                    <td align="left">{{group.agent_name}}</td>
+                </tr>
+                <tr data-ng-show="agent_group_show">
+                    <td width="100" align="right">戶口編號：</td>
+                    <td align="left">
+                        <input data-ng-disabled="true" data-input-uppercase data-ng-required="enableClientValidation" name = "refOrderAgents_0_agent_info_id" class="form-control input-01 ng-pristine ng-valid input-140" type="text" data-ng-model="order.agent_code">
+                    </td>
+                </tr>
+                <tr data-ng-show="agent_group_show">
+                    <td width="100" align="right">戶口名稱：</td>
+                    <td align="left">{{agent.agent_name}}</td>
+                </tr>
+                <tr>
+                    <td align="right">廳館：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name = "hall_id" data-ng-model="order.hall_id" class="form-control" data-ng-options="h.id as h.hall_name for h in halls" >
+                            <option value="">請選擇廳館</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">顯示模組：</td>
+                    <td align="left">
+                        <span>
+                            &nbsp;&nbsp;&nbsp;<input type="checkbox" name="order_check_alls" data-ng-model="order.order_check_alls" data-ng-change="order_check_all()">全部                        </span>
+                        <table class="table">
+                            <tr data-ng-repeat="order_mondule in order_mondules">
+                                <td align="left" data-ng-repeat="module in order_mondule" style="border-top: none">
+                                    <input data-ng-required="enableClientValidation" name = "module_id" type="checkbox" data-ng-model="module.selected" data-ng-change="check_order_one(module)">{{module.module_name}}</checkbox>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">有效日期：</td>
+                    <td align="left">
+                        <div class="pull-left">
+                        <div class="form-inline input-group ui-datepicker">
+                            <div class="form-group">
+                                <input size="9" class="form-control input-01"
+                                       ng-model="order.start_time"
+                                       data-ng-required="enableClientValidation"
+                                       name="start_time"
+                                       bs-datepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <div class="form-group">
+                                <input size="8"  class="form-control input-01"
+                                       data-ng-required="enableClientValidation"
+                                       name="start_time"
+                                       ng-model="order.start_time"
+                                       bs-timepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        </div>
+                        <p class="pull-left">&nbsp;&nbsp;~&nbsp;&nbsp;</p>
+                        <p class=" pull-left">
+                        <div class="form-inline input-group ui-datepicker">
+                            <div class="form-group">
+                                <input size="9" class="form-control input-01"
+                                       ng-model="order.end_time"
+                                       data-ng-required="enableClientValidation"
+                                       name="end_time"
+                                       bs-datepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <div class="form-group">
+                                <input size="8"  class="form-control input-01"
+                                       data-ng-required="enableClientValidation"
+                                       name="end_time"
+                                       ng-model="order.end_time"
+                                       bs-timepicker type="text">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        </p>
+                        <!--<p class="input-group ui-datepicker col-md-5  pull-left">-->
+                            <!--<input data-ng-required="enableClientValidation"  name ='start_time' type="text" class="form-control" datepicker-popup ng-model="order.start_time" />-->
+                            <!--<span class="input-group-btn">-->
+                            <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                            <!--</span>-->
+                        <!--</p>-->
+                        <!--<p class="pull-left  col-md-1">~</p>-->
+                        <!--<p class="input-group ui-datepicker  col-md-5  pull-left">-->
+                            <!--<input data-ng-required="enableClientValidation" name ='end_time' type="text" class="form-control" datepicker-popup ng-model="order.end_time" />-->
+                            <!--<span class="input-group-btn">-->
+                            <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                            <!--</span>-->
+                        <!--</p>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" align="right">標題：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name = "order_type_id" data-ng-model="order.order_type_id" class="form-control" data-ng-options="at.id as at.order_name for at in agentOrderTypes" >
+                            <option value="">請選擇標題</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">優先級：</td>
+                    <td align="left">
+                        <select data-ng-required="enableClientValidation" name="priority" data-ng-model="order.priority" class="form-control" data-ng-options="p.priority as p.priority_name for p in [{priority:'1',priority_name:'高'},{priority:'2',priority_name:'中'},{priority:'3',priority_name:'低'}]" >
+                            <option value="">請選擇優先級</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="width: 93px">內容：</td>
+                    <td align="left">
+                        <textarea data-ng-required="enableClientValidation" name="order_content"  id="" class="form-control textarea-table01 ng-pristine ng-valid" rows="4" data-ng-model="order.order_content"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="width: 93px">操作密碼：</td>
+                    <td align="left">
+                        <input type="password" name="pin_code" class="form-control input-140" ng-model="order.pin_code" data-enter-key="add()"/>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm margin-right-15" data-ng-click="add()">提交</button>
+            <button class="btn btn-cancel" data-ng-click="reset()">重置</button>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+
+
+</div>
+
+</div>

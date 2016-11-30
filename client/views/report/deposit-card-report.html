@@ -1,0 +1,178 @@
+<div class="page page-services ng-scope" data-ng-controller="depositCardReportCtrl">
+    <div class="panel panel-form-list col-md-12">
+        <!--<div class="panel-heading"><strong>貸款查詢</strong></div>-->
+        <div class="panel-footer"></div>
+        <div class="panel-content">
+            <form name="form_search">
+                <table>
+                    <tr height="50">
+                        <td class="text-right" width="140" >
+                            <!--<button data-ng-show="user.isAllHall()" class="btn btn-info btn-information" ng-click="select_all()">{{select_btn}}</button>-->
+                            <span class="span-formlist">廳館：</span>
+                        </td>
+                        <td width="160" data-ng-show="user.isAllHall()" class="select-td">
+                            <select data-ng-model="select_halls" class="form-control" multiple bs-select ng-options="h.id as h.hall_name for h in halls" data-live-search="true" placeholder="請選擇廳館">
+                                <option value = "">請選擇廳館</option>
+                            </select>
+                            <!--<input type="checkbox" data-ng-model="select_status" data-ng-click = "select_all()" name="selected" style="margin-left: 10px;">-->
+                        </td>
+                        <td width="140" data-ng-hide="user.isAllHall()">
+                            {{user.hall.hall_name}}
+                        </td>
+                        <td width="200" class="text-right">
+                            <span style="margin-left: 10px;float:left"><input type="checkbox" data-ng-model="select_status" data-ng-click = "select_all()" name="selected">&nbsp;全選</span>
+                            <span class="span-formlist">戶口編號：</span></td>
+                        <td width="180"><input type="text"
+                                               data-ng-model="condition.agent_code"
+                                               data-input-uppercase
+                                               class="form-control">
+                        </td>
+                        <td width="200" class="text-right"><span class="span-formlist">戶口姓名：</span></td>
+                        <td width="180">{{agent_name}}</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td class="text-right"><span class="span-formlist">戶組：</span></td>
+                        <td width="180"><input data-input-uppercase type="text" name="agent_group_id" data-ng-model="condition.agent_group_name" class="form-control"> </td>
+                        <td align="right"><span class="span-formlist">新增日期：</span></td>
+                        <td colspan="2">
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.crate_time[0]" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </p>
+                            <p class="pull-left  col-md-1">~</p>
+                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.crate_time[1]"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr height="50">
+                        <td width="200" align="right"><span class="span-formlist">指定日期：</span></td>
+                        <td width="180">
+                            <p class="input-group ui-datepicker pull-left">
+                                <input type="text" class="form-control" datepicker-popup datepicker-mode="day"  ng-model="condition.shift_date"/>
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+                        </td>
+                        <td width="200" align="right"><span class="span-formlist">年月：</span></td>
+                        <td width="180">
+                            <table class="table-inner">
+                                <tr>
+                                    <td>
+                                        <p class="input-group ui-datepicker">
+                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" data-ng-model="condition.year_month" data-dynamic-name="year_month" />
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </td>
+                                    <!--<td  class="text-center" width="15">月</td>-->
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="text-right" width="200" ><span class="span-formlist">更數：</span></td>
+                        <td width="180">
+                            <select data-ng-model="condition.shift" class="form-control">
+                                <option value = "">請選擇更數</option>
+                                <option value="{{shiftMarts.morning}}">{{shiftMarts.morning}}</option>
+                                <option value="{{shiftMarts.afternoon}}">{{shiftMarts.afternoon}}</option>
+                                <option value="{{shiftMarts.evening}}">{{shiftMarts.evening}}</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                </table>
+                <br><br>
+                <div class="row" style="text-align: center;">
+                    <button class="btn btn-info btn-confirm margin-right-15" report-btn channel-type="{{report_code}}" report-params="condition">匯出EXCEL</button>
+                    <button class="btn btn-inf btn-cancel" ng-click="reset()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+    </div>
+    <!--<div class=" col-md-12">-->
+        <!--<div class="panel panel-list-detail col-md-12">-->
+            <!--<div class="panel-heading">-->
+                <!--<button class="btn btn-info btn-information pull-right" ng-click="goRepyamentFee()">還手續費</button>-->
+                <!--&lt;!&ndash;button class="btn btn-info btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="LoanBusinessWater" report-btn >導出EXCEL</button&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="panel-content">-->
+                <!--<table class="table table-bordered table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td>&nbsp;</td>-->
+                        <!--<td>廳館</td>-->
+                        <!--<td>業務單號</td>-->
+                        <!--<td>貸款單號</td>-->
+                        <!--<td>戶口編號</td>-->
+                        <!--<td>戶口姓名</td>-->
+                        <!--<td>貸款人</td>-->
+                        <!--<td>貸款金額(萬)</td>-->
+                        <!--<td>貸款餘額(萬)</td>-->
+                        <!--<td>貸款日期</td>-->
+                        <!--<td>息率</td>-->
+                        <!--<td>天期</td>-->
+                        <!--<td>貸款天數</td>-->
+                        <!--<td>過期天數</td>-->
+                        <!--<td width="200">備註</td>-->
+                        <!--<td>經手人</td>-->
+                        <!--&lt;!&ndash;<td>狀態</td>&ndash;&gt;-->
+                        <!--<td>操作</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr data-ng-repeat="loan in loans">-->
+                        <!--<td>{{mortgage_format(loan.settlement_amount,loan.not_mortgage)}}</td>-->
+                        <!--<td>{{loan.hall_name}}</td>-->
+                        <!--<td>{{loan.loan_seqnumber}}</td>-->
+                        <!--<td>{{loan.marker_seqnumber}}</td>-->
+                        <!--<td>{{loan.agent_code}}</td>-->
+                        <!--<td>{{loan.agent_name}}</td>-->
+                        <!--<td>{{loan.borrower}}</td>-->
+                        <!--<td>{{loan.marker_amount|parseTenThousand2}}</td>-->
+                        <!--<td>{{loan.settlement_amount|parseTenThousand2}}</td>-->
+                        <!--<td>{{loan.loan_time|parseDate:"yyyy-MM-dd"}}</td>-->
+                        <!--<td>{{loan.expired_rate}}</td>-->
+                        <!--<td>{{loan.term}}</td>-->
+                        <!--<td>{{loan.loan_days}}</td>-->
+                        <!--<td>{{loan.expired_days}}</td>-->
+                        <!--<td width="200">{{loan.remark}}</td>-->
+                        <!--<td>{{loan.user_name}}</td>-->
+                        <!--&lt;!&ndash;<td>{{markerStatus[loan.status]}}</td>&ndash;&gt;-->
+                        <!--<td>-->
+                            <!--<button ng-click="detail(loan.loan_business_id)" class="btn btn-info btn-confirm btn-table">詳細</button>-->
+                            <!--&lt;!&ndash;<button data-ng-click="recalculation()" class="btn btn-info btn-confirm btn-table">重算</button>&ndash;&gt;-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr data-ng-show="loans.length == 0">-->
+                        <!--<td colspan="17">暫無符合條件的記錄</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<footer class="table-footer">-->
+                    <!--<div class="text-right pagination-container">-->
+                        <!--<pagination class="pagination-sm"-->
+                                    <!--page="pagination.page"-->
+                                    <!--total-items="pagination.total_items"-->
+                                    <!--on-select-page="select(page)"-->
+                                    <!--max-size = "pagination.max_size"-->
+                                    <!--items-per-page = "pagination.items_per_page"-->
+                                    <!--data-ng-show="loans.length != 0 && pagination.total_items > pagination.items_per_page"></pagination>-->
+                        <!--<paginationselect pageCtrl="pagination" select-page="select"></paginationselect>-->
+                    <!--</div>-->
+                <!--</footer>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>

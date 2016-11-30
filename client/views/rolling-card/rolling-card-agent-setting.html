@@ -1,0 +1,368 @@
+<div class="page page-grid" data-ng-controller="rollingCardAgentSettingCtrl">
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-form-list">
+            <div class="panel-heading"><strong>戶口轉碼卡設置</strong></div>
+            <div class="panel-content" style="padding:10px">
+                    <form name="form_search">
+                    <table>
+                        <tbody>
+                        <tr height="50">
+                            <td width = "75" class="text-right" data-min-screen-width="80">戶組：</td>
+                            <td width="145" data-min-screen-width="100">
+                                <input data-input-uppercase type="text" class="form-control" data-ng-model="condition.agent_group_name"/>
+                            </td>
+                            <td class="text-right" width="75">戶口：</td>
+                            <td  width="145"><input data-input-uppercase type="text" class="form-control" data-ng-model="condition.agentInfo.agent_code"/> </td>
+                            <td class="text-right" width="75">卡狀態：</td>
+                            <td  width="160">
+                                <select class="form-control" data-ng-model="condition.is_binding">
+                                    <option value="">全部</option>
+                                    <option value="0">{{commission_card_bind_status.items[commission_card_bind_status.unbind]}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td  class="text-right">轉碼卡：</td>
+                            <td ><input type="text" data-input-uppercase class="form-control" data-ng-model="condition.card_name"/></td>
+                            <td class="text-right">轉碼數：</td>
+                            <td>
+                                <select data-ng-model="condition.is_amount" class="form-control">
+                                    <option value = "">請選擇轉碼數</option>
+                                    <option value = "0">無轉碼</option>
+                                    <option value = "1">有轉碼</option>
+                                </select>
+                            </td>
+                            <td class="text-right">年月：</td>
+                            <td>
+                                <p class="input-group ui-datepicker">
+                                    <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month[0]" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table><br/>
+                    <div class="row" style="text-align: center;">
+                        <button class="btn btn-information margin-right-15" ng-click="search()">查詢</button>
+                        <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                    </div>
+                    </form>
+                <!--<div class="clearfix"></div>-->
+            </div>
+        </div>
+        <div class="panel panel-list-detail">
+            <div class="panel-heading">
+                <div class="checkbox" style="margin:0 0 0 11px;float: left;">
+                    <label>
+                        <input type="checkbox" data-ng-model="check1.all2" data-ng-click = "check_all2()" name="selected" style="margin-top: 20px;">全選\取消
+                    </label>
+                </div>
+                <button class="btn btn-information margin-right-15 pull-right" report-params="excel_condition" channel-type="RollingCardAgentSetting" report-btn>導出EXCEL</button>
+                <button class="btn btn-confirm pull-right" ng-click="addRollingCard()" check-permissions="rollingCardCreate">新增轉碼卡</button>
+                <button class="btn btn-confirm pull-right" data-ng-click="bindCards()" check-permissions="rollingCardBind">批量綁定</button>
+            </div>
+            <!--<perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >-->
+            <div class="panel-content table-dynamic">
+                <table class="table table-bordered table-striped table-hover table-none" style="width: 100%">
+                    <thead>
+                    <tr >
+                        <td width="30"><input type="checkbox" data-ng-model="check1.all1" data-ng-click = "check_all1()" name="selected"> </td>
+                        <td width="55" check-permissions="rollingCardDelete,rollingCardUpdate,rollingCardBind">操作</td>
+                        <td width="45">轉碼卡</td>
+                        <td width="60" data-td-sort data-td-sort-up="agent_code NUMASC" data-td-sort-down="agent_code NUMDESC" data-td-sort-select="select" data-td-sort-pagination="pagination" >戶口</td>
+                        <td width="50">戶組</td>
+                        <td width="45">狀態</td>
+                        <td width="65">轉碼數(萬)</td>
+                        <td width="88">規則</td>
+                        <td width="35">本金類型</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="card in rolling_cards" data-selected-rows>
+                            <td><input type="checkbox" data-ng-click="check_one(card)" name="selected" data-ng-model="card.selected" /></td>
+                            <td check-permissions="rollingCardDelete,rollingCardUpdate,rollingCardBind">
+                                <button style="padding:6px 5px" class="btn btn-information btn-table margin-right-5" data-ng-show="card.is_binding == commission_card_bind_status.unbind"  data-ng-click="bindCard(card.id,card.agent_group_name,card.agent_code)" check-permissions="rollingCardBind">綁定</button>
+                                <button style="padding:6px 5px" class="btn btn-information btn-table margin-right-5" data-ng-show="card.is_binding == commission_card_bind_status.binded" data-ng-click="update(card.id,card.agent_group_name,card.agent_code)" check-permissions="rollingCardUpdate">修改</button>
+                                <!--<button style="padding:6px 5px" class="btn btn-information btn-table" data-ng-show="card.rollingCard_amount == 0" data-ng-click="delete(card.id)" check-permissions="rollingCardDelete">刪除</button>-->
+                            </td>
+                            <td>{{card.card_name}}</td>
+                            <td>{{card.agent_code}}</td>
+                            <td>{{card.agent_group_name}}</td>
+                            <td>{{commission_card_bind_status.items[card.is_binding]}}</td>
+                            <td>{{card.rollingCard_amount|parseTenThousand2}}</td>
+                            <td>{{card.commission_rule_name}}</td>
+                            <td>{{card.capital_name}}</td>
+                        </tr>
+                        <tr data-ng-show="rolling_cards.length == 0">
+                            <td colspan="9">暫無符合條件的記錄</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!--</perfect-scrollbar>-->
+            <footer class="table-footer">
+                <div class="text-right pagination-container">
+                    <pagination class="pagination-s"
+                                page="pagination.page"
+                                total-items="pagination.total_items"
+                                on-select-page="select(page)"
+                                max-size = "pagination.max_size"
+                                items-per-page = "pagination.items_per_page"
+                                data-ng-hide="pagination.total_items <= pagination.items_per_page"></pagination>
+                    <paginationselect pageCtrl="pagination" select-page="select"></paginationselect>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+    <div class="col-md-8" data-ng-show="user.checkPermissions('rollingCardBind') || (user.checkPermissions('rollingCardUpdate') && commissions.id)">
+        <div class="panel panel-form-list">
+            <!--<div class="panel-heading"><strong>{{title}}</strong></div>-->
+            <form name="form_bind_card" class="ng-valid ng-dirty form-validation" server-validation="{{sub_post}}{{commissions_card_agent_url}}">
+            <div class="panel-content" style="padding:0 20px">
+                <table>
+                    <tbody>
+                    <tr height="50">
+                        <td width="80" class="text-right">轉碼卡：</td>
+                        <td width="65">{{rolling_card.cardRule.card_name}}</td>
+                        <td width="65" class="text-right">戶口：</td>
+                        <td width="65">{{rolling_card.cardRule.agent_code}}</td>
+                        <td width="65" class="text-right">戶組：</td>
+                        <td width="65">{{rolling_card.cardRule.agent_group}}</td>
+                        <td width="100" class="text-right">全局規則：</td>
+                        <td data-min-screen-width="150" width="150">
+                            <select name="rule_names"
+                                    data-ng-disabled="disabled_submit"
+                                    class="form-control pull-left"
+                                    data-ng-model="commission_rule_id"
+                                    data-ng-change="select_rule_name()"
+                                    data-ng-options="rn.id as rn.rule_name for rn in rule_names">
+                                <option value="">請選擇全局規則</option>
+                            </select>
+                        </td>
+                        <td width="150" class="text-right" colspan="2">
+                            <span class="pull-left" style="padding: 5px 0 0;">&nbsp;&nbsp;{{rolling_card.cardRule.commission_rule_name}}</span>
+                        </td>
+                        <td width="100" class="text-right">本金類型：</td>
+                        <td width="150">
+                            <select data-ng-disabled="capitaltype_disabled" name="capital_type_id" data-ng-required="enableClientValidation" class="form-control" data-ng-model="rolling_card.cardRule.capital_type_id" data-ng-options="ct.id as ct.capital_name for ct in capitaltypes">
+                                <option value="">請選擇本金類型</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--綁定的廳館 -->
+                <div class="rolling-card">
+                    <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                        <div class="panel-content"  style="min-height: 100px; min-width: 1097px;padding:0;border:none">
+                        <table class="table table-bordered table-striped table-none-add" style="margin-bottom: 0">
+                            <thead>
+                            <tr>
+                                <td width="18"><input type="checkbox"  data-ng-model="hall_select_alls.hall_check_all" data-ng-change="hall_select_all()" name="selected"> </td>
+                                <td width="50">廳館</td>
+                                <td width="35">轉碼數(萬)</td>
+                                <td width="65">戶口</td>
+                                <td width="65">上線一</td>
+                                <td width="65">上線二</td>
+                                <td width="65">上線三</td>
+                                <td width="65">上線四</td>
+                                <td width="42">合計</td>
+                                <td width="23">積分有效期</td>
+                                <td width="25">現金回收比例</td>
+                                <td width="26">現金回收戶口</td>
+                                <td width="26">津貼回收戶口</td>
+                                <td width="26">操作者</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="commissionRuleHall in rolling_card.cardRule.commissionRuleHalls"  data-ng-show="rolling_card.cardRule.commissionRuleHalls.length >= 2">
+                                <td colspan="14" style="padding: 0;border-top:none;border-bottom: none" data-ng-hide="user.hall.hall_type == 1 && commissionRuleHall.hall_id == '27115D48C5F726D6E050A8C098150716'">
+                                    <table class="table table-bordered table-striped table-none-add-son" style="border:0;margin-bottom:0 "><!--table-hover -->
+                                        <tr data-ng-click = "selectCommissionRuleHall(commissionRuleHall)">
+                                            <td width="18" style="border-bottom:0;border-left:0" data-stop-propagation><input type="checkbox" data-ng-click="select_one(commissionRuleHall)" name="selected" data-ng-model="commissionRuleHall.selected" /></td>
+                                            <td width="50" style="border-bottom:0;">
+                                                <!--<i data-ng-show="select_hall_ids.indexOf(commissionRuleHall.hall_id) >= 0" class="fa fa-exclamation"></i>-->
+                                                <span class="a-hover" data-ng-show="select_hall_ids.indexOf(commissionRuleHall.hall_id) >= 0" style="color:green;font-weight: bold">{{commissionRuleHall.hall_name}}</span>
+                                                <span class="a-hover" data-ng-show="select_hall_ids.indexOf(commissionRuleHall.hall_id) < 0">{{commissionRuleHall.hall_name}}</span>
+                                            </td>
+                                            <td width="35" style="border-bottom:0;"><span class="a-hover">{{commissionRuleHall.rollingCard_amount|parseTenThousand2}}</span></td>
+                                            <td width="65" style="border-bottom:0;" data-ng-repeat="commissionRuleHallSub in commissionRuleHall.commissionRuleHallSubs" >
+                                                <span class="a-hover" data-ng-show="commissionRuleHallSub.agent_code && commissionRuleHallSub.disabled != 1">
+                                                    {{commissionRuleHallSub.agent_code?commissionRuleHallSub.agent_code:'無'}},
+                                                    佣:{{commissionRuleHallSub.commission_should|number}},
+                                                    津:{{commissionRuleHallSub.integral_should|number}}
+                                                </span>
+                                            </td>
+                                            <td width="65" style="border-bottom:0;" data-ng-repeat="compAgentRule in commissionRuleHall.compAgentRuleHalls">
+                                                 <span class="a-hover" data-ng-show="compAgentRule.agent_code">
+                                                    {{compAgentRule.agent_code?compAgentRule.agent_code:'無'}},
+                                                    佣:{{compAgentRule.commission_should|number}},
+                                                    津:{{compAgentRule.integral_should|number}}
+                                                </span>
+                                            </td>
+
+                                            <td width="65" style="border-bottom:0;" data-ng-repeat="compAgentRule in showRow(commissionRuleHall)">
+                                                <span class="a-hover" data-ng-show="compAgentRule.agent_code">
+                                                    {{compAgentRule.agent_code?compAgentRule.agent_code:'無'}},
+                                                    佣:{{compAgentRule.commission_should|number}},
+                                                    津:{{compAgentRule.integral_should|number}}
+                                                </span>
+                                            </td>
+
+                                            <td width="42" style="border-bottom:0;"><span class="a-hover">佣:{{commissionRuleHall.commission_total|number}},津:{{commissionRuleHall.integral_total|number}}</span></td>
+                                            <td width="23" style="border-bottom:0;"><span class="a-hover">{{commissionRuleHall.integral_expire < 0?'永久':commissionRuleHall.integral_expire}}</span></td>
+                                            <td  width="25" style="border-bottom:0;"><span class="a-hover">
+                                                {{commissionRuleHall.commissionRuleHallSubs[0].recycle_rate?commissionRuleHall.commissionRuleHallSubs[0].recycle_rate:0}}</span>
+                                            </td>
+                                            <td  width="26" style="border-bottom:0;"><span class="a-hover">
+                                                {{commissionRuleHall.commissionRuleHallSubs[0].agent_code?commissionRuleHall.commissionRuleHallSubs[0].agent_code:'無'}}</span>
+                                            </td>
+                                            <td  width="26" style="border-bottom:0;border-right:0"><span class="a-hover">
+                                                {{commissionRuleHall.commissionRuleHallSubs[0].integral_recycle_agent_code?commissionRuleHall.commissionRuleHallSubs[0].integral_recycle_agent_code:'無'}}</span>
+                                            </td>
+                                            <td  width="26" style="border-bottom:0;border-right:0"><span class="a-hover">{{commissionRuleHall.lastPerson}}</span></td>
+                                        </tr>
+                                        <tr style="background: none">
+                                            <td colspan="14" data-ng-show="select_commissionRuleHall && show_hall_id ==commissionRuleHall.hall_id " >
+                                                <div style="width:75%;padding:5px 10px"><!--data-ng-show="select_commissionRuleHall"-->
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <div class="panel panel-list-detail">
+                                                                <div class="panel-content">
+                                                                    <table class="table table-bordered table-striped">
+                                                                        <thead>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>佣金總額:</td>
+                                                                            <td width="155">{{commission_total()}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>積分總額:</td>
+                                                                            <td>{{integral_total()}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>積分有效期:</td>
+                                                                            <td>
+                                                                                <select style="width:120px" data-dynamic-name="commissionRuleHalls_0_integral_expire" data-ng-required="enableClientValidation" data-ng-model="select_commissionRuleHall.integral_expire" data-ng-options="m.val as m.key for m in months" class="form-control pull-left" >
+                                                                                    <option value="">請選擇有效期</option>
+                                                                                </select>
+                                                                                <span class="pull-right" style="padding-left: 5px;padding: 5px 0 0;">月</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>現金回收比例:</td>
+                                                                            <td><input data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-130" type="text" ng-model="select_commissionRuleHall.commissionRuleHallSubs[0].recycle_rate" data-dynamic-name="commissionRuleHalls_0_commissionRuleHallSubs_0_recycle_rate"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>現金回收戶口:</td>
+                                                                            <td><input data-ng-disabled ="true" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-130" type="text" ng-model="select_commissionRuleHall.commissionRuleHallSubs[0].agent_code"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>津貼回收戶口:</td>
+                                                                            <td><input data-input-uppercase ng-disabled="isAgentDisabled" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-130" type="text" name="integral_recycle_agent_code" ng-model="select_commissionRuleHall.commissionRuleHallSubs[0].integral_recycle_agent_code"></td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7" style="float: right;">
+                                                            <div class="panel panel-list-detail">
+                                                                <div class="panel-content">
+                                                                    <table class="table table-bordered table-striped">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <td>戶口類型</td>
+                                                                            <td>用戶編號</td>
+                                                                            <td>分派佣金額</td>
+                                                                            <td>分派積分額</td>
+                                                                            <td></td>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr data-ng-repeat="commissionRuleHallSub in select_commissionRuleHall.commissionRuleHallSubs" data-ng-show="commissionRuleHallSub.disabled != 1">
+                                                                            <td>{{userType[$index]}}</td>
+                                                                            <td><input style="width:75px" data-input-uppercase data-dynamic-name="commissionRuleHalls_0_commissionRuleHallSubs_{{$index}}_agent_code" placeholder="{{userType[$index]}}" data-ng-disabled="$index == 0"   class="form-control input-01  input-92" type="text" data-ng-model="commissionRuleHallSub.agent_code"  /></td>
+                                                                            <td><input style="width:75px" data-dynamic-name ="commissionRuleHalls_0_commissionRuleHallSubs_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.commission_should"></td>
+                                                                            <td><input style="width:75px" data-dynamic-name ="commissionRuleHalls_0_commissionRuleHallSubs_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="commissionRuleHallSub.integral_should"></td>
+                                                                            <td>
+                                                                                <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addCommission_agent()"></i>
+                                                                                <i data-ng-show="$index != 0 && $index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeCommission_agent($index)"></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr data-ng-repeat="compAgentRule in select_commissionRuleHall.compAgentRuleHalls">
+                                                                            <td>{{userType[select_commissionRuleHall.commissionRuleHallSubs.length+$index]}}</td>
+                                                                            <td><input style="width:75px" data-input-uppercase data-dynamic-name="commissionRuleHalls_0_compAgentRuleHalls_{{$index}}_agent_code" placeholder="{{userType[select_commissionRuleHall.commissionRuleHallSubs.length+$index]}}"  class="form-control input-01  input-92" type="text" data-ng-model="compAgentRule.agent_code"  /></td>
+                                                                            <td><input style="width:75px" data-dynamic-name ="commissionRuleHalls_0_compAgentRuleHalls_{{$index}}_commission_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.commission_should"></td>
+                                                                            <td><input style="width:75px" data-dynamic-name ="commissionRuleHalls_0_compAgentRuleHalls_{{$index}}_integral_should" data-ng-required="enableClientValidation" class="form-control input-01 ng-pristine ng-valid input-92" type="text" ng-model="compAgentRule.integral_should"></td>
+                                                                            <td>
+                                                                                <i data-ng-show="$index == 0" class="fa fa-plus-circle cursor-pointer" data-ng-click="addComp_agent()"></i>
+                                                                                <i data-ng-show="$index != 0 && $index > 0" class="fa fa-minus-circle cursor-pointer " data-ng-click="removeComp_agent($index)"></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr data-ng-show="select_commissionRuleHall.commissionRuleCommonSubs.length == 0">
+                                                                            <td colspan="4">暫無符合條件的記錄</td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="text-align: center;padding:0px 0 8px">
+                                                        <button class="btn btn-information margin-right-15" ng-click="comfire_hall()"  data-ng-disabled="disabled_submit" >確定</button>
+                                                        <button class="btn btn-cancel margin-right-15" data-ng-click="cancel_hall()">取消</button>
+                                                        <button class="btn btn-information margin-right-15" ng-click="select_commissionRuleHalls()">選中應用到其他廳館</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="rolling_card.cardRule.commissionRuleHalls.length==0">
+                                <td colspan="20">暫無符合條件的記錄</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div style="height:20px"></div>
+                    </div>
+                    </perfect-scrollbar>
+                </div>
+                <table class="table table-bordered table-striped table-detail-01" style="margin-bottom:3px">
+                    <tr>
+                        <td width="200">操作密碼：</td>
+                        <td>
+                              <span class="col-md-6">
+                                    <input type="password"
+                                           name="pin_code"
+                                           class="form-control"
+                                           data-ng-model="rolling_card.pin_code"
+                                           data-enter-key="add()"
+                                           data-ng-disabled="is_locked"
+                                           style="width:300px"/>
+                                </span>
+                               <span class="col-md-2">
+                                    <button class="btn btn-information btn-table margin-right-5" data-ng-hide="is_locked" style="margin-left: 20px;" data-ng-disabled="isLockedFlag" ng-click="agent_locked(true)">鎖定</button>
+                                    <button class="btn btn-information btn-table margin-right-5" data-ng-show="is_locked" style="margin-left: 20px;" ng-click="agent_locked(false)">解鎖</button>
+                               </span>
+                               <span class="col-md-2" style="color:red">{{username}}</span>
+
+                        </td>
+                </table>
+                <div style="text-align: center;padding:0 0 3px" class="row">
+                    <button class="btn btn-information margin-right-15" data-ng-click = "add()" data-ng-disabled="disabled_submit" >提交</button>
+                    <button class="btn btn-cancel"  data-ng-click = "resetCards()">重置</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

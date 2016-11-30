@@ -1,0 +1,16 @@
+<div class="tips-modal">
+    <div class="modal-header">
+        <h3 class="modal-title">{{dialog_data.title}}</h3>
+    </div>
+    <div class="modal-body">
+        {{dialog_data.content}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-confirm" data-value="yes" ng-click="ok()">{{dialog_data.btn_txt}}</button>
+        <button class="btn btn-information" data-value="cancel" ng-click="cancel()">取消</button>
+    </div>
+
+</div>
+
+
+

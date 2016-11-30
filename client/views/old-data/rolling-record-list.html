@@ -1,0 +1,146 @@
+<div class="page page-grid" data-ng-controller="oldRollingRecordListCtrl">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="panel panel-form-list">
+                        <div class="panel-heading"><strong>轉碼流水</strong></div>
+                        <div class="panel-content">
+                            <form name="form_search">
+                                <table>
+                                    <tr height="50">
+                                        <td width="320" class="text-right">所在廳：</td>
+                                        <td width="140">
+                                            <select data-ng-model="condition.hall_name" class="form-control" ng-options="h.hall_name as h.hall_name for h in halls">
+                                                <option value = "">請選擇廳館</option>
+                                            </select>
+                                        </td>
+                                        <td width="120" class="text-right">戶 口：</td>
+                                        <td width="160"><input type="text" data-ng-model="condition.agent_code" data-input-uppercase class="form-control"></td>
+                                        <td width="120" class="text-right">戶 名：</td>
+                                        <td width="160">{{condition.agent_name}}</td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr height="50">
+                                        <!--<td width="120" align="right"><span class="span-formlist">指定日期：</span></td>-->
+                                        <!--<td width="160">-->
+                                        <!--<p class="input-group ui-datepicker pull-left">-->
+                                        <!--<input type="text" class="form-control" datepicker-popup datepicker-mode="day" ng-model="condition.shiftMark.shift_date"/>-->
+                                        <!--<span class="input-group-btn">-->
+                                        <!--<button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                                        <!--</span>-->
+                                        <!--</p>-->
+                                        <!--</td>-->
+                                        <td class="text-right">年  月：</td>
+                                        <td>
+                                            <table class="table-inner">
+                                                <tr>
+                                                    <td>
+                                                        <p class="input-group ui-datepicker">
+                                                            <input type="text" class="form-control" datepicker-popup datepicker-mode="month" ng-model="condition.year_month"/>
+                                                            <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="text-right">轉碼時間：</td>
+                                        <td width="350" colspan="3">
+                                            <p class="input-group ui-datepicker  col-md-5  pull-left">
+                                                <input type="text" class="form-control input-92" datepicker-popup ng-model="condition.rolling_time[0]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                            <p class="pull-left  col-md-1">~</p>
+                                            <p class="input-group ui-datepicker col-md-5 pull-left">
+                                                <input type="text" class="form-control" datepicker-popup ng-model="condition.rolling_time[1]"/>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-datepicker"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <!--<td width="120" class="text-right">線 頭：</td>
+                                        <td>
+                                            <input type="text" data-ng-model="condition.funds_type_remark" data-input-uppercase class="form-control">
+                                        </td>-->
+                                    </tr>
+                                </table><br/><br/>
+                                <div class="row" style="text-align: center;">
+                                    <button class="btn btn-info btn-information margin-right-15" ng-click="search()">查詢</button>
+                                    <button class="btn btn-inf btn-cancel" data-ng-click="reset()">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-list-detail">
+                        <div class="panel-heading">
+                            <button class="btn btn-info btn-information margin-right-15 pull-right" type="button" report-params="excel_condition" channel-type="OldRollingStreamReport" report-btn>導出EXCEL</button>
+                        </div>
+                        <div class="panel-content table-dynamic">
+                            <perfect-scrollbar class="animate-fade-up consumption_record" style="position: relative; overflow: hidden;" suppress-scroll-x="false" wheel-propagation="true" wheel-speed="50" >
+                                <div class="panel-content consumption_record"  style="min-height: 100px; width:auto">
+                                    <table class="table table-hover table-bordered table-striped" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <td width="110">所在廳</td>
+                                            <td width="140">戶口</td>
+                                            <td width="90">姓名</td>
+                                            <td width="65">轉碼卡</td>
+                                            <td width="100">轉碼金額(萬)</td>
+                                            <td width="100">本月合計(萬)</td>
+                                            <td width="180">轉碼時間</td>
+                                            <td>備註</td>
+                                            <td width="90">經手人</td>
+                                            <td width="90">年份</td>
+                                            <td width="50">月份</td>
+                                            <td width="100">日期</td>
+                                            <td width="50">更數</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="rolling in rollingCardAmounts" data-selected-rows>
+                                            <td>{{rolling.hall_name}}</td>
+                                            <td>{{rolling.agent_code}}</td>
+                                            <td>{{rolling.agent_name}}</td>
+                                            <td>{{rolling.card_name}}</td>
+                                            <td>{{rolling.amount}}</td>
+                                            <td>{{rolling.month_total}}</td>
+                                            <td>{{rolling.rolling_time |parseDate:"yyyy-MM-dd HH:mm"}}</td>
+                                            <td>{{rolling.remark}}</td>
+                                            <td>{{rolling.handling}}</td>
+                                            <td>{{rolling.year}}</td>
+                                            <td>{{rolling.month}}</td>
+                                            <td>{{rolling.o_date |parseDate:"yyyy-MM-dd"}}</td>
+                                            <td>{{rolling.shift}}</td>
+                                        </tr>
+                                        <tr ng-show="rollingCardAmounts.length == 0">
+                                            <td colspan="12">暫無符合條件的記錄</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </perfect-scrollbar>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right pagination-container">
+                                        <pagination class="pagination-sm"
+                                                    page="pagination.page"
+                                                    total-items="pagination.total_items"
+                                                    on-select-page="select(page)"
+                                                    max-size = "pagination.max_size"
+                                                    items-per-page = "pagination.items_per_page"
+                                                    data-ng-hide="rollingCardAmounts.length == 0 && pagination.total_items > pagination.items_per_page"></pagination>
+                                        <paginationselect pageCtrl="pagination" select-page="select" ></paginationselect>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

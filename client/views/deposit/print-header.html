@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3>提示</h3>
+</div>
+<div class="modal-body">
+    <form name="$parent.form_create_remark" class="ng-valid ng-dirty form-validation" server-validation="POST{{create_remark_url}}">
+        <div class="row">
+            <div class="col-md-12">
+                    請先插入新卡,再列印表頭。
+            </div>
+        </div>
+        <div class="row" style="text-align: center;"><br/>
+            <button class="btn btn-confirm" data-ng-click="print()" data-ng-disabled="disable_print">是</button>
+            <button class="btn btn-inf btn-cancel" data-ng-click="cancel()">否</button>
+        </div>
+    </form>
+</div>
